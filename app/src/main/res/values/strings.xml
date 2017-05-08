@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BigGirl</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">相册</string>
+    <string name="action_setwallpaer">设置壁纸</string>
+    <string name="action_localgirl">默认美女</string>
+    <string name="action_gankgirl">干货美女</string>
+    <string name="action_day">白天模式</string>
+    <string name="action_night">夜间模式</string>
+</resources>
