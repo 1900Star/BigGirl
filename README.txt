@@ -12,12 +12,12 @@ BigGirl
     *glide
     *eventbus
 
-![image](Screenshot_png/c.gif)
-![image](Screenshot_png/girls.png)
-![image](Screenshot_png/b.png)
-![image](Screenshot_png/android.png)
-![image](Screenshot_png/webview.png)
-![image](Screenshot_png/BigGirl.png)
+![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/c.gif)
+![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/girls.png)
+![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/b.png)
+![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/android.png)
+![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/webview.png)
+![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/BigGirl.png)
 
 # 提示
 本项目还没写完，只要有空闲的就会更新代码。
