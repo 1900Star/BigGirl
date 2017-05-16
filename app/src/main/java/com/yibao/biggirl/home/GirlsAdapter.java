@@ -100,6 +100,7 @@ public class GirlsAdapter
                  .asBitmap()
                  .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                  .into(viewHolder.mGrilImageView);
+
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemClickListener) {
                     ((OnRvItemClickListener) mContext).showPagerFragment(position, mList);

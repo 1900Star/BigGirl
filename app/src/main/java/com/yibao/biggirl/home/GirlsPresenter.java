@@ -4,7 +4,6 @@ import com.yibao.biggirl.model.girls.GirlsBean;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 /**
  * Author：Sid
@@ -38,7 +37,7 @@ class GirlsPresenter
 
     @Override
     public void loadData(int size, int page, int type) {
-        LogUtil.d("====== Type =====" + type);
+//        LogUtil.d("====== Type =====" + type);
 
         mRemoteGirlsData.getGirls(size, page, new GrilsDataSource.LoadGDataCallback() {
             @Override

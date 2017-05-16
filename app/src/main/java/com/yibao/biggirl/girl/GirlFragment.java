@@ -2,7 +2,6 @@ package com.yibao.biggirl.girl;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,7 +17,7 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
 import com.yibao.biggirl.model.girls.ResultsBean;
-import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.model.video.RemoteVideoData;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
@@ -31,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
+
 
 /**
  * Author：Sid
@@ -60,9 +60,8 @@ public class GirlFragment
     //PerView滑动的状态的最值
     public static final int STATUS_MAX_NUM = 3;
     private GirlAdapter mPagerGirlAdapter;
-    private View    mView          = null;
-    private String  mUrl           = null;
-    private boolean isShowGankGirl = true;
+    private View   mView = null;
+    private String mUrl  = null;
     private ArrayList<ResultsBean> mList;
     private CompositeDisposable    disposables;
     private MyApplication          mApplication;
@@ -73,7 +72,8 @@ public class GirlFragment
         Bundle bundle = getArguments();
         mList = bundle.getParcelableArrayList("girlList");
         mPosition = bundle.getInt("position");
-        LogUtil.d("Position  Size    ==   " + mPosition + "===" + mList.size());
+        mUrl = mList.get(mPosition)
+                    .getUrl();
         mApplication = (MyApplication) getActivity().getApplication();
         disposables = new CompositeDisposable();
     }
@@ -152,9 +152,7 @@ public class GirlFragment
 
     @Override
     public void onPageSelected(int position) {
-        if (isShowGankGirl) {
 
-        }
         mUrl = mList.get(position)
                     .getUrl();
 
@@ -188,6 +186,9 @@ public class GirlFragment
                 WallPaperUtil.choiceWallPaper(getActivity());
                 break;
             case R.id.action_localgirl:  //默认美女
+
+                RemoteVideoData.getVideos(20, 1);
+
                 break;
             case R.id.action_gank:  //干货集中营
                 initData();
@@ -205,10 +206,6 @@ public class GirlFragment
         return new GirlFragment();
     }
 
-    @NonNull
-    private static String getNameFromUrl(String url) {
-        return url.substring(url.lastIndexOf("/") + 1, url.length());
-    }
 
     @Override
     public void onDestroyView() {

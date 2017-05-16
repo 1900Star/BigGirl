@@ -23,7 +23,7 @@ public class Main2Activity
         setContentView(R.layout.activity_main2);
         ButterKnife.bind(this);
         mIvTest.setOnClickListener(view -> {
-            ImageUitl.downloadPic( "http://mvimg2.meitudata.com/576d550bbaf204850.jpg",true);
+            ImageUitl.downloadPic("http://mvimg2.meitudata.com/576d550bbaf204850.jpg", true);
             LogUtil.d("我来了！");
 
         });

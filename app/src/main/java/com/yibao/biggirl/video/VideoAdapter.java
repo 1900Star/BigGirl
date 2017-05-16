@@ -1,23 +1,18 @@
-package com.yibao.biggirl.android;
+package com.yibao.biggirl.video;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.OnRvItemWebClickListener;
-import com.yibao.biggirl.model.android.AndroidAndGirl;
-import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.model.girls.ResultsBean;
-import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.model.video.VideoResultsBean;
 
 import java.util.List;
 
@@ -29,13 +24,13 @@ import butterknife.ButterKnife;
  * Des：${适配Android列表数据}
  * Time:2017/4/23 07:08
  */
-public class AndroidAdapter
+public class VideoAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
 
 
-    private Context              mContext;
-    private List<AndroidAndGirl> mList;
+    private Context                mContext;
+    private List<VideoResultsBean> mList;
     private static final int TYPE_ITEM        = 0;
     private static final int TYPE_FOOTER      = 1;
     //上拉加载更多
@@ -49,7 +44,7 @@ public class AndroidAdapter
     private int LOAD_MORE_STATUS = 0;
 
 
-    public AndroidAdapter(Context context, List<AndroidAndGirl> list) {
+    public VideoAdapter(Context context, List<VideoResultsBean> list) {
         mContext = context;
         mList = list;
     }
@@ -60,9 +55,9 @@ public class AndroidAdapter
         if (viewType == TYPE_ITEM) {
 
             View view = LayoutInflater.from(parent.getContext())
-                                      .inflate(R.layout.item_android_frag, parent, false);
+                                      .inflate(R.layout.item_video_frag, parent, false);
 
-            return new MyViewHolder(view);
+            return new ViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
             View view = LayoutInflater.from(parent.getContext())
                                       .inflate(R.layout.load_more_footview, parent, false);
@@ -74,38 +69,26 @@ public class AndroidAdapter
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof MyViewHolder) {
-            MyViewHolder viewHolder = (MyViewHolder) holder;
+        if (holder instanceof ViewHolder) {
+            ViewHolder viewHolder = (ViewHolder) holder;
 
-            AndroidAndGirl item = mList.get(position);
-
-
-            ResultsBean girlData = item.mGrilData.get(position);
-            ResultsBeanX androidData = item.getAndroidData()
-                                           .get(position);
-
-            Glide.with(mContext)
-                 .load(girlData.getUrl())
-                 .asBitmap()
-                 .placeholder(R.drawable.splash)
-                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                 .into(viewHolder.mIvIcon);
+            VideoResultsBean item = mList.get(position);
 
 
-            String who = androidData.getWho();
+            String who = item.getWho();
             String name = who == null
                           ? "Smartisan"
                           : who;
 
             viewHolder.mTvAndroidName.setText(name);
 
-            String time = androidData.getCreatedAt();
+            String time = item.getCreatedAt();
             viewHolder.mTvAndroidTime.setText(time.substring(0, time.lastIndexOf("T")));
-            viewHolder.mTvAndroidDes.setText(androidData.getDesc());
+            viewHolder.mTvAndroidDes.setText(item.getDesc());
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemWebClickListener) {
 
-                    ((OnRvItemWebClickListener) mContext).showDesDetall(androidData.getUrl());
+                    ((OnRvItemWebClickListener) mContext).showDesDetall(item.getUrl());
                 }
             });
         } else if (holder instanceof LoadMoreHolder) {
@@ -147,37 +130,15 @@ public class AndroidAdapter
     }
 
 
-    static class MyViewHolder
-            extends RecyclerView.ViewHolder
-    {
-        @BindView(R.id.iv_icon)
-        ImageView    mIvIcon;
-        @BindView(R.id.tv_android_name)
-        TextView     mTvAndroidName;
-        @BindView(R.id.tv_android_des)
-        TextView     mTvAndroidDes;
-        @BindView(R.id.ll)
-        LinearLayout mLl;
-        @BindView(R.id.tv_android_time)
-        TextView     mTvAndroidTime;
-
-        MyViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-    }
-
-
-    void AddHeader(List<AndroidAndGirl> list) {
+    void AddHeader(List<VideoResultsBean> list) {
         mList.addAll(list);
         notifyDataSetChanged();
 
 
     }
 
-    void AddFooter(List<AndroidAndGirl> list) {
+    void AddFooter(List<VideoResultsBean> list) {
         mList.addAll(list);
-        LogUtil.d("  == 加载后的长度 ==   " + mList.size());
         notifyDataSetChanged();
         //        notifyItemRemoved(getItemCount());
 
@@ -200,6 +161,25 @@ public class AndroidAdapter
         LinearLayout mLoadLayout;
 
         LoadMoreHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+
+    static class ViewHolder
+            extends RecyclerView.ViewHolder
+    {
+        @BindView(R.id.tv_android_name)
+        TextView       mTvAndroidName;
+        @BindView(R.id.tv_android_des)
+        TextView       mTvAndroidDes;
+        @BindView(R.id.tv_android_time)
+        TextView       mTvAndroidTime;
+        @BindView(R.id.rl_video)
+        RelativeLayout mRlVideo;
+
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

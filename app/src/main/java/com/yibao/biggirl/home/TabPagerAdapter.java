@@ -19,8 +19,7 @@ public class TabPagerAdapter
     private       List<Fragment>      mFragmentList;
     private       List<String>        mTitleList;
 
-    public TabPagerAdapter(FragmentManager fm,
-                           List<Fragment> fragmentList,
+    public TabPagerAdapter(FragmentManager fm,List<Fragment> fragmentList,
                            List<String> titleList)
     {
         super(fm);
@@ -31,6 +30,8 @@ public class TabPagerAdapter
 
     @Override
     public Fragment getItem(int position) {
+//        Fragment fragment =FragmentFactory.createFragment(position);
+
 
         return mFragmentList.get(position);
     }

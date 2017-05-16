@@ -52,11 +52,8 @@
 
 -dontwarn com.android.internal.com.yibao.biggirl.http.multipart.**
 -keep class com.android.internal.com.yibao.biggirl.http.multipart.** { *;}
-#fresco
--keep @com.facebook.common.internal.DoNotStrip class *
--keepclassmembers class * {
-    @com.facebook.common.internal.DoNotStrip *;
-}
+
+
 
 # Keep native methods
 -keepclassmembers class * {
@@ -70,22 +67,3 @@
 
 # Retrofit---------------------------------------------------------------
 
-
-#fresco------------------------------------------------------------------
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
--dontwarn okhttp3.**
--dontwarn javax.annotation.**
--dontwarn com.android.volley.toolbox.**
--dontwarn com.facebook.infer.**
-
-#Eventbus---------------------------------------------------------------
--keepattributes *Annotation*
--keepclassmembers class ** {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
--keep enum org.greenrobot.eventbus.ThreadMode {*;}
-# Only required if you use AsyncExecutor
--keepclassmembers class * extends org.greenrobot.eventbus.com.yibao.biggirl.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}

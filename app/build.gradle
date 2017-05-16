@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '25.0.3'
     defaultConfig {
 
         //开启jack编译
@@ -25,14 +25,15 @@ android {
 
     buildTypes {
         release {
-//            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            'proguard-fresco.pro'
             //删除无用的资源
 //            shrinkResources true
         }
+
         debug {
             minifyEnabled false
+            debuggable true
         }
     }
     productFlavors {
@@ -60,7 +61,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     //Eventbus
-//    compile 'org.greenrobot:eventbus:3.0.0'
+    //    compile 'org.greenrobot:eventbus:3.0.0'
     //Rotrofit
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
@@ -72,7 +73,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-//    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
-//    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
-//    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+    //    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    //    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
+    //    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
 }

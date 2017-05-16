@@ -2,19 +2,18 @@ package com.yibao.biggirl.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.yibao.biggirl.MainActivity;
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SystemUiVisibilityUtil;
-
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
 
 /**
  * Author：Sid
@@ -37,15 +36,12 @@ public class SplashActivity
         setContentView(R.layout.activity_splash);
         mBind = ButterKnife.bind(this);
         SystemUiVisibilityUtil.hideStatusBar(getWindow(), true);
-        setSplash();
+        new Handler().postDelayed(() -> {
+            SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            finish();
+        }, 2000);
     }
 
-    private void setSplash() {
-        Observable.timer(2, TimeUnit.SECONDS)
-                  .subscribe(aLong -> SplashActivity.this.startActivity(new Intent(SplashActivity.this.getApplicationContext(),
-                                                                                   MainActivity.class)));
-        finish();
-    }
 
     @Override
     protected void onDestroy() {

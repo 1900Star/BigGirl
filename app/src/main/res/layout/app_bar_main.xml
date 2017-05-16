@@ -33,7 +33,7 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:tabGravity="fill"
                 app:tabIndicatorHeight="2dp"
-                app:tabMode="fixed"
+                app:tabMode="scrollable"
                 app:tabSelectedTextColor="#FFDB3937"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
         </android.support.design.widget.CollapsingToolbarLayout>

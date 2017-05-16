@@ -2,13 +2,13 @@ package com.yibao.biggirl.network;
 
 /**
  * 作者：Stran on 2017/3/28 07:37
- * 描述：${默认妹子地址}
+ * 描述：${本地默认妹子地址}
  * 邮箱：strangermy@outlook.com
  */
 public class Api {
     public static String[] picUrlArr = {"http://imgsrc.baidu.com/baike/pic/item/a044ad345982b2b78714197432adcbef77099bf2.jpg",
                                         "http://imgsrc.baidu.com/forum/w%3D580/sign=6b602162b4fd5266a72b3c1c9b199799/33496987e950352a2cf708815143fbf2b0118bdb.jpg",
-
+                                        "http://imgsrc.baidu.com/baike/pic/item/d833c895d143ad4bebdcdc5981025aafa50f06bc.jpg",
                                         "http://imgsrc.baidu.com/forum/pic/item/b7b2757b5623712741a9adf1.jpg",
                                         "http://www.6681.com/uploads/allimg/151128/42-15112P95419209.jpg",
                                         "http://img0.imgtn.bdimg.com/it/u=1166064475,2379250620&fm=214&gp=0.jpg",

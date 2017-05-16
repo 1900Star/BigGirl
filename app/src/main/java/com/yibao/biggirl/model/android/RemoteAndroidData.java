@@ -23,7 +23,7 @@ public class RemoteAndroidData
     private List<AndroidAndGirl> mList;
 
     @Override
-    public void getGirls(int size, int page, LoadADataCallback callback) {
+    public void getAndroid(int size, int page, LoadADataCallback callback) {
         Observable.zip(RetrofitHelper.getGankApi()
                                      .getAndroid("Android", size, page),
                        RetrofitHelper.getGankApi()

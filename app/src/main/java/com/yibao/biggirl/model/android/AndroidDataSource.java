@@ -16,6 +16,6 @@ public interface AndroidDataSource {
 
     }
 
-    void getGirls(int page, int size, LoadADataCallback callback);
+    void getAndroid(int page, int size, LoadADataCallback callback);
 
 }

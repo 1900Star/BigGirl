@@ -2,8 +2,6 @@ package com.yibao.biggirl.util;
 
 import com.yibao.biggirl.MyApplication;
 
-import java.util.UUID;
-
 /**
  * 作者：Stran on 2017/3/23 15:26
  * 描述：${TODO}
@@ -12,9 +10,7 @@ import java.util.UUID;
 public class Constants {
     public static String GANK_API = "http://gank.io/";
 
-    public static       String PIC_NAME              = UUID.randomUUID()
-                                                           .toString()
-                                                           .replace("-", "");
+
     public static final String dir                   = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
     public static       int    LOAD_DATA             = 0;
     public static       int    REFRESH_DATA          = 1;

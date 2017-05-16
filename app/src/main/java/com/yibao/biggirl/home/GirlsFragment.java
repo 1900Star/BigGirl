@@ -52,7 +52,6 @@ public class GirlsFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         new GirlsPresenter(this);
         mPresenter.start();
 
@@ -93,6 +92,7 @@ public class GirlsFragment
     @Override
     public void loadData(List<ResultsBean> list) {
 
+
         initRecyclerView(list);
         mSwipeRefresh.setRefreshing(false);
     }
@@ -119,7 +119,7 @@ public class GirlsFragment
 
     @Override
     public void loadMore(List<ResultsBean> list) {
-        LogUtil.d("============ Loade More ===========  ");
+        //        LogUtil.d("============ Loade More ===========  ");
         if (list.size() % 20 == 0) {
             page++;
             //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
@@ -149,12 +149,13 @@ public class GirlsFragment
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 
-            private int[] mItemPositions;
+            private int[] mBottom;
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && mItemPositions.length == mAdapter.getItemCount()) {
+                int lastCount = mAdapter.getItemCount() - 1;
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && mBottom[0] == lastCount || mBottom[1] == lastCount) {
                     boolean isRefresh = mSwipeRefresh.isRefreshing();
                     if (isRefresh) {
                         mAdapter.notifyItemRemoved(mAdapter.getItemCount());
@@ -171,9 +172,10 @@ public class GirlsFragment
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                LogUtil.d("====  RecyclerView   ==" + recyclerView.getChildCount());
+                //                LogUtil.d("====  RecyclerView   ==" + recyclerView.getChildCount());
                 StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
-                mItemPositions = manager.findLastVisibleItemPositions(new int[recyclerView.getChildCount()]);
+
+                mBottom = manager.findFirstCompletelyVisibleItemPositions(new int[2]);
             }
         });
 
@@ -193,7 +195,6 @@ public class GirlsFragment
     }
 
     public GirlsFragment newInstance() {
-
         return new GirlsFragment();
     }
 

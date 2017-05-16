@@ -10,7 +10,6 @@ import com.yibao.biggirl.model.girl.DownGrilProgressData;
 import com.yibao.biggirl.network.Api;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,8 +65,6 @@ public class ImageUitl {
                              byte[]           buf = new byte[1024 * 4];
                              int              len;
                              FileOutputStream fos = null;
-                             //                      String SDPath = Environment.getExternalStorageDirectory()
-                             //                                                 .getAbsolutePath();
                              is = response.body()
                                           .byteStream();
                              long total = response.body()
@@ -81,7 +78,7 @@ public class ImageUitl {
                                      fos.write(buf, 0, len);
                                      sum += len;
                                      int progress = (int) (sum * 1.0f / total * 100);
-                                     LogUtil.d("progress=" + progress);
+                                     //Rxbus发送下载进度
                                      MyApplication.getIntstance()
                                                   .bus()
                                                   .post(new DownGrilProgressData(progress));
@@ -89,7 +86,6 @@ public class ImageUitl {
                                  }
                                  fos.flush();
                                  fos.close();
-                                 LogUtil.d("文件下载成功");
 
                              } catch (IOException e) {
                                  e.printStackTrace();
@@ -106,16 +102,24 @@ public class ImageUitl {
 
 
                      });
+
+
         if (isShowPhotos) {
+
+
             try {
                 MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
                                                                  .getContentResolver(),
                                                     file.getAbsolutePath(),
                                                     name,
                                                     null);
-            } catch (FileNotFoundException e) {
+                LogUtil.d("============================== 保存成功");
+            } catch (Exception e) {
+
                 e.printStackTrace();
             }
+
+
             MyApplication.getIntstance()
                          .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                                                    Uri.parse("file://" + file)));

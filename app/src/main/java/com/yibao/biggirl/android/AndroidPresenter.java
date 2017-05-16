@@ -42,8 +42,7 @@ public class AndroidPresenter
 
     @Override
     public void loadData(int page, int size,int type) {
-//        LogUtil.d("======Android Type =====" + type);
-        mRemoteAndroidData.getGirls(page, size, new AndroidDataSource.LoadADataCallback() {
+        mRemoteAndroidData.getAndroid(page, size, new AndroidDataSource.LoadADataCallback() {
             @Override
             public void onLoadData(List<AndroidAndGirl> list) {
                 if (type == Constants.LOAD_DATA) {
