@@ -227,7 +227,6 @@ public class GirlsFragment
 
     @Override
     public void onClick(View view) {
-        LogUtil.d("这是刷新 ===" + isShowGankGirl);
 
         if (isShowGankGirl) {
             initRecyclerView(mList);
