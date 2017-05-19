@@ -31,7 +31,6 @@ import com.yibao.biggirl.mvp.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
 import com.yibao.biggirl.mvp.ios.IOSFragment;
 import com.yibao.biggirl.mvp.video.VideoFragmnet;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.webview.WebViewActivity;
 
@@ -98,7 +97,6 @@ public class MainActivity
         int id = item.getItemId();
 
         if (id == R.id.about_me) {
-            LogUtil.d("aboutme");
             new DialogFragment();
             new AlertDialog.Builder(this).setView(getLayoutInflater().inflate(R.layout.aboutme,
                                                                               null))
