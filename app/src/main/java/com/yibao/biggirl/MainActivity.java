@@ -1,31 +1,38 @@
 package com.yibao.biggirl;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.yibao.biggirl.android.AndroidFragment;
 import com.yibao.biggirl.base.OnRvItemWebClickListener;
-import com.yibao.biggirl.girl.GirlActivity;
-import com.yibao.biggirl.home.GirlsAdapter;
-import com.yibao.biggirl.home.GirlsFragment;
-import com.yibao.biggirl.home.TabPagerAdapter;
-import com.yibao.biggirl.model.girls.ResultsBean;
+import com.yibao.biggirl.mvp.app.AppFragment;
+import com.yibao.biggirl.mvp.expand.ExpandFragment;
+import com.yibao.biggirl.mvp.frontend.FrontEndFragment;
+import com.yibao.biggirl.mvp.girl.GirlActivity;
+import com.yibao.biggirl.mvp.girls.GirlsAdapter;
+import com.yibao.biggirl.mvp.girls.GirlsFragment;
+import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
+import com.yibao.biggirl.mvp.ios.IOSFragment;
+import com.yibao.biggirl.mvp.video.VideoFragmnet;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
-import com.yibao.biggirl.video.VideoFragmnet;
 import com.yibao.biggirl.webview.WebViewActivity;
 
 import java.util.ArrayList;
@@ -44,7 +51,9 @@ import butterknife.Unbinder;
  */
 public class MainActivity
         extends AppCompatActivity
-        implements GirlsAdapter.OnRvItemClickListener, OnRvItemWebClickListener
+        implements GirlsAdapter.OnRvItemClickListener,
+                   OnRvItemWebClickListener,
+                   NavigationView.OnNavigationItemSelectedListener
 {
     @BindView(R.id.nav_view)
     NavigationView mNavView;
@@ -59,8 +68,9 @@ public class MainActivity
     Toolbar   mToolbar;
     private long   exitTime   = 0;
     private String arrTitle[] = {"Girl",
-                                 "Android",
+                                 //                                 "Android",
                                  "Video",
+                                 "App",
                                  "iOS",
                                  "前端",
                                  "拓展资源"};
@@ -76,39 +86,45 @@ public class MainActivity
         if (savedInstanceState == null) {
             initView();
             initData();
-            //                        initListener();
+            //            initListener();
 
         }
 
     }
 
-    private void initListener() {
-        MyOnpageChangeListener onpageChangeListener = new MyOnpageChangeListener();
-        mViewPager.addOnPageChangeListener(onpageChangeListener);
-        mViewPager.getViewTreeObserver()
-                  .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                      @Override
-                      public void onGlobalLayout() {
-                          onpageChangeListener.onPageSelected(0);
-                          mViewPager.getViewTreeObserver()
-                                    .removeOnGlobalLayoutListener(this);
-                      }
-                  });
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.about_me) {
+            LogUtil.d("aboutme");
+            new DialogFragment();
+            new AlertDialog.Builder(this).setView(getLayoutInflater().inflate(R.layout.aboutme,
+                                                                              null))
+                                         .show();
+
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+
+
+        return true;
     }
 
+
     private void initData() {
-        setSupportActionBar(mToolbar);
+
 
         mTablayout.setupWithViewPager(mViewPager);
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new GirlsFragment().newInstance());
-        fragments.add(new AndroidFragment().newInstance());
+        //        fragments.add(new AndroidFragment().newInstance());
         fragments.add(new VideoFragmnet().newInstance());
-        fragments.add(new GirlsFragment().newInstance());
-        fragments.add(new AndroidFragment().newInstance());
-        fragments.add(new VideoFragmnet().newInstance());
-        mViewPager.setOffscreenPageLimit(6);
+        fragments.add(new AppFragment().newInstance());
+        fragments.add(new IOSFragment().newInstance());
+        fragments.add(new FrontEndFragment().newInstance());
+        fragments.add(new ExpandFragment().newInstance());
+        mViewPager.setOffscreenPageLimit(7);
 
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(),
                                                            fragments,
@@ -118,9 +134,9 @@ public class MainActivity
 
     //加载动态布局
     private void initView() {
+        setSupportActionBar(mToolbar);
         View headerView = mNavView.inflateHeaderView(R.layout.nav_header_main);
         mIvHeader = (ImageView) headerView.findViewById(R.id.iv_nav_header);
-//        mIvHeader.setImageResource(R.drawable.splash);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
                                                                  mDrawerLayout,
@@ -129,31 +145,10 @@ public class MainActivity
                                                                  R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        mNavView.setNavigationItemSelectedListener(this);
+
     }
 
-
-    private class MyOnpageChangeListener
-            implements ViewPager.OnPageChangeListener
-    {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            //触发加载数据
-            //FragmentFactory.mCacheFragmentMap.get(position)-->BaseFragment-->loadingPager
-            //            Fragment baseFragment = FragmentFactory.mCacheFragmentMap.get(position);
-
-            //            baseFragment.mLoadingPager.triggerLoadData();
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    }
 
     //打开WebViewActivity
     @Override
@@ -165,26 +160,30 @@ public class MainActivity
 
     }
 
+
     //接口回调打开ViewPager浏览大图
     @Override
-    public void showPagerFragment(int position, ArrayList<ResultsBean> list) {
-        //
-        String url = list.get(0)
-                         .getUrl();
+    public void showPagerFragment(int position, List<String> list) {
+        //设置navHeader头像
         Glide.with(this)
-             .load(url)
+             .load(list.get(0))
              .asBitmap()
              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(mIvHeader);
 
         Intent intent = new Intent(this, GirlActivity.class);
-        intent.putParcelableArrayListExtra("girlList", list);
+        intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
         intent.putExtra("position", position);
         startActivity(intent);
     }
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+
+        }
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 
             //两秒之内按返回键多次就会退出

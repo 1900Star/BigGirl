@@ -32,13 +32,11 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".girl.GirlActivity"/>
+        <activity android:name=".mvp.girl.GirlActivity"/>
         <activity
             android:name=".webview.WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
-        <activity android:name=".Main2Activity">
-        </activity>
     </application>
 
 </manifest>

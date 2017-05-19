@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
-import com.yibao.biggirl.girl.GirlAdapter;
+import com.yibao.biggirl.mvp.girl.GirlAdapter;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

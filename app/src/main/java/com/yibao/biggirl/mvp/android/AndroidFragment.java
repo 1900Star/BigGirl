@@ -1,4 +1,4 @@
-package com.yibao.biggirl.video;
+package com.yibao.biggirl.mvp.android;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,8 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.model.video.VideoResultsBean;
+import com.yibao.biggirl.model.android.AndroidAndGirl;
+import com.yibao.biggirl.mvp.app.AppAdapter;
+import com.yibao.biggirl.mvp.app.AppContract;
+import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,29 +33,31 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 /**
  * Author：Sid
  * Des：${TODO}
- * Time:2017/5/9 06:53
+ * Time:2017/4/23 06:33
  */
-public class VideoFragmnet
+public class AndroidFragment
         extends Fragment
-        implements VideoContract.View, SwipeRefreshLayout.OnRefreshListener
+        implements AppContract.View, SwipeRefreshLayout.OnRefreshListener
 {
+    AppContract.Presenter mPresenter;
     @BindView(R.id.android_frag_rv)
-    RecyclerView       mAndroidFragRv;
+    RecyclerView       mRecyclerView;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
-    private VideoContract.Presenter mPresenter;
-    private List<VideoResultsBean> mLists = new ArrayList<>();
-    private VideoAdapter         mAdapter;
-    private FloatingActionButton mFab;
+    private List<AndroidAndGirl> mLists = new ArrayList<>();
+    private AppAdapter mAdapter;
+
     private int page = 1;
     private int size = 20;
+    private FloatingActionButton mFab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new VideoPresenter(this);
-        mPresenter.start();
+
+        new AppPresenter(this);
+        mPresenter.start(Constants.FRAGMENT_ANDROID);
 
     }
 
@@ -71,23 +77,24 @@ public class VideoFragmnet
     private void initView() {
         mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         mFab.setVisibility(View.VISIBLE);
+
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
-
-
     }
 
 
-    private void initData(List<VideoResultsBean> list) {
-        mAdapter = new VideoAdapter(getContext(), list);
+    private void initData(List<AndroidAndGirl> list) {
+
+
+        mAdapter = new AppAdapter(getContext(), list);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
-        mAndroidFragRv.setLayoutManager(manager);
-        mAndroidFragRv.setHasFixedSize(true);
-        mAndroidFragRv.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mAdapter);
 
-        mAndroidFragRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastItem;
 
             @Override
@@ -98,9 +105,9 @@ public class VideoFragmnet
                     if (isRefresh) {
                         mAdapter.notifyItemRemoved(mAdapter.getItemCount());
                     } else {
-                        //                        LogUtil.d("======  加载更多 来了 ==== " + lastItem);
+                        LogUtil.d("======  加载更多 来了 ==== " + lastItem);
                         mAdapter.changeMoreStatus(Constants.LOADING_DATA);
-                        //                        LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
+                        LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
                         //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
 
                     }
@@ -117,41 +124,52 @@ public class VideoFragmnet
                 lastItem = manager.findLastVisibleItemPosition();
             }
         });
-
-
     }
 
 
     @Override
-    public void refresh(List<VideoResultsBean> list) {
-        mAdapter.clear();
-        mAdapter.AddHeader(list);
-    }
-
-    @Override
-    public void loadMore(List<VideoResultsBean> list) {
-
-    }
-
-    @Override
-    public void loadData(List<VideoResultsBean> list) {
+    public void loadData(List<AndroidAndGirl> list) {
         mLists.clear();
         mLists.addAll(list);
-        initData(list);
+        initData(mLists);
         mSwipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void onRefresh() {
+
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size, 1, Constants.REFRESH_DATA);
+                      mPresenter.loadData(size,
+                                          1,
+                                          Constants.FRAGMENT_ANDROID,
+                                          Constants.REFRESH_DATA);
 
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
                   });
     }
+
+    @Override
+    public void refresh(List<AndroidAndGirl> list) {
+
+        mAdapter.clear();
+        mAdapter.AddHeader(list);
+    }
+
+    @Override
+    public void loadMore(List<AndroidAndGirl> list) {
+        //        if (mLists.size() % 20 == 0) {
+        //
+        //            page++;
+        //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
+        //        }
+        mAdapter.AddFooter(list);
+        LogUtil.d("========  Add Footer    ==============" + mLists.size() + " ===" + page);
+
+    }
+
 
     @Override
     public void showError() {
@@ -164,17 +182,21 @@ public class VideoFragmnet
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public void setPrenter(AppContract.Presenter prenter) {
+        this.mPresenter = prenter;
     }
 
-    public VideoFragmnet newInstance() {
-        return new VideoFragmnet();
+    public AndroidFragment newInstance() {
+
+        return new AndroidFragment();
     }
 
     @Override
-    public void setPrenter(VideoContract.Presenter prenter) {
-        mPresenter = prenter;
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+
+
     }
 }
+

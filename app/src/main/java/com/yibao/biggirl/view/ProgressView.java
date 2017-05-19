@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,8 +22,8 @@ import com.yibao.biggirl.R;
 public class ProgressView
         extends LinearLayout
 {
-    private ImageView mIvIcon;
-    private TextView  mTvNote;
+    private FloatingActionButton mIvIcon;
+    private TextView             mTvNote;
 
     private boolean isProgressEnable = true;
     private int     mMax             = 100;
@@ -57,7 +57,7 @@ public class ProgressView
     public void setProgress(int progress) {
         mProgress = progress;
         //重绘
-//        invalidate()        这个方法会报子线程修改UIn异常，
+        //        invalidate()        这个方法会报子线程修改UIn异常，
         postInvalidate();
     }
 
@@ -84,7 +84,7 @@ public class ProgressView
         //挂载布局
 
         View view = View.inflate(context, R.layout.progress_btn, this);
-        mIvIcon = (ImageView) view.findViewById(R.id.fab);
+        mIvIcon = (FloatingActionButton) view.findViewById(R.id.fab_progress);
     }
 
     @Override
@@ -96,26 +96,26 @@ public class ProgressView
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);//绘制图标和文字
         int bottom = mIvIcon.getBottom();
-        int top = mIvIcon.getTop();
-        int left=mIvIcon.getLeft();
-        int right=mIvIcon.getRight();
-//        LogUtil.d("BOTTOM===============BOTTOM  ",left+"========"+top+   "  =="+right+"    =="+bottom);
+        int top    = mIvIcon.getTop();
+        int left   = mIvIcon.getLeft();
+        int right  = mIvIcon.getRight();
+        //        LogUtil.d("BOTTOM===============BOTTOM  ",left+"========"+top+   "  =="+right+"    =="+bottom);
         if (isProgressEnable) {
             if (mOval == null) {
 
-                mOval = new RectF(left,top, right,bottom);
+                mOval = new RectF(left, top, right, bottom);
 
             }
-            float   startAngle = -90;
-            float   sweepAngle = mProgress * 1.0f / mMax * 360;
+            float startAngle = -90;
+            float sweepAngle = mProgress * 1.0f / mMax * 360;
             //是否以图片的中心为圆点
-            boolean useCenter  = false;
+            boolean useCenter = false;
             if (mPaint == null) {
                 mPaint = new Paint();
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setStrokeWidth(10);
                 mPaint.setAntiAlias(true);
-                mPaint.setColor(Color.rgb(250,60,127));
+                mPaint.setColor(Color.argb(255,212, 200, 55));
             }
             canvas.drawArc(mOval, startAngle, sweepAngle, useCenter, mPaint);
         }

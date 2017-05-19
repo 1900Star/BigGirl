@@ -1,4 +1,4 @@
-package com.yibao.biggirl.android;
+package com.yibao.biggirl.mvp.android;
 
 import com.yibao.biggirl.base.BasePresenter;
 import com.yibao.biggirl.base.BaseView;

@@ -1,8 +1,5 @@
 package com.yibao.biggirl.util;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import com.yibao.biggirl.MyApplication;
@@ -107,23 +104,26 @@ public class ImageUitl {
         if (isShowPhotos) {
 
 
-            try {
-                MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
-                                                                 .getContentResolver(),
-                                                    file.getAbsolutePath(),
-                                                    name,
-                                                    null);
-                LogUtil.d("============================== 保存成功");
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-
-
-            MyApplication.getIntstance()
-                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                                   Uri.parse("file://" + file)));
-        }
+//            try {
+//                MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
+//                                                                 .getContentResolver(),
+//                                                    file.getAbsolutePath(),
+//                                                    name,
+//                                                    null);
+//                LogUtil.d("============================== 保存成功");
+//            } catch (Exception e) {
+//
+//                e.printStackTrace();
+//            }
+//
+//
+//            MyApplication.getIntstance()
+//                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+//                                                   Uri.fromFile(file.getAbsoluteFile())));
+//        MyApplication.getIntstance()
+//                     .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+//                                               Uri.parse("file://" + file)));
+    }
 
 
     }

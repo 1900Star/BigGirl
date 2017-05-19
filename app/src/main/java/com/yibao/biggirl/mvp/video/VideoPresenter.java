@@ -1,4 +1,4 @@
-package com.yibao.biggirl.video;
+package com.yibao.biggirl.mvp.video;
 
 import com.yibao.biggirl.model.video.RemoteVideoData;
 import com.yibao.biggirl.model.video.VideoBean;
@@ -24,7 +24,7 @@ public class VideoPresenter
 
 
     @Override
-    public void start() {
+    public void start(String type) {
         loadData(20, 1, Constants.LOAD_DATA);
     }
 

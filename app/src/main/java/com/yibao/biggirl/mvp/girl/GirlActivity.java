@@ -1,4 +1,4 @@
-package com.yibao.biggirl.girl;
+package com.yibao.biggirl.mvp.girl;
 
 
 import android.os.Bundle;

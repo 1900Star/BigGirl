@@ -6,7 +6,7 @@ package com.yibao.biggirl.base;
  * Time:2017/4/22 09:54
  */
 public interface BasePresenter {
-    void start();
+    void start(String type);
     void subscribe();
 
     void unsubscribe();

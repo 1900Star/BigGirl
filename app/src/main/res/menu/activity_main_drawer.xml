@@ -16,14 +16,15 @@
             android:title="@string/action_night"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/communicate">
         <menu>
             <item
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share"/>
+                android:title="@string/share"/>
             <item
+                android:id="@+id/about_me"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send"/>
+                android:title="@string/about"/>
         </menu>
     </item>
 

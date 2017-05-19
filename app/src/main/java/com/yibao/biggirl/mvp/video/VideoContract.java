@@ -1,8 +1,9 @@
-package com.yibao.biggirl.video;
+package com.yibao.biggirl.mvp.video;
 
 
 import com.yibao.biggirl.base.BasePresenter;
 import com.yibao.biggirl.base.BaseView;
+import com.yibao.biggirl.base.LoadingPager;
 import com.yibao.biggirl.model.video.VideoResultsBean;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface VideoContract {
             extends BaseView<Presenter>
     {
 
-        void loadData(List<VideoResultsBean> list);
+        LoadingPager.LoadedResult loadData(List<VideoResultsBean> list);
 
         void refresh(List<VideoResultsBean> list);
 

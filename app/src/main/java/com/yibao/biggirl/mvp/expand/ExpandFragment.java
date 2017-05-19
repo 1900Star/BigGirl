@@ -1,4 +1,4 @@
-package com.yibao.biggirl.android;
+package com.yibao.biggirl.mvp.expand;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
+import com.yibao.biggirl.mvp.app.AppAdapter;
+import com.yibao.biggirl.mvp.app.AppContract;
+import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -32,18 +35,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Des：${TODO}
  * Time:2017/4/23 06:33
  */
-public class AndroidFragment
+public class ExpandFragment
         extends Fragment
-        implements AndroidContract.View, SwipeRefreshLayout.OnRefreshListener
+        implements AppContract.View, SwipeRefreshLayout.OnRefreshListener
 {
-    AndroidContract.Presenter mPresenter;
+    AppContract.Presenter mPresenter;
     @BindView(R.id.android_frag_rv)
     RecyclerView       mRecyclerView;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     private List<AndroidAndGirl> mLists = new ArrayList<>();
-    private AndroidAdapter mAdapter;
+    private AppAdapter mAdapter;
 
     private int page = 1;
     private int size = 20;
@@ -53,8 +56,8 @@ public class AndroidFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new AndroidPresenter(this);
-        mPresenter.start();
+        new AppPresenter(this);
+        mPresenter.start(Constants.FRAGMENT_EXPAND);
 
     }
 
@@ -84,7 +87,7 @@ public class AndroidFragment
     private void initData(List<AndroidAndGirl> list) {
 
 
-        mAdapter = new AndroidAdapter(getContext(), list);
+        mAdapter = new AppAdapter(getContext(), list);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
@@ -102,10 +105,10 @@ public class AndroidFragment
                     if (isRefresh) {
                         mAdapter.notifyItemRemoved(mAdapter.getItemCount());
                     } else {
-                        LogUtil.d("======  加载更多 来了 ==== "+lastItem);
+                        LogUtil.d("======  加载更多 来了 ==== " + lastItem);
                         mAdapter.changeMoreStatus(Constants.LOADING_DATA);
                         LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
-//                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
+                        //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
 
                     }
 
@@ -138,7 +141,10 @@ public class AndroidFragment
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size, 1, Constants.REFRESH_DATA);
+                      mPresenter.loadData(size,
+                                          1,
+                                          Constants.FRAGMENT_EXPAND,
+                                          Constants.REFRESH_DATA);
 
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
@@ -154,13 +160,13 @@ public class AndroidFragment
 
     @Override
     public void loadMore(List<AndroidAndGirl> list) {
-//        if (mLists.size() % 20 == 0) {
-//
-//            page++;
-//            mPresenter.loadData(size, page, Constants.LOAD_DATA);
-//        }
+        //        if (mLists.size() % 20 == 0) {
+        //
+        //            page++;
+        //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
+        //        }
         mAdapter.AddFooter(list);
-        LogUtil.d("========  Add Footer    ==============" +mLists.size() + " ===" + page);
+        LogUtil.d("========  Add Footer    ==============" + mLists.size() + " ===" + page);
 
     }
 
@@ -176,13 +182,13 @@ public class AndroidFragment
     }
 
     @Override
-    public void setPrenter(AndroidContract.Presenter prenter) {
+    public void setPrenter(AppContract.Presenter prenter) {
         this.mPresenter = prenter;
     }
 
-    public AndroidFragment newInstance() {
+    public ExpandFragment newInstance() {
 
-        return new AndroidFragment();
+        return new ExpandFragment();
     }
 
     @Override

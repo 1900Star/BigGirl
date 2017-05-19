@@ -2,39 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:background="@color/itemBg"
-                android:gravity="center">
+                android:gravity="center"
+>
 
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="2dp" android:elevation="5dp"
-        app:cardBackgroundColor="#fff" app:cardCornerRadius="8dp">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:cardElevation="3dp"
+        android:layout_marginTop="6dp"
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+        android:layout_centerVertical="true" app:cardBackgroundColor="#fff"
+        app:cardCornerRadius="4dp">
         <RelativeLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
         >
-
             <ImageView
                 android:id="@+id/iv_icon"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
+                android:layout_width="120dp"
+                android:layout_height="90dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="6dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
-                android:scaleType="fitCenter"/>
-
+                android:scaleType="centerCrop"/>
 
             <LinearLayout
                 android:id="@+id/ll"
@@ -50,7 +48,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:maxLines="2"
-                    android:text="1900"
+
                     android:textColor="@color/textName"
                 />
                 <TextView
@@ -60,7 +58,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="2dp"
                     android:maxLines="2"
-                    android:text="holle world wellcome shenzhen"
+
                     android:textColor="@color/textDes"
                 />
 
@@ -69,13 +67,11 @@
                 android:id="@+id/tv_android_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/ll"
-                android:layout_marginRight="3dp"
+                android:layout_alignBottom="@+id/iv_icon"
 
-                android:text="2017-04-10"
-                android:textColor="@color/textTime"
-            />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/textTime"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

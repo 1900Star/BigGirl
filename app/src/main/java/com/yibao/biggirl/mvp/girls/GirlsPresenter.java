@@ -1,9 +1,10 @@
-package com.yibao.biggirl.home;
+package com.yibao.biggirl.mvp.girls;
 
-import com.yibao.biggirl.model.girls.GirlsBean;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
 import com.yibao.biggirl.util.Constants;
+
+import java.util.List;
 
 /**
  * Author：Sid
@@ -29,7 +30,7 @@ class GirlsPresenter
     public void unsubscribe() {}
 
     @Override
-    public void start() {
+    public void start(String type) {
         loadData(20, 1, Constants.LOAD_DATA);
 
 
@@ -37,18 +38,18 @@ class GirlsPresenter
 
     @Override
     public void loadData(int size, int page, int type) {
-//        LogUtil.d("====== Type =====" + type);
+        //        LogUtil.d("====== Type =====" + type);
 
         mRemoteGirlsData.getGirls(size, page, new GrilsDataSource.LoadGDataCallback() {
             @Override
-            public void onLoadDatas(GirlsBean girlBean) {
+            public void onLoadDatas(List<String> girlBean) {
 
                 if (type == Constants.REFRESH_DATA) {
-                    mView.refresh(girlBean.getResults());
+                    mView.refresh(girlBean);
                 } else if (type == Constants.LOAD_DATA) {
-                    mView.loadData(girlBean.getResults());
+                    mView.loadData(girlBean);
                 } else if (type == Constants.PULLUP_LOAD_MORE_DATA) {
-                    mView.loadMore(girlBean.getResults());
+                    mView.loadMore(girlBean);
                 }
                 mView.showNormal();
             }

@@ -2,6 +2,9 @@ package com.yibao.biggirl.model.girls;
 
 import com.yibao.biggirl.network.RetrofitHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -18,7 +21,7 @@ public class RemoteGirlsData
 
     @Override
     public void getGirls(int size, int page, LoadGDataCallback callback) {
-
+        List<String> urlList = new ArrayList<>();
         RetrofitHelper.getGankApi()
                       .getGril("福利", size, page)
                       .subscribeOn(Schedulers.io())
@@ -29,7 +32,13 @@ public class RemoteGirlsData
 
                           @Override
                           public void onNext(GirlsBean girlsBean) {
-                              callback.onLoadDatas(girlsBean);
+                              for (int i = 0; i < girlsBean.getResults()
+                                                           .size(); i++) {
+                                  urlList.add(girlsBean.getResults()
+                                                       .get(i)
+                                                       .getUrl());
+                              }
+                              callback.onLoadDatas(urlList);
                           }
 
                           @Override

@@ -34,18 +34,18 @@ public abstract class BaseActivity
 
     //添加fragment
     protected void addFragment(BaseFragment fragment) {
-        if (fragment != null) {
-            getFragmentManager().beginTransaction()
-                                .replace(getFragmentContentId(),
-                                         fragment,
-                                         fragment.getClass()
-                                                 .getSimpleName())
-                                .addToBackStack(fragment.getClass()
-                                                        .getSimpleName())
-                                .commitAllowingStateLoss();
-
-
-        }
+//        if (fragment != null) {
+//            getFragmentManager().beginTransaction()
+//                                .replace(getFragmentContentId(),
+//                                         fragment,
+//                                         fragment.getClass()
+//                                                 .getSimpleName())
+//                                .addToBackStack(fragment.getClass()
+//                                                        .getSimpleName())
+//                                .commitAllowingStateLoss();
+//
+//
+//        }
     }
 
     protected void removeFragment() {

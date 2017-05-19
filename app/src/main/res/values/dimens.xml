@@ -6,6 +6,8 @@
     <dimen name="nav_header_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     //字体
-
+    <dimen name="about_title">15sp</dimen>
+    <dimen name="about_sign">14sp</dimen>
+    <dimen name="about_content">13sp</dimen>
 
 </resources>

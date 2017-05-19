@@ -1,13 +1,16 @@
 package com.yibao.biggirl.base;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import com.yibao.biggirl.MyApplication;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -20,12 +23,15 @@ public abstract class BaseFragment
 {
 
     public LoadingPager mLoadingPager;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
+
         if (mLoadingPager == null) {
+            startLoad();
             mLoadingPager = new LoadingPager(MyApplication.getIntstance()) {
                 @Override
                 public LoadedResult initData() {
@@ -37,14 +43,7 @@ public abstract class BaseFragment
                     return BaseFragment.this.initSuccessView();
                 }
             };
-        } else {
-            //低版本会出现一个问题,需要加上如下代码-->在2.3的系统,不过现在还有安卓4.4以下的手机吗？
-            ViewParent parent = mLoadingPager.getParent();
-            if (parent != null && parent instanceof ViewGroup) {
-                ((ViewGroup) parent).removeView(mLoadingPager);
-            }
         }
-
 
         return mLoadingPager;
     }
@@ -54,9 +53,36 @@ public abstract class BaseFragment
 
     protected abstract View initSuccessView();
 
+    protected abstract void startLoad();
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    /**
+     * 根据请求回来的数据,返回具体的LoadedResult类型值
+     *
+     * @param resResult
+     * @return
+     */
+    public LoadingPager.LoadedResult checkResResult(Object resResult) {
+        if (resResult == null) {
+            return LoadingPager.LoadedResult.EMPTY;
+        }
+        //list
+        if (resResult instanceof List) {
+            if (((List) resResult).size() == 0) {
+                return LoadingPager.LoadedResult.EMPTY;
+            }
+        }
+        //map
+        if (resResult instanceof Map) {
+            if (((Map) resResult).size() == 0) {
+                return LoadingPager.LoadedResult.EMPTY;
+            }
+        }
+        return LoadingPager.LoadedResult.SUCCESS;
     }
 
 }

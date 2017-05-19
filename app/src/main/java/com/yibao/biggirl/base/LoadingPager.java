@@ -1,6 +1,7 @@
 package com.yibao.biggirl.base;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -42,7 +43,7 @@ public abstract class LoadingPager extends FrameLayout{
         this.addView(mErrorView);
         mErrorView.findViewById(R.id.error_btn_retry).setOnClickListener(v -> {
             //希望重新触发加载数据
-//                triggerLoadData();
+                triggerLoadData();
         });
 
         //        空视图
@@ -103,10 +104,10 @@ public abstract class LoadingPager extends FrameLayout{
             //重置当前的状态,然后刷新ui
             mCurState = STATE_LOADING;
             refreshUIByState();
+            LoadedResult tempState = initData();
+            mCurState=tempState.getState();
+            new Handler().post(this::refreshUIByState);
 
-            //异步加载
-//            mLoadDataTask = new LoadDataTask();
-//            new Thread(mLoadDataTask).start();
         }
     }
     /**

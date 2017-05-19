@@ -10,4 +10,11 @@
     <color name="textTime">#C8C8CE</color>
     <color name="textDes">#4d4d4d</color>
     <color name="itemBg">#F0F0F0</color>
+    <color name="colorGreen">#5ab43f</color>
+    <color name="colorYellow">#bab03b</color>
+    //about
+    <color name="about_title">#ff000000</color>
+    <color name="about_sign">#ff666666</color>
+    <color name="about_content">#ff414141</color>
+    <color name="about">#f7f1f1</color>
 </resources>

@@ -61,7 +61,7 @@ public class WebViewActivity
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_menu_send);
+        mToolbar.setNavigationIcon(R.mipmap.back);
 
         WebViewClient client = new WebViewClient() {
             @Override

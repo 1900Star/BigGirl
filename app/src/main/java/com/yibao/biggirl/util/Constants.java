@@ -17,6 +17,13 @@ public class Constants {
     public static       int    PULLUP_LOAD_MORE_DATA = 2;
     public static       int    NO_MORE_DATA          = 3;
     public static       int    LOADING_DATA          = 4;
+    public static final String FRAGMENT_GIRLS        = "妹子";
+    public static final String FRAGMENT_ANDROID      = "安卓";
+    public static final String FRAGMENT_VIDEO        = "视频";
+    public static final String FRAGMENT_IOS          = "iOS";
+    public static final String FRAGMENT_FRONT        = "前端";
+    public static final String FRAGMENT_EXPAND       = "拓展资源";
+    public static final String FRAGMENT_APP          = "App";
 
 
 }

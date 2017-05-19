@@ -1,43 +1,36 @@
-package com.yibao.biggirl.home;
+package com.yibao.biggirl.mvp.video;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.model.girls.ResultsBean;
+import com.yibao.biggirl.base.OnRvItemWebClickListener;
+import com.yibao.biggirl.model.video.VideoResultsBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
- * 作者：Stran on 2017/3/29 06:11
- * 描述：${TODO}
- * 邮箱：strangermy@outlook.com
+ * Author：Sid
+ * Des：${适配Android列表数据}
+ * Time:2017/4/23 07:08
  */
-public class GirlsAdapter
+public class VideoAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-
-
 {
 
 
-    private Context mContext;
-
-    private ArrayList<ResultsBean> mList;
-
+    private Context                mContext;
+    private List<VideoResultsBean> mList;
     private static final int TYPE_ITEM        = 0;
     private static final int TYPE_FOOTER      = 1;
     //上拉加载更多
@@ -51,41 +44,27 @@ public class GirlsAdapter
     private int LOAD_MORE_STATUS = 0;
 
 
-    private final LayoutInflater mInflater;
-
-    void clear() {
-        mList.clear();
-    }
-
-    //回调接口
-
-    public interface OnRvItemClickListener {
-        void showPagerFragment(int position, ArrayList<ResultsBean> list);
-
-    }
-
-
-    GirlsAdapter(Context context, ArrayList<ResultsBean> list) {
+    public VideoAdapter(Context context, List<VideoResultsBean> list) {
         mContext = context;
         mList = list;
-        mInflater = LayoutInflater.from(context);
-
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view;
         if (viewType == TYPE_ITEM) {
-            view = mInflater.inflate(R.layout.item_girls, parent, false);
+
+            View view = LayoutInflater.from(parent.getContext())
+                                      .inflate(R.layout.item_video_frag, parent, false);
 
             return new ViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
-            view = mInflater.inflate(R.layout.load_more_footview, parent, false);
-            return new LoadMoreViewHolder(view);
+            View view = LayoutInflater.from(parent.getContext())
+                                      .inflate(R.layout.load_more_footview, parent, false);
+            return new LoadMoreHolder(view);
         }
-        return null;
 
+        return null;
     }
 
     @Override
@@ -93,21 +72,28 @@ public class GirlsAdapter
         if (holder instanceof ViewHolder) {
             ViewHolder viewHolder = (ViewHolder) holder;
 
-            String url = mList.get(position)
-                              .getUrl();
-            Glide.with(mContext)
-                 .load(url)
-                 .asBitmap()
-                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                 .into(viewHolder.mGrilImageView);
+            VideoResultsBean item = mList.get(position);
 
+
+            String who = item.getWho();
+            String name = who == null
+                          ? "Smartisan"
+                          : who;
+
+            viewHolder.mTvAndroidName.setText(name);
+
+            String time = item.getCreatedAt();
+            viewHolder.mTvAndroidTime.setText(time.substring(0, time.lastIndexOf("T")));
+            viewHolder.mTvAndroidDes.setText(item.getDesc());
             holder.itemView.setOnClickListener(view -> {
-                if (mContext instanceof OnRvItemClickListener) {
-                    ((OnRvItemClickListener) mContext).showPagerFragment(position, mList);
+                if (mContext instanceof OnRvItemWebClickListener) {
+
+                    ((OnRvItemWebClickListener) mContext).showDesDetall(item.getUrl());
                 }
             });
-        } else if (holder instanceof LoadMoreViewHolder) {
-            LoadMoreViewHolder viewHolder = (LoadMoreViewHolder) holder;
+        } else if (holder instanceof LoadMoreHolder) {
+            LoadMoreHolder viewHolder = (LoadMoreHolder) holder;
+            viewHolder.mLoadLayout.setVisibility(View.VISIBLE);
             switch (LOAD_MORE_STATUS) {
 
                 case PULLUP_LOAD_MORE:
@@ -133,41 +119,38 @@ public class GirlsAdapter
 
     @Override
     public int getItemCount() {
+
         return mList == null
                ? 0
                : mList.size();
     }
 
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position + 1 == getItemCount()) {
-            return TYPE_FOOTER;
-        }
-        return TYPE_ITEM;
+    void clear() {
+        mList.clear();
     }
 
 
-    //**************************************************************************************
-
-    static class ViewHolder
-            extends RecyclerView.ViewHolder
-
-    {
-        @BindView(R.id.gril_image_view)
-        ImageView mGrilImageView;
-
-        ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
+    void AddHeader(List<VideoResultsBean> list) {
+        mList.addAll(list);
+        notifyDataSetChanged();
 
 
     }
 
+    void AddFooter(List<VideoResultsBean> list) {
+        mList.addAll(list);
+        notifyDataSetChanged();
+        //        notifyItemRemoved(getItemCount());
 
-    //加载更多的Holder
-    static class LoadMoreViewHolder
+    }
+
+    void changeMoreStatus(int status) {
+        LOAD_MORE_STATUS = status;
+        notifyDataSetChanged();
+
+    }
+
+    static class LoadMoreHolder
             extends RecyclerView.ViewHolder
     {
         @BindView(R.id.pbLoad)
@@ -177,31 +160,28 @@ public class GirlsAdapter
         @BindView(R.id.loadLayout)
         LinearLayout mLoadLayout;
 
-        LoadMoreViewHolder(View view) {
+        LoadMoreHolder(View view) {
             super(view);
-
             ButterKnife.bind(this, view);
-
         }
     }
 
-    void AddHeader(List<ResultsBean> list) {
-        mList.addAll(list);
-        notifyDataSetChanged();
 
+    static class ViewHolder
+            extends RecyclerView.ViewHolder
+    {
+        @BindView(R.id.tv_android_name)
+        TextView       mTvAndroidName;
+        @BindView(R.id.tv_android_des)
+        TextView       mTvAndroidDes;
+        @BindView(R.id.tv_android_time)
+        TextView       mTvAndroidTime;
+        @BindView(R.id.rl_video)
+        RelativeLayout mRlVideo;
 
-    }
-
-    void AddFooter(List<ResultsBean> items) {
-        mList.addAll(items);
-        notifyDataSetChanged();
-        notifyItemRemoved(getItemCount());
-
-    }
-
-    void changeMoreStatus(int status) {
-        LOAD_MORE_STATUS = status;
-        notifyDataSetChanged();
-
+        ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
     }
 }

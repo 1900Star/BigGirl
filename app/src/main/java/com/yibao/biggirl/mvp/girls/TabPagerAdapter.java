@@ -1,4 +1,4 @@
-package com.yibao.biggirl.home;
+package com.yibao.biggirl.mvp.girls;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,24 +16,24 @@ import java.util.List;
 public class TabPagerAdapter
         extends FragmentPagerAdapter
 {
-    private       List<Fragment>      mFragmentList;
-    private       List<String>        mTitleList;
+    private List<Fragment> mFragmentList;
+    private List<String>   mTitleList;
 
     public TabPagerAdapter(FragmentManager fm,List<Fragment> fragmentList,
                            List<String> titleList)
     {
         super(fm);
-        mFragmentList = fragmentList;
+                mFragmentList = fragmentList;
         mTitleList = titleList;
 
     }
 
     @Override
     public Fragment getItem(int position) {
-//        Fragment fragment =FragmentFactory.createFragment(position);
 
 
-        return mFragmentList.get(position);
+//        return FragmentFactory.createFragment(position);
+                return mFragmentList.get(position);
     }
 
     @Override

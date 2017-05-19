@@ -1,4 +1,4 @@
-package com.yibao.biggirl.girl;
+package com.yibao.biggirl.mvp.girl;
 
 
 import android.os.Bundle;
@@ -16,14 +16,14 @@ import android.view.ViewGroup;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
-import com.yibao.biggirl.model.girls.ResultsBean;
 import com.yibao.biggirl.model.video.RemoteVideoData;
+import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
 import com.yibao.biggirl.view.ProgressView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,18 +62,18 @@ public class GirlFragment
     private GirlAdapter mPagerGirlAdapter;
     private View   mView = null;
     private String mUrl  = null;
-    private ArrayList<ResultsBean> mList;
-    private CompositeDisposable    disposables;
-    private MyApplication          mApplication;
+    private List<String>        mList;
+    private CompositeDisposable disposables;
+    private MyApplication       mApplication;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mList = bundle.getParcelableArrayList("girlList");
+        //        mList = bundle.getParcelableArrayList("girlList");
+        mList = bundle.getStringArrayList("girlList");
         mPosition = bundle.getInt("position");
-        mUrl = mList.get(mPosition)
-                    .getUrl();
+        mUrl = mList.get(mPosition);
         mApplication = (MyApplication) getActivity().getApplication();
         disposables = new CompositeDisposable();
     }
@@ -98,7 +98,7 @@ public class GirlFragment
 
 
     private void initData() {
-        //设置progress进度
+        //Rxbus接收下载进度 ，设置progress进度
         disposables.add(mApplication.bus()
                                     .toObserverable(DownGrilProgressData.class)
                                     .subscribe(data -> setProgress(data.getProgress())));
@@ -111,14 +111,6 @@ public class GirlFragment
 
     }
 
-  /*  private void getDefultGirl() {
-        isShowGankGirl = true;
-         mList=ImageUitl.getDefultUrl(ImageUitl.getDefultUrl(new ArrayList<>()));
-        mPagerGirlAdapter = new GirlAdapter(getActivity(), null);
-
-        mVp.setAdapter(mPagerGirlAdapter);
-        mPagerGirlAdapter.notifyDataSetChanged();
-    }*/
 
     //图片保存
     @OnClick(R.id.iv_down)
@@ -129,7 +121,8 @@ public class GirlFragment
         boolean connected = NetworkUtil.isNetworkConnected(getActivity());
 
         if (connected) {
-            SnakbarUtil.savePic(mPbDown, mUrl);
+            ImageUitl.downloadPic(mUrl, true);
+            //            SnakbarUtil.savePic(mPbDown, mUrl);
 
         } else {
             SnakbarUtil.netErrors(mPbDown);
@@ -152,10 +145,7 @@ public class GirlFragment
 
     @Override
     public void onPageSelected(int position) {
-
-        mUrl = mList.get(position)
-                    .getUrl();
-
+        mUrl = mList.get(position);
     }
 
     @Override

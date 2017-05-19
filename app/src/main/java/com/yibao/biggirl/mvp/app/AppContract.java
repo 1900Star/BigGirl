@@ -1,8 +1,8 @@
-package com.yibao.biggirl.home;
+package com.yibao.biggirl.mvp.app;
 
 import com.yibao.biggirl.base.BasePresenter;
 import com.yibao.biggirl.base.BaseView;
-import com.yibao.biggirl.model.girls.ResultsBean;
+import com.yibao.biggirl.model.android.AndroidAndGirl;
 
 import java.util.List;
 
@@ -11,27 +11,22 @@ import java.util.List;
  * Des：${TODO}
  * Time:2017/4/22 10:04
  */
-public interface GirlsContract {
+public interface AppContract {
     interface View
             extends BaseView<Presenter>
     {
-        void loadData(List<ResultsBean> list);
-
-        void refresh(List<ResultsBean> list);
-
-        void loadMore(List<ResultsBean> list);
+        void loadData(List<AndroidAndGirl> list);
+        void refresh(List<AndroidAndGirl> list);
+        void loadMore(List<AndroidAndGirl> list);
 
         void showError();
-
         void showNormal();
-
 
     }
 
     interface Presenter
             extends BasePresenter
     {
-        void loadData(int size, int page, int loadType);
-
+        void loadData(int size, int page,String type,int status);
     }
 }

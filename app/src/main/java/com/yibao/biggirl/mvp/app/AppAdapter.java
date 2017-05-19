@@ -1,4 +1,4 @@
-package com.yibao.biggirl.android;
+package com.yibao.biggirl.mvp.app;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  * Des：${适配Android列表数据}
  * Time:2017/4/23 07:08
  */
-public class AndroidAdapter
+public class AppAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
 
@@ -49,7 +49,7 @@ public class AndroidAdapter
     private int LOAD_MORE_STATUS = 0;
 
 
-    public AndroidAdapter(Context context, List<AndroidAndGirl> list) {
+    public AppAdapter(Context context, List<AndroidAndGirl> list) {
         mContext = context;
         mList = list;
     }
@@ -94,7 +94,7 @@ public class AndroidAdapter
 
             String who = androidData.getWho();
             String name = who == null
-                          ? "Smartisan"
+                          ? "Samaritan"
                           : who;
 
             viewHolder.mTvAndroidName.setText(name);
@@ -136,13 +136,12 @@ public class AndroidAdapter
 
     @Override
     public int getItemCount() {
-
         return mList == null
                ? 0
                : mList.size();
     }
 
-    void clear() {
+    public void clear() {
         mList.clear();
     }
 
@@ -168,14 +167,14 @@ public class AndroidAdapter
     }
 
 
-    void AddHeader(List<AndroidAndGirl> list) {
+    public void AddHeader(List<AndroidAndGirl> list) {
         mList.addAll(list);
         notifyDataSetChanged();
 
 
     }
 
-    void AddFooter(List<AndroidAndGirl> list) {
+    public void AddFooter(List<AndroidAndGirl> list) {
         mList.addAll(list);
         LogUtil.d("  == 加载后的长度 ==   " + mList.size());
         notifyDataSetChanged();
@@ -183,7 +182,7 @@ public class AndroidAdapter
 
     }
 
-    void changeMoreStatus(int status) {
+    public void changeMoreStatus(int status) {
         LOAD_MORE_STATUS = status;
         notifyDataSetChanged();
 
