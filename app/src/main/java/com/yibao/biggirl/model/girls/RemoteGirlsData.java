@@ -32,6 +32,7 @@ public class RemoteGirlsData
 
                           @Override
                           public void onNext(GirlsBean girlsBean) {
+
                               for (int i = 0; i < girlsBean.getResults()
                                                            .size(); i++) {
                                   urlList.add(girlsBean.getResults()

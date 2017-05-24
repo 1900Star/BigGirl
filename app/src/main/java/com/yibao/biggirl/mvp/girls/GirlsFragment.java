@@ -8,19 +8,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -40,30 +42,26 @@ public class GirlsFragment
         implements GirlsContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener
 {
 
-    @BindView(R.id.fragment_girl_recycler)
-    RecyclerView       mRecyclerView;
+
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
+    @BindView(R.id.ll_grils)
+    LinearLayout mLlGrils;
     private GirlsContract.Presenter mPresenter;
     private GirlsAdapter            mAdapter;
     private List<String>            mList;
     private int page = 1;
-    private int size = 20;
     private FloatingActionButton mFab;
     private boolean              isShowGankGirl;
-    public static final int IDLE = 0;
 
-    public static final int DRAGGING = 1;
-
-
-    public static final int SETTLING = 2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new GirlsPresenter(this);
         mPresenter.start(Constants.FRAGMENT_GIRLS);
+
 
     }
 
@@ -74,35 +72,28 @@ public class GirlsFragment
     {
 
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
-
-
         unbinder = ButterKnife.bind(this, view);
         initView();
-        initData();
+        //        initData();
         return view;
     }
+
 
     private void initView() {
         mList = new ArrayList<>();
         mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        mFab.setOnClickListener(this);
 
     }
 
 
-    private void initRecyclerView(List<String> mList) {
-
+    private void initRecyclerView(List<String> mList, int type) {
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.YELLOW);
         mAdapter = new GirlsAdapter(getActivity(), mList);
-        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2,
-                                                                            StaggeredGridLayoutManager.VERTICAL);
-        manager.setOrientation(StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mAdapter);
-
-
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mFab, mAdapter);
+        mLlGrils.addView(recyclerView);
     }
 
 
@@ -110,7 +101,7 @@ public class GirlsFragment
     public void loadData(List<String> list) {
         mList.clear();
         mList.addAll(list);
-        initRecyclerView(mList);
+        initRecyclerView(mList, 2);
         mSwipeRefresh.setRefreshing(false);
     }
 
@@ -139,7 +130,6 @@ public class GirlsFragment
 
     @Override
     public void loadMore(List<String> list) {
-        //        LogUtil.d("============ Loade More ===========  ");
         if (list.size() % 20 == 0) {
             page++;
             //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
@@ -163,50 +153,6 @@ public class GirlsFragment
 
     }
 
-    private void initData() {
-        mFab.setOnClickListener(this);
-        mSwipeRefresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.YELLOW);
-        mSwipeRefresh.setOnRefreshListener(this);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-
-            private int[] mBottom;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                int lastCount = mAdapter.getItemCount() - 1;
-                if (newState == IDLE && mBottom[0] == lastCount || mBottom[1] == lastCount) {
-                    boolean isRefresh = mSwipeRefresh.isRefreshing();
-                    if (isRefresh) {
-                        mAdapter.notifyItemRemoved(mAdapter.getItemCount());
-                    } else {
-                        mAdapter.changeMoreStatus(Constants.LOADING_DATA);
-                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
-
-                    }
-
-                } else if (newState == DRAGGING | newState == SETTLING) {
-                    mFab.setVisibility(View.INVISIBLE);
-
-                } else {
-                    mFab.setVisibility(View.VISIBLE);
-                }
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //                LogUtil.d("====  RecyclerView   ==" + recyclerView.getChildCount());
-                StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
-
-                mBottom = manager.findFirstCompletelyVisibleItemPositions(new int[2]);
-            }
-        });
-
-
-    }
 
     @Override
     public void onDestroyView() {
@@ -224,14 +170,16 @@ public class GirlsFragment
         return new GirlsFragment();
     }
 
-
+    //切换干货和默认妹子
     @Override
     public void onClick(View view) {
 
         if (isShowGankGirl) {
-            initRecyclerView(mList);
+            mLlGrils.removeAllViews();
+            initRecyclerView(mList, 2);
             mSwipeRefresh.setRefreshing(false);
             isShowGankGirl = false;
+
 
         } else {
             getDefultGirl();
@@ -241,9 +189,11 @@ public class GirlsFragment
     }
 
     private void getDefultGirl() {
-        List<String> defultUrl = ImageUitl.getDefultUrl(ImageUitl.getDefultUrl(new ArrayList<>()));
-        initRecyclerView(defultUrl);
+        mLlGrils.removeAllViews();
+        List<String> defultUrl = ImageUitl.getDefultUrl(new ArrayList<>());
+        Random       random    = new Random();
+
+        initRecyclerView(defultUrl, random.nextInt(4)+1);
         mSwipeRefresh.setRefreshing(false);
-        //        mAdapter.notifyDataSetChanged();
     }
 }

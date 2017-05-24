@@ -14,9 +14,6 @@ import android.view.ViewGroup;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
-import com.yibao.biggirl.mvp.app.AppAdapter;
-import com.yibao.biggirl.mvp.app.AppContract;
-import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -37,16 +34,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class AndroidFragment
         extends Fragment
-        implements AppContract.View, SwipeRefreshLayout.OnRefreshListener
+        implements AndroidContract.View, SwipeRefreshLayout.OnRefreshListener
 {
-    AppContract.Presenter mPresenter;
+    AndroidContract.Presenter mPresenter;
     @BindView(R.id.android_frag_rv)
     RecyclerView       mRecyclerView;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     private List<AndroidAndGirl> mLists = new ArrayList<>();
-    private AppAdapter mAdapter;
+    private AndroidAdapter mAdapter;
 
     private int page = 1;
     private int size = 20;
@@ -56,7 +53,7 @@ public class AndroidFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new AppPresenter(this);
+        new AndroidPresenter(this);
         mPresenter.start(Constants.FRAGMENT_ANDROID);
 
     }
@@ -87,7 +84,7 @@ public class AndroidFragment
     private void initData(List<AndroidAndGirl> list) {
 
 
-        mAdapter = new AppAdapter(getContext(), list);
+        mAdapter = new AndroidAdapter(getContext(), list);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
@@ -141,10 +138,7 @@ public class AndroidFragment
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size,
-                                          1,
-                                          Constants.FRAGMENT_ANDROID,
-                                          Constants.REFRESH_DATA);
+                      mPresenter.loadData(size, page, Constants.REFRESH_DATA);
 
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
@@ -182,7 +176,7 @@ public class AndroidFragment
     }
 
     @Override
-    public void setPrenter(AppContract.Presenter prenter) {
+    public void setPrenter(AndroidContract.Presenter prenter) {
         this.mPresenter = prenter;
     }
 

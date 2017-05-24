@@ -27,7 +27,7 @@ public class ImageUitl {
     /**
      * 保存图片
      */
-    public static void downloadPic(String url, boolean isShowPhotos)
+    public static boolean downloadPic(String url, boolean isShowPhotos)
     {
         String name = getNameFromUrl(url);
         File   path = new File(Constants.dir);
@@ -40,8 +40,10 @@ public class ImageUitl {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-
+                return false;
             }
+        } else {
+            return true;
         }
         Request request = new Request.Builder().url(url)
                                                .build();
@@ -86,6 +88,7 @@ public class ImageUitl {
 
                              } catch (IOException e) {
                                  e.printStackTrace();
+
                              } finally {
                                  try {
                                      fos.close();
@@ -104,27 +107,27 @@ public class ImageUitl {
         if (isShowPhotos) {
 
 
-//            try {
-//                MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
-//                                                                 .getContentResolver(),
-//                                                    file.getAbsolutePath(),
-//                                                    name,
-//                                                    null);
-//                LogUtil.d("============================== 保存成功");
-//            } catch (Exception e) {
-//
-//                e.printStackTrace();
-//            }
-//
-//
-//            MyApplication.getIntstance()
-//                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-//                                                   Uri.fromFile(file.getAbsoluteFile())));
-//        MyApplication.getIntstance()
-//                     .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-//                                               Uri.parse("file://" + file)));
-    }
-
+            //            try {
+            //                MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
+            //                                                                 .getContentResolver(),
+            //                                                    file.getAbsolutePath(),
+            //                                                    name,
+            //                                                    null);
+            //                LogUtil.d("============================== 保存成功");
+            //            } catch (Exception e) {
+            //
+            //                e.printStackTrace();
+            //            }
+            //
+            //
+            //            MyApplication.getIntstance()
+            //                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+            //                                                   Uri.fromFile(file.getAbsoluteFile())));
+            //        MyApplication.getIntstance()
+            //                     .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+            //                                               Uri.parse("file://" + file)));
+        }
+        return true;
 
     }
 
@@ -132,6 +135,14 @@ public class ImageUitl {
     //初始化数据
     public static List<String> getDefultUrl(List<String> list) {
         Collections.addAll(list, Api.picUrlArr);
+        return list;
+    }
+
+    //初始化数据
+    public static List<String> getUnsplashUrl(List<String> list) {
+        for (int i = 0; i < 1000; i++) {
+            list.add(Constants.UNSPLASH_API);
+        }
         return list;
     }
 

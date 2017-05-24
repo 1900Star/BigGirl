@@ -48,13 +48,14 @@ public class AppFragment
     private int page = 1;
     private int size = 20;
     private FloatingActionButton mFab;
+    private static String               mType;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         new AppPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_APP);
+        mPresenter.start(mType);
 
     }
 
@@ -102,10 +103,10 @@ public class AppFragment
                     if (isRefresh) {
                         mAdapter.notifyItemRemoved(mAdapter.getItemCount());
                     } else {
-                        LogUtil.d("======  加载更多 来了 ==== "+lastItem);
+                        LogUtil.d("======  加载更多 来了 ==== " + lastItem);
                         mAdapter.changeMoreStatus(Constants.LOADING_DATA);
                         LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
-//                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
+                        //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
 
                     }
 
@@ -138,7 +139,7 @@ public class AppFragment
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size, 1,Constants.FRAGMENT_APP,Constants.REFRESH_DATA);
+                      mPresenter.loadData(size, 1, Constants.FRAGMENT_APP, Constants.REFRESH_DATA);
 
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
@@ -154,13 +155,13 @@ public class AppFragment
 
     @Override
     public void loadMore(List<AndroidAndGirl> list) {
-//        if (mLists.size() % 20 == 0) {
-//
-//            page++;
-//            mPresenter.loadData(size, page, Constants.LOAD_DATA);
-//        }
+        //        if (mLists.size() % 20 == 0) {
+        //
+        //            page++;
+        //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
+        //        }
         mAdapter.AddFooter(list);
-        LogUtil.d("========  Add Footer    ==============" +mLists.size() + " ===" + page);
+        LogUtil.d("========  Add Footer    ==============" + mLists.size() + " ===" + page);
 
     }
 
@@ -180,7 +181,8 @@ public class AppFragment
         this.mPresenter = prenter;
     }
 
-    public AppFragment newInstance() {
+    public AppFragment newInstance(String type) {
+        mType = type;
 
         return new AppFragment();
     }

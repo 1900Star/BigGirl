@@ -8,7 +8,7 @@ import io.reactivex.disposables.Disposable;
  * Des：${TODO}
  * Time:2017/4/29 09:11
  */
-public class MyObserver<T> implements Observer<T>{
+public class ObserverUtil<T> implements Observer<T>{
 
     @Override
     public void onSubscribe(Disposable d) {

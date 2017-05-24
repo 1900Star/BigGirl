@@ -81,6 +81,7 @@ public class AndroidAdapter
 
 
             ResultsBean girlData = item.mGrilData.get(position);
+
             ResultsBeanX androidData = item.getAndroidData()
                                            .get(position);
 

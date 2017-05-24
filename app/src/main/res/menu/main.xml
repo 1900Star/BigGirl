@@ -3,32 +3,27 @@
 
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/action_share_mz"
+        android:icon="@drawable/ic_menu_share"
+        android:orderInCategory="100"
+        android:title="@string/action_share"
+        app:showAsAction="always"/>
     <item android:id="@+id/action_gallery"
-
           android:orderInCategory="100"
           android:icon="@mipmap/google"
           android:title="@string/action_settings"
-          app:showAsAction="always"/>
+          app:showAsAction="never"/>
     <item
         android:id="@+id/action_setwallpaer"
         android:orderInCategory="100"
         android:title="@string/action_setwallpaer"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_localgirl"
-        android:orderInCategory="100"
-        android:title="@string/action_localgirl"
-        app:showAsAction="never"/>
-    <item
         android:id="@+id/action_gank"
         android:orderInCategory="100"
         android:title="@string/action_gankgirl"
         app:showAsAction="never"/>
-    <!--<item
-        android:title="@string/action_day"
-        app:showAsAction="never" />
-    <item
-        android:title="@string/action_night"
-        app:showAsAction="never" />-->
+
 
 </menu>

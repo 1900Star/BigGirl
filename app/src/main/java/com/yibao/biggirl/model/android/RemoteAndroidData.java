@@ -27,8 +27,7 @@ public class RemoteAndroidData
         Observable.zip(RetrofitHelper.getGankApi()
                                      .getAndroid("Android", size, page),
                        RetrofitHelper.getGankApi()
-                                     .getGril("福利", size, page),
-                       this::zipHelper)
+                                     .getGril("福利", size, page), RemoteAndroidData.this::zipHelper)
                   .subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(new AndroidObserver(callback));

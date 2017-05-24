@@ -45,9 +45,6 @@ public class VideoFragmnet
     private VideoContract.Presenter mPresenter;
     private List<VideoResultsBean> mLists = new ArrayList<>();
     private VideoAdapter         mAdapter;
-    private FloatingActionButton mFab;
-    private int page = 1;
-    private int size = 20;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,8 +68,8 @@ public class VideoFragmnet
     }
 
     private void initView() {
-        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        mFab.setVisibility(View.VISIBLE);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
@@ -160,7 +157,6 @@ public class VideoFragmnet
                       mPresenter.loadData(500, 1, Constants.REFRESH_DATA);
 
                       mSwipeRefresh.setRefreshing(false);
-                      page = 1;
                   });
     }
 

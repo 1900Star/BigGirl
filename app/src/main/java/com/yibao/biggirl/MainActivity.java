@@ -1,12 +1,10 @@
 package com.yibao.biggirl;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -22,6 +20,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.base.OnRvItemWebClickListener;
+import com.yibao.biggirl.mvp.android.AndroidFragment;
 import com.yibao.biggirl.mvp.app.AppFragment;
 import com.yibao.biggirl.mvp.expand.ExpandFragment;
 import com.yibao.biggirl.mvp.frontend.FrontEndFragment;
@@ -31,6 +30,9 @@ import com.yibao.biggirl.mvp.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
 import com.yibao.biggirl.mvp.ios.IOSFragment;
 import com.yibao.biggirl.mvp.video.VideoFragmnet;
+import com.yibao.biggirl.network.Api;
+import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.DialogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.webview.WebViewActivity;
 
@@ -67,14 +69,16 @@ public class MainActivity
     Toolbar   mToolbar;
     private long   exitTime   = 0;
     private String arrTitle[] = {"Girl",
-                                 //                                 "Android",
+                                 "Android",
                                  "Video",
                                  "App",
                                  "iOS",
                                  "前端",
                                  "拓展资源"};
-    private Unbinder  mBind;
-    private ImageView mIvHeader;
+    private Unbinder        mBind;
+    private ImageView       mIvHeader;
+    private List<Fragment>  mFragments;
+    private TabPagerAdapter mPagerAdapter;
 
 
     @Override
@@ -96,12 +100,26 @@ public class MainActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.about_me) {
-            new DialogFragment();
-            new AlertDialog.Builder(this).setView(getLayoutInflater().inflate(R.layout.aboutme,
-                                                                              null))
-                                         .show();
+        switch (id) {
+            //关于作者
+            case R.id.about_me:
+                DialogUtil.creatDialog(this, R.layout.aboutme);
+                break;
+            case R.id.my_feir:
+                //
+                showDesDetall(Api.myFeir);
+                //                RetrofitHelper.getUnsplashApi();
 
+                break;
+            case R.id.share_me:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, Constants.SHARE_ME);
+                shareIntent.setType("text/plain");
+                startActivity(shareIntent);
+                break;
+            default:
+                break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
@@ -114,20 +132,20 @@ public class MainActivity
 
 
         mTablayout.setupWithViewPager(mViewPager);
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new GirlsFragment().newInstance());
-        //        fragments.add(new AndroidFragment().newInstance());
-        fragments.add(new VideoFragmnet().newInstance());
-        fragments.add(new AppFragment().newInstance());
-        fragments.add(new IOSFragment().newInstance());
-        fragments.add(new FrontEndFragment().newInstance());
-        fragments.add(new ExpandFragment().newInstance());
+        mFragments = new ArrayList<>();
+        mFragments.add(new GirlsFragment().newInstance());
+        mFragments.add(new AndroidFragment().newInstance());
+        mFragments.add(new VideoFragmnet().newInstance());
+        mFragments.add(new AppFragment().newInstance(Constants.FRAGMENT_APP));
+        mFragments.add(new IOSFragment().newInstance());
+        mFragments.add(new FrontEndFragment().newInstance());
+        mFragments.add(new ExpandFragment().newInstance());
+        mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(),
+                                            mFragments,
+                                            Arrays.asList(arrTitle));
         mViewPager.setOffscreenPageLimit(7);
+        mViewPager.setAdapter(mPagerAdapter);
 
-        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(),
-                                                           fragments,
-                                                           Arrays.asList(arrTitle));
-        mViewPager.setAdapter(pagerAdapter);
     }
 
     //加载动态布局

@@ -8,7 +8,11 @@ import com.yibao.biggirl.MyApplication;
  * 邮箱：strangermy@outlook.com
  */
 public class Constants {
-    public static String GANK_API = "http://gank.io/";
+    public static String GANK_API     = "http://gank.io/";
+    //    public static String UNSPLASH_API = "https://unsplash.it/3896/1920/?random";
+    public static String UNSPLASH_API = "https://unsplash.it/1920/1080/?random";
+    public static String UNSPLASH     = "https://api.unsplash.com/photos/?client_id=6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
+    public static String UNSPLASH_ID  = "6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
 
 
     public static final String dir                   = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
@@ -24,6 +28,7 @@ public class Constants {
     public static final String FRAGMENT_FRONT        = "前端";
     public static final String FRAGMENT_EXPAND       = "拓展资源";
     public static final String FRAGMENT_APP          = "App";
+    public static final String SHARE_ME              = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
 
 
 }

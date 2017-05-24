@@ -8,7 +8,6 @@ import android.widget.ImageView;
 
 import com.yibao.biggirl.MainActivity;
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SystemUiVisibilityUtil;
 
 import butterknife.BindView;

@@ -20,6 +20,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfigs {
+            config {
+                storeFile file(KEY_PATH)
+                storePassword KEY_PASS
+                keyAlias ALIAS_NAME
+                keyPassword ALIAS_PASS
+            }
+        }
     }
 
 
@@ -27,16 +35,27 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
             //删除无用的资源
-//            shrinkResources true
+            shrinkResources false
+            zipAlignEnabled true
         }
 
         debug {
+            zipAlignEnabled true
             minifyEnabled false
             debuggable true
         }
     }
+
     productFlavors {
+        qihoo {
+            applicationId "com.yibao.biggirl.android.qihoo"
+        }
+        baidu {
+            applicationId "com.yibao.biggirl.android.baidu"
+
+        }
     }
 }
 
@@ -76,4 +95,6 @@ dependencies {
     //    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
     //    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
     //    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+
+
 }

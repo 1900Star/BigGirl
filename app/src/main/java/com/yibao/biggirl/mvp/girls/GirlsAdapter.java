@@ -96,6 +96,7 @@ public class GirlsAdapter
                  .load(mList.get(position))
                  .asBitmap()
                  .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                 .placeholder(R.drawable.splash)
                  .into(viewHolder.mGrilImageView);
 
             holder.itemView.setOnClickListener(view -> {

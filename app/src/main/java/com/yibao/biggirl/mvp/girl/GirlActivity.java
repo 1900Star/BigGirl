@@ -11,6 +11,7 @@ import com.yibao.biggirl.util.ActivityUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Author：Sid
@@ -24,14 +25,18 @@ public class GirlActivity
     FrameLayout mContentGirl;
 
     private Bundle mBundle = null;
+    private Unbinder mBind;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_gril);
-        ButterKnife.bind(this);
-        mBundle = getIntent().getExtras();
-                initData();
+        mBind = ButterKnife.bind(this);
+        if (savedInstanceState == null) {
+            mBundle = getIntent().getExtras();
+            initData();
+
+        }
     }
 
     private void initData() {
@@ -52,6 +57,7 @@ public class GirlActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mBind.unbind();
 
 
     }

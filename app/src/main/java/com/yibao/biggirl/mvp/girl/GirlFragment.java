@@ -1,10 +1,13 @@
 package com.yibao.biggirl.mvp.girl;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,12 +15,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
-import com.yibao.biggirl.model.video.RemoteVideoData;
+import com.yibao.biggirl.util.BitmapUtil;
+import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.ImageUitl;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
@@ -66,6 +73,7 @@ public class GirlFragment
     private CompositeDisposable disposables;
     private MyApplication       mApplication;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +96,7 @@ public class GirlFragment
 
             mView = inflater.inflate(R.layout.girl_frag, container, false);
             unbinder = ButterKnife.bind(this, mView);
+            getProgress();
             initData();
 
 
@@ -98,12 +107,14 @@ public class GirlFragment
 
 
     private void initData() {
-        //Rxbus接收下载进度 ，设置progress进度
-        disposables.add(mApplication.bus()
-                                    .toObserverable(DownGrilProgressData.class)
-                                    .subscribe(data -> setProgress(data.getProgress())));
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar()
+                .setDisplayHomeAsUpEnabled(true);
+
+        mToolbar.setNavigationIcon(R.mipmap.back);
 
         setHasOptionsMenu(true);
+
         mPagerGirlAdapter = new GirlAdapter(getActivity(), mList);
         mVp.setAdapter(mPagerGirlAdapter);
         mVp.setCurrentItem(mPosition);
@@ -115,14 +126,11 @@ public class GirlFragment
     //图片保存
     @OnClick(R.id.iv_down)
     public void onViewClicked() {
-
-
         //网络检查
         boolean connected = NetworkUtil.isNetworkConnected(getActivity());
-
         if (connected) {
             ImageUitl.downloadPic(mUrl, true);
-            //            SnakbarUtil.savePic(mPbDown, mUrl);
+            //                        SnakbarUtil.savePic(mPbDown, mUrl);
 
         } else {
             SnakbarUtil.netErrors(mPbDown);
@@ -145,6 +153,7 @@ public class GirlFragment
 
     @Override
     public void onPageSelected(int position) {
+        getColor();
         mUrl = mList.get(position);
     }
 
@@ -168,6 +177,9 @@ public class GirlFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                break;
             case R.id.action_setwallpaer: //设置壁纸
                 WallPaperUtil.setWallPaper(getActivity(), mPagerGirlAdapter);
                 SnakbarUtil.setWallpaer(mPbDown);
@@ -175,9 +187,14 @@ public class GirlFragment
             case R.id.action_gallery:  //从相册选择壁纸
                 WallPaperUtil.choiceWallPaper(getActivity());
                 break;
-            case R.id.action_localgirl:  //默认美女
+            case R.id.action_share_mz:  //默认美女
+                ImageView iv = (ImageView) mPagerGirlAdapter.getPrimaryItem();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+//                intent.putExtras(iv);
+                intent.setType("image/*");
+                startActivity(Intent.createChooser(intent, "分享MeiZhi到"));
 
-                RemoteVideoData.getVideos(20, 1);
 
                 break;
             case R.id.action_gank:  //干货集中营
@@ -203,5 +220,34 @@ public class GirlFragment
         unbinder.unbind();
         disposables.clear();
     }
+
+    //Rxbus接收下载进度 ，设置progress进度
+    public void getProgress() {
+        disposables.add(mApplication.bus()
+                                    .toObserverable(DownGrilProgressData.class)
+                                    .subscribe(data -> GirlFragment.this.setProgress(data.getProgress())));
+    }
+
+
+    public void getColor() {
+        ImageView       iv      = (ImageView) mPagerGirlAdapter.getPrimaryItem();
+        Palette.Builder builder = Palette.from(BitmapUtil.drawableToBitmap(iv.getDrawable()));
+        builder.generate(palette -> {
+            Palette.Swatch vir = palette.getVibrantSwatch();
+            if (vir == null) {
+                return;
+            }
+            int rgb = vir.getRgb();
+            LogUtil.d("Rgb== " + rgb);
+            mPbDown.setBackgroundColor(rgb);
+            mToolbar.setBackgroundColor(rgb);
+            //
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window window = getActivity().getWindow();
+                window.setStatusBarColor(ColorUtil.colorBurn(vir.getRgb()));
+            }
+        });
+    }
+
 
 }

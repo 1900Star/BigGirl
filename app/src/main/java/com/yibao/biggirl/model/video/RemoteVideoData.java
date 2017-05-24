@@ -1,7 +1,6 @@
 package com.yibao.biggirl.model.video;
 
 import com.yibao.biggirl.network.RetrofitHelper;
-import com.yibao.biggirl.util.LogUtil;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

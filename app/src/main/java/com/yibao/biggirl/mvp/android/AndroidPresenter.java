@@ -1,9 +1,8 @@
 package com.yibao.biggirl.mvp.android;
 
 import com.yibao.biggirl.model.android.AndroidAndGirl;
-import com.yibao.biggirl.model.app.AppDataSource;
-import com.yibao.biggirl.model.app.RemoteAppData;
-import com.yibao.biggirl.mvp.app.AppContract;
+import com.yibao.biggirl.model.android.AndroidDataSource;
+import com.yibao.biggirl.model.android.RemoteAndroidData;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
@@ -16,21 +15,21 @@ import java.util.List;
 
 
 class AndroidPresenter
-        implements AppContract.Presenter
+        implements AndroidContract.Presenter
 {
-    private AppContract.View mView;
-    private RemoteAppData    mRemoteData;
+    private AndroidContract.View mView;
+    private RemoteAndroidData    mRemoteData;
 
-    public AndroidPresenter(AppContract.View view) {
+    public AndroidPresenter(AndroidFragment view) {
         this.mView = view;
-        mRemoteData = new RemoteAppData();
+        mRemoteData = new RemoteAndroidData();
         mView.setPrenter(this);
     }
 
 
     @Override
     public void start(String type) {
-        loadData(20, 1, type, Constants.LOAD_DATA);
+        loadData(20, 1, Constants.LOAD_DATA);
     }
 
     @Override
@@ -44,8 +43,8 @@ class AndroidPresenter
 
 
     @Override
-    public void loadData(int page, int size, String type, int status) {
-        mRemoteData.getApp(page, size, type, new AppDataSource.LoadADataCallback() {
+    public void loadData(int page, int size, int status) {
+        mRemoteData.getAndroid(page, size, new AndroidDataSource.LoadADataCallback() {
             @Override
             public void onLoadData(List<AndroidAndGirl> list) {
                 if (status == Constants.LOAD_DATA) {

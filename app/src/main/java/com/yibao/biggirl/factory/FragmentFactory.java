@@ -1,7 +1,6 @@
 package com.yibao.biggirl.factory;
 
 import com.yibao.biggirl.base.BaseFragment;
-import com.yibao.biggirl.mvp.video.VideoFragmnets;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,32 +35,32 @@ public class FragmentFactory {
 
             case FRAGMENT_GIRLS:
                 //                                fragment = new GirlsFragment();
-                fragment = new VideoFragmnets();
+
 
                 break;
             case FRAGMENT_ANDROID:
                 //                                fragment = new AndroidFragment();
-                fragment = new VideoFragmnets();
+
                 break;
             case FRAGMENT_IOS:
                 //                                fragment = new GirlsFragment();
-                fragment = new VideoFragmnets();
+
                 break;
             case FRAGMENT_VEDIO:
                 //                                fragment = new GirlsFragment();
-                fragment = new VideoFragmnets();
+
                 break;
             case FRAGMENT_FRONT:
                 //                                fragment = new GirlsFragment();
-                fragment = new VideoFragmnets();
+
                 break;
             case FRAGMENT_EXTEND:
                 //                                fragment = new GirlsFragment();
-                fragment = new VideoFragmnets();
+
                 break;
             case FRAGMENT_APP:
                 //                                fragment = new GirlsFragment();
-                fragment = new VideoFragmnets();
+
                 break;
 
             default:

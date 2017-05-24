@@ -2,6 +2,7 @@ package com.yibao.biggirl.network;
 
 import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.model.girls.GirlsBean;
+import com.yibao.biggirl.model.unsplash.Unsplash;
 import com.yibao.biggirl.model.video.VideoBean;
 
 import io.reactivex.Observable;
@@ -20,6 +21,7 @@ public interface GirlService {
     Observable<GirlsBean> getGril(@Path("type") String type,
                                   @Path("count") int count,
                                   @Path("page") int page);
+
     //Android
     @GET("api/data/{type}/{count}/{page}")
     Observable<AndroidDesBean> getAndroid(@Path("type") String type,
@@ -32,6 +34,9 @@ public interface GirlService {
                                    @Path("count") int count,
                                    @Path("page") int page);
 
+    //Unsplash
+    @GET
+    Observable<Unsplash> getUnsplash();
 
 
 }

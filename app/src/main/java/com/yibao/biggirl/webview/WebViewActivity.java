@@ -60,7 +60,6 @@ public class WebViewActivity
     private void initData() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
         mToolbar.setNavigationIcon(R.mipmap.back);
 
         WebViewClient client = new WebViewClient() {
@@ -68,8 +67,23 @@ public class WebViewActivity
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("http:") || url.startsWith("https:")) {
+                    view.loadUrl(url);
+                    return false;
+//
+                } else {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
+                }
+            }
+
         };
+
         WebChromeClient chromeClient = new WebChromeClient() {
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 if (newProgress < 100) {
@@ -80,13 +94,13 @@ public class WebViewActivity
                     mProgressBarWeb.setVisibility(View.GONE);
                 }
 
+
             }
 
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 mToolbar.setTitle(title);
-                //                setTitle(title);
 
             }
 
@@ -123,6 +137,7 @@ public class WebViewActivity
 
                 return true;
             }
+
         };
 
         mWebView = new WebView(this.getApplicationContext());

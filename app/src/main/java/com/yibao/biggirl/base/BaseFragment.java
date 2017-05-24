@@ -1,16 +1,7 @@
 package com.yibao.biggirl.base;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.yibao.biggirl.MyApplication;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -21,7 +12,7 @@ import java.util.Map;
 public abstract class BaseFragment
         extends Fragment
 {
-
+/*
     public LoadingPager mLoadingPager;
 
     @Override
@@ -60,12 +51,12 @@ public abstract class BaseFragment
         super.onDestroyView();
     }
 
-    /**
+    *//**
      * 根据请求回来的数据,返回具体的LoadedResult类型值
      *
      * @param resResult
      * @return
-     */
+     *//*
     public LoadingPager.LoadedResult checkResResult(Object resResult) {
         if (resResult == null) {
             return LoadingPager.LoadedResult.EMPTY;
@@ -83,6 +74,6 @@ public abstract class BaseFragment
             }
         }
         return LoadingPager.LoadedResult.SUCCESS;
-    }
+    }*/
 
 }
