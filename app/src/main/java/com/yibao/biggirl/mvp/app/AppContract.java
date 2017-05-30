@@ -12,7 +12,7 @@ import java.util.List;
  * Time:2017/4/22 10:04
  */
 public interface AppContract {
-    interface View
+     interface View
             extends BaseView<Presenter>
     {
         void loadData(List<AndroidAndGirl> list);

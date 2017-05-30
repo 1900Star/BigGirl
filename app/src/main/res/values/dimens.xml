@@ -9,5 +9,6 @@
     <dimen name="about_title">15sp</dimen>
     <dimen name="about_sign">14sp</dimen>
     <dimen name="about_content">13sp</dimen>
+    <dimen name="big_tv">18sp</dimen>
 
 </resources>

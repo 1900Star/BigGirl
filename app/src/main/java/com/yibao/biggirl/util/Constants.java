@@ -21,14 +21,22 @@ public class Constants {
     public static       int    PULLUP_LOAD_MORE_DATA = 2;
     public static       int    NO_MORE_DATA          = 3;
     public static       int    LOADING_DATA          = 4;
-    public static final String FRAGMENT_GIRLS        = "妹子";
-    public static final String FRAGMENT_ANDROID      = "安卓";
-    public static final String FRAGMENT_VIDEO        = "视频";
-    public static final String FRAGMENT_IOS          = "iOS";
-    public static final String FRAGMENT_FRONT        = "前端";
-    public static final String FRAGMENT_EXPAND       = "拓展资源";
-    public static final String FRAGMENT_APP          = "App";
-    public static final String SHARE_ME              = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
+    public static       String arrTitle[]            = {"Girl",
+                                                        "Android",
+                                                        "Video",
+                                                        "App",
+                                                        "iOS",
+                                                        "前端",
+                                                        "拓展资源"};
+
+    public static final String FRAGMENT_GIRLS   = "妹子";
+    public static final String FRAGMENT_ANDROID = "安卓";
+    public static final String FRAGMENT_VIDEO   = "视频";
+    public static final String FRAGMENT_IOS     = "iOS";
+    public static final String FRAGMENT_FRONT   = "前端";
+    public static final String FRAGMENT_EXPAND  = "拓展资源";
+    public static final String FRAGMENT_APP     = "App";
+    public static final String SHARE_ME         = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
 
 
 }

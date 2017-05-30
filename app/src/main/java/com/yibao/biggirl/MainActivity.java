@@ -3,9 +3,9 @@ package com.yibao.biggirl;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -13,31 +13,27 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.yibao.biggirl.base.BaseFragment;
 import com.yibao.biggirl.base.OnRvItemWebClickListener;
-import com.yibao.biggirl.mvp.android.AndroidFragment;
-import com.yibao.biggirl.mvp.app.AppFragment;
-import com.yibao.biggirl.mvp.expand.ExpandFragment;
-import com.yibao.biggirl.mvp.frontend.FrontEndFragment;
+import com.yibao.biggirl.factory.FragmentFactorys;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.girls.GirlsAdapter;
-import com.yibao.biggirl.mvp.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
-import com.yibao.biggirl.mvp.ios.IOSFragment;
-import com.yibao.biggirl.mvp.video.VideoFragmnet;
-import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.DialogUtil;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.webview.WebViewActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,23 +58,17 @@ public class MainActivity
     DrawerLayout   mDrawerLayout;
 
     @BindView(R.id.tablayout)
-    TabLayout mTablayout;
+    TabLayout               mTablayout;
     @BindView(R.id.view_pager)
-    ViewPager mViewPager;
+    ViewPager               mViewPager;
     @BindView(R.id.toolbar)
-    Toolbar   mToolbar;
-    private long   exitTime   = 0;
-    private String arrTitle[] = {"Girl",
-                                 "Android",
-                                 "Video",
-                                 "App",
-                                 "iOS",
-                                 "前端",
-                                 "拓展资源"};
-    private Unbinder        mBind;
-    private ImageView       mIvHeader;
-    private List<Fragment>  mFragments;
-    private TabPagerAdapter mPagerAdapter;
+    Toolbar                 mToolbar;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout mToolbarLayout;
+    private long exitTime = 0;
+
+    private Unbinder  mBind;
+    private ImageView mIvHeader;
 
 
     @Override
@@ -89,12 +79,52 @@ public class MainActivity
         if (savedInstanceState == null) {
             initView();
             initData();
-            //            initListener();
+            initListener();
 
         }
 
     }
 
+    private void initListener() {
+        MyOnpageChangeListener mMyOnpageChangeListener = new MyOnpageChangeListener();
+
+        mViewPager.addOnPageChangeListener(mMyOnpageChangeListener);
+        //监听ViewPager布局完成
+        mViewPager.getViewTreeObserver()
+                  .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                      @Override
+                      public void onGlobalLayout() {
+                          LogUtil.d("ViewPager布局完成");
+                          //手动选中第一页
+                          mMyOnpageChangeListener.onPageSelected(0);
+                          mViewPager.getViewTreeObserver()
+                                    .removeOnGlobalLayoutListener(this);
+                      }
+                  });
+    }
+
+    private class MyOnpageChangeListener
+            implements ViewPager.OnPageChangeListener
+    {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            LogUtil.d("Position====" + position);
+            //触发加载数据
+            BaseFragment baseFragment = FragmentFactorys.mCacheFragmentMap.get(position);
+
+//            baseFragment.mLoadingPager.triggerLoadData();
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -103,13 +133,12 @@ public class MainActivity
         switch (id) {
             //关于作者
             case R.id.about_me:
-                DialogUtil.creatDialog(this, R.layout.aboutme);
+                DialogUtil.aboutMeDialog(this, R.layout.aboutme);
                 break;
             case R.id.my_feir:
-                //
-                showDesDetall(Api.myFeir);
-                //                RetrofitHelper.getUnsplashApi();
 
+                //                                RetrofitHelper.getUnsplashApi();
+                DialogUtil.creatDialog(this, R.layout.girl_video);
                 break;
             case R.id.share_me:
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -130,27 +159,16 @@ public class MainActivity
 
     private void initData() {
 
-
         mTablayout.setupWithViewPager(mViewPager);
-        mFragments = new ArrayList<>();
-        mFragments.add(new GirlsFragment().newInstance());
-        mFragments.add(new AndroidFragment().newInstance());
-        mFragments.add(new VideoFragmnet().newInstance());
-        mFragments.add(new AppFragment().newInstance(Constants.FRAGMENT_APP));
-        mFragments.add(new IOSFragment().newInstance());
-        mFragments.add(new FrontEndFragment().newInstance());
-        mFragments.add(new ExpandFragment().newInstance());
-        mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(),
-                                            mFragments,
-                                            Arrays.asList(arrTitle));
+        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(7);
-        mViewPager.setAdapter(mPagerAdapter);
-
+        mViewPager.setAdapter(pagerAdapter);
     }
 
     //加载动态布局
     private void initView() {
         setSupportActionBar(mToolbar);
+        mToolbarLayout.setTitleEnabled(false);
         View headerView = mNavView.inflateHeaderView(R.layout.nav_header_main);
         mIvHeader = (ImageView) headerView.findViewById(R.id.iv_nav_header);
 
@@ -165,6 +183,12 @@ public class MainActivity
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
     //打开WebViewActivity
     @Override

@@ -26,9 +26,9 @@ public class BitmapUtil {
 
         android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap(
 
-                drawable.getIntrinsicWidth(),
-
                 drawable.getIntrinsicHeight(),
+
+                drawable.getIntrinsicWidth(),
 
                 drawable.getOpacity() != PixelFormat.OPAQUE
                 ? android.graphics.Bitmap.Config.ARGB_8888

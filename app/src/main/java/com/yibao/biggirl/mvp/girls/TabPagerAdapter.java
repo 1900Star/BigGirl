@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
+import com.yibao.biggirl.factory.FragmentFactory;
+import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 /**
  * 作者：Stran on 2017/3/23 03:31
@@ -16,31 +18,24 @@ import java.util.List;
 public class TabPagerAdapter
         extends FragmentPagerAdapter
 {
-    private List<Fragment> mFragmentList;
-    private List<String>   mTitleList;
 
-    public TabPagerAdapter(FragmentManager fm,List<Fragment> fragmentList,
-                           List<String> titleList)
+    public TabPagerAdapter(FragmentManager fm)
     {
         super(fm);
-                mFragmentList = fragmentList;
-        mTitleList = titleList;
 
     }
 
     @Override
     public Fragment getItem(int position) {
-
-
-//        return FragmentFactory.createFragment(position);
-                return mFragmentList.get(position);
+        LogUtil.d("已经开始加载数据 了");
+                return FragmentFactory.createFragment(position);
+//        return FragmentFactorys.createFragment(position);
     }
 
     @Override
     public int getCount() {
-        return mFragmentList == null
-               ? 0
-               : mFragmentList.size();
+        return Constants.arrTitle.length;
+//        return 1;
     }
 
     @Override
@@ -50,7 +45,7 @@ public class TabPagerAdapter
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitleList.get(position);
+        return Constants.arrTitle[position];
 
     }
 

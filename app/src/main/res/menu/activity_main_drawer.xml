@@ -21,7 +21,7 @@
             <item
                 android:id="@+id/my_feir"
                 android:icon="@drawable/ic_menu_camera"
-                android:title="@string/myfeir"/>
+                android:title="@string/video"/>
             <item
                 android:id="@+id/share_me"
                 android:icon="@drawable/ic_menu_share"

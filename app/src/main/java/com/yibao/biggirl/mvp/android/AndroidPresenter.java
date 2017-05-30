@@ -43,7 +43,7 @@ class AndroidPresenter
 
 
     @Override
-    public void loadData(int page, int size, int status) {
+    public void loadData(int page, int size, final int status) {
         mRemoteData.getAndroid(page, size, new AndroidDataSource.LoadADataCallback() {
             @Override
             public void onLoadData(List<AndroidAndGirl> list) {

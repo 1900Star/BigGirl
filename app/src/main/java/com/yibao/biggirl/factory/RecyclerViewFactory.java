@@ -23,7 +23,9 @@ public class RecyclerViewFactory {
 
 
     public static final int SETTLING = 2;
-
+    private static LinearLayoutManager manager;
+    private static boolean hasLoadMoreData  =false;
+    private View                mFooterView;
     public static RecyclerView creatRecyclerView(int type,
                                                  ImageView fab,
                                                  RecyclerView.Adapter<RecyclerView.ViewHolder> adapter)
@@ -34,7 +36,7 @@ public class RecyclerViewFactory {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                                                                              RecyclerView.LayoutParams.MATCH_PARENT);
 
-            LinearLayoutManager manager = new LinearLayoutManager(MyApplication.getIntstance());
+            manager = new LinearLayoutManager(MyApplication.getIntstance());
             manager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setVerticalScrollBarEnabled(true);
             recyclerView.setScrollBarSize(3);
@@ -67,6 +69,19 @@ public class RecyclerViewFactory {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                        case IDLE:
+                            fab.setVisibility(View.VISIBLE);
+                            break;
+                    case DRAGGING:
+                        fab.setVisibility(View.INVISIBLE);
+                            break;
+                    case SETTLING:
+                        fab.setVisibility(View.INVISIBLE);
+                        break;
+                    default:
+                         break;
+                }
 //                int lastCount = adapter.getItemCount() - 1;
                 if (newState == IDLE /*&& mBottom[0] == lastCount || mBottom[1] == lastCount*/) {
                     //                                        boolean isRefresh = mSwipeRefresh.isRefreshing();
@@ -77,10 +92,10 @@ public class RecyclerViewFactory {
                     //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
                     //
                     //                    }
-                    fab.setVisibility(View.VISIBLE);
+
 
                 } else if (newState == DRAGGING | newState == SETTLING) {
-                    fab.setVisibility(View.INVISIBLE);
+
 
                 } else {
                     fab.setVisibility(View.VISIBLE);
@@ -91,16 +106,11 @@ public class RecyclerViewFactory {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                //                LogUtil.d("====  RecyclerView   ==" + recyclerView.getChildCount());
 
-                //                StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();
-                //
-                //                mBottom = manager.findFirstCompletelyVisibleItemPositions(new int[2]);
             }
         });
 
 
     }
-
 
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.LoadingPager;
@@ -45,6 +46,7 @@ public class VideoFragmnet
     private VideoContract.Presenter mPresenter;
     private List<VideoResultsBean> mLists = new ArrayList<>();
     private VideoAdapter         mAdapter;
+    private ImageView mIvCollapsing;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +70,9 @@ public class VideoFragmnet
     }
 
     private void initView() {
+        mIvCollapsing = (ImageView) getActivity().findViewById(R.id.iv_collapsing);
+//        mIvCollapsing.setImageResource(R.drawable.nav_header_bg);
+
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);

@@ -2,12 +2,13 @@ package com.yibao.biggirl.mvp.girl;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,9 +23,7 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
 import com.yibao.biggirl.util.BitmapUtil;
-import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.ImageUitl;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
@@ -112,7 +111,7 @@ public class GirlFragment
                 .setDisplayHomeAsUpEnabled(true);
 
         mToolbar.setNavigationIcon(R.mipmap.back);
-
+        mToolbar.setBackgroundColor(Color.BLACK);
         setHasOptionsMenu(true);
 
         mPagerGirlAdapter = new GirlAdapter(getActivity(), mList);
@@ -127,9 +126,12 @@ public class GirlFragment
     @OnClick(R.id.iv_down)
     public void onViewClicked() {
         //网络检查
-        boolean connected = NetworkUtil.isNetworkConnected(getActivity());
-        if (connected) {
-            ImageUitl.downloadPic(mUrl, true);
+        boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
+        if (isConnected) {
+            ImageView view   = (ImageView) mPagerGirlAdapter.getPrimaryItem();
+            Bitmap    bitmap = BitmapUtil.drawableToBitmap(view.getDrawable());
+
+            ImageUitl.downloadPic(bitmap, mUrl, true);
             //                        SnakbarUtil.savePic(mPbDown, mUrl);
 
         } else {
@@ -166,11 +168,11 @@ public class GirlFragment
         }
     }
 
-
+    //toolbar菜单
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.girl_main, menu);
 
     }
 
@@ -191,7 +193,7 @@ public class GirlFragment
                 ImageView iv = (ImageView) mPagerGirlAdapter.getPrimaryItem();
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
-//                intent.putExtras(iv);
+                //                intent.putExtras(iv);
                 intent.setType("image/*");
                 startActivity(Intent.createChooser(intent, "分享MeiZhi到"));
 
@@ -207,11 +209,7 @@ public class GirlFragment
         return super.onOptionsItemSelected(item);
     }
 
-    public GirlFragment newInstance() {
-
-
-        return new GirlFragment();
-    }
+    public GirlFragment newInstance() { return new GirlFragment(); }
 
 
     @Override
@@ -230,23 +228,26 @@ public class GirlFragment
 
 
     public void getColor() {
-        ImageView       iv      = (ImageView) mPagerGirlAdapter.getPrimaryItem();
-        Palette.Builder builder = Palette.from(BitmapUtil.drawableToBitmap(iv.getDrawable()));
-        builder.generate(palette -> {
-            Palette.Swatch vir = palette.getVibrantSwatch();
-            if (vir == null) {
-                return;
-            }
-            int rgb = vir.getRgb();
-            LogUtil.d("Rgb== " + rgb);
-            mPbDown.setBackgroundColor(rgb);
-            mToolbar.setBackgroundColor(rgb);
+        ImageView iv = (ImageView) mPagerGirlAdapter.getPrimaryItem();
+        if (iv != null) {
+
+            //            Palette.Builder builder = Palette.from(BitmapUtil.drawableToBitmap(iv.getDrawable()));
+            //            builder.generate(palette -> {
+            //                Palette.Swatch vir = palette.getVibrantSwatch();
+            //                if (vir == null) {
+            //                    return;
+            //                }
+            //                int rgb = vir.getRgb();
+            //                LogUtil.d("Rgb== " + rgb);
+            //                mPbDown.setBackgroundColor(rgb);
+            //                mToolbar.setBackgroundColor(rgb);
             //
             if (android.os.Build.VERSION.SDK_INT >= 21) {
                 Window window = getActivity().getWindow();
-                window.setStatusBarColor(ColorUtil.colorBurn(vir.getRgb()));
+                //                    window.setStatusBarColor(ColorUtil.colorBurn(vir.getRgb()));
             }
-        });
+            //            });
+        }
     }
 
 

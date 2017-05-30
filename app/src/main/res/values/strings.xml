@@ -17,9 +17,13 @@
     <string name="about_name">1900</string>
     <string name="about_github">https://github.com/1900Star</string>
     <string name="about_sign">O ever youthful, O ever weeping.</string>
-    <string name="about_project_introduce">BigGirl妹子Gank.io客户端，整体架构参照Google官方的RxMvp示例，写这个项目主要是为了进一步加深对
+    <string name="about_project_introduce">
+        BigGirl妹子Gank.io客户端，整体架构参照Google官方的RxMvp示例，写这个项目主要是为了进一步加深对
         MVP-Rxjava-Retrofit这个组合的理解,以基本的MVP模式为主划分模块，抽出Presenter作为View代理业务层，减轻View层代码的耦合度，然后集成了现在主流的RxJava+RxAndroid+Retrofit组合框架.
         \n\n\tRxJava\n\tRxAndroid\n\tOkhttp\n\tRetrofit\n\tButterknife\n\tGlide\n\tFresco\n\nBigGirl：https://github.com/1900Star/BigGirl\n\nApi接口提供：http://gank.io/api
     </string>
     <string name="preject_introduce">关于项目</string>
+    <string name="feir">李菲儿</string>
+    <string name="fan_xiao_xuan">范晓萱</string>
+    <string name="video">漂亮</string>
 </resources>

@@ -48,14 +48,13 @@ public class AppFragment
     private int page = 1;
     private int size = 20;
     private FloatingActionButton mFab;
-    private static String               mType;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         new AppPresenter(this);
-        mPresenter.start(mType);
+        mPresenter.start(Constants.FRAGMENT_APP);
 
     }
 
@@ -181,8 +180,7 @@ public class AppFragment
         this.mPresenter = prenter;
     }
 
-    public AppFragment newInstance(String type) {
-        mType = type;
+    public AppFragment newInstance() {
 
         return new AppFragment();
     }

@@ -11,16 +11,16 @@
         android:layout_height="wrap_content"
         app:layout_scrollFlags="scroll|enterAlways">
     </android.support.v7.widget.Toolbar>
+    <FrameLayout
+        android:id="@+id/content_web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <ProgressBar
         android:id="@+id/progress_bar_web"
         style="?android:progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/colorAccent"/>
-    <FrameLayout
-        android:id="@+id/content_web"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

@@ -18,7 +18,9 @@ import com.yibao.biggirl.util.LogUtil;
  * 描述	      3.数据和视图的绑定
  * Time:2017/5/7 21:37
  */
-public abstract class LoadingPager extends FrameLayout{
+public abstract class LoadingPager
+        extends FrameLayout
+{
     public static final int STATE_LOADING = 0;//加载中
     public static final int STATE_SUCCESS = 1;//成功
     public static final int STATE_ERROR   = 2;//失败
@@ -28,6 +30,7 @@ public abstract class LoadingPager extends FrameLayout{
     private View mErrorView;
     private View mEmptyView;
     private View mSuccessView;
+
     public LoadingPager(@NonNull Context context) {
         super(context);
         initCommonView();
@@ -41,10 +44,11 @@ public abstract class LoadingPager extends FrameLayout{
         //       失败视图
         mErrorView = View.inflate(MyApplication.getIntstance(), R.layout.pager_error, null);
         this.addView(mErrorView);
-        mErrorView.findViewById(R.id.error_btn_retry).setOnClickListener(v -> {
-            //希望重新触发加载数据
-                triggerLoadData();
-        });
+        mErrorView.findViewById(R.id.error_btn_retry)
+                  .setOnClickListener(v -> {
+                      //希望重新触发加载数据
+                      triggerLoadData();
+                  });
 
         //        空视图
         mEmptyView = View.inflate(MyApplication.getIntstance(), R.layout.pager_empty, null);
@@ -54,6 +58,7 @@ public abstract class LoadingPager extends FrameLayout{
 
 
     }
+
     /**
      * @des 根据不同的状态, 提供不同的视图
      * @call 1.LoadingPager一旦创建的时候-->loading视图(默认)
@@ -83,6 +88,7 @@ public abstract class LoadingPager extends FrameLayout{
                 //考虑是否创建成功视图
                 if (mSuccessView == null) {
                     mSuccessView = initSuccessView();
+                    //添加内容视图
                     this.addView(mSuccessView);
                 }
                 mSuccessView.setVisibility(View.VISIBLE);
@@ -100,16 +106,16 @@ public abstract class LoadingPager extends FrameLayout{
      */
     public void triggerLoadData() {
         if (mCurState != STATE_SUCCESS /*&& mLoadDataTask == null*/) {
-            LogUtil.d("triggerLoadData");
+            LogUtil.d("triggerLoadData  ==" + mCurState);
             //重置当前的状态,然后刷新ui
             mCurState = STATE_LOADING;
             refreshUIByState();
             LoadedResult tempState = initData();
-            mCurState=tempState.getState();
+            mCurState = tempState.getState();
             new Handler().post(this::refreshUIByState);
-
         }
     }
+
     /**
      * @return
      * @des 真正在子线程中开始加载具体的数据
@@ -131,7 +137,9 @@ public abstract class LoadingPager extends FrameLayout{
 
 
     public enum LoadedResult {
-        SUCCESS(STATE_SUCCESS), ERROR(STATE_ERROR), EMPTY(STATE_EMPTY);
+        SUCCESS(STATE_SUCCESS),
+        ERROR(STATE_ERROR),
+        EMPTY(STATE_EMPTY);
         public int state;
 
         public int getState() {

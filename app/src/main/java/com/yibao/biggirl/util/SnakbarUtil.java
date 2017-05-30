@@ -48,14 +48,14 @@ public class SnakbarUtil {
     public static void savePic(final View view, final String url)
     {
 
-
-        Snackbar snackbar = make(view, "可以将图片保存起来-_-", Snackbar.LENGTH_LONG).setAction("保存图片",
-                                                                                       view1 -> ImageUitl.downloadPic(
-                                                                                               url,
-                                                                                               true));
-        snackbar.getView()
-                .setBackgroundColor(saveColor);
-        snackbar.show();
+//
+//        Snackbar snackbar = make(view, "可以将图片保存起来-_-", Snackbar.LENGTH_LONG).setAction("保存图片",
+//                                                                                       view1 -> ImageUitl.downloadPic(
+//                                                                                               url,
+//                                                                                               true));
+//        snackbar.getView()
+//                .setBackgroundColor(saveColor);
+//        snackbar.show();
     }
 
     /**

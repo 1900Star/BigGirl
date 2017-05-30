@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
@@ -48,6 +49,7 @@ public class AndroidFragment
     private int page = 1;
     private int size = 20;
     private FloatingActionButton mFab;
+    private ImageView mIvCollapsing;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +74,9 @@ public class AndroidFragment
     }
 
     private void initView() {
+        mIvCollapsing = (ImageView) getActivity().findViewById(R.id.iv_collapsing);
         mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+//        mIvCollapsing.setImageResource(R.drawable.splash);
         mFab.setVisibility(View.VISIBLE);
 
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);

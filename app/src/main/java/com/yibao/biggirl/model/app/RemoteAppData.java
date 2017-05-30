@@ -22,7 +22,6 @@ import io.reactivex.schedulers.Schedulers;
 public class RemoteAppData
         implements AppDataSource
 {
-    private List<AndroidAndGirl> mList;
 
     @Override
     public void getApp(int size, int page, String type, LoadADataCallback callback) {
@@ -57,12 +56,12 @@ public class RemoteAppData
 
         @Override
         public void onNext(AndroidAndGirl bean) {
-            mList = new ArrayList<>();
+            List<AndroidAndGirl> list = new ArrayList<>();
             for (int i = 0; i < bean.mGrilData.size(); i++) {
                 AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData, bean.mGrilData);
-                mList.add(itemData);
+                list.add(itemData);
             }
-            mCallback.onLoadData(mList);
+            mCallback.onLoadData(list);
         }
 
         @Override
