@@ -10,7 +10,7 @@ import java.util.List;
  * Time:2017/5/29 23:40
  */
 public class TestData {
-    List<AndroidAndGirl> list;
+    private List<AndroidAndGirl> list;
 
     public TestData(List<AndroidAndGirl> list) {
         this.list = list;

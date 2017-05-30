@@ -77,7 +77,6 @@ public class GirlFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        //        mList = bundle.getParcelableArrayList("girlList");
         mList = bundle.getStringArrayList("girlList");
         mPosition = bundle.getInt("position");
         mUrl = mList.get(mPosition);

@@ -10,9 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.util.ImageUitl;
 
 import java.util.List;
 
@@ -91,13 +90,7 @@ public class GirlsAdapter
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
             ViewHolder viewHolder = (ViewHolder) holder;
-
-            Glide.with(mContext)
-                 .load(mList.get(position))
-                 .asBitmap()
-                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                 .placeholder(R.drawable.splash)
-                 .into(viewHolder.mGrilImageView);
+            ImageUitl.loadPicHolder(mContext, mList.get(position), viewHolder.mGrilImageView);
 
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemClickListener) {

@@ -19,25 +19,29 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.base.BaseFragment;
 import com.yibao.biggirl.base.OnRvItemWebClickListener;
 import com.yibao.biggirl.factory.FragmentFactorys;
+import com.yibao.biggirl.factory.MyDialogFragment;
+import com.yibao.biggirl.mvp.girl.BigGrilActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.girls.GirlsAdapter;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
+import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.DialogUtil;
+import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.webview.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -65,10 +69,14 @@ public class MainActivity
     Toolbar                 mToolbar;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
+    @BindView(R.id.iv_collapsing)
+    ImageView               mIvCollapsing;
     private long exitTime = 0;
 
     private Unbinder  mBind;
     private ImageView mIvHeader;
+    private int       mGirlPosition;
+    private TabPagerAdapter mPagerAdapter;
 
 
     @Override
@@ -103,6 +111,18 @@ public class MainActivity
                   });
     }
 
+    //打开背景大图
+    @OnClick(R.id.iv_collapsing)
+    public void onViewClicked() {
+
+        LogUtil.d("mGirlPosition==" + mGirlPosition);
+        Intent intent = new Intent(this, BigGrilActivity.class);
+        intent.putExtra("position", mGirlPosition);
+
+        startActivity(intent);
+
+    }
+
     private class MyOnpageChangeListener
             implements ViewPager.OnPageChangeListener
     {
@@ -113,11 +133,16 @@ public class MainActivity
 
         @Override
         public void onPageSelected(int position) {
-            LogUtil.d("Position====" + position);
+            //切换ViewPage随机变换Toolbar的背景图片
+            Random random = new Random();
+            mGirlPosition = random.nextInt(Api.picUrlArr.length);
+            ImageUitl.loadPicHolder(MyApplication.getIntstance(),
+                                    Api.picUrlArr[mGirlPosition],
+                                    mIvCollapsing);
             //触发加载数据
             BaseFragment baseFragment = FragmentFactorys.mCacheFragmentMap.get(position);
 
-//            baseFragment.mLoadingPager.triggerLoadData();
+            //            baseFragment.mLoadingPager.triggerLoadData();
         }
 
         @Override
@@ -138,7 +163,10 @@ public class MainActivity
             case R.id.my_feir:
 
                 //                                RetrofitHelper.getUnsplashApi();
-                DialogUtil.creatDialog(this, R.layout.girl_video);
+                //                DialogUtil.creatDialog(this, R.layout.girl_video);
+                MyDialogFragment dialogFragment = new MyDialogFragment();
+                dialogFragment.show(getSupportFragmentManager(), "dialog_big_girl");
+                //                AppPresenter.getDatas(20, 1, Constants.FRAGMENT_APP);
                 break;
             case R.id.share_me:
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -160,9 +188,9 @@ public class MainActivity
     private void initData() {
 
         mTablayout.setupWithViewPager(mViewPager);
-        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(7);
-        mViewPager.setAdapter(pagerAdapter);
+        mViewPager.setAdapter(mPagerAdapter);
     }
 
     //加载动态布局
@@ -190,6 +218,22 @@ public class MainActivity
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.main_action_search:
+                LogUtil.d("Search");
+                break;
+            case R.id.main_action_star:
+                LogUtil.d("Star");
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     //打开WebViewActivity
     @Override
     public void showDesDetall(String url) {
@@ -205,12 +249,7 @@ public class MainActivity
     @Override
     public void showPagerFragment(int position, List<String> list) {
         //设置navHeader头像
-        Glide.with(this)
-             .load(list.get(0))
-             .asBitmap()
-             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-             .into(mIvHeader);
-
+        ImageUitl.loadPic(this, list.get(0), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);
         intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
         intent.putExtra("position", position);

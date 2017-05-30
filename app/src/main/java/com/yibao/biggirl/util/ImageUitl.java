@@ -1,14 +1,21 @@
 package com.yibao.biggirl.util;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.MyApplication;
+import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
 import com.yibao.biggirl.network.Api;
+import com.yibao.biggirl.view.ZoomImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +34,39 @@ import okhttp3.Response;
  * 邮箱：strangermy@outlook.com
  */
 public class ImageUitl {
+
+    public static ImageView creatZoomView(Context context) {
+        ZoomImageView view = new ZoomImageView(context);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                                                   ViewGroup.LayoutParams.MATCH_PARENT);
+        view.setScaleType(ImageView.ScaleType.MATRIX);
+        view.reSetState();
+        view.setLayoutParams(params);
+        //        viewGroup.addView(view, params);
+
+        return view;
+    }
+
+    //加载图片
+    public static void loadPic(Context context, String url, ImageView view) {
+        Glide.with(context)
+             .load(url)
+             .asBitmap()
+             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+             .error(R.mipmap.xuan)
+             .into(view);
+    }
+
+    //加载需要占位图的图片
+    public static void loadPicHolder(Context context, String url, ImageView view) {
+        Glide.with(context)
+             .load(url)
+             .asBitmap()
+             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+             .placeholder(R.mipmap.xuan)
+             .error(R.mipmap.xuan)
+             .into(view);
+    }
 
     /**
      * 保存图片
@@ -92,8 +132,9 @@ public class ImageUitl {
                                  Intent intent = new Intent();
                                  intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                                  intent.setData(Uri.fromFile(file));
-                                 MyApplication.getIntstance().sendBroadcast(intent);
-                                                                           LogUtil.d("TTTtt", "广播发出去了");
+                                 MyApplication.getIntstance()
+                                              .sendBroadcast(intent);
+                                 LogUtil.d("TTTtt", "广播发出去了");
                                  fos.flush();
                                  fos.close();
 
@@ -134,9 +175,9 @@ public class ImageUitl {
             //            MyApplication.getIntstance()
             //                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
             //                                                   Uri.fromFile(file.getAbsoluteFile())));
-//                    MyApplication.getIntstance()
-//                                 .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-//                                                           Uri.parse("file://" + file)));
+            //                    MyApplication.getIntstance()
+            //                                 .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+            //                                                           Uri.parse("file://" + file)));
         }
         return true;
 
