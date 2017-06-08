@@ -11,22 +11,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
+import com.yibao.biggirl.model.dagger2.component.DaggerAndroidComponent;
+import com.yibao.biggirl.model.dagger2.moduls.AndroidModuls;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
 
 /**
  * Author：Sid
@@ -37,25 +41,37 @@ public class AndroidFragment
         extends Fragment
         implements AndroidContract.View, SwipeRefreshLayout.OnRefreshListener
 {
-    AndroidContract.Presenter mPresenter;
-    @BindView(R.id.android_frag_rv)
-    RecyclerView       mRecyclerView;
+    AndroidContract.Presenter mPresenters;
+    @BindView(R.id.fag_content)
+    LinearLayout       mFagContent;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
-    private List<AndroidAndGirl> mLists = new ArrayList<>();
+
     private AndroidAdapter mAdapter;
 
     private int page = 1;
     private int size = 20;
     private FloatingActionButton mFab;
-    private ImageView mIvCollapsing;
+    private LinearLayoutManager  mManager;
+    private int                  totalItemCount;
+    private int                  lastVisibleItem;
+    private       boolean loading           = false;
+    private final int     VISIBLE_THRESHOLD = 1;
+
+    @Inject
+    AndroidPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new AndroidPresenter(this);
+        DaggerAndroidComponent component = (DaggerAndroidComponent) DaggerAndroidComponent.builder()
+                                                                                          .androidModuls(
+                                                                                                  new AndroidModuls(
+                                                                                                          this))
+                                                                                          .build();
+        component.in(this);
         mPresenter.start(Constants.FRAGMENT_ANDROID);
 
     }
@@ -66,7 +82,7 @@ public class AndroidFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState)
     {
-        View view = View.inflate(getActivity(), R.layout.android_frag, null);
+        View view = View.inflate(getActivity(), R.layout.girls_frag, null);
 
         unbinder = ButterKnife.bind(this, view);
         initView();
@@ -74,65 +90,28 @@ public class AndroidFragment
     }
 
     private void initView() {
-        mIvCollapsing = (ImageView) getActivity().findViewById(R.id.iv_collapsing);
-        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-//        mIvCollapsing.setImageResource(R.drawable.splash);
-        mFab.setVisibility(View.VISIBLE);
 
+        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        mFab.setVisibility(View.VISIBLE);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
-        mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
+        mSwipeRefresh.setOnRefreshListener(this);
     }
 
 
-    private void initData(List<AndroidAndGirl> list) {
+    private void initData(List<AndroidAndGirl> list, int type, String dataType) {
 
 
         mAdapter = new AndroidAdapter(getContext(), list);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mAdapter);
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        mFagContent.addView(recyclerView);
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            int lastItem;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastItem + 1 == mAdapter.getItemCount()) {
-                    boolean isRefresh = mSwipeRefresh.isRefreshing();
-                    if (isRefresh) {
-                        mAdapter.notifyItemRemoved(mAdapter.getItemCount());
-                    } else {
-                        LogUtil.d("======  加载更多 来了 ==== " + lastItem);
-                        mAdapter.changeMoreStatus(Constants.LOADING_DATA);
-                        LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
-                        //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
-
-                    }
-
-                } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    mFab.setVisibility(View.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                lastItem = manager.findLastVisibleItemPosition();
-            }
-        });
     }
-
 
     @Override
     public void loadData(List<AndroidAndGirl> list) {
-        mLists.clear();
-        mLists.addAll(list);
-        initData(mLists);
+
+        initData(list, 1, Constants.FRAGMENT_ANDROID);
         mSwipeRefresh.setRefreshing(false);
     }
 
@@ -143,7 +122,6 @@ public class AndroidFragment
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
                       mPresenter.loadData(size, page, Constants.REFRESH_DATA);
-
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
                   });
@@ -152,19 +130,16 @@ public class AndroidFragment
     @Override
     public void refresh(List<AndroidAndGirl> list) {
 
-        mAdapter.clear();
-        mAdapter.AddHeader(list);
     }
 
     @Override
     public void loadMore(List<AndroidAndGirl> list) {
-        //        if (mLists.size() % 20 == 0) {
-        //
-        //            page++;
-        //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
-        //        }
-        mAdapter.AddFooter(list);
-        LogUtil.d("========  Add Footer    ==============" + mLists.size() + " ===" + page);
+
+
+        //        mAdapter.AddFooter(list);
+        //        mAdapter.notifyDataSetChanged();
+        //        loading = false;
+        //        mProgressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -181,7 +156,7 @@ public class AndroidFragment
 
     @Override
     public void setPrenter(AndroidContract.Presenter prenter) {
-        this.mPresenter = prenter;
+        this.mPresenters = prenter;
     }
 
     public AndroidFragment newInstance() {

@@ -37,7 +37,7 @@
                 android:padding="15dp">
 
                 <com.yibao.biggirl.view.CircleImageView
-                    android:id="@+id/about_avatar_iv"
+                    android:id="@+id/about_header_iv"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     android:src="@drawable/splash"/>
@@ -45,12 +45,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/about_avatar_iv"
+                    android:layout_alignTop="@id/about_header_iv"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="6dp"
-                    android:layout_toEndOf="@id/about_avatar_iv"
-                    android:layout_toRightOf="@id/about_avatar_iv"
+                    android:layout_toEndOf="@id/about_header_iv"
+                    android:layout_toRightOf="@id/about_header_iv"
                     android:text="@string/about_name"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/about_title"
@@ -60,23 +60,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/about_avatar_iv"
+                    android:layout_alignBottom="@id/about_header_iv"
                     android:layout_marginBottom="6dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@id/about_avatar_iv"
-                    android:layout_toRightOf="@id/about_avatar_iv"
+                    android:layout_toEndOf="@id/about_header_iv"
+                    android:layout_toRightOf="@id/about_header_iv"
                     android:autoLink="web"
                     android:text="@string/about_github"
                     android:textColor="@color/about_sign"
                     android:textSize="@dimen/about_sign"/>
 
                 <TextView
-                    android:layout_toEndOf="@id/about_avatar_iv"
-                    android:layout_toRightOf="@id/about_avatar_iv"
+                    android:layout_toEndOf="@id/about_header_iv"
+                    android:layout_toRightOf="@id/about_header_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/about_avatar_iv"
+                    android:layout_below="@id/about_header_iv"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="12dp"
 

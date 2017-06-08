@@ -14,12 +14,16 @@ import android.view.ViewGroup;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
+import com.yibao.biggirl.model.dagger2.component.DaggerAppComponent;
+import com.yibao.biggirl.model.dagger2.moduls.AppModuls;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +40,7 @@ public class AppFragment
         extends Fragment
         implements AppContract.View, SwipeRefreshLayout.OnRefreshListener
 {
-    AppContract.Presenter mPresenter;
+    AppContract.Presenter mPresenters;
     @BindView(R.id.android_frag_rv)
     RecyclerView       mRecyclerView;
     @BindView(R.id.swipe_refresh)
@@ -48,12 +52,18 @@ public class AppFragment
     private int page = 1;
     private int size = 20;
     private FloatingActionButton mFab;
+    @Inject
+    AppPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new AppPresenter(this);
+        DaggerAppComponent component = (DaggerAppComponent) DaggerAppComponent.builder()
+                                                                              .appModuls(new AppModuls(
+                                                                                      this))
+                                                                              .build();
+        component.in(this);
         mPresenter.start(Constants.FRAGMENT_APP);
 
     }
@@ -105,7 +115,7 @@ public class AppFragment
                         LogUtil.d("======  加载更多 来了 ==== " + lastItem);
                         mAdapter.changeMoreStatus(Constants.LOADING_DATA);
                         LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
-                        //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
+                        //                        mPresenter.loadData(size, page, Constants.LOAD_MORE_DATA);
 
                     }
 
@@ -177,7 +187,7 @@ public class AppFragment
 
     @Override
     public void setPrenter(AppContract.Presenter prenter) {
-        this.mPresenter = prenter;
+        this.mPresenters = prenter;
     }
 
     public AppFragment newInstance() {

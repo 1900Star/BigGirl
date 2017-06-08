@@ -4,6 +4,7 @@ package com.yibao.biggirl.mvp.girl;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,7 +36,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.yibao.biggirl.R.id.vp;
 
 
 /**
@@ -48,14 +53,14 @@ public class GirlFragment
         implements ViewPager.OnPageChangeListener
 {
 
-    @BindView(R.id.vp)
+
+    @BindView(R.id.toolbar)
+    Toolbar      mToolbar;
+    @BindView(vp)
     ViewPager    mVp;
     @BindView(R.id.iv_down)
     ProgressView mPbDown;
     Unbinder unbinder;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
     //传递过来的position
     private int mPosition;
     //默认下载进度
@@ -96,8 +101,6 @@ public class GirlFragment
             unbinder = ButterKnife.bind(this, mView);
             getProgress();
             initData();
-
-
         }
 
         return mView;
@@ -117,26 +120,8 @@ public class GirlFragment
         mVp.setAdapter(mPagerGirlAdapter);
         mVp.setCurrentItem(mPosition);
         mVp.addOnPageChangeListener(this);
-
     }
 
-
-    //图片保存
-    @OnClick(R.id.iv_down)
-    public void onViewClicked() {
-        //网络检查
-        boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
-        if (isConnected) {
-            ImageView view   = (ImageView) mPagerGirlAdapter.getPrimaryItem();
-            Bitmap    bitmap = BitmapUtil.drawableToBitmap(view.getDrawable());
-
-            ImageUitl.downloadPic(bitmap, mUrl, true);
-            //                        SnakbarUtil.savePic(mPbDown, mUrl);
-
-        } else {
-            SnakbarUtil.netErrors(mPbDown);
-        }
-    }
 
     private void setProgress(int progress) {
         mPbDown.setProgress(progress);
@@ -214,14 +199,16 @@ public class GirlFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
         disposables.clear();
+        unbinder.unbind();
     }
 
     //Rxbus接收下载进度 ，设置progress进度
     public void getProgress() {
         disposables.add(mApplication.bus()
                                     .toObserverable(DownGrilProgressData.class)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(data -> GirlFragment.this.setProgress(data.getProgress())));
     }
 
@@ -241,7 +228,7 @@ public class GirlFragment
             //                mPbDown.setBackgroundColor(rgb);
             //                mToolbar.setBackgroundColor(rgb);
             //
-            if (android.os.Build.VERSION.SDK_INT >= 21) {
+            if (Build.VERSION.SDK_INT >= 21) {
                 Window window = getActivity().getWindow();
                 //                    window.setStatusBarColor(ColorUtil.colorBurn(vir.getRgb()));
             }
@@ -249,5 +236,25 @@ public class GirlFragment
         }
     }
 
+
+    @OnClick({R.id.iv_down})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_down:
+                //图片保存   网络检查
+                boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
+                if (isConnected) {
+                    ImageView image  = (ImageView) mPagerGirlAdapter.getPrimaryItem();
+                    Bitmap    bitmap = BitmapUtil.drawableToBitmap(image.getDrawable());
+
+                    ImageUitl.downloadPic(bitmap, image, mUrl, true);
+                    //                        SnakbarUtil.savePic(mPbDown, mUrl);
+
+                } else {
+                    SnakbarUtil.netErrors(mPbDown);
+                }
+                break;
+        }
+    }
 
 }

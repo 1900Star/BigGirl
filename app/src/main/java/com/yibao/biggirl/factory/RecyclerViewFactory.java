@@ -3,8 +3,6 @@ package com.yibao.biggirl.factory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.MyApplication;
@@ -16,27 +14,16 @@ import com.yibao.biggirl.MyApplication;
  */
 public class RecyclerViewFactory {
     private static final int RECYCLERVIEW_NORMAL = 1;
-    private static RecyclerView recyclerView;
-    public static final int IDLE = 0;
-
-    public static final int DRAGGING = 1;
-
-
-    public static final int SETTLING = 2;
-    private static LinearLayoutManager manager;
-    private static boolean hasLoadMoreData  =false;
-    private View                mFooterView;
     public static RecyclerView creatRecyclerView(int type,
-                                                 ImageView fab,
                                                  RecyclerView.Adapter<RecyclerView.ViewHolder> adapter)
     {
 
-        recyclerView = new RecyclerView(MyApplication.getIntstance());
+        RecyclerView recyclerView = new RecyclerView(MyApplication.getIntstance());
         if (type == RECYCLERVIEW_NORMAL) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                                                                              RecyclerView.LayoutParams.MATCH_PARENT);
 
-            manager = new LinearLayoutManager(MyApplication.getIntstance());
+            LinearLayoutManager manager = new LinearLayoutManager(MyApplication.getIntstance());
             manager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setVerticalScrollBarEnabled(true);
             recyclerView.setScrollBarSize(3);
@@ -55,62 +42,10 @@ public class RecyclerViewFactory {
         }
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        addScrollListener(fab, adapter, type);
+
+
         return recyclerView;
     }
 
-    private static void addScrollListener(ImageView fab,
-                                          RecyclerView.Adapter<RecyclerView.ViewHolder> adapter,
-                                          int type)
-    {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            private int[] mBottom;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                        case IDLE:
-                            fab.setVisibility(View.VISIBLE);
-                            break;
-                    case DRAGGING:
-                        fab.setVisibility(View.INVISIBLE);
-                            break;
-                    case SETTLING:
-                        fab.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                         break;
-                }
-//                int lastCount = adapter.getItemCount() - 1;
-                if (newState == IDLE /*&& mBottom[0] == lastCount || mBottom[1] == lastCount*/) {
-                    //                                        boolean isRefresh = mSwipeRefresh.isRefreshing();
-                    //                                        if (isRefresh) {
-                    //                        adapter.notifyItemRemoved(adapter.getItemCount());
-                    //                    } else {
-                    //                        adapter.changeMoreStatus(Constants.LOADING_DATA);
-                    //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
-                    //
-                    //                    }
-
-
-                } else if (newState == DRAGGING | newState == SETTLING) {
-
-
-                } else {
-                    fab.setVisibility(View.VISIBLE);
-                }
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-            }
-        });
-
-
-    }
 
 }

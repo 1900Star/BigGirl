@@ -108,7 +108,7 @@ public class IOSFragment
                         LogUtil.d("======  加载更多 来了 ==== "+lastItem);
                         mAdapter.changeMoreStatus(Constants.LOADING_DATA);
                         LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
-//                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
+//                        mPresenter.loadData(size, page, Constants.LOAD_MORE_DATA);
 
                     }
 

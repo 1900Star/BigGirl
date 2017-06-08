@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 
-class AndroidPresenter
+public class AndroidPresenter
         implements AndroidContract.Presenter
 {
     private AndroidContract.View mView;
@@ -51,7 +51,7 @@ class AndroidPresenter
                     mView.loadData(list);
                 } else if (status == Constants.REFRESH_DATA) {
                     mView.refresh(list);
-                } else if (status == Constants.PULLUP_LOAD_MORE_DATA) {
+                } else if (status == Constants.LOAD_MORE_DATA) {
                     mView.loadMore(list);
                 }
 

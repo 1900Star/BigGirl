@@ -19,7 +19,7 @@
     <item android:title="@string/communicate">
         <menu>
             <item
-                android:id="@+id/my_feir"
+                android:id="@+id/beautiful_girl_video"
                 android:icon="@drawable/ic_menu_camera"
                 android:title="@string/video"/>
             <item

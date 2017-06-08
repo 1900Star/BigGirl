@@ -10,7 +10,6 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFragment;
 import com.yibao.biggirl.base.LoadingPager;
-import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.model.girls.ResultsBean;
@@ -123,8 +122,9 @@ public class IOSFragments
     protected View initSuccessView() {
         LogUtil.d("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
         mAdapter = new AppAdapter(getActivity(), mDatas);
-        return RecyclerViewFactory.creatRecyclerView(1, mFab, mAdapter);
+//        return RecyclerViewFactory.creatRecyclerView(1, mFab, mAdapter);
 
+        return null;
 
     }
 

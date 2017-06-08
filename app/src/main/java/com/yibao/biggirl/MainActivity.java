@@ -19,17 +19,15 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.yibao.biggirl.base.BaseFragment;
 import com.yibao.biggirl.base.OnRvItemWebClickListener;
-import com.yibao.biggirl.factory.FragmentFactorys;
-import com.yibao.biggirl.factory.MyDialogFragment;
-import com.yibao.biggirl.mvp.girl.BigGrilActivity;
+import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
+import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
+import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.girls.GirlsAdapter;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.DialogUtil;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
@@ -75,8 +73,7 @@ public class MainActivity
 
     private Unbinder  mBind;
     private ImageView mIvHeader;
-    private int       mGirlPosition;
-    private TabPagerAdapter mPagerAdapter;
+    private String    mUrl;
 
 
     @Override
@@ -111,18 +108,16 @@ public class MainActivity
                   });
     }
 
-    //打开背景大图
+    //打开Toolbar的背景大图
     @OnClick(R.id.iv_collapsing)
     public void onViewClicked() {
 
-        LogUtil.d("mGirlPosition==" + mGirlPosition);
-        Intent intent = new Intent(this, BigGrilActivity.class);
-        intent.putExtra("position", mGirlPosition);
-
-        startActivity(intent);
+        TopBigPicDialogFragment.newInstance(mUrl)
+                               .show(getSupportFragmentManager(), "dialog_big_girl");
 
     }
 
+    //ViewPager监听器
     private class MyOnpageChangeListener
             implements ViewPager.OnPageChangeListener
     {
@@ -134,13 +129,12 @@ public class MainActivity
         @Override
         public void onPageSelected(int position) {
             //切换ViewPage随机变换Toolbar的背景图片
-            Random random = new Random();
-            mGirlPosition = random.nextInt(Api.picUrlArr.length);
-            ImageUitl.loadPicHolder(MyApplication.getIntstance(),
-                                    Api.picUrlArr[mGirlPosition],
-                                    mIvCollapsing);
+            Random random       = new Random();
+            int    girlPosition = random.nextInt(Api.picUrlArr.length);
+            mUrl = Api.picUrlArr[girlPosition];
+            ImageUitl.loadPicHolder(MyApplication.getIntstance(), mUrl, mIvCollapsing);
             //触发加载数据
-            BaseFragment baseFragment = FragmentFactorys.mCacheFragmentMap.get(position);
+            //            BaseFragment baseFragment = FragmentFactorys.mCacheFragmentMap.get(position);
 
             //            baseFragment.mLoadingPager.triggerLoadData();
         }
@@ -158,22 +152,18 @@ public class MainActivity
         switch (id) {
             //关于作者
             case R.id.about_me:
-                DialogUtil.aboutMeDialog(this, R.layout.aboutme);
+                AboutMeDialogFag.newInstance()
+                                .show(getSupportFragmentManager(), "about");
                 break;
-            case R.id.my_feir:
+            case R.id.beautiful_girl_video:
 
-                //                                RetrofitHelper.getUnsplashApi();
-                //                DialogUtil.creatDialog(this, R.layout.girl_video);
-                MyDialogFragment dialogFragment = new MyDialogFragment();
-                dialogFragment.show(getSupportFragmentManager(), "dialog_big_girl");
+                //                RetrofitHelper.getUnsplashApi();
                 //                AppPresenter.getDatas(20, 1, Constants.FRAGMENT_APP);
+                BeautifulDialogFag.newInstance()
+                                  .show(getSupportFragmentManager(), "beautiful");
                 break;
             case R.id.share_me:
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
-                shareIntent.putExtra(Intent.EXTRA_TEXT, Constants.SHARE_ME);
-                shareIntent.setType("text/plain");
-                startActivity(shareIntent);
+                shareMe();
                 break;
             default:
                 break;
@@ -184,13 +174,21 @@ public class MainActivity
         return true;
     }
 
+    private void shareMe() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Constants.SHARE_ME);
+        shareIntent.setType("text/plain");
+        startActivity(shareIntent);
+    }
+
 
     private void initData() {
 
         mTablayout.setupWithViewPager(mViewPager);
-        mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(7);
-        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setAdapter(pagerAdapter);
     }
 
     //加载动态布局
@@ -240,12 +238,9 @@ public class MainActivity
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra("url", url);
         startActivity(intent);
-
-
     }
 
-
-    //接口回调打开ViewPager浏览大图
+    //打开ViewPager浏览大图
     @Override
     public void showPagerFragment(int position, List<String> list) {
         //设置navHeader头像

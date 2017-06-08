@@ -6,11 +6,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
@@ -35,15 +38,13 @@ import okhttp3.Response;
  */
 public class ImageUitl {
 
-    public static ImageView creatZoomView(Context context) {
+    public static ZoomImageView creatZoomView(Context context) {
         ZoomImageView view = new ZoomImageView(context);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                                                    ViewGroup.LayoutParams.MATCH_PARENT);
         view.setScaleType(ImageView.ScaleType.MATRIX);
         view.reSetState();
         view.setLayoutParams(params);
-        //        viewGroup.addView(view, params);
-
         return view;
     }
 
@@ -52,9 +53,28 @@ public class ImageUitl {
         Glide.with(context)
              .load(url)
              .asBitmap()
-             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .error(R.mipmap.xuan)
+             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(view);
+
+    }  //加载圆图
+
+    public static void loadPicCirc(Context context, String url, ImageView view) {
+        Glide.with(context)
+             .load(url)
+             .asBitmap()
+             .centerCrop()
+             .placeholder(R.mipmap.xuan)
+             .into(new BitmapImageViewTarget(view) {
+                 @Override
+                 protected void setResource(Bitmap resource) {
+                     RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(
+                             context.getResources(),
+                             resource);
+                     circularBitmapDrawable.setCircular(true);
+                     view.setImageDrawable(circularBitmapDrawable);
+                 }
+             });
     }
 
     //加载需要占位图的图片
@@ -66,12 +86,17 @@ public class ImageUitl {
              .placeholder(R.mipmap.xuan)
              .error(R.mipmap.xuan)
              .into(view);
+
+
     }
 
     /**
      * 保存图片
      */
-    public static boolean downloadPic(Bitmap bitmap, String url, boolean isShowPhotos)
+    public static boolean downloadPic(Bitmap bitmap,
+                                      ImageView view,
+                                      String url,
+                                      boolean isShowPhotos)
     {
         String name = getNameFromUrl(url);
         File   path = new File(Constants.dir);
@@ -87,6 +112,7 @@ public class ImageUitl {
                 return false;
             }
         } else {
+            SnakbarUtil.picAlreadyExists(view);
             return true;
         }
         Request request = new Request.Builder().url(url)

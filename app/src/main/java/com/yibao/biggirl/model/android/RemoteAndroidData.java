@@ -2,6 +2,7 @@ package com.yibao.biggirl.model.android;
 
 import com.yibao.biggirl.model.girls.GirlsBean;
 import com.yibao.biggirl.network.RetrofitHelper;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ public class RemoteAndroidData
 
         @Override
         public void onNext(AndroidAndGirl bean) {
+            LogUtil.d("=====    "+bean.mAndroidData.size()+" HHHH "+bean.mGrilData.size());
             mList = new ArrayList<>();
             for (int i = 0; i < bean.mGrilData.size(); i++) {
                 AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData,

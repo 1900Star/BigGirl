@@ -34,7 +34,7 @@ public class CircleImageView
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
     //        private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
-    private static final int DEFAULT_BORDER_COLOR = Color.argb(255,90, 180, 63);
+    private static final int DEFAULT_BORDER_COLOR = Color.argb(255, 255, 64, 129);
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect   = new RectF();
@@ -117,10 +117,12 @@ public class CircleImageView
         setup();
     }
 
+
     public int getBorderColor() {
         return mBorderColor;
     }
 
+    //设置圆图边框颜色
     public void setBorderColor(int borderColor) {
         if (borderColor == mBorderColor) {
             return;
@@ -135,6 +137,7 @@ public class CircleImageView
         return mBorderWidth;
     }
 
+    //设置圆图边框宽度
     public void setBorderWidth(int borderWidth) {
         if (borderWidth == mBorderWidth) {
             return;

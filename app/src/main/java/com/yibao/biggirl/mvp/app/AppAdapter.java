@@ -1,6 +1,7 @@
 package com.yibao.biggirl.mvp.app;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.OnRvItemWebClickListener;
+import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.model.girls.ResultsBean;
@@ -90,6 +92,9 @@ public class AppAdapter
                  .placeholder(R.drawable.splash)
                  .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                  .into(viewHolder.mIvIcon);
+            viewHolder.mIvIcon.setOnClickListener(view -> TopBigPicDialogFragment.newInstance(girlData.getUrl())
+                                                                                 .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
+                                  "dialog_big_girl"));
 
 
             String who = androidData.getWho();
@@ -102,12 +107,15 @@ public class AppAdapter
             String time = androidData.getCreatedAt();
             viewHolder.mTvAndroidTime.setText(time.substring(0, time.lastIndexOf("T")));
             viewHolder.mTvAndroidDes.setText(androidData.getDesc());
+
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemWebClickListener) {
 
                     ((OnRvItemWebClickListener) mContext).showDesDetall(androidData.getUrl());
                 }
             });
+
+
         } else if (holder instanceof LoadMoreHolder) {
             LoadMoreHolder viewHolder = (LoadMoreHolder) holder;
             viewHolder.mLoadLayout.setVisibility(View.VISIBLE);

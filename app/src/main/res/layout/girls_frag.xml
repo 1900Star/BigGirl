@@ -6,14 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
 >
-
-    <!-- <android.support.v7.widget.RecyclerView
-         android:id="@+id/fragment_girl_recycler"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-     />-->
     <LinearLayout
-        android:id="@+id/ll_grils"
+        android:id="@+id/fag_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

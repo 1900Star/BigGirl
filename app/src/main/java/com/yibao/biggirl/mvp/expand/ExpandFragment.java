@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -51,6 +53,7 @@ public class ExpandFragment
     private int page = 1;
     private int size = 20;
     private FloatingActionButton mFab;
+    @Inject
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,7 +111,7 @@ public class ExpandFragment
                         LogUtil.d("======  加载更多 来了 ==== " + lastItem);
                         mAdapter.changeMoreStatus(Constants.LOADING_DATA);
                         LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
-                        //                        mPresenter.loadData(size, page, Constants.PULLUP_LOAD_MORE_DATA);
+                        //                        mPresenter.loadData(size, page, Constants.LOAD_MORE_DATA);
 
                     }
 

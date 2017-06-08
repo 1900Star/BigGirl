@@ -62,7 +62,7 @@ public class AppPresenter
                     mView.loadData(list);
                 } else if (status == Constants.REFRESH_DATA) {
                     mView.refresh(list);
-                } else if (status == Constants.PULLUP_LOAD_MORE_DATA) {
+                } else if (status == Constants.LOAD_MORE_DATA) {
                     mView.loadMore(list);
                 }
 

@@ -17,6 +17,6 @@ public interface GrilsDataSource {
 
     }
 
-    void getGirls(int size, int page, LoadGDataCallback callback);
+    void getGirls(String dataType,int size, int page, LoadGDataCallback callback);
 
 }

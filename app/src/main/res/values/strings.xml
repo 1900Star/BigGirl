@@ -12,7 +12,6 @@
     <string name="action_night">夜间模式</string>
     <string name="communicate">Communicate</string>
     <string name="share">Share</string>
-    <string name="myfeir">菲儿</string>
     <string name="about">关于我</string>
     <string name="about_name">1900</string>
     <string name="about_github">https://github.com/1900Star</string>
@@ -26,4 +25,5 @@
     <string name="feir">李菲儿</string>
     <string name="fan_xiao_xuan">范晓萱</string>
     <string name="video">漂亮</string>
+    <string name="load_more">正在加载更多！！！！</string>
 </resources>

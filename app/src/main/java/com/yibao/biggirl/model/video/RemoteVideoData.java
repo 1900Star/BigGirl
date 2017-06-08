@@ -17,30 +17,6 @@ public class RemoteVideoData
 {
 
 
-    public static void getVideos(int size, int page) {
-        RetrofitHelper.getGankApi()
-                      .getVideo("休息视频", size, page)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .subscribe(new Observer<VideoBean>() {
-                          @Override
-                          public void onSubscribe(Disposable d) {}
-
-                          @Override
-                          public void onNext(VideoBean videoBean) {
-
-                          }
-
-                          @Override
-                          public void onError(Throwable e) {
-
-                          }
-
-                          @Override
-                          public void onComplete() {}
-                      });
-    }
-
     @Override
     public void getVideo(int size, int page, LoadVDataCallback callback) {
         RetrofitHelper.getGankApi()

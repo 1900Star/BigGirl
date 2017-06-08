@@ -7,15 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
+import com.yibao.biggirl.model.dagger2.component.DaggerGirlsComponent;
+import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.LogUtil;
@@ -24,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,27 +45,36 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class GirlsFragment
         extends Fragment
-        implements GirlsContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener
+        implements GirlsContract.View<String>,
+                   SwipeRefreshLayout.OnRefreshListener,
+                   View.OnClickListener
 {
 
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
-    @BindView(R.id.ll_grils)
+    @BindView(R.id.fag_content)
     LinearLayout mLlGrils;
-    private GirlsContract.Presenter mPresenter;
+    private GirlsContract.Presenter mPresenters;
     private GirlsAdapter            mAdapter;
     private List<String>            mList;
     private int page = 1;
+    private int size = 20;
     private FloatingActionButton mFab;
     private boolean              isShowGankGirl;
-
+    // 1 指定注入目标
+    @Inject
+    GirlsPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new GirlsPresenter(this);
+        DaggerGirlsComponent component = (DaggerGirlsComponent) DaggerGirlsComponent.builder()
+                                                                                                        .girlsModuls(new GirlsModuls(
+                                                                                                                this))
+                                                                                                        .build();
+        component.in(this);
         mPresenter.start(Constants.FRAGMENT_GIRLS);
 
 
@@ -87,21 +102,109 @@ public class GirlsFragment
     }
 
 
-    private void initRecyclerView(List<String> mList, int type) {
-        mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setRefreshing(true);
+    private void initRecyclerView(List<String> mList, int type, String dataType) {
         mSwipeRefresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.YELLOW);
+        mSwipeRefresh.setRefreshing(true);
+        mSwipeRefresh.setOnRefreshListener(this);
         mAdapter = new GirlsAdapter(getActivity(), mList);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mFab, mAdapter);
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                //当前RecyclerView显示出来的最后一个的item的position
+                int lastPosition = -1;
+                switch (newState) {
+                    //当前状态为停止滑动状态SCROLL_STATE_IDLE时
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        mFab.setVisibility(View.VISIBLE);
+                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                        if (layoutManager instanceof GridLayoutManager) {
+                            //通过LayoutManager找到当前显示的最后的item的position
+                            lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        } else if (layoutManager instanceof LinearLayoutManager) {
+                            lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                            //因为StaggeredGridLayoutManager的特殊性可能导致最后显示的item存在多个，所以这里取到的是一个数组
+                            //得到这个数组后再取到数组中position值最大的那个就是最后显示的position值了
+                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
+                                    lastPositions);
+                            lastPosition = findMax(lastPositions);
+                        }
+
+                        //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
+                        //如果相等则说明已经滑动到最后了
+                        if (lastPosition == recyclerView.getLayoutManager()
+                                                        .getItemCount() - 1)
+                        {
+                            page++;
+
+                            mPresenter.loadData(size,
+                                                page,
+                                                Constants.LOAD_MORE_DATA,
+                                                Constants.FRAGMENT_GIRLS);
+                            LogUtil.d("PAGE===" + page);
+                            //                        mProgressBar.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        mFab.setVisibility(View.INVISIBLE);
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        mFab.setVisibility(View.INVISIBLE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                //得到当前显示的最后一个item的view
+                View lastChildView = recyclerView.getLayoutManager()
+                                                 .getChildAt(recyclerView.getLayoutManager()
+                                                                         .getChildCount() - 1);
+                //得到lastChildView的bottom坐标值
+                int lastChildBottom = lastChildView.getBottom();
+                //得到Recyclerview的底部坐标减去底部padding值，也就是显示内容最底部的坐标
+                int recyclerBottom = recyclerView.getBottom() - recyclerView.getPaddingBottom();
+                //通过这个lastChildView得到这个view当前的position值
+                int lastPosition = recyclerView.getLayoutManager()
+                                               .getPosition(lastChildView);
+
+                //判断lastChildView的bottom值跟recyclerBottom
+                //判断lastPosition是不是最后一个position
+                //如果两个条件都满足则说明是真正的滑动到了底部
+                if (lastChildBottom == recyclerBottom && lastPosition == recyclerView.getLayoutManager()
+                                                                                     .getItemCount() - 1)
+                {
+                    //                                                            mProgressBar.setVisibility(View.VISIBLE);
+                }
+            }
+
+        });
+
         mLlGrils.addView(recyclerView);
     }
 
 
+    //找到数组中的最大值
+    private int findMax(int[] lastPositions) {
+        int max = lastPositions[0];
+        for (int value : lastPositions) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
+    }
+
     @Override
     public void loadData(List<String> list) {
-        mList.clear();
         mList.addAll(list);
-        initRecyclerView(mList, 2);
+        initRecyclerView(mList, 2, Constants.FRAGMENT_GIRLS);
         mSwipeRefresh.setRefreshing(false);
     }
 
@@ -111,8 +214,10 @@ public class GirlsFragment
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(500, page, Constants.REFRESH_DATA);
-                      LogUtil.d("page   ====== " + page);
+                      mPresenter.loadData(size,
+                                          1,
+                                          Constants.REFRESH_DATA,
+                                          Constants.FRAGMENT_GIRLS);
                       mSwipeRefresh.setRefreshing(false);
                       isShowGankGirl = false;
                       page = 1;
@@ -125,27 +230,22 @@ public class GirlsFragment
         mList.clear();
         mAdapter.clear();
         mList.addAll(list);
-        mAdapter.AddHeader(mList);
+        mAdapter.AddHeader(list);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void loadMore(List<String> list) {
-        if (list.size() % 20 == 0) {
-            page++;
-            //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
-        }
+        //        mList.clear();
         mList.addAll(list);
-        mAdapter.AddFooter(mList);
-
-        mAdapter.changeMoreStatus(Constants.PULLUP_LOAD_MORE_DATA);
-        mSwipeRefresh.setRefreshing(false);
-        Toast.makeText(getActivity(), "更新了 " + list.size() + "个妹子", Toast.LENGTH_SHORT);
+        mAdapter.AddFooter(list);
+        mAdapter.notifyDataSetChanged();
+        //        mProgressBar.setVisibility(View.INVISIBLE);
 
     }
 
     @Override
     public void showError() {
-        mAdapter.changeMoreStatus(Constants.NO_MORE_DATA);
     }
 
     @Override
@@ -163,7 +263,7 @@ public class GirlsFragment
 
     @Override
     public void setPrenter(GirlsContract.Presenter prenter) {
-        this.mPresenter = prenter;
+        this.mPresenters = prenter;
     }
 
     public GirlsFragment newInstance() {
@@ -173,10 +273,9 @@ public class GirlsFragment
     //切换干货和默认妹子
     @Override
     public void onClick(View view) {
-
         if (isShowGankGirl) {
             mLlGrils.removeAllViews();
-            initRecyclerView(mList, 2);
+            initRecyclerView(mList, 2, Constants.FRAGMENT_GIRLS);
             mSwipeRefresh.setRefreshing(false);
             isShowGankGirl = false;
 
@@ -193,7 +292,7 @@ public class GirlsFragment
         List<String> defultUrl = ImageUitl.getDefultUrl(new ArrayList<>());
         Random       random    = new Random();
 
-        initRecyclerView(defultUrl, random.nextInt(4)+1);
+        initRecyclerView(defultUrl, random.nextInt(4) + 1, Constants.FRAGMENT_GIRLS);
         mSwipeRefresh.setRefreshing(false);
     }
 }

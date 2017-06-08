@@ -2,6 +2,9 @@ package com.yibao.biggirl.mvp.girls;
 
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
+import com.yibao.biggirl.model.video.RemoteVideoData;
+import com.yibao.biggirl.model.video.VideoBean;
+import com.yibao.biggirl.model.video.VideoDataSource;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
@@ -11,17 +14,21 @@ import java.util.List;
  * Des：${TODO}
  * Time:2017/4/22 10:03
  */
-class GirlsPresenter
+public class GirlsPresenter
         implements GirlsContract.Presenter
 {
     private GirlsContract.View mView;
     private RemoteGirlsData    mRemoteGirlsData;
+    private RemoteVideoData    mRemoteVideoData;
 
     public GirlsPresenter(GirlsContract.View view) {
         this.mView = view;
         mRemoteGirlsData = new RemoteGirlsData();
+        mRemoteVideoData = new RemoteVideoData();
         mView.setPrenter(this);
     }
+
+
 
     @Override
     public void subscribe() {}
@@ -30,35 +37,58 @@ class GirlsPresenter
     public void unsubscribe() {}
 
     @Override
-    public void start(String type) {
-        loadData(20, 1, Constants.LOAD_DATA);
+    public void start(String dataType) {
+        loadData(20, 1, Constants.LOAD_DATA,dataType);
 
 
     }
 
     @Override
-    public void loadData(int size, int page, int type) {
-        //        LogUtil.d("====== Type =====" + type);
+    public void loadData(int size, int page, int type,String dataType) {
+        if (dataType.equals(Constants.FRAGMENT_GIRLS)) {
 
-        mRemoteGirlsData.getGirls(size, page, new GrilsDataSource.LoadGDataCallback() {
-            @Override
-            public void onLoadDatas(List<String> girlBean) {
+            mRemoteGirlsData.getGirls(dataType,
+                                      size,
+                                      page,
+                                      new GrilsDataSource.LoadGDataCallback() {
+                                          @Override
+                                          public void onLoadDatas(List<String> girlBean) {
 
-                if (type == Constants.REFRESH_DATA) {
-                    mView.refresh(girlBean);
-                } else if (type == Constants.LOAD_DATA) {
-                    mView.loadData(girlBean);
-                } else if (type == Constants.PULLUP_LOAD_MORE_DATA) {
-                    mView.loadMore(girlBean);
+                                              if (type == Constants.REFRESH_DATA) {
+                                                  mView.refresh(girlBean);
+                                              } else if (type == Constants.LOAD_DATA) {
+                                                  mView.loadData(girlBean);
+                                              } else if (type == Constants.LOAD_MORE_DATA) {
+                                                  mView.loadMore(girlBean);
+                                              }
+                                              mView.showNormal();
+                                          }
+
+                                          @Override
+                                          public void onDataNotAvailable() {
+                                              mView.showError();
+                                          }
+                                      });
+        } else {
+            mRemoteVideoData.getVideo(size, page, new VideoDataSource.LoadVDataCallback() {
+                @Override
+                public void onLoadDatas(VideoBean videoBean) {
+                    if (type == Constants.LOAD_DATA) {
+                        mView.loadData(videoBean.getResults());
+                    } else if (type == Constants.REFRESH_DATA) {
+                        mView.refresh(videoBean.getResults());
+                    } else if (type == Constants.LOAD_MORE_DATA) {
+                        mView.loadMore(videoBean.getResults());
+                    }
                 }
-                mView.showNormal();
-            }
 
-            @Override
-            public void onDataNotAvailable() {
-                mView.showError();
-            }
-        });
+                @Override
+                public void onDataNotAvailable() {
+                    mView.showError();
+                }
+            });
+        }
+
 
     }
 
