@@ -16,20 +16,26 @@ public class Constants {
 
 
     public static final String dir            = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
+    //保存图片状态码
+    public static       int    FIRST_DWON     = 0;
+    public static       int    EXISTS         = 1;
+    public static       int    DWON_PIC_EROOR = 2;
+    //fragment 加载状态码
     public static       int    LOAD_DATA      = 0;
     public static       int    REFRESH_DATA   = 1;
     public static       int    LOAD_MORE_DATA = 2;
     public static       int    NO_MORE_DATA   = 3;
     public static       int    LOADING_DATA   = 4;
     public static       String arrTitle[]     = {"Girl",
-                                                        "Android",
-                                                        "Video",
-                                                        "App",
-                                                        "iOS",
-                                                        "前端",
-                                                        "拓展资源"};
+                                                 "Android",
+                                                 "Video",
+                                                 "App",
+                                                 "iOS",
+                                                 "前端",
+                                                 "拓展资源"};
 
     public static final String FRAGMENT_GIRLS   = "福利";
+    public static final String FRAGMENT_ALL     = "all";
     public static final String FRAGMENT_ANDROID = "安卓";
     public static final String FRAGMENT_VIDEO   = "休息视频";
     public static final String FRAGMENT_IOS     = "iOS";

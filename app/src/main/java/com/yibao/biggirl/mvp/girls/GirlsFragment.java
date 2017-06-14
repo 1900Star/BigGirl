@@ -71,9 +71,9 @@ public class GirlsFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerGirlsComponent component = (DaggerGirlsComponent) DaggerGirlsComponent.builder()
-                                                                                                        .girlsModuls(new GirlsModuls(
-                                                                                                                this))
-                                                                                                        .build();
+                                                                                    .girlsModuls(new GirlsModuls(
+                                                                                            this))
+                                                                                    .build();
         component.in(this);
         mPresenter.start(Constants.FRAGMENT_GIRLS);
 

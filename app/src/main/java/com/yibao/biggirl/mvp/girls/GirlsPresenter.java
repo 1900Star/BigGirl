@@ -1,5 +1,8 @@
 package com.yibao.biggirl.mvp.girls;
 
+import com.yibao.biggirl.model.all.AllDataSource;
+import com.yibao.biggirl.model.all.AllResultsBean;
+import com.yibao.biggirl.model.all.RemoteAllData;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
 import com.yibao.biggirl.model.video.RemoteVideoData;
@@ -17,17 +20,18 @@ import java.util.List;
 public class GirlsPresenter
         implements GirlsContract.Presenter
 {
-    private GirlsContract.View mView;
-    private RemoteGirlsData    mRemoteGirlsData;
-    private RemoteVideoData    mRemoteVideoData;
+    private       GirlsContract.View mView;
+    private       RemoteGirlsData    mRemoteGirlsData;
+    private       RemoteVideoData    mRemoteVideoData;
+    private final RemoteAllData      mRemoteAllData;
 
     public GirlsPresenter(GirlsContract.View view) {
         this.mView = view;
         mRemoteGirlsData = new RemoteGirlsData();
         mRemoteVideoData = new RemoteVideoData();
+        mRemoteAllData = new RemoteAllData();
         mView.setPrenter(this);
     }
-
 
 
     @Override
@@ -38,13 +42,13 @@ public class GirlsPresenter
 
     @Override
     public void start(String dataType) {
-        loadData(20, 1, Constants.LOAD_DATA,dataType);
+        loadData(20, 1, Constants.LOAD_DATA, dataType);
 
 
     }
 
     @Override
-    public void loadData(int size, int page, int type,String dataType) {
+    public void loadData(int size, int page, int type, String dataType) {
         if (dataType.equals(Constants.FRAGMENT_GIRLS)) {
 
             mRemoteGirlsData.getGirls(dataType,
@@ -69,6 +73,22 @@ public class GirlsPresenter
                                               mView.showError();
                                           }
                                       });
+        } else if (dataType.equals(Constants.FRAGMENT_ALL)) {
+            mRemoteAllData.getAll(size, page, new AllDataSource.LoadADataCallback() {
+
+
+                @Override
+                public void onLoadData(List<AllResultsBean> list) {
+
+
+
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
         } else {
             mRemoteVideoData.getVideo(size, page, new VideoDataSource.LoadVDataCallback() {
                 @Override

@@ -10,5 +10,7 @@
     <dimen name="about_sign">14sp</dimen>
     <dimen name="about_content">13sp</dimen>
     <dimen name="big_tv">18sp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

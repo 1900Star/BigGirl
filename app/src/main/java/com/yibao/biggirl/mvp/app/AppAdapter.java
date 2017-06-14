@@ -89,7 +89,7 @@ public class AppAdapter
             Glide.with(mContext)
                  .load(girlData.getUrl())
                  .asBitmap()
-                 .placeholder(R.drawable.splash)
+                 .placeholder(R.mipmap.xuan)
                  .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                  .into(viewHolder.mIvIcon);
             viewHolder.mIvIcon.setOnClickListener(view -> TopBigPicDialogFragment.newInstance(girlData.getUrl())
@@ -159,13 +159,13 @@ public class AppAdapter
     {
         @BindView(R.id.iv_icon)
         ImageView    mIvIcon;
-        @BindView(R.id.tv_android_name)
+        @BindView(R.id.tv_video_name)
         TextView     mTvAndroidName;
-        @BindView(R.id.tv_android_des)
+        @BindView(R.id.tv_video_des)
         TextView     mTvAndroidDes;
         @BindView(R.id.ll)
         LinearLayout mLl;
-        @BindView(R.id.tv_android_time)
+        @BindView(R.id.tv_video_time)
         TextView     mTvAndroidTime;
 
         MyViewHolder(View view) {

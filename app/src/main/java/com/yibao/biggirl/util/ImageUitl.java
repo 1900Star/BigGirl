@@ -38,6 +38,10 @@ import okhttp3.Response;
  */
 public class ImageUitl {
 
+
+    private static String name;
+    private static File   file;
+
     public static ZoomImageView creatZoomView(Context context) {
         ZoomImageView view = new ZoomImageView(context);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -57,8 +61,9 @@ public class ImageUitl {
              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(view);
 
-    }  //加载圆图
+    }
 
+    //Glide加载圆图
     public static void loadPicCirc(Context context, String url, ImageView view) {
         Glide.with(context)
              .load(url)
@@ -93,28 +98,34 @@ public class ImageUitl {
     /**
      * 保存图片
      */
-    public static boolean downloadPic(Bitmap bitmap,
-                                      ImageView view,
-                                      String url,
-                                      boolean isShowPhotos)
+    public static int downloadPic(String url, int type)
     {
-        String name = getNameFromUrl(url);
-        File   path = new File(Constants.dir);
+        if (type == 1) {
+            LogUtil.d("share");
+            name = "share.jpg";
+        } else {
+
+            name = getNameFromUrl(url);
+        }
+
+        File path = new File(Constants.dir);
         if (!path.exists()) {
             path.mkdir();
         }
-        File file = new File(path + "/", name);
+        LogUtil.d("name==   " + name);
+        file = new File(path + "/", name);
         if (!file.exists()) {
             try {
                 file.createNewFile();
+
             } catch (IOException e) {
                 e.printStackTrace();
-                return false;
+                return Constants.DWON_PIC_EROOR;
             }
         } else {
-            SnakbarUtil.picAlreadyExists(view);
-            return true;
+            return Constants.EXISTS;
         }
+
         Request request = new Request.Builder().url(url)
                                                .build();
         MyApplication.defaultOkHttpClient()
@@ -122,7 +133,8 @@ public class ImageUitl {
                      .enqueue(new Callback() {
                          @Override
                          public void onFailure(okhttp3.Call call, IOException e) {
-
+                             e.printStackTrace();
+                             LogUtil.d("下载出错 " + e.toString());
                          }
 
 
@@ -134,6 +146,7 @@ public class ImageUitl {
                              byte[]           buf = new byte[1024 * 4];
                              int              len;
                              FileOutputStream fos = null;
+
                              is = response.body()
                                           .byteStream();
                              long total = response.body()
@@ -147,20 +160,15 @@ public class ImageUitl {
                                      fos.write(buf, 0, len);
                                      sum += len;
                                      int progress = (int) (sum * 1.0f / total * 100);
+                                     LogUtil.d("正在测试下载进度");
                                      //Rxbus发送下载进度
                                      MyApplication.getIntstance()
                                                   .bus()
                                                   .post(new DownGrilProgressData(progress));
 
                                  }
-                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                                 //发个意图让MediasSanner去扫描SD卡，将下载的图片更新到图库
-                                 Intent intent = new Intent();
-                                 intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                 intent.setData(Uri.fromFile(file));
-                                 MyApplication.getIntstance()
-                                              .sendBroadcast(intent);
-                                 LogUtil.d("TTTtt", "广播发出去了");
+
+
                                  fos.flush();
                                  fos.close();
 
@@ -180,35 +188,29 @@ public class ImageUitl {
 
 
                      });
-
-
-        if (isShowPhotos) {
-
-
-            try {
-                MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
-                                                                 .getContentResolver(),
-                                                    file.getAbsolutePath(),
-                                                    name,
-                                                    null);
-                LogUtil.d("============================== 保存成功");
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-
-            //
-            //            MyApplication.getIntstance()
-            //                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-            //                                                   Uri.fromFile(file.getAbsoluteFile())));
-            //                    MyApplication.getIntstance()
-            //                                 .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-            //                                                           Uri.parse("file://" + file)));
-        }
-        return true;
+        return Constants.FIRST_DWON;
 
     }
 
+    //将下载的图片更新到图库
+    public static boolean insertImageToPhoto() {
+
+        try {
+            MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
+                                                             .getContentResolver(),
+                                                file.getAbsolutePath(),
+                                                name,
+                                                null);
+            MyApplication.getIntstance()
+                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                                   Uri.parse("file://" + file)));
+        } catch (Exception e) {
+            LogUtil.d("图片保存出错 ！");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     //初始化数据
     public static List<String> getDefultUrl(List<String> list) {
@@ -216,7 +218,7 @@ public class ImageUitl {
         return list;
     }
 
-    //初始化数据
+    //初始化Unsplash数据
     public static List<String> getUnsplashUrl(List<String> list) {
         for (int i = 0; i < 1000; i++) {
             list.add(Constants.UNSPLASH_API);

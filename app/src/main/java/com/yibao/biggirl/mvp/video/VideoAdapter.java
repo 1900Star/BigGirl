@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.video;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,11 +57,12 @@ class VideoAdapter
                           ? "Smartisan"
                           : who;
 
-            viewHolder.mTvAndroidName.setText(name);
+            viewHolder.mTvVideoName.setText(name);
 
             String time = item.getCreatedAt();
-            viewHolder.mTvAndroidTime.setText(time.substring(0, time.lastIndexOf("T")));
-            viewHolder.mTvAndroidDes.setText(item.getDesc());
+            viewHolder.mTvVideoTime.setText(time.substring(0, time.lastIndexOf("T")));
+            viewHolder.mTvVideoType.setText(item.getType());
+            viewHolder.mTvVideoDes.setText(item.getDesc());
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemWebClickListener) {
                     ((OnRvItemWebClickListener) mContext).showDesDetall(item.getUrl());
@@ -74,12 +76,16 @@ class VideoAdapter
     static class ViewHolder
             extends RecyclerView.ViewHolder
     {
-        @BindView(R.id.tv_android_name)
-        TextView       mTvAndroidName;
-        @BindView(R.id.tv_android_des)
-        TextView       mTvAndroidDes;
-        @BindView(R.id.tv_android_time)
-        TextView       mTvAndroidTime;
+        @BindView(R.id.tv_video_name)
+        TextView       mTvVideoName;
+        @BindView(R.id.tv_video_des)
+        TextView       mTvVideoDes;
+        @BindView(R.id.ll)
+        LinearLayout   mLl;
+        @BindView(R.id.tv_video_type)
+        TextView       mTvVideoType;
+        @BindView(R.id.tv_video_time)
+        TextView       mTvVideoTime;
         @BindView(R.id.rl_video)
         RelativeLayout mRlVideo;
 

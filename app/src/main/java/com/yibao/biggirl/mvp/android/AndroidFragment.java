@@ -135,12 +135,6 @@ public class AndroidFragment
     @Override
     public void loadMore(List<AndroidAndGirl> list) {
 
-
-        //        mAdapter.AddFooter(list);
-        //        mAdapter.notifyDataSetChanged();
-        //        loading = false;
-        //        mProgressBar.setVisibility(View.INVISIBLE);
-
     }
 
 

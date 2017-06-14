@@ -19,14 +19,14 @@ import java.util.Map;
  * Time:2017/5/7 14:55
  */
 public class FragmentFactory {
-    public static final int                    FRAGMENT_GIRLS    = 0;//妹子
-    public static final int                    FRAGMENT_ANDROID  = 1;//安卓
-    public static final int                    FRAGMENT_VEDIO    = 2;//视频
-    public static final int                    FRAGMENT_APP      = 3;//App
-    public static final int                    FRAGMENT_IOS      = 4;//iOS
-    public static final int                    FRAGMENT_FRONT    = 5;//前端
-    public static final int                    FRAGMENT_EXTEND   = 6;//拓展资源
-    public static       Map<Integer, Fragment> mCacheFragmentMap = new HashMap<>();
+    private static final int                    FRAGMENT_GIRLS    = 0;//妹子
+    private static final int                    FRAGMENT_ANDROID  = 1;//安卓
+    private static final int                    FRAGMENT_VEDIO    = 2;//视频
+    private static final  int                    FRAGMENT_APP      = 3;//App
+    private static final  int                    FRAGMENT_IOS      = 4;//iOS
+    private static final  int                    FRAGMENT_FRONT    = 5;//前端
+    private static final  int                    FRAGMENT_EXTEND   = 6;//拓展资源
+    private static        Map<Integer, Fragment> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
 

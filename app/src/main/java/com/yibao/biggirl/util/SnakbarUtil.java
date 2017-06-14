@@ -18,7 +18,7 @@ public class SnakbarUtil {
     /**
      * 下载成功提示
      */
-    public static void showSuccessStatus(View view) {
+    public static void showSuccessView(View view) {
         Snackbar snackbar = make(view, "图片保存成功 -_-", Snackbar.LENGTH_LONG);
         snackbar.getView()
                 .setBackgroundColor(ColorUtil.successColor);
@@ -40,9 +40,21 @@ public class SnakbarUtil {
     /**
      * 下载失败提示
      */
-    public static void showErrorStatus(View view) {
+    public static void showDownPicFail(View view) {
 
         Snackbar snackbar = make(view, "图片保存失败 -_-", Snackbar.LENGTH_LONG);
+        snackbar.getView()
+                .setBackgroundColor(ColorUtil.errorColor);
+        snackbar.show();
+
+    }
+
+    /**
+     * 分享失败提示
+     */
+    public static void showSharePicFail(View view) {
+
+        Snackbar snackbar = make(view, "分享失败 -_-", Snackbar.LENGTH_LONG);
         snackbar.getView()
                 .setBackgroundColor(ColorUtil.errorColor);
         snackbar.show();

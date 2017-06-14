@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -26,8 +27,10 @@ import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.girls.GirlsAdapter;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
+import com.yibao.biggirl.mvp.main.ContentActivity;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
@@ -69,6 +72,10 @@ public class MainActivity
     CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.iv_collapsing)
     ImageView               mIvCollapsing;
+    @BindView(R.id.fab)
+    FloatingActionButton    mFab;
+
+
     private long exitTime = 0;
 
     private Unbinder  mBind;
@@ -82,6 +89,7 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         mBind = ButterKnife.bind(this);
         if (savedInstanceState == null) {
+
             initView();
             initData();
             initListener();
@@ -91,6 +99,7 @@ public class MainActivity
     }
 
     private void initListener() {
+
         MyOnpageChangeListener mMyOnpageChangeListener = new MyOnpageChangeListener();
 
         mViewPager.addOnPageChangeListener(mMyOnpageChangeListener);
@@ -157,7 +166,7 @@ public class MainActivity
                 break;
             case R.id.beautiful_girl_video:
 
-                //                RetrofitHelper.getUnsplashApi();
+                //                                RetrofitHelper.getUnsplashApi();
                 //                AppPresenter.getDatas(20, 1, Constants.FRAGMENT_APP);
                 BeautifulDialogFag.newInstance()
                                   .show(getSupportFragmentManager(), "beautiful");
@@ -184,7 +193,6 @@ public class MainActivity
 
 
     private void initData() {
-
         mTablayout.setupWithViewPager(mViewPager);
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(7);
@@ -221,9 +229,12 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.main_action_search:
                 LogUtil.d("Search");
+
                 break;
             case R.id.main_action_star:
                 LogUtil.d("Star");
+                startActivity(new Intent(this, ContentActivity.class));
+
                 break;
             default:
                 break;
@@ -244,7 +255,7 @@ public class MainActivity
     @Override
     public void showPagerFragment(int position, List<String> list) {
         //设置navHeader头像
-        ImageUitl.loadPic(this, list.get(0), mIvHeader);
+        ImageUitl.loadPic(this, list.get(position), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);
         intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
         intent.putExtra("position", position);
@@ -265,12 +276,17 @@ public class MainActivity
                 SnakbarUtil.finishActivity(mDrawerLayout);
                 exitTime = System.currentTimeMillis();
             } else {
+                FileUtil.delDir(Constants.dir, true);
                 finish();
                 System.exit(0);
             }
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public static MainActivity newInstance() {
+        return new MainActivity();
     }
 
     @Override

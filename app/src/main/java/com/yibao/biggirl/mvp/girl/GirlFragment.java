@@ -2,9 +2,8 @@ package com.yibao.biggirl.mvp.girl;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,25 +16,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
-import com.yibao.biggirl.util.BitmapUtil;
+import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.ImageUitl;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
 import com.yibao.biggirl.view.ProgressView;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -85,6 +85,7 @@ public class GirlFragment
         mList = bundle.getStringArrayList("girlList");
         mPosition = bundle.getInt("position");
         mUrl = mList.get(mPosition);
+        LogUtil.d("positon= " + mPosition + "   url = " + mUrl);
         mApplication = (MyApplication) getActivity().getApplication();
         disposables = new CompositeDisposable();
     }
@@ -125,12 +126,29 @@ public class GirlFragment
 
     private void setProgress(int progress) {
         mPbDown.setProgress(progress);
-
         if (progress == MAX_DOWN_PREGRESS) {
-            SnakbarUtil.showSuccessStatus(mPbDown);
+            //将下载的图片插入到系统相册
+            Observable.just(ImageUitl.insertImageToPhoto())
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .subscribe(aBoolean -> {
+                          if (aBoolean) {
+                              SnakbarUtil.showSuccessView(mPbDown);
+                          } else {
+                              SnakbarUtil.showDownPicFail(mPbDown);
+                          }
+                      });
         }
     }
 
+    //Rxbus接收下载进度 ，设置progress进度
+    public void getProgress() {
+        disposables.add(mApplication.bus()
+                                    .toObserverable(DownGrilProgressData.class)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(data -> GirlFragment.this.setProgress(data.getProgress())));
+    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -139,7 +157,6 @@ public class GirlFragment
 
     @Override
     public void onPageSelected(int position) {
-        getColor();
         mUrl = mList.get(position);
     }
 
@@ -173,18 +190,30 @@ public class GirlFragment
             case R.id.action_gallery:  //从相册选择壁纸
                 WallPaperUtil.choiceWallPaper(getActivity());
                 break;
-            case R.id.action_share_mz:  //默认美女
-                ImageView iv = (ImageView) mPagerGirlAdapter.getPrimaryItem();
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                //                intent.putExtras(iv);
-                intent.setType("image/*");
-                startActivity(Intent.createChooser(intent, "分享MeiZhi到"));
+            case R.id.action_share_mz:  //分享美女
+                Observable.just(ImageUitl.downloadPic(mUrl, 1))
+                          .subscribeOn(Schedulers.io())
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .subscribe(integer -> {
+                              if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
+                                  Uri    url    = Uri.fromFile(new File(Constants.dir + "/share.jpg"));
+                                  Intent intent = new Intent();
+                                  intent.setAction(Intent.ACTION_SEND);
+                                  intent.putExtra(Intent.EXTRA_STREAM, url);
+                                  intent.setType("image/*");
+                                  startActivity(Intent.createChooser(intent, "将妹子分享到"));
+
+                              } else if (integer == Constants.DWON_PIC_EROOR) {
+                                  SnakbarUtil.showSharePicFail(mPbDown);
+                              }
+                          });
 
 
                 break;
             case R.id.action_gank:  //干货集中营
                 initData();
+                break;
+            default:
                 break;
 
         }
@@ -192,6 +221,31 @@ public class GirlFragment
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    //图片保存
+    @OnClick({R.id.iv_down})
+    public void onViewClicked(View view) {
+
+        // 网络检查
+        boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
+        if (isConnected) {
+            Observable.just(ImageUitl.downloadPic(mUrl, Constants.FIRST_DWON))
+                      .subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread())
+                      .subscribe(integer -> {
+                          if (integer == Constants.EXISTS) {
+                              SnakbarUtil.picAlreadyExists(mPbDown);
+                          } else if (integer == Constants.DWON_PIC_EROOR) {
+                              SnakbarUtil.showDownPicFail(mPbDown);
+                          }
+                      });
+        } else {
+            SnakbarUtil.netErrors(mPbDown);
+        }
+
+    }
+
 
     public GirlFragment newInstance() { return new GirlFragment(); }
 
@@ -202,59 +256,4 @@ public class GirlFragment
         disposables.clear();
         unbinder.unbind();
     }
-
-    //Rxbus接收下载进度 ，设置progress进度
-    public void getProgress() {
-        disposables.add(mApplication.bus()
-                                    .toObserverable(DownGrilProgressData.class)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(data -> GirlFragment.this.setProgress(data.getProgress())));
-    }
-
-
-    public void getColor() {
-        ImageView iv = (ImageView) mPagerGirlAdapter.getPrimaryItem();
-        if (iv != null) {
-
-            //            Palette.Builder builder = Palette.from(BitmapUtil.drawableToBitmap(iv.getDrawable()));
-            //            builder.generate(palette -> {
-            //                Palette.Swatch vir = palette.getVibrantSwatch();
-            //                if (vir == null) {
-            //                    return;
-            //                }
-            //                int rgb = vir.getRgb();
-            //                LogUtil.d("Rgb== " + rgb);
-            //                mPbDown.setBackgroundColor(rgb);
-            //                mToolbar.setBackgroundColor(rgb);
-            //
-            if (Build.VERSION.SDK_INT >= 21) {
-                Window window = getActivity().getWindow();
-                //                    window.setStatusBarColor(ColorUtil.colorBurn(vir.getRgb()));
-            }
-            //            });
-        }
-    }
-
-
-    @OnClick({R.id.iv_down})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_down:
-                //图片保存   网络检查
-                boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
-                if (isConnected) {
-                    ImageView image  = (ImageView) mPagerGirlAdapter.getPrimaryItem();
-                    Bitmap    bitmap = BitmapUtil.drawableToBitmap(image.getDrawable());
-
-                    ImageUitl.downloadPic(bitmap, image, mUrl, true);
-                    //                        SnakbarUtil.savePic(mPbDown, mUrl);
-
-                } else {
-                    SnakbarUtil.netErrors(mPbDown);
-                }
-                break;
-        }
-    }
-
 }

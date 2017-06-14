@@ -145,13 +145,13 @@ public class AndroidAdapter
     {
         @BindView(R.id.iv_icon)
         ImageView    mIvIcon;
-        @BindView(R.id.tv_android_name)
+        @BindView(R.id.tv_video_name)
         TextView     mTvAndroidName;
-        @BindView(R.id.tv_android_des)
+        @BindView(R.id.tv_video_des)
         TextView     mTvAndroidDes;
         @BindView(R.id.ll)
         LinearLayout mLl;
-        @BindView(R.id.tv_android_time)
+        @BindView(R.id.tv_video_time)
         TextView     mTvAndroidTime;
 
         MyViewHolder(View view) {

@@ -115,7 +115,8 @@ public class ProgressView
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setStrokeWidth(10);
                 mPaint.setAntiAlias(true);
-                mPaint.setColor(Color.argb(255,212, 200, 55));
+                //                mPaint.setColor(Color.argb(255,212, 200, 55));
+                mPaint.setColor(Color.argb(255, 90, 180, 63));
             }
             canvas.drawArc(mOval, startAngle, sweepAngle, useCenter, mPaint);
         }
