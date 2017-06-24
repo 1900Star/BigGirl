@@ -76,6 +76,7 @@ public class AndroidFragment
 
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -103,7 +104,7 @@ public class AndroidFragment
 
 
         mAdapter = new AndroidAdapter(getContext(), list);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter,mFab);
         mFagContent.addView(recyclerView);
 
     }

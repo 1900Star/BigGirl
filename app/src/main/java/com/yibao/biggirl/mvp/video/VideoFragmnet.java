@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
-import com.yibao.biggirl.model.video.VideoResultsBean;
+import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.mvp.girls.GirlsPresenter;
 import com.yibao.biggirl.util.Constants;
@@ -39,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class VideoFragmnet
         extends Fragment
-        implements GirlsContract.View<VideoResultsBean>, SwipeRefreshLayout.OnRefreshListener
+        implements GirlsContract.View<ResultsBeanX >, SwipeRefreshLayout.OnRefreshListener
 {
 
 
@@ -52,7 +52,7 @@ public class VideoFragmnet
     private int page = 1;
     private int size = 20;
     private FloatingActionButton        mFab;
-    private ArrayList<VideoResultsBean> mList;
+    private List<ResultsBeanX> mList;
     private GirlsContract.Presenter mPresenter;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class VideoFragmnet
     }
 
 
-    private void initRecyclerView(List<VideoResultsBean> list, int type, String dataType) {
+    private void initRecyclerView(List<ResultsBeanX> list, int type, String dataType) {
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
@@ -93,7 +93,7 @@ public class VideoFragmnet
         RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(
                                                                           type,
 
-                                                                          mAdapter);
+                                                                          mAdapter,mFab);
 
 
 
@@ -199,14 +199,14 @@ public class VideoFragmnet
     }
 
     @Override
-    public void loadData(List<VideoResultsBean> list) {
+    public void loadData(List<ResultsBeanX> list) {
         mList.addAll(list);
         initRecyclerView(mList, 1, Constants.FRAGMENT_VIDEO);
         mSwipeRefresh.setRefreshing(false);
     }
 
     @Override
-    public void refresh(List<VideoResultsBean> list) {
+    public void refresh(List<ResultsBeanX> list) {
         mList.clear();
         mAdapter.clear();
         mList.addAll(list);
@@ -216,7 +216,7 @@ public class VideoFragmnet
     }
 
     @Override
-    public void loadMore(List<VideoResultsBean> list) {
+    public void loadMore(List<ResultsBeanX> list) {
         mList.addAll(list);
         mAdapter.AddFooter(mList);
         mAdapter.notifyDataSetChanged();

@@ -60,10 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="62dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@mipmap/fab_up"/>
     <include layout="@layout/content_main"
              app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

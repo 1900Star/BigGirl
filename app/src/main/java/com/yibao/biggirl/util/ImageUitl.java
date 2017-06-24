@@ -101,8 +101,7 @@ public class ImageUitl {
     public static int downloadPic(String url, int type)
     {
         if (type == 1) {
-            LogUtil.d("share");
-            name = "share.jpg";
+            name = "share_y.jpg";
         } else {
 
             name = getNameFromUrl(url);
@@ -112,7 +111,6 @@ public class ImageUitl {
         if (!path.exists()) {
             path.mkdir();
         }
-        LogUtil.d("name==   " + name);
         file = new File(path + "/", name);
         if (!file.exists()) {
             try {
@@ -160,11 +158,10 @@ public class ImageUitl {
                                      fos.write(buf, 0, len);
                                      sum += len;
                                      int progress = (int) (sum * 1.0f / total * 100);
-                                     LogUtil.d("正在测试下载进度");
                                      //Rxbus发送下载进度
                                      MyApplication.getIntstance()
                                                   .bus()
-                                                  .post(new DownGrilProgressData(progress));
+                                                  .post(new DownGrilProgressData(progress, type));
 
                                  }
 
@@ -205,7 +202,7 @@ public class ImageUitl {
                          .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                                                    Uri.parse("file://" + file)));
         } catch (Exception e) {
-            LogUtil.d("图片保存出错 ！");
+            LogUtil.d("图片保存出错 ！ " + e.toString());
             e.printStackTrace();
             return false;
         }

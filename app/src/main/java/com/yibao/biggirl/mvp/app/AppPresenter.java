@@ -113,8 +113,8 @@ public class AppPresenter
         @Override
         public void onNext(AndroidAndGirl bean) {
 
-            for (int i = 0; i < bean.mGrilData.size(); i++) {
-                AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData, bean.mGrilData);
+            for (int i = 0; i < bean.mGirlData.size(); i++) {
+                AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData, bean.mGirlData);
                 mList.add(itemData);
             }
             LogUtil.d("XXXXXXXXXXXXXXXXXXXXXX  == " + mList.size());
@@ -140,7 +140,7 @@ public class AppPresenter
                                     .size(); i++) {
 
             item.mAndroidData = androidDesBean.getResults();
-            item.mGrilData = girlBean.getResults();
+            item.mGirlData = girlBean.getResults();
 
         }
 

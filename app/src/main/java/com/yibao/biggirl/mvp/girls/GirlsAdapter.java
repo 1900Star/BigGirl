@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.util.ImageUitl;
 
 import java.util.List;
@@ -31,13 +32,7 @@ public class GirlsAdapter
         super(list);
         mContext = context;
     }
-    //    private ArrayList<ResultsBean> mList;
 
-    //Item回调接口
-    public interface OnRvItemClickListener {
-        void showPagerFragment(int position, List<String> list);
-
-    }
 
     @Override
     protected RecyclerView.ViewHolder getViewHolder(View view) {
@@ -58,8 +53,8 @@ public class GirlsAdapter
 
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemClickListener) {
-                    ((OnRvItemClickListener) mContext).showPagerFragment(holder.getAdapterPosition(),
-                                                                         mList);
+                    ((OnRvItemClickListener) mContext).showBigGirl(holder.getAdapterPosition(),
+                                                                   mList);
                 }
             });
         }

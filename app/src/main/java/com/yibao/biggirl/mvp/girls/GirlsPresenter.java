@@ -3,10 +3,10 @@ package com.yibao.biggirl.mvp.girls;
 import com.yibao.biggirl.model.all.AllDataSource;
 import com.yibao.biggirl.model.all.AllResultsBean;
 import com.yibao.biggirl.model.all.RemoteAllData;
+import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
 import com.yibao.biggirl.model.video.RemoteVideoData;
-import com.yibao.biggirl.model.video.VideoBean;
 import com.yibao.biggirl.model.video.VideoDataSource;
 import com.yibao.biggirl.util.Constants;
 
@@ -30,7 +30,6 @@ public class GirlsPresenter
         mRemoteGirlsData = new RemoteGirlsData();
         mRemoteVideoData = new RemoteVideoData();
         mRemoteAllData = new RemoteAllData();
-        mView.setPrenter(this);
     }
 
 
@@ -81,7 +80,6 @@ public class GirlsPresenter
                 public void onLoadData(List<AllResultsBean> list) {
 
 
-
                 }
 
                 @Override
@@ -92,7 +90,7 @@ public class GirlsPresenter
         } else {
             mRemoteVideoData.getVideo(size, page, new VideoDataSource.LoadVDataCallback() {
                 @Override
-                public void onLoadDatas(VideoBean videoBean) {
+                public void onLoadDatas(AndroidDesBean videoBean) {
                     if (type == Constants.LOAD_DATA) {
                         mView.loadData(videoBean.getResults());
                     } else if (type == Constants.REFRESH_DATA) {

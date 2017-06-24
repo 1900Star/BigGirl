@@ -201,11 +201,24 @@ public class FileUtil {
         String cachePath;
         //isExternalStorageEmulated()设备的外存是否是用内存模拟的，是则返回true
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageEmulated()) {
-            cachePath = context.getExternalCacheDir().getAbsolutePath();
+            cachePath = context.getExternalCacheDir()
+                               .getAbsolutePath();
         } else {
-            cachePath = context.getCacheDir().getAbsolutePath();
+            cachePath = context.getCacheDir()
+                               .getAbsolutePath();
         }
         return cachePath;
+    }
+
+    public static String getCreatTime(String str) {
+        return str.substring(0, str.lastIndexOf("T"));
+    }
+
+    public static long getId(String str) {
+        //        String str="2017-06-12T10:22:59.890Z";
+
+        return Long.parseLong(str.substring(11, 19)
+                                 .replaceAll(":", ""));
     }
 
 }

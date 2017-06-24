@@ -2,7 +2,6 @@ package com.yibao.biggirl.mvp.girl;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,8 +20,8 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
@@ -85,7 +84,6 @@ public class GirlFragment
         mList = bundle.getStringArrayList("girlList");
         mPosition = bundle.getInt("position");
         mUrl = mList.get(mPosition);
-        LogUtil.d("positon= " + mPosition + "   url = " + mUrl);
         mApplication = (MyApplication) getActivity().getApplication();
         disposables = new CompositeDisposable();
     }
@@ -100,6 +98,8 @@ public class GirlFragment
 
             mView = inflater.inflate(R.layout.girl_frag, container, false);
             unbinder = ButterKnife.bind(this, mView);
+
+
             getProgress();
             initData();
         }
@@ -113,10 +113,8 @@ public class GirlFragment
         activity.getSupportActionBar()
                 .setDisplayHomeAsUpEnabled(true);
 
-        mToolbar.setNavigationIcon(R.mipmap.back);
-        mToolbar.setBackgroundColor(Color.BLACK);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setHasOptionsMenu(true);
-
         mPagerGirlAdapter = new GirlAdapter(getActivity(), mList);
         mVp.setAdapter(mPagerGirlAdapter);
         mVp.setCurrentItem(mPosition);
@@ -124,9 +122,13 @@ public class GirlFragment
     }
 
 
-    private void setProgress(int progress) {
+    private void setProgress(int progress, int type) {
         mPbDown.setProgress(progress);
-        if (progress == MAX_DOWN_PREGRESS) {
+        if (type == 1&&progress == MAX_DOWN_PREGRESS) {
+            SnakbarUtil.showSuccessView(mPbDown);
+            return;
+        }
+        if (progress == MAX_DOWN_PREGRESS ) {
             //将下载的图片插入到系统相册
             Observable.just(ImageUitl.insertImageToPhoto())
                       .subscribeOn(Schedulers.io())
@@ -147,7 +149,8 @@ public class GirlFragment
                                     .toObserverable(DownGrilProgressData.class)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(data -> GirlFragment.this.setProgress(data.getProgress())));
+                                    .subscribe(data -> GirlFragment.this.setProgress(data.getProgress(),
+                                                                             data.getType())));
     }
 
     @Override
@@ -187,16 +190,15 @@ public class GirlFragment
                 WallPaperUtil.setWallPaper(getActivity(), mPagerGirlAdapter);
                 SnakbarUtil.setWallpaer(mPbDown);
                 break;
-            case R.id.action_gallery:  //从相册选择壁纸
-                WallPaperUtil.choiceWallPaper(getActivity());
-                break;
+
             case R.id.action_share_mz:  //分享美女
-                Observable.just(ImageUitl.downloadPic(mUrl, 1))
+                FileUtil.delFile(Constants.deleteDir);
+                Observable.just(ImageUitl.downloadPic(mUrl, Constants.EXISTS))
                           .subscribeOn(Schedulers.io())
                           .observeOn(AndroidSchedulers.mainThread())
                           .subscribe(integer -> {
                               if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
-                                  Uri    url    = Uri.fromFile(new File(Constants.dir + "/share.jpg"));
+                                  Uri    url    = Uri.fromFile(new File(Constants.deleteDir));
                                   Intent intent = new Intent();
                                   intent.setAction(Intent.ACTION_SEND);
                                   intent.putExtra(Intent.EXTRA_STREAM, url);
@@ -210,9 +212,7 @@ public class GirlFragment
 
 
                 break;
-            case R.id.action_gank:  //干货集中营
-                initData();
-                break;
+
             default:
                 break;
 
@@ -256,4 +256,5 @@ public class GirlFragment
         disposables.clear();
         unbinder.unbind();
     }
+
 }

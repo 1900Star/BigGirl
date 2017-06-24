@@ -3,9 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/action_setwallpaer"/>
+            android:id="@+id/action_my_favorite"
+            android:icon="@drawable/ic_star_white_24dp"
+            android:title="@string/favorite"/>
         <item
+            android:id="@+id/action_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/action_settings"/>
         <item
@@ -19,15 +21,15 @@
     <item android:title="@string/communicate">
         <menu>
             <item
-                android:id="@+id/beautiful_girl_video"
+                android:id="@+id/action_girl_video"
                 android:icon="@drawable/ic_menu_camera"
                 android:title="@string/video"/>
             <item
-                android:id="@+id/share_me"
+                android:id="@+id/action_share_me"
                 android:icon="@drawable/ic_menu_share"
-                android:title="@string/share"/>
+                android:title="@string/action_share"/>
             <item
-                android:id="@+id/about_me"
+                android:id="@+id/action_about_me"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/about"/>
         </menu>

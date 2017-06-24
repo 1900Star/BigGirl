@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'org.greenrobot.greendao'
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
@@ -29,7 +31,15 @@ android {
             }
         }
     }
+    greendao {
+        //数据库schema版本，也可以理解为数据库版本号
+        schemaVersion 1
+        //设置DaoMaster 、DaoSession、Dao包名
+        daoPackage 'com.yibao.biggirl.model.greendao'
+        //设置DaoMaster 、DaoSession、Dao目录
+        targetGenDir 'src/main/java'
 
+    }
 
     buildTypes {
         release {
@@ -67,8 +77,7 @@ dependencies {
     //Eventbus
 
     //compile 'org.greenrobot:eventbus:3.0.0'
-    //dagger2
-    //使用apt插件为dagger2生成代码
+
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -91,4 +100,5 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile 'org.greenrobot:greendao:3.2.2'
 }

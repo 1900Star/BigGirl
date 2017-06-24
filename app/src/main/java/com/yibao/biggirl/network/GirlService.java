@@ -4,7 +4,6 @@ import com.yibao.biggirl.model.all.AllBean;
 import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.model.girls.GirlsBean;
 import com.yibao.biggirl.model.unsplash.Unsplash;
-import com.yibao.biggirl.model.video.VideoBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -31,7 +30,7 @@ public interface GirlService {
 
     //Video
     @GET("api/data/{type}/{count}/{page}")
-    Observable<VideoBean> getVideo(@Path("type") String type,
+    Observable<AndroidDesBean> getVideo(@Path("type") String type,
                                    @Path("count") int count,
                                    @Path("page") int page);
     //All

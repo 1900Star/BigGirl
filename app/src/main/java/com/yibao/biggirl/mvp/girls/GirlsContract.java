@@ -14,11 +14,6 @@ public interface GirlsContract {
     interface View<T>
             extends BaseView<Presenter>
     {
-//        void loadData(List<ResultsBean> list);
-//
-//        void refresh(List<ResultsBean> list);
-
-//        void loadMore(List<ResultsBean> list);
 
         void loadData(List<T> list);
 
@@ -36,7 +31,7 @@ public interface GirlsContract {
     interface Presenter
             extends BasePresenter
     {
-        void loadData(int size, int page, int loadType,String dataType);
+        void loadData(int size, int page, int loadType, String dataType);
 
     }
 }

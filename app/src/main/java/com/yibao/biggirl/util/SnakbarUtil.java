@@ -27,6 +27,28 @@ public class SnakbarUtil {
     }
 
     /**
+     * 收藏成功提示
+     */
+    public static void favoriteSuccessView(View view, String str) {
+        Snackbar snackbar = make(view, str, Snackbar.LENGTH_LONG);
+        snackbar.getView()
+                .setBackgroundColor(ColorUtil.successColor);
+        snackbar.show();
+
+    }
+
+    /**
+     * 收藏失败提示
+     */
+    public static void favoriteFailView(View view, String str) {
+        Snackbar snackbar = make(view, str, Snackbar.LENGTH_LONG);
+        snackbar.getView()
+                .setBackgroundColor(ColorUtil.errorColor);
+        snackbar.show();
+
+    }
+
+    /**
      * 图片已经下载过啦
      */
     public static void picAlreadyExists(View view) {

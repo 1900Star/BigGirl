@@ -57,8 +57,8 @@ public class RemoteAppData
         @Override
         public void onNext(AndroidAndGirl bean) {
             List<AndroidAndGirl> list = new ArrayList<>();
-            for (int i = 0; i < bean.mGrilData.size(); i++) {
-                AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData, bean.mGrilData);
+            for (int i = 0; i < bean.mGirlData.size(); i++) {
+                AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData, bean.mGirlData);
                 list.add(itemData);
             }
             mCallback.onLoadData(list);
@@ -81,7 +81,7 @@ public class RemoteAppData
                                     .size(); i++) {
 
             item.mAndroidData = androidDesBean.getResults();
-            item.mGrilData = girlBean.getResults();
+            item.mGirlData = girlBean.getResults();
 
         }
 

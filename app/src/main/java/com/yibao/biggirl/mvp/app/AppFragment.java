@@ -46,7 +46,7 @@ public class AppFragment
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
-    private List<AndroidAndGirl> mLists = new ArrayList<>();
+    private List<AndroidAndGirl> mList = new ArrayList<>();
     private AppAdapter mAdapter;
 
     private int page = 1;
@@ -58,7 +58,6 @@ public class AppFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         DaggerAppComponent component = (DaggerAppComponent) DaggerAppComponent.builder()
                                                                               .appModuls(new AppModuls(
                                                                                       this))
@@ -115,7 +114,10 @@ public class AppFragment
                         LogUtil.d("======  加载更多 来了 ==== " + lastItem);
                         mAdapter.changeMoreStatus(Constants.LOADING_DATA);
                         LogUtil.d("========  mlist  size  page    ==============" + "===" + page);
-                        //                        mPresenter.loadData(size, page, Constants.LOAD_MORE_DATA);
+                        mPresenter.loadData(size,
+                                            page,
+                                            Constants.FRAGMENT_APP,
+                                            Constants.LOAD_MORE_DATA);
 
                     }
 
@@ -133,14 +135,6 @@ public class AppFragment
         });
     }
 
-
-    @Override
-    public void loadData(List<AndroidAndGirl> list) {
-        mLists.clear();
-        mLists.addAll(list);
-        initData(mLists);
-        mSwipeRefresh.setRefreshing(false);
-    }
 
     @Override
     public void onRefresh() {
@@ -163,14 +157,19 @@ public class AppFragment
     }
 
     @Override
+    public void loadData(List<AndroidAndGirl> list) {
+        mList.clear();
+        mList.addAll(list);
+        initData(mList);
+        mSwipeRefresh.setRefreshing(false);
+    }
+
+    @Override
     public void loadMore(List<AndroidAndGirl> list) {
-        //        if (mLists.size() % 20 == 0) {
-        //
-        //            page++;
-        //            mPresenter.loadData(size, page, Constants.LOAD_DATA);
-        //        }
-        mAdapter.AddFooter(list);
-        LogUtil.d("========  Add Footer    ==============" + mLists.size() + " ===" + page);
+
+
+//        mAdapter.AddFooter(list);
+//        mAdapter.notifyDataSetChanged();
 
     }
 

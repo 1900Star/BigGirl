@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
-import com.yibao.biggirl.base.OnRvItemWebClickListener;
-import com.yibao.biggirl.model.video.VideoResultsBean;
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
+import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.util.PackagingDataUtil;
 
 import java.util.List;
 
@@ -22,17 +24,41 @@ import butterknife.ButterKnife;
  * Des：${适配Video列表数据}
  * Time:2017/4/23 07:08
  */
-class VideoAdapter
-        extends BaseRvAdapter<VideoResultsBean>
+public class VideoAdapter
+        extends BaseRvAdapter<ResultsBeanX>
 {
-
-
     private Context mContext;
 
-    VideoAdapter(Context context, List<VideoResultsBean> list) {
+    public VideoAdapter(Context context, List<ResultsBeanX> list) {
         super(list);
         mContext = context;
     }
+
+    @Override
+    protected void bindView(RecyclerView.ViewHolder holder, ResultsBeanX bean) {
+        if (holder instanceof ViewHolder) {
+            ViewHolder viewHolder = (ViewHolder) holder;
+            String     who        = bean.getWho();
+            String name = who == null
+                          ? "Smartisan"
+                          : who;
+
+            viewHolder.mTvVideoName.setText(name);
+
+            String time = bean.getCreatedAt();
+            viewHolder.mTvVideoTime.setText(time.substring(0, time.lastIndexOf("T")));
+            viewHolder.mTvVideoType.setText(bean.getType());
+            viewHolder.mTvVideoDes.setText(bean.getDesc());
+            holder.itemView.setOnClickListener(view -> {
+                if (mContext instanceof OnRvItemClickListener) {
+                    FavoriteBean data = PackagingDataUtil.objectToFavorite(bean);
+                    int          position = viewHolder.getAdapterPosition();
+                    ((OnRvItemClickListener) mContext).showDetail(data, (long) position);
+                }
+            });
+        }
+    }
+
 
     //对应的ViewHolder
     @Override
@@ -45,33 +71,6 @@ class VideoAdapter
     protected int getLayoutId() {
         return R.layout.item_video_frag;
     }
-
-
-    @Override
-    protected void bindView(RecyclerView.ViewHolder holder, VideoResultsBean item) {
-        if (holder instanceof ViewHolder) {
-            ViewHolder viewHolder = (ViewHolder) holder;
-
-            String who = item.getWho();
-            String name = who == null
-                          ? "Smartisan"
-                          : who;
-
-            viewHolder.mTvVideoName.setText(name);
-
-            String time = item.getCreatedAt();
-            viewHolder.mTvVideoTime.setText(time.substring(0, time.lastIndexOf("T")));
-            viewHolder.mTvVideoType.setText(item.getType());
-            viewHolder.mTvVideoDes.setText(item.getDesc());
-            holder.itemView.setOnClickListener(view -> {
-                if (mContext instanceof OnRvItemWebClickListener) {
-                    ((OnRvItemWebClickListener) mContext).showDesDetall(item.getUrl());
-                }
-            });
-        }
-
-    }
-
 
     static class ViewHolder
             extends RecyclerView.ViewHolder
@@ -94,4 +93,6 @@ class VideoAdapter
             ButterKnife.bind(this, view);
         }
     }
+
+
 }

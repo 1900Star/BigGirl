@@ -1,9 +1,16 @@
 package com.yibao.biggirl.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
+
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
+import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.mvp.webview.WebActivity;
+import com.yibao.biggirl.util.LogUtil;
+
+import java.util.List;
 
 /**
  * 作者：Stran on 2017/3/29 15:25
@@ -12,63 +19,36 @@ import android.view.KeyEvent;
  */
 public abstract class BaseActivity
         extends AppCompatActivity
+        implements OnRvItemClickListener
 {
 
-
-    protected abstract int getLayoutId();
-
-    protected abstract int getFragmentContentId();
-    public abstract void initView();
-    public abstract void initData();
-    protected abstract BaseFragment getFragment();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        initView();
-        initData();
-//        addFragment(getFragment());
+        initView(savedInstanceState);
     }
 
+    protected abstract void initView(Bundle savedInstanceState );
 
+    public abstract int getLayoutId();
 
-    //添加fragment
-    protected void addFragment(BaseFragment fragment) {
-//        if (fragment != null) {
-//            getFragmentManager().beginTransaction()
-//                                .replace(getFragmentContentId(),
-//                                         fragment,
-//                                         fragment.getClass()
-//                                                 .getSimpleName())
-//                                .addToBackStack(fragment.getClass()
-//                                                        .getSimpleName())
-//                                .commitAllowingStateLoss();
-//
-//
-//        }
-    }
-
-    protected void removeFragment() {
-        if (getFragmentManager().getBackStackEntryCount() > 1) {
-            getFragmentManager().popBackStack();
-
-        } else {
-            finish();
-        }
+    @Override
+    public void showDetail(FavoriteBean bean,Long id ) {
+        LogUtil.d("收藏的 Url    " + bean.getUrl());
+        Intent intent = new Intent(this, WebActivity.class);
+//        intent.putExtra("favoriteBean", bean);
+        startActivity(intent);
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                finish();
-                return true;
-            }
-        }
+    public void showBigGirl(int position, List<String> list) {
 
-        return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
-
+    }
 }

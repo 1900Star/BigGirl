@@ -16,6 +16,7 @@ public class Constants {
 
 
     public static final String dir            = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
+    public static final String deleteDir      = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
     //保存图片状态码
     public static       int    FIRST_DWON     = 0;
     public static       int    EXISTS         = 1;

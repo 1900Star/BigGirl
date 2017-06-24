@@ -1,5 +1,7 @@
 package com.yibao.biggirl.model.video;
 
+import com.yibao.biggirl.model.android.AndroidDesBean;
+
 /**
  * Author：Sid
  * Des：${TODO}
@@ -8,7 +10,7 @@ package com.yibao.biggirl.model.video;
 public interface VideoDataSource {
     //这个接口用于将数据回调给对应Presenter层
     interface LoadVDataCallback {
-        void onLoadDatas(VideoBean videoBean);
+        void onLoadDatas(AndroidDesBean videoBean);
 
         void onDataNotAvailable();
 

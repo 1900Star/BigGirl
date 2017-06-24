@@ -1,5 +1,8 @@
 package com.yibao.biggirl.model.android;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.List;
  * Des：${TODO}
  * Time:2017/4/23 08:41
  */
-public class ResultsBeanX {
+public class ResultsBeanX implements Parcelable{
     /**
      * _id : 58f8b3b7421aa9544ed889a6
      * createdAt : 2017-04-20T21:12:23.526Z
@@ -33,6 +36,31 @@ public class ResultsBeanX {
     private boolean      used;
     private String       who;
     private List<String> images;
+
+    protected ResultsBeanX(Parcel in) {
+        _id = in.readString();
+        createdAt = in.readString();
+        desc = in.readString();
+        publishedAt = in.readString();
+        source = in.readString();
+        type = in.readString();
+        url = in.readString();
+        used = in.readByte() != 0;
+        who = in.readString();
+        images = in.createStringArrayList();
+    }
+
+    public static final Creator<ResultsBeanX> CREATOR = new Creator<ResultsBeanX>() {
+        @Override
+        public ResultsBeanX createFromParcel(Parcel in) {
+            return new ResultsBeanX(in);
+        }
+
+        @Override
+        public ResultsBeanX[] newArray(int size) {
+            return new ResultsBeanX[size];
+        }
+    };
 
     public static ResultsBeanX objectFromData(String str) {
 
@@ -78,4 +106,25 @@ public class ResultsBeanX {
     public List<String> getImages() { return images;}
 
     public void setImages(List<String> images) { this.images = images;}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(_id);
+        parcel.writeString(createdAt);
+        parcel.writeString(desc);
+        parcel.writeString(publishedAt);
+        parcel.writeString(source);
+        parcel.writeString(type);
+        parcel.writeString(url);
+        parcel.writeByte((byte) (used
+                                 ? 1
+                                 : 0));
+        parcel.writeString(who);
+        parcel.writeStringList(images);
+    }
 }

@@ -1,6 +1,8 @@
 package com.yibao.biggirl.base;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,12 +69,39 @@ public abstract class BaseRvAdapter<ITEMBEANTYPE>
                : mList.size();
     }
 
+
     @Override
     public int getItemViewType(int position) {
-        if (position + 1 == getItemCount()) {
+        if (position ==getItemCount()-1) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+        if (params != null && params instanceof StaggeredGridLayoutManager.LayoutParams) {
+            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) params;
+            p.setFullSpan(holder.getLayoutPosition()==getItemCount()-1);
+        }
+    }
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if(manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return getItemViewType(position) ==TYPE_FOOTER
+                           ? gridManager.getSpanCount() : 1;
+                }
+            });
+        }
     }
 
     protected abstract int getLayoutId();
@@ -80,6 +109,7 @@ public abstract class BaseRvAdapter<ITEMBEANTYPE>
     public void clear() {
         mList.clear();
     }
+
 
 
     public void AddHeader(List<ITEMBEANTYPE> list) {

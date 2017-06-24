@@ -1,8 +1,11 @@
 package com.yibao.biggirl;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.squareup.leakcanary.LeakCanary;
+import com.yibao.biggirl.model.greendao.DaoMaster;
+import com.yibao.biggirl.model.greendao.DaoSession;
 import com.yibao.biggirl.util.RxBus;
 
 import java.util.concurrent.TimeUnit;
@@ -20,8 +23,9 @@ public class MyApplication
         extends Application
 {
     private static MyApplication appContext;
-//    public static String currentGirl = "http://7xi8d6.com1.z0.glb.clouddn.com/2017-03-23-17265820_645330569008169_4543676027339014144_n.jpg";
-    private RxBus mRxBus;
+    private        RxBus         mRxBus;
+
+    private DaoSession mDaoSession;
 
     public static MyApplication getIntstance() {
         if (appContext == null) {
@@ -40,9 +44,23 @@ public class MyApplication
         }
         LeakCanary.install(this);
         appContext = this;
+        setUpDataBase();
         mRxBus = new RxBus();
 
 
+    }
+
+    private void setUpDataBase() {
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this, "favorite-db", null);
+        SQLiteDatabase          db      = mHelper.getWritableDatabase();
+        DaoMaster               mMaster = new DaoMaster(db);
+        mDaoSession = mMaster.newSession();
+
+
+    }
+
+    public DaoSession getDaoSession() {
+        return mDaoSession;
     }
 
     public RxBus bus() {

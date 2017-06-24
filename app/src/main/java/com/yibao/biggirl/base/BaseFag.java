@@ -13,33 +13,32 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.factory.RecyclerViewFactory;
+import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.girls.GirlsContract;
+import com.yibao.biggirl.util.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author：Sid
  * Des：${TODO}
  * Time:2017/6/4 21:55
  */
-public abstract class BaseFag<T>
+public abstract class BaseFag
         extends Fragment
-        implements GirlsContract.View<T>
+
 {
 
-    public  ArrayList<T>         mList;
-    public  FloatingActionButton mFab;
-    private BaseRvAdapter<T>     mAdapter;
-    private int page = 1;
-    private int size = 20;
-    public RecyclerView mRecyclerView;
+    public FloatingActionButton mFab;
+    private int                     page  = 1;
+    private int                     size  = 20;
+    public  ArrayList<ResultsBeanX> mList = new ArrayList<>();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
+
     }
 
     @Nullable
@@ -51,27 +50,26 @@ public abstract class BaseFag<T>
 
 
         View view = View.inflate(getActivity(), getLayoutId(), null);
-        initView(view,savedInstanceState);
-        mList = new ArrayList<>();
         mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        mRecyclerView = RecyclerViewFactory.creatRecyclerView(getType(),
-                                                              getAdapter());
         initRecyclerView();
         return view;
     }
 
-    protected abstract RecyclerView.Adapter<RecyclerView.ViewHolder> getAdapter();
 
-    protected abstract void initView(View view, Bundle savedInstanceState);
+    protected abstract RecyclerView getRecyclerView();
+
+    protected abstract GirlsContract.Presenter getPresenter();
+
+
+    protected abstract int getLayoutId();
 
     private void initRecyclerView() {
 
-
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mFab.setVisibility(View.VISIBLE);
+        RecyclerView recyclerView = getRecyclerView();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                //当前RecyclerView显示出来的最后一个的item的position
                 int lastPosition = -1;
                 switch (newState) {
                     //当前状态为停止滑动状态SCROLL_STATE_IDLE时
@@ -99,9 +97,10 @@ public abstract class BaseFag<T>
                         {
                             page++;
 
-                            laodMoreData();
-
-                            //                            mPresenter.loadData(size, page, Constants.LOAD_MORE_DATA,Constants.FRAGMENT_GIRLS);
+                            getPresenter().loadData(size,
+                                                    page,
+                                                    Constants.LOAD_MORE_DATA,
+                                                    Constants.FRAGMENT_VIDEO);
                             //                        mProgressBar.setVisibility(View.VISIBLE);
                         }
                         break;
@@ -137,14 +136,12 @@ public abstract class BaseFag<T>
                 if (lastChildBottom == recyclerBottom && lastPosition == recyclerView.getLayoutManager()
                                                                                      .getItemCount() - 1)
                 {
-                    //                                        mProgressBar.setVisibility(View.VISIBLE);
                 }
             }
 
         });
+
     }
-
-
 
     //找到数组中的最大值
     private int findMax(int[] lastPositions) {
@@ -155,40 +152,5 @@ public abstract class BaseFag<T>
             }
         }
         return max;
-    }
-
-
-    protected abstract void laodMoreData();
-    protected abstract int getType();
-
-    protected abstract int getLayoutId();
-
-    public abstract void init();
-
-    @Override
-    public void refresh(List<T> list) {
-        mList.clear();
-        mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(list);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void loadMore(List<T> list) {
-
-        mList.addAll(list);
-        mAdapter.AddFooter(mList);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showError() {
-
-    }
-
-    @Override
-    public void showNormal() {
-
     }
 }

@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
-import com.yibao.biggirl.webview.WebViewActivity;
 
 /**
  * Author：Sid
@@ -58,7 +58,7 @@ public class BeautifulDialogFag
     }
 
     private void showDesDetall(Context context, String url) {
-        Intent intent = new Intent(context, WebViewActivity.class);
+        Intent intent = new Intent(context, WebActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);
 

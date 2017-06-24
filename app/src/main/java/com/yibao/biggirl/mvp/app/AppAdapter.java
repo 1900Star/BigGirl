@@ -14,12 +14,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.OnRvItemWebClickListener;
-import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
 import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.favorite.FavoriteBean;
 import com.yibao.biggirl.model.girls.ResultsBean;
-import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
+import com.yibao.biggirl.util.PackagingDataUtil;
 
 import java.util.List;
 
@@ -82,7 +83,8 @@ public class AppAdapter
             AndroidAndGirl item = mList.get(position);
 
 
-            ResultsBean girlData = item.mGrilData.get(position);
+            ResultsBean girlData = item.getGirlData()
+                                       .get(position);
             ResultsBeanX androidData = item.getAndroidData()
                                            .get(position);
 
@@ -92,9 +94,10 @@ public class AppAdapter
                  .placeholder(R.mipmap.xuan)
                  .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                  .into(viewHolder.mIvIcon);
-            viewHolder.mIvIcon.setOnClickListener(view -> TopBigPicDialogFragment.newInstance(girlData.getUrl())
+            viewHolder.mIvIcon.setOnClickListener(view -> TopBigPicDialogFragment.newInstance(
+                    girlData.getUrl())
                                                                                  .show(((AppCompatActivity) mContext).getSupportFragmentManager(),
-                                  "dialog_big_girl"));
+                                                                                       "dialog_big_girl"));
 
 
             String who = androidData.getWho();
@@ -109,9 +112,11 @@ public class AppAdapter
             viewHolder.mTvAndroidDes.setText(androidData.getDesc());
 
             holder.itemView.setOnClickListener(view -> {
-                if (mContext instanceof OnRvItemWebClickListener) {
-
-                    ((OnRvItemWebClickListener) mContext).showDesDetall(androidData.getUrl());
+                if (mContext instanceof OnRvItemClickListener) {
+                    if (mContext instanceof OnRvItemClickListener) {
+                        FavoriteBean bean = PackagingDataUtil.objectToFavorite(androidData);
+                        ((OnRvItemClickListener) mContext).showDetail(bean, bean.getId());
+                    }
                 }
             });
 
@@ -184,9 +189,7 @@ public class AppAdapter
 
     public void AddFooter(List<AndroidAndGirl> list) {
         mList.addAll(list);
-        LogUtil.d("  == 加载后的长度 ==   " + mList.size());
-        notifyDataSetChanged();
-        //        notifyItemRemoved(getItemCount());
+
 
     }
 

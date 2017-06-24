@@ -97,7 +97,7 @@ public class IOSFragments
 
 
             List<ResultsBeanX> androidData = data.getAndroidData();
-            List<ResultsBean>  grilData    = data.getGrilData();
+            List<ResultsBean>  grilData    = data.getGirlData();
 
             state = checkResResult(androidData);
             if (state != LoadingPager.LoadedResult.SUCCESS) {//出现了问题,mItemInfoBeanList.size==0

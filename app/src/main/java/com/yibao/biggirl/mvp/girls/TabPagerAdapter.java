@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.yibao.biggirl.factory.FragmentFactory;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 /**
  * 作者：Stran on 2017/3/23 03:31
@@ -27,7 +26,6 @@ public class TabPagerAdapter
 
     @Override
     public Fragment getItem(int position) {
-        LogUtil.d("已经开始加载数据 了");
                 return FragmentFactory.createFragment(position);
 //        return FragmentFactorys.createFragment(position);
     }

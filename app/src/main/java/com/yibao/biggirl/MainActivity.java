@@ -20,21 +20,21 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.yibao.biggirl.base.OnRvItemWebClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
+import com.yibao.biggirl.model.favorite.FavoriteBean;
 import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
+import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
-import com.yibao.biggirl.mvp.girls.GirlsAdapter;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
-import com.yibao.biggirl.mvp.main.ContentActivity;
+import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
-import com.yibao.biggirl.webview.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +53,8 @@ import butterknife.Unbinder;
  */
 public class MainActivity
         extends AppCompatActivity
-        implements GirlsAdapter.OnRvItemClickListener,
-                   OnRvItemWebClickListener,
-                   NavigationView.OnNavigationItemSelectedListener
+        implements OnRvItemClickListener, NavigationView.OnNavigationItemSelectedListener
+
 {
     @BindView(R.id.nav_view)
     NavigationView mNavView;
@@ -77,7 +76,6 @@ public class MainActivity
 
 
     private long exitTime = 0;
-
     private Unbinder  mBind;
     private ImageView mIvHeader;
     private String    mUrl;
@@ -93,6 +91,7 @@ public class MainActivity
             initView();
             initData();
             initListener();
+
 
         }
 
@@ -125,6 +124,7 @@ public class MainActivity
                                .show(getSupportFragmentManager(), "dialog_big_girl");
 
     }
+
 
     //ViewPager监听器
     private class MyOnpageChangeListener
@@ -160,18 +160,25 @@ public class MainActivity
 
         switch (id) {
             //关于作者
-            case R.id.about_me:
+            case R.id.action_about_me:
                 AboutMeDialogFag.newInstance()
                                 .show(getSupportFragmentManager(), "about");
                 break;
-            case R.id.beautiful_girl_video:
+            //我的收藏
+            case R.id.action_my_favorite:
+
+                startActivity(new Intent(this, FavoriteActivity.class));
+
+                break;
+            case R.id.action_gallery:
+                break;
+            case R.id.action_girl_video:
 
                 //                                RetrofitHelper.getUnsplashApi();
-                //                AppPresenter.getDatas(20, 1, Constants.FRAGMENT_APP);
                 BeautifulDialogFag.newInstance()
                                   .show(getSupportFragmentManager(), "beautiful");
                 break;
-            case R.id.share_me:
+            case R.id.action_share_me:
                 shareMe();
                 break;
             default:
@@ -183,6 +190,8 @@ public class MainActivity
         return true;
     }
 
+
+    //分享
     private void shareMe() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
@@ -214,7 +223,6 @@ public class MainActivity
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         mNavView.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -233,8 +241,6 @@ public class MainActivity
                 break;
             case R.id.main_action_star:
                 LogUtil.d("Star");
-                startActivity(new Intent(this, ContentActivity.class));
-
                 break;
             default:
                 break;
@@ -245,15 +251,17 @@ public class MainActivity
 
     //打开WebViewActivity
     @Override
-    public void showDesDetall(String url) {
-        Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra("url", url);
+    public void showDetail(FavoriteBean bean,Long id) {
+        Intent intent = new Intent(this, WebActivity.class);
+        intent.putExtra("favoriteBean", bean);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 
+
     //打开ViewPager浏览大图
     @Override
-    public void showPagerFragment(int position, List<String> list) {
+    public void showBigGirl(int position, List<String> list) {
         //设置navHeader头像
         ImageUitl.loadPic(this, list.get(position), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);
@@ -285,9 +293,6 @@ public class MainActivity
         return super.onKeyDown(keyCode, event);
     }
 
-    public static MainActivity newInstance() {
-        return new MainActivity();
-    }
 
     @Override
     protected void onDestroy() {

@@ -56,9 +56,8 @@ public class GirlsFragment
     Unbinder unbinder;
     @BindView(R.id.fag_content)
     LinearLayout mLlGrils;
-    private GirlsContract.Presenter mPresenters;
-    private GirlsAdapter            mAdapter;
-    private List<String>            mList;
+    private GirlsAdapter mAdapter;
+    private List<String> mList;
     private int page = 1;
     private int size = 20;
     private FloatingActionButton mFab;
@@ -107,7 +106,7 @@ public class GirlsFragment
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
         mAdapter = new GirlsAdapter(getActivity(), mList);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter,mFab);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -261,11 +260,6 @@ public class GirlsFragment
     }
 
 
-    @Override
-    public void setPrenter(GirlsContract.Presenter prenter) {
-        this.mPresenters = prenter;
-    }
-
     public GirlsFragment newInstance() {
         return new GirlsFragment();
     }
@@ -294,5 +288,10 @@ public class GirlsFragment
 
         initRecyclerView(defultUrl, random.nextInt(4) + 1, Constants.FRAGMENT_GIRLS);
         mSwipeRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void setPrenter(GirlsContract.Presenter prenter) {
+        mPresenter = (GirlsPresenter) prenter;
     }
 }

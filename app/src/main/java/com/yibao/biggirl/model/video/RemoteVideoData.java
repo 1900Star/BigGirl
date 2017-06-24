@@ -1,5 +1,6 @@
 package com.yibao.biggirl.model.video;
 
+import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.network.RetrofitHelper;
 
 import io.reactivex.Observer;
@@ -23,12 +24,12 @@ public class RemoteVideoData
                       .getVideo("休息视频", size, page)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
-                      .subscribe(new Observer<VideoBean>() {
+                      .subscribe(new Observer<AndroidDesBean>() {
                           @Override
                           public void onSubscribe(Disposable d) {}
 
                           @Override
-                          public void onNext(VideoBean videoBean) {
+                          public void onNext(AndroidDesBean videoBean) {
                               callback.onLoadDatas(videoBean);
                           }
 

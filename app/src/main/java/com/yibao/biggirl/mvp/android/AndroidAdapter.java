@@ -13,10 +13,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.OnRvItemWebClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
 import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.favorite.FavoriteBean;
 import com.yibao.biggirl.model.girls.ResultsBean;
+import com.yibao.biggirl.util.PackagingDataUtil;
 
 import java.util.List;
 
@@ -35,9 +37,8 @@ public class AndroidAdapter
 
     private Context              mContext;
     private List<AndroidAndGirl> mList;
-    private static final int TYPE_ITEM        = 0;
-    private static final int TYPE_FOOTER      = 1;
-
+    private static final int TYPE_ITEM   = 0;
+    private static final int TYPE_FOOTER = 1;
 
 
     public AndroidAdapter(Context context, List<AndroidAndGirl> list) {
@@ -55,9 +56,6 @@ public class AndroidAdapter
 
             return new MyViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
-//            View view = LayoutInflater.from(parent.getContext())
-//                                      .inflate(R.layout.load_more_footview, parent, false);
-//            return new LoadMoreHolder(view);
         }
 
         return null;
@@ -74,10 +72,11 @@ public class AndroidAdapter
 
 
                 ResultsBeanX androidData = item.getAndroidData()
-                                               .get(position + 1);
-                ResultsBean girlData = item.mGrilData.get(position + 1);
+                                               .get(position);
+                ResultsBean girlData = item.getGirlData()
+                                           .get(position);
 
-
+                androidData.get_id();
                 Glide.with(mContext)
                      .load(girlData.getUrl())
                      .asBitmap()
@@ -97,32 +96,14 @@ public class AndroidAdapter
                 viewHolder.mTvAndroidTime.setText(time.substring(0, time.lastIndexOf("T")));
                 viewHolder.mTvAndroidDes.setText(androidData.getDesc());
                 holder.itemView.setOnClickListener(view -> {
-                    if (mContext instanceof OnRvItemWebClickListener) {
-
-                        ((OnRvItemWebClickListener) mContext).showDesDetall(androidData.getUrl());
+                    if (mContext instanceof OnRvItemClickListener) {
+                        FavoriteBean bean = PackagingDataUtil.objectToFavorite(androidData);
+                        ((OnRvItemClickListener) mContext).showDetail(bean, bean.getId());
                     }
                 });
             }
         } else if (holder instanceof LoadMoreHolder) {
-//            LoadMoreHolder viewHolder = (LoadMoreHolder) holder;
-//            viewHolder.mLoadLayout.setVisibility(View.VISIBLE);
-//            switch (LOAD_MORE_STATUS) {
-//
-//                case PULLUP_LOAD_MORE:
-//                    if (mList.size() == 0) {
-//                        viewHolder.mLoadLayout.setVisibility(View.GONE);
-//                    }
-//                    viewHolder.mTvLoadText.setText("上拉加载更多妹子");
-//                    break;
-//                case LOADING_MORE:
-//                    viewHolder.mTvLoadText.setText("正在加载更多妹子");
-//                    break;
-//                case NO_LOAD_MORE:
-//                    viewHolder.mLoadLayout.setVisibility(View.GONE);
-//                    break;
-//                default:
-//                    break;
-//            }
+
         }
 
 
