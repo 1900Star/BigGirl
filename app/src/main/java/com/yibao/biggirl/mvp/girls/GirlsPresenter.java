@@ -1,7 +1,5 @@
 package com.yibao.biggirl.mvp.girls;
 
-import com.yibao.biggirl.model.all.AllDataSource;
-import com.yibao.biggirl.model.all.AllResultsBean;
 import com.yibao.biggirl.model.all.RemoteAllData;
 import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
@@ -40,71 +38,72 @@ public class GirlsPresenter
     public void unsubscribe() {}
 
     @Override
-    public void start(String dataType) {
-        loadData(20, 1, Constants.LOAD_DATA, dataType);
-
+    public void start(String dataType, int codeId) {
+        loadData(20, 1, Constants.LOAD_DATA, codeId, dataType);
 
     }
 
     @Override
-    public void loadData(int size, int page, int type, String dataType) {
-        if (dataType.equals(Constants.FRAGMENT_GIRLS)) {
+    public void loadData(int size, int page, int codeId, int type, String dataType) {
+        switch (dataType) {
+            case Constants.FRAGMENT_GIRLS:
 
-            mRemoteGirlsData.getGirls(dataType,
-                                      size,
-                                      page,
-                                      new GrilsDataSource.LoadGDataCallback() {
-                                          @Override
-                                          public void onLoadDatas(List<String> girlBean) {
+                mRemoteGirlsData.getGirls(dataType,
+                                          size,
+                                          page,
+                                          new GrilsDataSource.LoadGDataCallback() {
+                                              @Override
+                                              public void onLoadDatas(List<String> girlBean) {
 
-                                              if (type == Constants.REFRESH_DATA) {
-                                                  mView.refresh(girlBean);
-                                              } else if (type == Constants.LOAD_DATA) {
-                                                  mView.loadData(girlBean);
-                                              } else if (type == Constants.LOAD_MORE_DATA) {
-                                                  mView.loadMore(girlBean);
+                                                  if (type == Constants.REFRESH_DATA) {
+                                                      mView.refresh(girlBean);
+                                                  } else if (type == Constants.LOAD_DATA) {
+                                                      mView.loadData(girlBean);
+                                                  } else if (type == Constants.LOAD_MORE_DATA) {
+                                                      mView.loadMore(girlBean);
+                                                  }
+                                                  mView.showNormal();
                                               }
-                                              mView.showNormal();
-                                          }
 
-                                          @Override
-                                          public void onDataNotAvailable() {
-                                              mView.showError();
-                                          }
-                                      });
-        } else if (dataType.equals(Constants.FRAGMENT_ALL)) {
-            mRemoteAllData.getAll(size, page, new AllDataSource.LoadADataCallback() {
+                                              @Override
+                                              public void onDataNotAvailable() {
+                                                  mView.showError();
+                                              }
+                                          });
+                break;
+            case Constants.FRAGMENT_VIDEO:
+//                switch (codeId) {
+//
+//                    case 1:
+//                        dataType = Constants.FRAGMENT_ANDROID;
+//                        break;
+//                    case 2:
+//
+//                        dataType = Constants.FRAGMENT_VIDEO;
+//                        break;
+//
+//                }
+                mRemoteVideoData.getVideo(size,
+                                          page,
+                                          dataType,
+                                          new VideoDataSource.LoadVDataCallback() {
+                                              @Override
+                                              public void onLoadDatas(AndroidDesBean videoBean) {
+                                                  if (type == Constants.LOAD_DATA) {
+                                                      mView.loadData(videoBean.getResults());
+                                                  } else if (type == Constants.REFRESH_DATA) {
+                                                      mView.refresh(videoBean.getResults());
+                                                  } else if (type == Constants.LOAD_MORE_DATA) {
+                                                      mView.loadMore(videoBean.getResults());
+                                                  }
+                                              }
 
-
-                @Override
-                public void onLoadData(List<AllResultsBean> list) {
-
-
-                }
-
-                @Override
-                public void onDataNotAvailable() {
-
-                }
-            });
-        } else {
-            mRemoteVideoData.getVideo(size, page, new VideoDataSource.LoadVDataCallback() {
-                @Override
-                public void onLoadDatas(AndroidDesBean videoBean) {
-                    if (type == Constants.LOAD_DATA) {
-                        mView.loadData(videoBean.getResults());
-                    } else if (type == Constants.REFRESH_DATA) {
-                        mView.refresh(videoBean.getResults());
-                    } else if (type == Constants.LOAD_MORE_DATA) {
-                        mView.loadMore(videoBean.getResults());
-                    }
-                }
-
-                @Override
-                public void onDataNotAvailable() {
-                    mView.showError();
-                }
-            });
+                                              @Override
+                                              public void onDataNotAvailable() {
+                                                  mView.showError();
+                                              }
+                                          });
+                break;
         }
 
 

@@ -136,7 +136,7 @@ public class FavoriteFag
         mList.addAll(list);
         mSwipeRefresh.setRefreshing(false);
         mAdapter = new FavoriteAdapter(getActivity(), mList);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(1, mAdapter, null);
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(1, mAdapter);
         recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getActivity()));
 
         mFagContent.addView(recyclerView);

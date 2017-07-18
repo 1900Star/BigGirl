@@ -5,6 +5,7 @@ import android.view.View;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
+import static com.yibao.biggirl.util.ColorUtil.picAlreadyExists;
 
 
 /**
@@ -87,17 +88,15 @@ public class SnakbarUtil {
     /**
      * 保存图片提示
      */
-    public static void savePic(final View view, final String url)
+    public static void mapPoint( View view)
     {
 
         //
-        //        Snackbar snackbar = make(view, "可以将图片保存起来-_-", Snackbar.LENGTH_LONG).setAction("保存图片",
-        //                                                                                       view1 -> ImageUitl.downloadPic(
-        //                                                                                               url,
-        //                                                                                               true));
-        //        snackbar.getView()
-        //                .setBackgroundColor(saveColor);
-        //        snackbar.show();
+                Snackbar snackbar = make(view, "确保您的设备应该包含完整的谷歌服务!", Snackbar.LENGTH_LONG);
+                snackbar.getView()
+                        .setBackgroundColor(picAlreadyExists);
+                snackbar.show();
+
     }
 
     /**

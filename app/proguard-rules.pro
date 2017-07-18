@@ -65,5 +65,23 @@
 -keep class okhttp3.internal.**{*;}
 -dontwarn okio.**
 
-# Retrofit---------------------------------------------------------------
-
+#greendao3.2.2
+-keep class org.greenrobot.greendao.**{*;}
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+-keep class com.yibao.biggirl.model.* {*;}
+#保持 Parcelable 不被混淆
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+#不混淆资源类
+-keep class **.R$* {
+ *;
+}
+#retrofit2
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions

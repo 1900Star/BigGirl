@@ -31,7 +31,7 @@ public interface GirlsContract {
     interface Presenter
             extends BasePresenter
     {
-        void loadData(int size, int page, int loadType, String dataType);
+        void loadData(int size, int page, int codeId,int loadType, String dataType);
 
     }
 }

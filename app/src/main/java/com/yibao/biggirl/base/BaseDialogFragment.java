@@ -28,7 +28,7 @@ public abstract class BaseDialogFragment
         getDialog().getWindow()
                    .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        //        return inflater.inflate(getViewId(), null);
+
         return getViews();
     }
 

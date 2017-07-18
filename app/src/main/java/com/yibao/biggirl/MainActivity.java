@@ -18,18 +18,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.yibao.biggirl.base.MyPageChangeListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.favorite.FavoriteBean;
 import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
+import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
+import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
+import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
@@ -53,7 +59,9 @@ import butterknife.Unbinder;
  */
 public class MainActivity
         extends AppCompatActivity
-        implements OnRvItemClickListener, NavigationView.OnNavigationItemSelectedListener
+        implements OnRvItemClickListener,
+                   NavigationView.OnNavigationItemSelectedListener,
+                   OnRvItemLongClickListener
 
 {
     @BindView(R.id.nav_view)
@@ -73,6 +81,8 @@ public class MainActivity
     ImageView               mIvCollapsing;
     @BindView(R.id.fab)
     FloatingActionButton    mFab;
+    @BindView(R.id.root)
+    FrameLayout             mRoot;
 
 
     private long exitTime = 0;
@@ -97,8 +107,36 @@ public class MainActivity
 
     }
 
-    private void initListener() {
+    //加载动态布局
+    private void initView() {
 
+        setSupportActionBar(mToolbar);
+        mToolbarLayout.setTitleEnabled(false);
+        View headerView = mNavView.inflateHeaderView(R.layout.nav_header_main);
+        mIvHeader = (ImageView) headerView.findViewById(R.id.iv_nav_header);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                                                                 mDrawerLayout,
+                                                                 mToolbar,
+                                                                 R.string.navigation_drawer_open,
+                                                                 R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        mNavView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initData() {
+        mTablayout.setupWithViewPager(mViewPager);
+        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+        mViewPager.setOffscreenPageLimit(7);
+        mViewPager.setAdapter(pagerAdapter);
+    }
+
+    private void initListener() {
+        //我的页面
+        mIvHeader.setOnClickListener(view -> MeDialogFragment.newInstance()
+                                                             .show(getSupportFragmentManager(),
+                                                                   "me"));
         MyOnpageChangeListener mMyOnpageChangeListener = new MyOnpageChangeListener();
 
         mViewPager.addOnPageChangeListener(mMyOnpageChangeListener);
@@ -116,44 +154,6 @@ public class MainActivity
                   });
     }
 
-    //打开Toolbar的背景大图
-    @OnClick(R.id.iv_collapsing)
-    public void onViewClicked() {
-
-        TopBigPicDialogFragment.newInstance(mUrl)
-                               .show(getSupportFragmentManager(), "dialog_big_girl");
-
-    }
-
-
-    //ViewPager监听器
-    private class MyOnpageChangeListener
-            implements ViewPager.OnPageChangeListener
-    {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            //切换ViewPage随机变换Toolbar的背景图片
-            Random random       = new Random();
-            int    girlPosition = random.nextInt(Api.picUrlArr.length);
-            mUrl = Api.picUrlArr[girlPosition];
-            ImageUitl.loadPicHolder(MyApplication.getIntstance(), mUrl, mIvCollapsing);
-            //触发加载数据
-            //            BaseFragment baseFragment = FragmentFactorys.mCacheFragmentMap.get(position);
-
-            //            baseFragment.mLoadingPager.triggerLoadData();
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -168,13 +168,16 @@ public class MainActivity
             case R.id.action_my_favorite:
 
                 startActivity(new Intent(this, FavoriteActivity.class));
-
                 break;
-            case R.id.action_gallery:
+            case R.id.action_map:
+                startActivity(new Intent(this, MapsActivity.class));
+                break;
+            case R.id.action_music:
+                startService(new Intent(this, AudioPlayService.class));
+
                 break;
             case R.id.action_girl_video:
-
-                //                                RetrofitHelper.getUnsplashApi();
+                //                                                RetrofitHelper.getUnsplashApi();
                 BeautifulDialogFag.newInstance()
                                   .show(getSupportFragmentManager(), "beautiful");
                 break;
@@ -185,44 +188,7 @@ public class MainActivity
                 break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
-
-
         return true;
-    }
-
-
-    //分享
-    private void shareMe() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
-        shareIntent.putExtra(Intent.EXTRA_TEXT, Constants.SHARE_ME);
-        shareIntent.setType("text/plain");
-        startActivity(shareIntent);
-    }
-
-
-    private void initData() {
-        mTablayout.setupWithViewPager(mViewPager);
-        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
-        mViewPager.setOffscreenPageLimit(7);
-        mViewPager.setAdapter(pagerAdapter);
-    }
-
-    //加载动态布局
-    private void initView() {
-        setSupportActionBar(mToolbar);
-        mToolbarLayout.setTitleEnabled(false);
-        View headerView = mNavView.inflateHeaderView(R.layout.nav_header_main);
-        mIvHeader = (ImageView) headerView.findViewById(R.id.iv_nav_header);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
-                                                                 mDrawerLayout,
-                                                                 mToolbar,
-                                                                 R.string.navigation_drawer_open,
-                                                                 R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        mNavView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -237,7 +203,6 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.main_action_search:
                 LogUtil.d("Search");
-
                 break;
             case R.id.main_action_star:
                 LogUtil.d("Star");
@@ -249,9 +214,59 @@ public class MainActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+    //打开Toolbar的背景大图
+    @OnClick(R.id.iv_collapsing)
+    public void onViewClicked() {
+
+        TopBigPicDialogFragment diaLog = TopBigPicDialogFragment.newInstance(mUrl);
+        if (diaLog.isResumed()) {
+            diaLog.dismiss();
+        }
+        diaLog.show(getSupportFragmentManager(), "dialog_big_girl");
+
+    }
+
+    //长按显示预览
+    @Override
+    public void showPreview(String url) {
+
+        TopBigPicDialogFragment.newInstance(url)
+                               .show(getSupportFragmentManager(), "dialog_big_girl");
+    }
+
+    //ViewPager监听器
+    private class MyOnpageChangeListener
+            extends MyPageChangeListener
+    {
+        @Override
+        public void onPageSelected(int position) {
+            //切换ViewPage随机变换Toolbar的背景图片
+            Random random       = new Random();
+            int    girlPosition = random.nextInt(Api.picUrlArr.length);
+            mUrl = Api.picUrlArr[girlPosition];
+            ImageUitl.loadPicHolder(MyApplication.getIntstance(), mUrl, mIvCollapsing);
+            //触发加载数据
+            //            BaseFragment baseFragment = FragmentFactorys.mCacheFragmentMap.get(position);
+
+            //            baseFragment.mLoadingPager.triggerLoadData();
+        }
+
+    }
+
+    //分享
+    private void shareMe() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Constants.SHARE_ME);
+        shareIntent.setType("text/plain");
+        startActivity(shareIntent);
+    }
+
+
     //打开WebViewActivity
     @Override
-    public void showDetail(FavoriteBean bean,Long id) {
+    public void showDetail(FavoriteBean bean, Long id) {
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("favoriteBean", bean);
         intent.putExtra("id", id);
@@ -278,7 +293,6 @@ public class MainActivity
 
         }
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-
             //两秒之内按返回键多次就会退出
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 SnakbarUtil.finishActivity(mDrawerLayout);
@@ -292,7 +306,6 @@ public class MainActivity
         }
         return super.onKeyDown(keyCode, event);
     }
-
 
     @Override
     protected void onDestroy() {

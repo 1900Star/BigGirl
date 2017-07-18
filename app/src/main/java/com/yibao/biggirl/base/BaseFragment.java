@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * 作者：Stran on 2017/3/29 15:24
- * 描述：${TODO}
+ * 描述：${这个是GooglgePlay的}
  * 邮箱：strangermy@outlook.com
  */
 public abstract class BaseFragment

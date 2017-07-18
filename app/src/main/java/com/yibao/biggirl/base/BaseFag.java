@@ -13,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.mvp.girls.GirlsContract;
-import com.yibao.biggirl.util.Constants;
 
 import java.util.ArrayList;
 
@@ -24,15 +23,16 @@ import java.util.ArrayList;
  * Des：${TODO}
  * Time:2017/6/4 21:55
  */
-public abstract class BaseFag
-        extends Fragment
+public abstract class BaseFag<T>
+        extends Fragment implements GirlsContract.View<T>
 
 {
 
     public FloatingActionButton mFab;
     private int                     page  = 1;
     private int                     size  = 20;
-    public  ArrayList<ResultsBeanX> mList = new ArrayList<>();
+    public  ArrayList<T> mList = new ArrayList<>();
+    public RecyclerView mRecyclerView;
 
 
     @Override
@@ -50,15 +50,16 @@ public abstract class BaseFag
 
 
         View view = View.inflate(getActivity(), getLayoutId(), null);
+        mRecyclerView = RecyclerViewFactory.creatRecyclerView(getType(), getAdapter());
         mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         initRecyclerView();
         return view;
     }
 
 
-    protected abstract RecyclerView getRecyclerView();
 
     protected abstract GirlsContract.Presenter getPresenter();
+    protected abstract void loadMoreData();
 
 
     protected abstract int getLayoutId();
@@ -66,8 +67,10 @@ public abstract class BaseFag
     private void initRecyclerView() {
 
         mFab.setVisibility(View.VISIBLE);
-        RecyclerView recyclerView = getRecyclerView();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 int lastPosition = -1;
@@ -95,13 +98,8 @@ public abstract class BaseFag
                         if (lastPosition == recyclerView.getLayoutManager()
                                                         .getItemCount() - 1)
                         {
-                            page++;
-
-                            getPresenter().loadData(size,
-                                                    page,
-                                                    Constants.LOAD_MORE_DATA,
-                                                    Constants.FRAGMENT_VIDEO);
-                            //                        mProgressBar.setVisibility(View.VISIBLE);
+                            loadMoreData();
+//
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -142,6 +140,10 @@ public abstract class BaseFag
         });
 
     }
+
+    protected abstract RecyclerView.Adapter<RecyclerView.ViewHolder> getAdapter();
+
+    protected abstract int getType();
 
     //找到数组中的最大值
     private int findMax(int[] lastPositions) {

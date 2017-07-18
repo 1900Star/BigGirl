@@ -33,7 +33,7 @@ public class TabPagerAdapter
     @Override
     public int getCount() {
         return Constants.arrTitle.length;
-//        return 1;
+//        return 2;
     }
 
     @Override

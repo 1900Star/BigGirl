@@ -57,7 +57,7 @@ public class IOSFragment
         super.onCreate(savedInstanceState);
 
         new AppPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_IOS);
+        mPresenter.start(Constants.FRAGMENT_IOS,4);
 
     }
 

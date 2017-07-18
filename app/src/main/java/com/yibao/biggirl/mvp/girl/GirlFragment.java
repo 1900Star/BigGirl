@@ -98,8 +98,6 @@ public class GirlFragment
 
             mView = inflater.inflate(R.layout.girl_frag, container, false);
             unbinder = ButterKnife.bind(this, mView);
-
-
             getProgress();
             initData();
         }

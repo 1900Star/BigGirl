@@ -16,5 +16,5 @@ public interface VideoDataSource {
 
     }
 
-    void getVideo(int size, int page, LoadVDataCallback callback);
+    void getVideo(int size, int page, String loadType,LoadVDataCallback callback);
 }

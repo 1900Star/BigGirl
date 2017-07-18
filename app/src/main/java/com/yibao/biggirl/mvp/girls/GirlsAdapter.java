@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.util.ImageUitl;
 
 import java.util.List;
@@ -56,6 +57,16 @@ public class GirlsAdapter
                     ((OnRvItemClickListener) mContext).showBigGirl(holder.getAdapterPosition(),
                                                                    mList);
                 }
+            });
+
+            holder.itemView.setOnLongClickListener(view -> {
+                if (mContext instanceof OnRvItemLongClickListener) {
+
+//                    ((OnRvItemLongClickListener) mContext).showPreview(url);
+                }
+
+
+                return true;
             });
         }
 

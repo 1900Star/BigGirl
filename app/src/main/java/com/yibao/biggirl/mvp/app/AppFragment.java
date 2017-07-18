@@ -63,7 +63,7 @@ public class AppFragment
                                                                                       this))
                                                                               .build();
         component.in(this);
-        mPresenter.start(Constants.FRAGMENT_APP);
+        mPresenter.start(Constants.FRAGMENT_APP,4);
 
     }
 

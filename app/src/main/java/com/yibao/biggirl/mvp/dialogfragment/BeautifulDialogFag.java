@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.yibao.biggirl.R;
@@ -34,20 +36,27 @@ public class BeautifulDialogFag
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
+        LayoutInflater      inflater = getActivity().getLayoutInflater();
         mView = inflater.inflate(R.layout.beautiful_dialog_fag, null);
+
         builder.setView(mView);
         initView();
-        return builder.create();
+        AlertDialog dialog = builder.create();
+
+        Window      window = dialog.getWindow();
+        window.setGravity(Gravity.CENTER);
+        window.setWindowAnimations(R.style.Theme_AppCompat_Dialog_Alert);
+
+        return dialog;
     }
 
-//        @Override
-//        public View getViews() {
-//            mView = LinearLayout.inflate(getActivity(), R.layout.beautiful_dialog_fag, null);
-//            initView();
-//            return mView;
-//        }
+    //        @Override
+    //        public View getViews() {
+    //            mView = LinearLayout.inflate(getActivity(), R.layout.beautiful_dialog_fag, null);
+    //            initView();
+    //            return mView;
+    //        }
 
 
     private void initView() {

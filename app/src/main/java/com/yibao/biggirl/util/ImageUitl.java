@@ -44,8 +44,7 @@ public class ImageUitl {
 
     public static ZoomImageView creatZoomView(Context context) {
         ZoomImageView view = new ZoomImageView(context);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                                                   ViewGroup.LayoutParams.MATCH_PARENT);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(1080,1920);
         view.setScaleType(ImageView.ScaleType.MATRIX);
         view.reSetState();
         view.setLayoutParams(params);

@@ -35,7 +35,7 @@ public class FavoriteActivity
         }
     }
 
-    private void initDatas() {
+    private void initData() {
         android.support.v7.app.ActionBar bar = getSupportActionBar();
         bar.setTitle("收藏");
         bar.setDisplayHomeAsUpEnabled(true);
@@ -55,7 +55,7 @@ public class FavoriteActivity
 
 
 
-    private void initData() {
+    private void initDatas() {
         android.support.v7.app.ActionBar bar = getSupportActionBar();
         bar.setTitle("收藏");
         bar.setDisplayHomeAsUpEnabled(true);

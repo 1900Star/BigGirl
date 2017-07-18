@@ -6,12 +6,14 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorPreview">#c2bcbc</color>
     <color name="textName">#939396</color>
     <color name="textTime">#C8C8CE</color>
     <color name="textDes">#4d4d4d</color>
     <color name="itemBg">#d9d5d5</color>
     <color name="itemType">#ea1ee3</color>
     <color name="colorGreen">#5ab43f</color>
+    <color name="colorCard">#99ffffff</color>
     //about
     <color name="about_title">#ff000000</color>
     <color name="about_sign">#ff666666</color>

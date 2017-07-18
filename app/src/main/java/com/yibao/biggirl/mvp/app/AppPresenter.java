@@ -39,7 +39,7 @@ public class AppPresenter
 
 
     @Override
-    public void start(String type) {
+    public void start(String type,int codeId) {
         loadData(20, 1, type, Constants.LOAD_DATA);
     }
 

@@ -12,11 +12,11 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.mvp.girls.GirlsPresenter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Time:2017/5/9 06:53
  */
 public class VideoFragmnets
-        extends BaseFag
+        extends BaseFag<ResultsBeanX>
         implements GirlsContract.View<ResultsBeanX>, SwipeRefreshLayout.OnRefreshListener
 {
 
@@ -47,14 +47,14 @@ public class VideoFragmnets
     private int size = 20;
     //    private FloatingActionButton    mFab;
     private GirlsContract.Presenter mPresenter;
-
+//    private RecyclerView            mRecyclerView;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new GirlsPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_VIDEO);
+        mPresenter.start(Constants.FRAGMENT_VIDEO,9);
 
     }
 
@@ -70,14 +70,18 @@ public class VideoFragmnets
     }
 
 
-    @Override
-    protected RecyclerView getRecyclerView() {
-        return RecyclerViewFactory.creatRecyclerView(1, mAdapter, mFab);
-    }
+
 
     @Override
     protected GirlsContract.Presenter getPresenter() {
         return mPresenter;
+    }
+
+    @Override
+    protected void loadMoreData() {
+        page++;
+        mPresenter.loadData(size, page,9, Constants.LOAD_MORE_DATA, Constants.FRAGMENT_VIDEO);
+        LogUtil.d("AAAAAAAAAAAAAAAAAa");
     }
 
 
@@ -86,18 +90,25 @@ public class VideoFragmnets
         return R.layout.girls_frag;
     }
 
+    @Override
+    protected RecyclerView.Adapter<RecyclerView.ViewHolder> getAdapter() {
+        mAdapter = new VideoAdapter(getActivity(), mList);
+        return mAdapter;
+    }
+
+    @Override
+    protected int getType() {
+        return 1;
+    }
+
 
     private void initRecyclerView(List<ResultsBeanX> list, int type, String dataType) {
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
-        mAdapter = new VideoAdapter(getActivity(), list);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type,
 
-                                                                          mAdapter, mFab);
-
-
-        mFagContent.addView(recyclerView);
+//        mRecyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        mFagContent.addView(mRecyclerView);
     }
 
 
@@ -107,7 +118,7 @@ public class VideoFragmnets
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
                       mPresenter.loadData(size,
-                                          page,
+                                          page,9,
                                           Constants.REFRESH_DATA,
                                           Constants.FRAGMENT_VIDEO);
 
@@ -120,6 +131,7 @@ public class VideoFragmnets
     public void loadData(List<ResultsBeanX> list) {
         mList.addAll(list);
         initRecyclerView(mList, 1, Constants.FRAGMENT_VIDEO);
+
         mSwipeRefresh.setRefreshing(false);
     }
 

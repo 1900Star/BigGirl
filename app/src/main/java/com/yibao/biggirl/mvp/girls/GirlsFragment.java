@@ -74,7 +74,7 @@ public class GirlsFragment
                                                                                             this))
                                                                                     .build();
         component.in(this);
-        mPresenter.start(Constants.FRAGMENT_GIRLS);
+        mPresenter.start(Constants.FRAGMENT_GIRLS,0);
 
 
     }
@@ -101,13 +101,12 @@ public class GirlsFragment
     }
 
 
-    private void initRecyclerView(List<String> mList, int type, String dataType) {
+    private void initRecyclerView(List<String> mList, int type) {
         mSwipeRefresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.YELLOW);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
         mAdapter = new GirlsAdapter(getActivity(), mList);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter,mFab);
-
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -140,7 +139,7 @@ public class GirlsFragment
                             page++;
 
                             mPresenter.loadData(size,
-                                                page,
+                                                page,0,
                                                 Constants.LOAD_MORE_DATA,
                                                 Constants.FRAGMENT_GIRLS);
                             LogUtil.d("PAGE===" + page);
@@ -184,7 +183,6 @@ public class GirlsFragment
             }
 
         });
-
         mLlGrils.addView(recyclerView);
     }
 
@@ -203,7 +201,7 @@ public class GirlsFragment
     @Override
     public void loadData(List<String> list) {
         mList.addAll(list);
-        initRecyclerView(mList, 2, Constants.FRAGMENT_GIRLS);
+        initRecyclerView(mList, 2);
         mSwipeRefresh.setRefreshing(false);
     }
 
@@ -214,7 +212,7 @@ public class GirlsFragment
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
                       mPresenter.loadData(size,
-                                          1,
+                                          1,0,
                                           Constants.REFRESH_DATA,
                                           Constants.FRAGMENT_GIRLS);
                       mSwipeRefresh.setRefreshing(false);
@@ -269,7 +267,7 @@ public class GirlsFragment
     public void onClick(View view) {
         if (isShowGankGirl) {
             mLlGrils.removeAllViews();
-            initRecyclerView(mList, 2, Constants.FRAGMENT_GIRLS);
+            initRecyclerView(mList, 2);
             mSwipeRefresh.setRefreshing(false);
             isShowGankGirl = false;
 
@@ -286,7 +284,7 @@ public class GirlsFragment
         List<String> defultUrl = ImageUitl.getDefultUrl(new ArrayList<>());
         Random       random    = new Random();
 
-        initRecyclerView(defultUrl, random.nextInt(4) + 1, Constants.FRAGMENT_GIRLS);
+        initRecyclerView(defultUrl, random.nextInt(4) + 1);
         mSwipeRefresh.setRefreshing(false);
     }
 

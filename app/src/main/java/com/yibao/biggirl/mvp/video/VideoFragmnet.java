@@ -58,7 +58,7 @@ public class VideoFragmnet
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new GirlsPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_VIDEO);
+        mPresenter.start(Constants.FRAGMENT_VIDEO,2);
 
     }
 
@@ -93,7 +93,7 @@ public class VideoFragmnet
         RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(
                                                                           type,
 
-                                                                          mAdapter,mFab);
+                                                                          mAdapter);
 
 
 
@@ -128,7 +128,7 @@ public class VideoFragmnet
                                     page++;
 
                                     mPresenter.loadData(size,
-                                                        page,
+                                                        page,2,
                                                         Constants.LOAD_MORE_DATA,Constants.FRAGMENT_VIDEO);
                                     //                        mProgressBar.setVisibility(View.VISIBLE);
                                 }
@@ -190,7 +190,7 @@ public class VideoFragmnet
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
                       mPresenter.loadData(size,
-                                          page,
+                                          page,2,
                                           Constants.REFRESH_DATA,Constants.FRAGMENT_VIDEO);
 
                       mSwipeRefresh.setRefreshing(true);

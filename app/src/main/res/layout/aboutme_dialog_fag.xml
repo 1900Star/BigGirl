@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
 
                 android:background="@drawable/shape_about_card"
                 android:padding="15dp">
@@ -72,13 +72,13 @@
                     android:textSize="@dimen/about_sign"/>
 
                 <TextView
-                    android:layout_toEndOf="@id/about_header_iv"
-                    android:layout_toRightOf="@id/about_header_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/about_header_iv"
                     android:layout_centerInParent="true"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toEndOf="@id/about_header_iv"
+                    android:layout_toRightOf="@id/about_header_iv"
 
                     android:text="@string/about_sign"
                     android:textColor="@color/colorGreen"
@@ -96,7 +96,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/preject_introduce"
                     android:textColor="@color/about_title"
                     android:textSize="@dimen/about_title"

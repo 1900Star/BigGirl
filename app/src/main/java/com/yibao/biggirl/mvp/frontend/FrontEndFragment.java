@@ -57,7 +57,7 @@ public class FrontEndFragment
         super.onCreate(savedInstanceState);
 
         new AppPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_FRONT);
+        mPresenter.start(Constants.FRAGMENT_FRONT,7);
 
     }
 

@@ -60,7 +60,7 @@ public class ExpandFragment
         super.onCreate(savedInstanceState);
 
         new AppPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_EXPAND);
+        mPresenter.start(Constants.FRAGMENT_EXPAND,6);
 
     }
 
