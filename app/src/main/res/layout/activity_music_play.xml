@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context="com.yibao.biggirl.mvp.music.MusicPlayActivity">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="#fff"
+        app:cardCornerRadius="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        >
+
+            <ImageView
+                android:id="@+id/titlebar_down"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="4dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/music_titlebar_down_selector"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+            >
+                <TextView
+                    android:id="@+id/play_song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Still"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/play_artist_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FLOWER"
+
+
+                    android:textColor="@color/about_sign"/>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/titlebar_play_list"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop" android:src="@mipmap/titlebar_playlist"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="@string/startTime"
+            android:textColor="@color/about_sign"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.yibao.biggirl.view.ProgressBtn
+                android:id="@+id/progress_time"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:background="@color/timeBar"
+                android:contentDescription="@null"
+                android:src="@mipmap/controlbar_playing_bg2_shadow"
+            />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:text="@string/endTime"
+            android:textColor="@color/about_sign"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rotate_rl"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:gravity="center"
+    >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/playing_lp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/playing_veins_lp"
+        />
+        <com.yibao.biggirl.view.CircleImageView
+            android:id="@+id/playing_song_album"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@null"
+            android:maxHeight="130dp"
+            android:src="@mipmap/xuan"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/music_player_mode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:src="@drawable/btn_playing_cycle_off"/>
+        <ImageView
+            android:id="@+id/music_player_pre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@null" android:src="@drawable/btn_playing_prev"/>
+        <ImageView
+            android:id="@+id/music_play"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:src="@drawable/btn_playing_play"/>
+        <ImageView
+            android:id="@+id/music_player_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@null" android:src="@drawable/btn_playing_next"/>
+        <ImageView
+            android:id="@+id/music_player_random"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:src="@drawable/btn_playing_shuffle_off"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

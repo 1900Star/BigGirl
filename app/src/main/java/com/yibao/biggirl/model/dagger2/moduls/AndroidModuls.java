@@ -1,8 +1,10 @@
 package com.yibao.biggirl.model.dagger2.moduls;
 
 import com.yibao.biggirl.mvp.android.AndroidFragment;
+import com.yibao.biggirl.mvp.android.AndroidPresenter;
 
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * Author：Sid
@@ -18,9 +20,9 @@ public class AndroidModuls {
     }
 
     //
-//    @Provides
-//    public AndroidPresenter provideAndroidPresenter() {
-//        return new AndroidPresenter(mAndroidFragment);
-//    }
+    @Provides
+    public AndroidPresenter provideAndroidPresenter() {
+        return new AndroidPresenter(mAndroidFragment);
+    }
 
 }

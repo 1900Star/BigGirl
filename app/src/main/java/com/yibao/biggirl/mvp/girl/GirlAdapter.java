@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yibao.biggirl.base.listener.HideToolbarListener;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.view.ZoomImageView;
 
@@ -20,6 +21,7 @@ public class GirlAdapter
     private Context      mContext;
     private View         mCurrentView;
     private List<String> mList;
+    private boolean isShowBar=true;
 
 
     public GirlAdapter(Context context, List<String> list) {
@@ -54,7 +56,23 @@ public class GirlAdapter
 
         ZoomImageView view = ImageUitl.creatZoomView(mContext);
         ImageUitl.loadPic(mContext, mList.get(position), view);
+        view.setOnClickListener(view1 -> {
+
+            if (mContext instanceof HideToolbarListener) {
+                if (isShowBar) {
+
+                    ((HideToolbarListener) mContext).hideToolbar();
+                    isShowBar = false;
+
+                } else {
+                    ((HideToolbarListener) mContext).showToolbar();
+                    isShowBar = true;
+
+                }
+            }
+        });
         container.addView(view);
+
         return view;
     }
 

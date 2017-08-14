@@ -1,7 +1,7 @@
 package com.yibao.biggirl.model.dagger2.component;
 
 import com.yibao.biggirl.model.dagger2.moduls.AppModuls;
-import com.yibao.biggirl.mvp.app.AppFragment;
+import com.yibao.biggirl.mvp.app.AppFag;
 
 import dagger.Component;
 
@@ -12,5 +12,5 @@ import dagger.Component;
  */
 @Component(modules = AppModuls.class)
 public interface AppComponent {
-    void in(AppFragment appFragment);
+    void in(AppFag appFragment);
 }

@@ -1,6 +1,6 @@
 package com.yibao.biggirl.model.dagger2.moduls;
 
-import com.yibao.biggirl.mvp.app.AppFragment;
+import com.yibao.biggirl.mvp.app.AppFag;
 import com.yibao.biggirl.mvp.app.AppPresenter;
 
 import dagger.Module;
@@ -13,9 +13,9 @@ import dagger.Provides;
  */
 @Module
 public class AppModuls {
-    private AppFragment mAppFragment;
+    private AppFag mAppFragment;
 
-    public AppModuls(AppFragment appFragment) {
+    public AppModuls(AppFag appFragment) {
         this.mAppFragment = appFragment;
     }
 

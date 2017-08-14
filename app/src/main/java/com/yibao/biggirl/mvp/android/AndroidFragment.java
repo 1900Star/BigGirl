@@ -3,8 +3,6 @@ package com.yibao.biggirl.mvp.android;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +14,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
-import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.mvp.girls.GirlsContract;
-import com.yibao.biggirl.mvp.girls.GirlsPresenter;
-import com.yibao.biggirl.mvp.video.VideoAdapter;
+import com.yibao.biggirl.model.android.AndroidAndGirl;
+import com.yibao.biggirl.model.dagger2.component.DaggerAndroidComponent;
+import com.yibao.biggirl.model.dagger2.moduls.AndroidModuls;
 import com.yibao.biggirl.util.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,30 +39,41 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Time:2017/4/23 06:33
  */
 public class AndroidFragment
-        extends Fragment
-        implements GirlsContract.View<ResultsBeanX>, SwipeRefreshLayout.OnRefreshListener
+        extends BaseFag
+        implements AndroidContract.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener
 {
-
-
+    AndroidContract.Presenter mPresenters;
     @BindView(R.id.fag_content)
     LinearLayout       mFagContent;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
-    private VideoAdapter mAdapter;
-    private int page = 1;
-    private int size = 20;
-    private FloatingActionButton    mFab;
-    private List<ResultsBeanX>      mList;
-    private GirlsContract.Presenter mPresenter;
+
+    private AndroidAdapter mAdapter;
+
+
+    private int totalItemCount;
+    private int lastVisibleItem;
+    private       boolean loading           = false;
+    private final int     VISIBLE_THRESHOLD = 1;
+
+    @Inject
+    AndroidPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new GirlsPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_VIDEO, 1);
+
+        DaggerAndroidComponent component = (DaggerAndroidComponent) DaggerAndroidComponent.builder()
+                                                                                          .androidModuls(
+                                                                                                  new AndroidModuls(
+                                                                                                          this))
+                                                                                          .build();
+        component.in(this);
+        mPresenter.start(Constants.FRAGMENT_ANDROID, 1);
 
     }
+
 
     @Nullable
     @Override
@@ -73,31 +83,31 @@ public class AndroidFragment
     {
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
 
-        initView();
         unbinder = ButterKnife.bind(this, view);
+        initView();
         return view;
     }
 
-    private void initView() {
-        mList = new ArrayList<>();
-        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        mFab.setVisibility(View.VISIBLE);
-        //        mFab.setOnClickListener(this);
-
-
+    protected void initView() {
+        mFab.setOnClickListener(this);
+        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
+        mSwipeRefresh.setOnRefreshListener(this);
+        mSwipeRefresh.setRefreshing(true);
     }
 
 
-    private void initRecyclerView(List<ResultsBeanX> list, int type, String dataType) {
-        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
-        mSwipeRefresh.setRefreshing(true);
-        mSwipeRefresh.setOnRefreshListener(this);
-        mAdapter = new VideoAdapter(getActivity(), list);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type,
-
-                                                                          mAdapter);
+    private void initData(List<AndroidAndGirl> list, int type, String dataType) {
 
 
+        mAdapter = new AndroidAdapter(getContext(), list);
+
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        initListerner(recyclerView);
+        mFagContent.addView(recyclerView);
+
+    }
+
+    public void initListerner(RecyclerView recyclerView) {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -128,11 +138,7 @@ public class AndroidFragment
                         {
                             page++;
 
-                            mPresenter.loadData(size,
-                                                page,
-                                                1,
-                                                Constants.LOAD_MORE_DATA,
-                                                Constants.FRAGMENT_VIDEO);
+                            mPresenter.loadData(size, page, Constants.LOAD_MORE_DATA);
                             //                        mProgressBar.setVisibility(View.VISIBLE);
                         }
                         break;
@@ -173,7 +179,6 @@ public class AndroidFragment
             }
 
         });
-        mFagContent.addView(recyclerView);
     }
 
     //找到数组中的最大值
@@ -188,44 +193,35 @@ public class AndroidFragment
     }
 
     @Override
+    public void loadData(List<AndroidAndGirl> list) {
+
+        initData(list, 1, Constants.FRAGMENT_ANDROID);
+        mSwipeRefresh.setRefreshing(false);
+    }
+
+    @Override
     public void onRefresh() {
+
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size,
-                                          page,
-                                          1,
-                                          Constants.REFRESH_DATA,
-                                          Constants.FRAGMENT_VIDEO);
-
-                      mSwipeRefresh.setRefreshing(true);
+                      mPresenter.loadData(size, page, Constants.REFRESH_DATA);
+                      mSwipeRefresh.setRefreshing(false);
                       page = 1;
                   });
     }
 
     @Override
-    public void loadData(List<ResultsBeanX> list) {
-        mList.addAll(list);
-        initRecyclerView(mList, 1, Constants.FRAGMENT_VIDEO);
-        mSwipeRefresh.setRefreshing(false);
+    public void refresh(List<AndroidAndGirl> list) {
+
     }
 
     @Override
-    public void refresh(List<ResultsBeanX> list) {
-        mList.clear();
-        mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(list);
+    public void loadMore(List<AndroidAndGirl> list) {
+        mAdapter.AddFooter(list);
         mAdapter.notifyDataSetChanged();
-        mSwipeRefresh.setRefreshing(false);
     }
 
-    @Override
-    public void loadMore(List<ResultsBeanX> list) {
-        mList.addAll(list);
-        mAdapter.AddFooter(mList);
-        mAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public void showError() {
@@ -238,18 +234,27 @@ public class AndroidFragment
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public void setPrenter(AndroidContract.Presenter prenter) {
+        this.mPresenters = prenter;
     }
 
     public AndroidFragment newInstance() {
+
         return new AndroidFragment();
     }
 
     @Override
-    public void setPrenter(GirlsContract.Presenter prenter) {
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+
 
     }
 
+
+    @Override
+    public void onClick(View view) {
+
+    }
 }
+

@@ -2,7 +2,7 @@ package com.yibao.biggirl.mvp.app;
 
 import com.yibao.biggirl.base.BasePresenter;
 import com.yibao.biggirl.base.BaseView;
-import com.yibao.biggirl.model.android.AndroidAndGirl;
+import com.yibao.biggirl.model.android.ResultsBeanX;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ public interface AppContract {
      interface View
             extends BaseView<Presenter>
     {
-        void loadData(List<AndroidAndGirl> list);
-        void refresh(List<AndroidAndGirl> list);
-        void loadMore(List<AndroidAndGirl> list);
+        void loadData(List<ResultsBeanX> list);
+        void refresh(List<ResultsBeanX> list);
+        void loadMore(List<ResultsBeanX> list);
 
         void showError();
         void showNormal();

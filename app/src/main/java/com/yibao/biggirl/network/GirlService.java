@@ -24,15 +24,11 @@ public interface GirlService {
 
     //Android
     @GET("api/data/{type}/{count}/{page}")
-    Observable<AndroidDesBean> getAndroid(@Path("type") String type,
-                                          @Path("count") int count,
-                                          @Path("page") int page);
+    Observable<AndroidDesBean> getConmmetApi(@Path("type") String type,
+                                             @Path("count") int count,
+                                             @Path("page") int page);
 
-    //Video
-    @GET("api/data/{type}/{count}/{page}")
-    Observable<AndroidDesBean> getVideo(@Path("type") String type,
-                                   @Path("count") int count,
-                                   @Path("page") int page);
+
     //All
     @GET("api/data/{type}/{count}/{page}")
     Observable<AllBean> getAll(@Path("type") String type,

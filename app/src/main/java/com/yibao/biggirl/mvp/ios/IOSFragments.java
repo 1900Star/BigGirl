@@ -2,12 +2,10 @@ package com.yibao.biggirl.mvp.ios;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.yibao.biggirl.MyApplication;
-import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFragment;
 import com.yibao.biggirl.base.LoadingPager;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
@@ -18,9 +16,7 @@ import com.yibao.biggirl.mvp.app.AppContract;
 import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
-import com.yibao.biggirl.util.NetworkUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,26 +26,25 @@ import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Author：Sid
- * Des：${TODO}
+ * Des：${继承BaseFragment，类似GooglePlay的抽取}
  * Time:2017/4/23 06:33
  */
 public class IOSFragments
         extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener
+        implements AppContract.View,SwipeRefreshLayout.OnRefreshListener
 {
     AppPresenter mPresenter;
 
-    private static List<AndroidAndGirl> mLists;
+    private static List<AndroidAndGirl> mDatas;
     private static AppAdapter           mAdapter;
 
-    private int page = 1;
-    private int size = 20;
-    private FloatingActionButton mFab;
 
-    private boolean isNetwork = NetworkUtil.isNetworkConnected(getActivity());
+
     private CompositeDisposable  disposables;
     private MyApplication        mApplication;
-    private List<AndroidAndGirl> mDatas;
+    private int size=20;
+    private int page=1;
+    private boolean isNetwork=true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,9 +52,9 @@ public class IOSFragments
         mApplication = (MyApplication) getActivity().getApplication();
         disposables = new CompositeDisposable();
         mPresenter = new AppPresenter(this);
-        initView();
-
-        //                mPresenter.start(Constants.FRAGMENT_IOS);
+//        initView();
+//
+//                        mPresenter.start(Constants.FRAGMENT_IOS);
 
 
     }
@@ -68,7 +63,7 @@ public class IOSFragments
     //加载数据，同时判断数据的状态，根据不同的状态返回不同的视图
     @Override
     protected LoadingPager.LoadedResult initData() {
-        mDatas = AppPresenter.getDatas(20, 1, Constants.FRAGMENT_IOS);
+//        mDatas = AppPresenter.getDatas(20, 1, Constants.FRAGMENT_IOS);
 
         if (!isNetwork) {
 
@@ -121,7 +116,7 @@ public class IOSFragments
     @Override
     protected View initSuccessView() {
         LogUtil.d("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-        mAdapter = new AppAdapter(getActivity(), mDatas);
+//        mAdapter = new AppAdapter(getActivity(), mDatas);
 //        return RecyclerViewFactory.creatRecyclerView(1, mFab, mAdapter);
 
         return null;
@@ -134,8 +129,7 @@ public class IOSFragments
     }
 
     private void initView() {
-        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        mFab.setVisibility(View.VISIBLE);
+
 
     }
 
@@ -143,11 +137,7 @@ public class IOSFragments
 
 
     @Override
-    public void loadData(List<AndroidAndGirl> list) {
-        mLists = new ArrayList<>();
-        mLists.clear();
-        mLists.addAll(list);
-        LogUtil.d("AAAAAAAAAAAAAAAAAAA" + mLists.size());
+    public void loadData(List<ResultsBeanX> list) {
 
 
     }
@@ -167,14 +157,14 @@ public class IOSFragments
 
 
     @Override
-    public void refresh(List<AndroidAndGirl> list) {
+    public void refresh(List<ResultsBeanX> list) {
 
         mAdapter.clear();
         mAdapter.AddHeader(list);
     }
 
     @Override
-    public void loadMore(List<AndroidAndGirl> list) {
+    public void loadMore(List<ResultsBeanX> list) {
 
     }
 

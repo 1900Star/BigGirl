@@ -6,12 +6,9 @@
             android:id="@+id/action_my_favorite"
             android:icon="@drawable/ic_star_white_24dp"
             android:title="@string/favorite"/>
+
         <item
-            android:id="@+id/action_map"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/action_map"/>
-        <item
-            android:id="@+id/action_girl_video"
+            android:id="@+id/action_beautiful"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/video"/>
         <item
@@ -19,8 +16,12 @@
             android:icon="@drawable/ic_menu_share"
             android:title="@string/action_share"/>
         <item
+            android:id="@+id/action_map"
+            android:icon="@drawable/dw"
+            android:title="@string/action_map"/>
+        <item
             android:id="@+id/action_music"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@mipmap/music"
             android:title="@string/bgm"/>
 
     </group>
@@ -29,7 +30,6 @@
         <menu>
 
             <item
-                android:id="@+id/action_setting"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/option"/>
 

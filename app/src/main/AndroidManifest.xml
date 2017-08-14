@@ -54,6 +54,11 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity
+            android:name=".mvp.webview.WebNormalActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name=".mvp.favorite.FavoriteActivity"/>
 
         <!--
@@ -72,7 +77,14 @@
             android:name=".mvp.map.MapsActivity"
             android:label="@string/title_activity_maps">
         </activity>
+
         <service android:name=".service.AudioPlayService"/>
+
+        <activity android:name=".mvp.music.MusicListActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mvp.music.MusicPlayActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

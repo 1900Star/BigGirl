@@ -67,7 +67,7 @@ public class GirlFragment
     //下载进度最大值
     public static       int MAX_DOWN_PREGRESS    = 100;
 
-    //PerView滑动的状态的最值
+    //PergerView滑动的状态的最值
     public static final int STATUS_MAX_NUM = 3;
     private GirlAdapter mPagerGirlAdapter;
     private View   mView = null;

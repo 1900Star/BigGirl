@@ -33,6 +33,7 @@ import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
 import com.yibao.biggirl.mvp.map.MapsActivity;
+import com.yibao.biggirl.mvp.music.MusicListActivity;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.service.AudioPlayService;
@@ -86,9 +87,11 @@ public class MainActivity
 
 
     private long exitTime = 0;
-    private Unbinder  mBind;
-    private ImageView mIvHeader;
-    private String    mUrl;
+    private Unbinder                     mBind;
+    private ImageView                    mIvHeader;
+    private String                       mUrl;
+    private AudioPlayService.AudioBinder audioBinder;
+    private MenuItem                     mItem;
 
 
     @Override
@@ -109,6 +112,8 @@ public class MainActivity
 
     //加载动态布局
     private void initView() {
+        Menu menu = mNavView.getMenu();
+        mItem = menu.findItem(R.id.action_music);
 
         setSupportActionBar(mToolbar);
         mToolbarLayout.setTitleEnabled(false);
@@ -130,9 +135,12 @@ public class MainActivity
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(7);
         mViewPager.setAdapter(pagerAdapter);
+
+
     }
 
     private void initListener() {
+
         //我的页面
         mIvHeader.setOnClickListener(view -> MeDialogFragment.newInstance()
                                                              .show(getSupportFragmentManager(),
@@ -152,6 +160,37 @@ public class MainActivity
                                     .removeOnGlobalLayoutListener(this);
                       }
                   });
+
+
+        //                mFab.setOnClickListener(view -> {
+        //                    switch (mCurrentPosition) {
+        //                        case 0:
+        //                            LogUtil.d(mCurrentPosition + "");
+        //                            break;
+        //                        case 1:
+        //                            LogUtil.d(mCurrentPosition + "");
+        //                            break;
+        //                        case 2:
+        //                            LogUtil.d(mCurrentPosition + "");
+        //                            break;
+        //                        case 3:
+        //                            LogUtil.d(mCurrentPosition + "");
+        //                            break;
+        //                        case 4:
+        //                            LogUtil.d(mCurrentPosition + "");
+        //                            break;
+        //                        case 5:
+        //                            LogUtil.d(mCurrentPosition + "");
+        //                            break;
+        //                        case 6:
+        //                            LogUtil.d(mCurrentPosition + "");
+        //                            break;
+        //                        default:
+        //                            break;
+        //                    }
+        //                });
+
+
     }
 
     @Override
@@ -164,19 +203,20 @@ public class MainActivity
                 AboutMeDialogFag.newInstance()
                                 .show(getSupportFragmentManager(), "about");
                 break;
-            //我的收藏
+
+
             case R.id.action_my_favorite:
 
                 startActivity(new Intent(this, FavoriteActivity.class));
                 break;
             case R.id.action_map:
                 startActivity(new Intent(this, MapsActivity.class));
-                break;
-            case R.id.action_music:
-                startService(new Intent(this, AudioPlayService.class));
 
                 break;
-            case R.id.action_girl_video:
+            case R.id.action_music: // ***************** 我的音乐
+                startActivity(new Intent(this, MusicListActivity.class));
+                break;
+            case R.id.action_beautiful:
                 //                                                RetrofitHelper.getUnsplashApi();
                 BeautifulDialogFag.newInstance()
                                   .show(getSupportFragmentManager(), "beautiful");
@@ -190,6 +230,7 @@ public class MainActivity
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -234,6 +275,7 @@ public class MainActivity
         TopBigPicDialogFragment.newInstance(url)
                                .show(getSupportFragmentManager(), "dialog_big_girl");
     }
+
 
     //ViewPager监听器
     private class MyOnpageChangeListener

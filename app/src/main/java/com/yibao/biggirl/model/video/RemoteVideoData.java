@@ -21,7 +21,7 @@ public class RemoteVideoData
     @Override
     public void getVideo(int size, int page,String loadType,LoadVDataCallback callback) {
         RetrofitHelper.getGankApi()
-                      .getVideo(loadType, size, page)
+                      .getConmmetApi(loadType, size, page)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
                       .subscribe(new Observer<AndroidDesBean>() {

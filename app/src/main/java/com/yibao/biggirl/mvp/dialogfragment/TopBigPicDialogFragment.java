@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseDialogFragment;
-import com.yibao.biggirl.util.AnimaUtil;
+import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.view.ZoomImageView;
 
@@ -43,7 +43,7 @@ public class TopBigPicDialogFragment
         String        url  = getArguments().getString("url");
         ImageUitl.loadPic(getActivity(), url, view);
         view.setOnClickListener(view1 -> TopBigPicDialogFragment.this.dismiss());
-        AnimaUtil.applyBobbleAnim(topPicContent);
+        AnimationUtil.applyBobbleAnim(topPicContent);
         topPicContent.addView(view);
 
 

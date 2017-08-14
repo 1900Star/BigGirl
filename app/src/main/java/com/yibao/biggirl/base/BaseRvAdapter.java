@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 /**
  * Author：Sid
- * Des：${Base}
+ * Des：${BaseAdapter}
  * Time:2017/6/2 13:07
  */
 public abstract class BaseRvAdapter<ITEMBEANTYPE>

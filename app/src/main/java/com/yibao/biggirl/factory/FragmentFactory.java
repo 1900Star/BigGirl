@@ -3,7 +3,7 @@ package com.yibao.biggirl.factory;
 import android.support.v4.app.Fragment;
 
 import com.yibao.biggirl.mvp.android.AndroidFragment;
-import com.yibao.biggirl.mvp.app.AppFragment;
+import com.yibao.biggirl.mvp.app.AppFag;
 import com.yibao.biggirl.mvp.expand.ExpandFragment;
 import com.yibao.biggirl.mvp.frontend.FrontEndFragment;
 import com.yibao.biggirl.mvp.girls.GirlsFragment;
@@ -52,7 +52,7 @@ public class FragmentFactory {
 
                 break;
             case FRAGMENT_APP:
-                fragment = new AppFragment();
+                fragment = new AppFag();
                 break;
             case FRAGMENT_IOS:
                 fragment = new IOSFragment();

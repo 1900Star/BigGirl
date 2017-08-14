@@ -57,7 +57,7 @@ public class ProgressView
     public void setProgress(int progress) {
         mProgress = progress;
         //重绘
-        //        invalidate()        这个方法会报子线程修改UIn异常，
+        //        invalidate()        这个方法会报子线程修改UI异常，
         postInvalidate();
     }
 

@@ -13,6 +13,7 @@ public class ColorUtil {
     public static int saveColor        = Color.argb(255, 245, 115, 160);
     public static int picAlreadyExists = Color.argb(255, 215, 62, 236);
     public static int exitColor = Color.argb(255, 230, 195, 65);
+    public static int transparentColor = Color.argb(0, 0, 0, 0);
 
 
     public static int colorBurn(int RGBValues) {

@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/web_share"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@mipmap/nav_menu_share"
         android:title="@string/action_share"
         app:showAsAction="never"/>
     <item

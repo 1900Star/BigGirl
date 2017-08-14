@@ -32,7 +32,6 @@ public class SplashActivity
 
     @BindView(R.id.iv_splash)
     ImageView mIvSplash;
-    //    private String url = "http://imgsrc.baidu.com/baike/pic/item/a044ad345982b2b78714197432adcbef77099bf2.jpg";
     private Unbinder mBind;
 
     @Override
@@ -52,7 +51,6 @@ public class SplashActivity
                       });
 
         } else {
-
             SnakbarUtil.netErrorsLong(mIvSplash);
         }
 

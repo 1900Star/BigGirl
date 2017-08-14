@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yibao.biggirl.factory.FragmentFactory;
+import com.yibao.biggirl.factory.FragmentFactorys;
 import com.yibao.biggirl.util.Constants;
 
 /**
@@ -26,14 +26,14 @@ public class TabPagerAdapter
 
     @Override
     public Fragment getItem(int position) {
-                return FragmentFactory.createFragment(position);
-//        return FragmentFactorys.createFragment(position);
+//                return FragmentFactory.createFragment(position);
+        return FragmentFactorys.createFragment(position);
     }
 
     @Override
     public int getCount() {
         return Constants.arrTitle.length;
-//        return 2;
+//        return 6;
     }
 
     @Override

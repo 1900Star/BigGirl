@@ -1,11 +1,7 @@
 package com.yibao.biggirl.mvp.girls;
 
-import com.yibao.biggirl.model.all.RemoteAllData;
-import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
-import com.yibao.biggirl.model.video.RemoteVideoData;
-import com.yibao.biggirl.model.video.VideoDataSource;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
@@ -18,16 +14,12 @@ import java.util.List;
 public class GirlsPresenter
         implements GirlsContract.Presenter
 {
-    private       GirlsContract.View mView;
-    private       RemoteGirlsData    mRemoteGirlsData;
-    private       RemoteVideoData    mRemoteVideoData;
-    private final RemoteAllData      mRemoteAllData;
+    private GirlsContract.View mView;
+    private RemoteGirlsData    mRemoteGirlsData;
 
     public GirlsPresenter(GirlsContract.View view) {
         this.mView = view;
         mRemoteGirlsData = new RemoteGirlsData();
-        mRemoteVideoData = new RemoteVideoData();
-        mRemoteAllData = new RemoteAllData();
     }
 
 
@@ -39,74 +31,31 @@ public class GirlsPresenter
 
     @Override
     public void start(String dataType, int codeId) {
-        loadData(20, 1, Constants.LOAD_DATA, codeId, dataType);
+        loadData(20, 1, Constants.LOAD_DATA, dataType);
 
     }
 
     @Override
-    public void loadData(int size, int page, int codeId, int type, String dataType) {
-        switch (dataType) {
-            case Constants.FRAGMENT_GIRLS:
+    public void loadData(int size, int page, int type, String dataType) {
+        mRemoteGirlsData.getGirls(dataType, size, page, new GrilsDataSource.LoadGDataCallback() {
+            @Override
+            public void onLoadDatas(List<String> girlBean) {
 
-                mRemoteGirlsData.getGirls(dataType,
-                                          size,
-                                          page,
-                                          new GrilsDataSource.LoadGDataCallback() {
-                                              @Override
-                                              public void onLoadDatas(List<String> girlBean) {
+                if (type == Constants.REFRESH_DATA) {
+                    mView.refresh(girlBean);
+                } else if (type == Constants.LOAD_DATA) {
+                    mView.loadData(girlBean);
+                } else if (type == Constants.LOAD_MORE_DATA) {
+                    mView.loadMore(girlBean);
+                }
+                mView.showNormal();
+            }
 
-                                                  if (type == Constants.REFRESH_DATA) {
-                                                      mView.refresh(girlBean);
-                                                  } else if (type == Constants.LOAD_DATA) {
-                                                      mView.loadData(girlBean);
-                                                  } else if (type == Constants.LOAD_MORE_DATA) {
-                                                      mView.loadMore(girlBean);
-                                                  }
-                                                  mView.showNormal();
-                                              }
-
-                                              @Override
-                                              public void onDataNotAvailable() {
-                                                  mView.showError();
-                                              }
-                                          });
-                break;
-            case Constants.FRAGMENT_VIDEO:
-//                switch (codeId) {
-//
-//                    case 1:
-//                        dataType = Constants.FRAGMENT_ANDROID;
-//                        break;
-//                    case 2:
-//
-//                        dataType = Constants.FRAGMENT_VIDEO;
-//                        break;
-//
-//                }
-                mRemoteVideoData.getVideo(size,
-                                          page,
-                                          dataType,
-                                          new VideoDataSource.LoadVDataCallback() {
-                                              @Override
-                                              public void onLoadDatas(AndroidDesBean videoBean) {
-                                                  if (type == Constants.LOAD_DATA) {
-                                                      mView.loadData(videoBean.getResults());
-                                                  } else if (type == Constants.REFRESH_DATA) {
-                                                      mView.refresh(videoBean.getResults());
-                                                  } else if (type == Constants.LOAD_MORE_DATA) {
-                                                      mView.loadMore(videoBean.getResults());
-                                                  }
-                                              }
-
-                                              @Override
-                                              public void onDataNotAvailable() {
-                                                  mView.showError();
-                                              }
-                                          });
-                break;
-        }
-
-
+            @Override
+            public void onDataNotAvailable() {
+                mView.showError();
+            }
+        });
     }
 
 

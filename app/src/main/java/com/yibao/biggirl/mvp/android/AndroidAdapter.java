@@ -56,6 +56,9 @@ public class AndroidAdapter
 
             return new MyViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(parent.getContext())
+                                      .inflate(R.layout.load_more_footview, parent, false);
+            return new LoadMoreHolder(view);
         }
 
         return null;
@@ -75,8 +78,6 @@ public class AndroidAdapter
                                                .get(position);
                 ResultsBean girlData = item.getGirlData()
                                            .get(position);
-
-                androidData.get_id();
                 Glide.with(mContext)
                      .load(girlData.getUrl())
                      .asBitmap()
@@ -93,8 +94,8 @@ public class AndroidAdapter
                 viewHolder.mTvAndroidName.setText(name);
 
                 String time = androidData.getCreatedAt();
-                viewHolder.mTvAndroidTime.setText(time.substring(0, time.lastIndexOf("T")));
-                viewHolder.mTvAndroidDes.setText(androidData.getDesc());
+                                viewHolder.mTvAndroidTime.setText(time.substring(0, time.lastIndexOf("T")));
+                                viewHolder.mTvAndroidDes.setText(androidData.getDesc());
                 holder.itemView.setOnClickListener(view -> {
                     if (mContext instanceof OnRvItemClickListener) {
                         FavoriteBean bean = PackagingDataUtil.objectToFavorite(androidData);
@@ -109,11 +110,24 @@ public class AndroidAdapter
 
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == getItemCount() - 1) {
+            return TYPE_FOOTER;
+        }
+        return TYPE_ITEM;
+    }
 
     @Override
     public int getItemCount() {
 
-        return 19;
+        return mList.size();
+    }
+
+    public void AddFooter(List<AndroidAndGirl> list) {
+
+        mList.addAll(list);
+
     }
 
     void clear() {

@@ -11,15 +11,15 @@ import java.util.List;
  * Time:2017/4/22 10:04
  */
 public interface GirlsContract {
-    interface View<T>
+    interface View
             extends BaseView<Presenter>
     {
 
-        void loadData(List<T> list);
+        void loadData(List<String> list);
 
-        void refresh(List<T> list);
+        void refresh(List<String> list);
 
-        void loadMore(List<T> list);
+        void loadMore(List<String> list);
 
         void showError();
 
@@ -31,7 +31,7 @@ public interface GirlsContract {
     interface Presenter
             extends BasePresenter
     {
-        void loadData(int size, int page, int codeId,int loadType, String dataType);
+        void loadData(int size, int page, int loadType, String dataType);
 
     }
 }

@@ -25,14 +25,13 @@ public class RemoteAndroidData
     @Override
     public void getAndroid(int size, int page, LoadADataCallback callback) {
         Observable.zip(RetrofitHelper.getGankApi()
-                                     .getAndroid("Android", size, page),
+                                     .getConmmetApi("Android", size, page),
                        RetrofitHelper.getGankApi()
-                                     .getGril("福利", size, page), RemoteAndroidData.this::zipHelper)
+                                     .getGril("福利", size, page),
+                       RemoteAndroidData.this::zipHelper)
                   .subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(new AndroidObserver(callback));
-
-
 
 
     }
@@ -58,15 +57,14 @@ public class RemoteAndroidData
         public void onNext(AndroidAndGirl bean) {
             mList = new ArrayList<>();
             for (int i = 0; i < bean.mGirlData.size(); i++) {
-                AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData,
-                                                             bean.mGirlData);
+                AndroidAndGirl itemData = new AndroidAndGirl(bean.mAndroidData, bean.mGirlData);
                 mList.add(itemData);
             }
             mCallback.onLoadData(mList);
 
             //将数据发到
-//            EventBus.getDefault()
-//                    .post(mList);
+            //            EventBus.getDefault()
+            //                    .post(mList);
 
 
         }

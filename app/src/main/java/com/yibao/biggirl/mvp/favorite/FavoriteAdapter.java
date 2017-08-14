@@ -15,7 +15,6 @@ import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.model.favorite.FavoriteBean;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -63,7 +62,6 @@ public class FavoriteAdapter
             viewHolder.mTvFavoriteDes.setText(bean.getDes());
             viewHolder.mDeleteItem.setOnClickListener(view -> {
                 int position = holder.getAdapterPosition();
-                LogUtil.d("这是上下文 ："+ mContext.toString());
                 if (mContext instanceof OnDeleteItemClickListener) {
                     ((OnDeleteItemClickListener) mContext).deleteFavorite(bean.getId());
                 }
@@ -73,7 +71,6 @@ public class FavoriteAdapter
             viewHolder.mFavoriteItem.setOnClickListener(view -> {
 
                 if (mContext instanceof OnRvItemClickListener) {
-                    LogUtil.d("这是上下文 ："+ bean.getId());
                     ((OnRvItemClickListener) mContext).showDetail(bean, bean.getId());
                 }
             });

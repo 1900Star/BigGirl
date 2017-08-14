@@ -23,6 +23,8 @@ public class MyApplication
         extends Application
 {
     private static MyApplication appContext;
+    public static boolean isShowLog=true;
+
     private        RxBus         mRxBus;
 
     private DaoSession mDaoSession;

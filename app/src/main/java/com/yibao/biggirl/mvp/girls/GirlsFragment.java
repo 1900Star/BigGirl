@@ -4,8 +4,6 @@ package com.yibao.biggirl.mvp.girls;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.dagger2.component.DaggerGirlsComponent;
 import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
@@ -44,10 +43,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * 邮箱：strangermy@outlook.com
  */
 public class GirlsFragment
-        extends Fragment
-        implements GirlsContract.View<String>,
-                   SwipeRefreshLayout.OnRefreshListener,
-                   View.OnClickListener
+        extends BaseFag<String>
+        implements GirlsContract.View, SwipeRefreshLayout.OnRefreshListener
 {
 
 
@@ -57,11 +54,8 @@ public class GirlsFragment
     @BindView(R.id.fag_content)
     LinearLayout mLlGrils;
     private GirlsAdapter mAdapter;
-    private List<String> mList;
-    private int page = 1;
-    private int size = 20;
-    private FloatingActionButton mFab;
-    private boolean              isShowGankGirl;
+
+    private boolean isShowGankGirl;
     // 1 指定注入目标
     @Inject
     GirlsPresenter mPresenter;
@@ -74,10 +68,11 @@ public class GirlsFragment
                                                                                             this))
                                                                                     .build();
         component.in(this);
-        mPresenter.start(Constants.FRAGMENT_GIRLS,0);
+        mPresenter.start(Constants.FRAGMENT_GIRLS, 0);
 
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -88,23 +83,41 @@ public class GirlsFragment
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
         unbinder = ButterKnife.bind(this, view);
         initView();
-        //        initData();
+        initListener();
+
         return view;
     }
 
+    private void initListener() {
 
-    private void initView() {
-        mList = new ArrayList<>();
-        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        mFab.setOnClickListener(this);
+    }
 
+
+    protected void initView() {
+        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
+        mSwipeRefresh.setOnRefreshListener(this);
+        mSwipeRefresh.setRefreshing(true);
+
+
+    }
+
+    private void initData() {
+        if (isShowGankGirl) {
+            mLlGrils.removeAllViews();
+            initRecyclerView(mList, 2);
+            mSwipeRefresh.setRefreshing(false);
+            isShowGankGirl = false;
+
+
+        } else {
+            getDefultGirl();
+            isShowGankGirl = true;
+        }
     }
 
 
     private void initRecyclerView(List<String> mList, int type) {
-        mSwipeRefresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.YELLOW);
-        mSwipeRefresh.setRefreshing(true);
-        mSwipeRefresh.setOnRefreshListener(this);
+
         mAdapter = new GirlsAdapter(getActivity(), mList);
         RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -139,11 +152,10 @@ public class GirlsFragment
                             page++;
 
                             mPresenter.loadData(size,
-                                                page,0,
+                                                page,
                                                 Constants.LOAD_MORE_DATA,
                                                 Constants.FRAGMENT_GIRLS);
                             LogUtil.d("PAGE===" + page);
-                            //                        mProgressBar.setVisibility(View.VISIBLE);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -179,10 +191,12 @@ public class GirlsFragment
                                                                                      .getItemCount() - 1)
                 {
                     //                                                            mProgressBar.setVisibility(View.VISIBLE);
+
                 }
             }
 
         });
+        mFab.setOnClickListener(view -> GirlsFragment.this.initData());
         mLlGrils.addView(recyclerView);
     }
 
@@ -212,7 +226,7 @@ public class GirlsFragment
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
                       mPresenter.loadData(size,
-                                          1,0,
+                                          1,
                                           Constants.REFRESH_DATA,
                                           Constants.FRAGMENT_GIRLS);
                       mSwipeRefresh.setRefreshing(false);
@@ -233,11 +247,9 @@ public class GirlsFragment
 
     @Override
     public void loadMore(List<String> list) {
-        //        mList.clear();
         mList.addAll(list);
         mAdapter.AddFooter(list);
         mAdapter.notifyDataSetChanged();
-        //        mProgressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -262,22 +274,8 @@ public class GirlsFragment
         return new GirlsFragment();
     }
 
+
     //切换干货和默认妹子
-    @Override
-    public void onClick(View view) {
-        if (isShowGankGirl) {
-            mLlGrils.removeAllViews();
-            initRecyclerView(mList, 2);
-            mSwipeRefresh.setRefreshing(false);
-            isShowGankGirl = false;
-
-
-        } else {
-            getDefultGirl();
-            isShowGankGirl = true;
-        }
-
-    }
 
     private void getDefultGirl() {
         mLlGrils.removeAllViews();
@@ -292,4 +290,6 @@ public class GirlsFragment
     public void setPrenter(GirlsContract.Presenter prenter) {
         mPresenter = (GirlsPresenter) prenter;
     }
+
+
 }

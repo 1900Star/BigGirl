@@ -10,7 +10,7 @@ import static com.yibao.biggirl.util.ColorUtil.picAlreadyExists;
 
 /**
  * 作者：Stran on 2017/3/28 01:31
- * 描述：${}
+ * 描述：${各种需求的Snakbar}
  * 邮箱：strangermy@outlook.com
  */
 public class SnakbarUtil {

@@ -9,7 +9,6 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.model.favorite.FavoriteBean;
-import com.yibao.biggirl.mvp.video.VideoFragmnets;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.util.ActivityUtils;
 import com.yibao.biggirl.util.LogUtil;
@@ -36,9 +35,9 @@ public class FavoriteActivity
     }
 
     private void initData() {
-        android.support.v7.app.ActionBar bar = getSupportActionBar();
-        bar.setTitle("收藏");
-        bar.setDisplayHomeAsUpEnabled(true);
+        android.support.v7.app.ActionBar toolbar = getSupportActionBar();
+        toolbar.setTitle("收藏");
+        toolbar.setDisplayHomeAsUpEnabled(true);
 
         FavoriteFag favoriteFag = (FavoriteFag) getSupportFragmentManager().findFragmentById(R.id.content_girl_activity);
 
@@ -55,23 +54,6 @@ public class FavoriteActivity
 
 
 
-    private void initDatas() {
-        android.support.v7.app.ActionBar bar = getSupportActionBar();
-        bar.setTitle("收藏");
-        bar.setDisplayHomeAsUpEnabled(true);
-
-        VideoFragmnets favoriteFag = (VideoFragmnets) getSupportFragmentManager().findFragmentById(R.id.content_girl_activity);
-
-
-        if (favoriteFag == null) {
-
-            favoriteFag = new VideoFragmnets().newInstance();
-
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                                                favoriteFag,
-                                                R.id.content_girl_activity);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -109,7 +91,7 @@ public class FavoriteActivity
 
     @Override
     public void deleteFavorite(Long id) {
-
+        LogUtil.d("要删除的 ID :" + id);
 
     }
 }
