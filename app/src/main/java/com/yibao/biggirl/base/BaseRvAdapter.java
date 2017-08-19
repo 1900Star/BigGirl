@@ -72,7 +72,7 @@ public abstract class BaseRvAdapter<ITEMBEANTYPE>
 
     @Override
     public int getItemViewType(int position) {
-        if (position ==getItemCount()-1) {
+        if (position == getItemCount()) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -84,21 +84,23 @@ public abstract class BaseRvAdapter<ITEMBEANTYPE>
         ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
         if (params != null && params instanceof StaggeredGridLayoutManager.LayoutParams) {
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) params;
-            p.setFullSpan(holder.getLayoutPosition()==getItemCount()-1);
+            p.setFullSpan(holder.getLayoutPosition() == getItemCount() - 1);
         }
     }
+
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
 
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        if(manager instanceof GridLayoutManager) {
+        if (manager instanceof GridLayoutManager) {
             final GridLayoutManager gridManager = ((GridLayoutManager) manager);
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return getItemViewType(position) ==TYPE_FOOTER
-                           ? gridManager.getSpanCount() : 1;
+                    return getItemViewType(position) == TYPE_FOOTER
+                           ? gridManager.getSpanCount()
+                           : 1;
                 }
             });
         }
@@ -109,7 +111,6 @@ public abstract class BaseRvAdapter<ITEMBEANTYPE>
     public void clear() {
         mList.clear();
     }
-
 
 
     public void AddHeader(List<ITEMBEANTYPE> list) {

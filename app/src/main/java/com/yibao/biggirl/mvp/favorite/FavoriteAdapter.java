@@ -60,7 +60,7 @@ public class FavoriteAdapter
             viewHolder.mTvFavoriteTime.setText(bean.getTime());
             viewHolder.mTvFavoriteType.setText(bean.getType());
             viewHolder.mTvFavoriteDes.setText(bean.getDes());
-            viewHolder.mDeleteItem.setOnClickListener(view -> {
+            viewHolder.mDeleteItem.setOnClickListener(view -> { //侧滑删除的监听
                 int position = holder.getAdapterPosition();
                 if (mContext instanceof OnDeleteItemClickListener) {
                     ((OnDeleteItemClickListener) mContext).deleteFavorite(bean.getId());
@@ -68,7 +68,7 @@ public class FavoriteAdapter
                 mList.remove(position);
                 notifyItemRemoved(position);
             });
-            viewHolder.mFavoriteItem.setOnClickListener(view -> {
+            viewHolder.mFavoriteItem.setOnClickListener(view -> { //Item点击的监听
 
                 if (mContext instanceof OnRvItemClickListener) {
                     ((OnRvItemClickListener) mContext).showDetail(bean, bean.getId());

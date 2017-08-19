@@ -52,7 +52,7 @@ public class IOSFragments
         mApplication = (MyApplication) getActivity().getApplication();
         disposables = new CompositeDisposable();
         mPresenter = new AppPresenter(this);
-//        initView();
+//        initData();
 //
 //                        mPresenter.start(Constants.FRAGMENT_IOS);
 

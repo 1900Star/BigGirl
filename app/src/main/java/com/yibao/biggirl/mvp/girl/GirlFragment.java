@@ -200,6 +200,7 @@ public class GirlFragment
             case R.id.action_auto_play: //自动播放图册
                 if (isPlay) {
                     mMenuItem.setIcon(R.drawable.btn_playing_play);
+                    mPbDown.setVisibility(View.VISIBLE);
                     //                    ((HideToolbarListener) getActivity()).showToolbar();
                     stopLoop();
                     isPlay = false;
@@ -207,6 +208,7 @@ public class GirlFragment
 
                     mMenuItem.setIcon(R.drawable.btn_playing_pause);
                     ((HideToolbarListener) getActivity()).hideToolbar();
+                    mPbDown.setVisibility(View.INVISIBLE);
                     startLoop();
                     isPlay = true;
                 }

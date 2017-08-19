@@ -69,7 +69,7 @@ public class VideoFragmnet
 
     @Override
     public void loadData() {
-                mPresenter.start(Constants.FRAGMENT_ANDROID, 2);
+//                mPresenter.start(Constants.FRAGMENT_ANDROID, 2);
 
     }
 

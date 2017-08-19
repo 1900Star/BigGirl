@@ -25,4 +25,7 @@ public class RxBus {
         //本质是先filter再cast
         return bus.ofType(eventType);
     }
+
+
+
 }

@@ -214,27 +214,27 @@ public class MusicListActivity
               R.id.music_floating_block,
               R.id.music_float_block_albulm})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.music_toolbar_back:
-                finish();
-                break;
+        if (isInitList) {
+            switch (view.getId()) {
+                case R.id.music_toolbar_back:
+                    finish();
+                    break;
+                case R.id.music_floating_pre:
+                    audioBinder.playPre();
+                    break;
+                case R.id.music_floating_play:
+                    switchPlayState();
+                    break;
+                case R.id.music_floating_next:
 
-            case R.id.music_floating_pre:
-                audioBinder.playPre();
-                break;
-            case R.id.music_floating_play:
-                switchPlayState();
-                break;
-            case R.id.music_floating_next:
+                    audioBinder.playNext();
+                    break;
+                case R.id.music_float_block_albulm:
+                    LogUtil.d("点击测试进度  ： " + audioBinder.getProgress());
+                    mMusicFloatingPlay.setProgress(audioBinder.getProgress());
+                    break;
+                case R.id.music_floating_block:
 
-                audioBinder.playNext();
-                break;
-            case R.id.music_float_block_albulm:
-                LogUtil.d("点击测试进度  ： " + audioBinder.getProgress());
-                mMusicFloatingPlay.setProgress(audioBinder.getProgress());
-                break;
-            case R.id.music_floating_block:
-                if (isInitList) {
                     //跳转到音乐播放界面
                     Intent intent = new Intent(this, MusicPlayActivity.class);
                     intent.putParcelableArrayListExtra("musicItem", mMusicItems);
@@ -245,9 +245,9 @@ public class MusicListActivity
                     //                    MusicPlayDialogFag.newInstance(mMusicItems, mCureentPosition)
                     //                                      .show(getSupportFragmentManager(), "music");
                     break;
-                } else {
-                    ToastUtil.showLong(this, "当前没有可以播放的音乐_-_");
-                }
+            }
+        } else {
+            ToastUtil.showLong(this, "当前没有可以播放的音乐_-_");
         }
     }
 

@@ -31,7 +31,7 @@ import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
-import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
+import com.yibao.biggirl.mvp.favorite.TestFavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.MusicListActivity;
@@ -208,7 +208,7 @@ public class MainActivity
 
             case R.id.action_my_favorite:
 
-                startActivity(new Intent(this, FavoriteActivity.class));
+                startActivity(new Intent(this, TestFavoriteActivity.class));
                 break;
             case R.id.action_map:
                 startActivity(new Intent(this, MapsActivity.class));

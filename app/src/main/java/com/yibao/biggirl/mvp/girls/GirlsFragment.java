@@ -56,9 +56,11 @@ public class GirlsFragment
     private GirlsAdapter mAdapter;
 
     private boolean isShowGankGirl;
+
     // 1 指定注入目标
     @Inject
     GirlsPresenter mPresenter;
+    private int mRandomNum;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,13 +70,15 @@ public class GirlsFragment
                                                                                             this))
                                                                                     .build();
         component.in(this);
+
         mPresenter.start(Constants.FRAGMENT_GIRLS, 0);
 
 
     }
+
     @Override
     public void loadData() {
-//        mPresenter.start(Constants.FRAGMENT_ANDROID, 0);
+        //        mPresenter.start(Constants.FRAGMENT_ANDROID, 0);
 
     }
 
@@ -115,6 +119,9 @@ public class GirlsFragment
 
 
         } else {
+            Random random = new Random();
+            mRandomNum = random.nextInt(4) + 1;
+
             getDefultGirl();
             isShowGankGirl = true;
         }
@@ -285,9 +292,8 @@ public class GirlsFragment
     private void getDefultGirl() {
         mLlGrils.removeAllViews();
         List<String> defultUrl = ImageUitl.getDefultUrl(new ArrayList<>());
-        Random       random    = new Random();
 
-        initRecyclerView(defultUrl, random.nextInt(4) + 1);
+        initRecyclerView(defultUrl, mRandomNum);
         mSwipeRefresh.setRefreshing(false);
     }
 
