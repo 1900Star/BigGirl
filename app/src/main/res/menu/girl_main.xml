@@ -4,6 +4,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_auto_play"
+        android:icon="@drawable/btn_playing_play"
+        android:orderInCategory="100"
+        android:title="@string/action_auto_play"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/action_share_mz"
         android:icon="@mipmap/nav_menu_share"
         android:orderInCategory="100"

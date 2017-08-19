@@ -18,6 +18,7 @@ import com.yibao.biggirl.mvp.app.AppAdapter;
 import com.yibao.biggirl.mvp.app.AppContract;
 import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -61,7 +62,11 @@ public class ExpandFragment
 
     }
 
+    @Override
+    public void loadData() {
+//        mPresenter.start(Constants.FRAGMENT_ANDROID, 6);
 
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -71,6 +76,8 @@ public class ExpandFragment
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
 
         unbinder = ButterKnife.bind(this, view);
+        LogUtil.d("Expan  *******");
+        initView();
         return view;
     }
     protected void initView() {

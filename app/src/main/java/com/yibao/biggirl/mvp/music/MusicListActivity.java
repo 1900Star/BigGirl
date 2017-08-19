@@ -25,7 +25,6 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.music.MusicItem;
 import com.yibao.biggirl.model.music.MusicStatusBean;
-import com.yibao.biggirl.mvp.dialogfragment.MusicPlayDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.LogUtil;
@@ -123,12 +122,11 @@ public class MusicListActivity
 
         // //更新进度
         startUpdateProgress();
-        i += audioBinder.getProgress();
-        System.out.println("*********** FFFF  ： " + i);
+        mMusicFloatingPlay.setMax(audioBinder.getDuration());
         startUpdateProgress();
         //更新播放状态按钮
         updatePlayStateBtn();
-        mMusicFloatingPlay.setProgress(60);
+
 
     }
 
@@ -220,6 +218,7 @@ public class MusicListActivity
             case R.id.music_toolbar_back:
                 finish();
                 break;
+
             case R.id.music_floating_pre:
                 audioBinder.playPre();
                 break;
@@ -232,19 +231,19 @@ public class MusicListActivity
                 break;
             case R.id.music_float_block_albulm:
                 LogUtil.d("点击测试进度  ： " + audioBinder.getProgress());
-
+                mMusicFloatingPlay.setProgress(audioBinder.getProgress());
                 break;
             case R.id.music_floating_block:
                 if (isInitList) {
                     //跳转到音乐播放界面
-                    //                                        Intent intent = new Intent(this, MusicPlayActivity.class);
-                    //                                        intent.putParcelableArrayListExtra("musicItem", mMusicItems);
-                    //                                        intent.putExtra("position", mCureentPosition);
-                    //                                        startActivity(intent);
-                    //                                        overridePendingTransition(R.anim.dialog_push_in, R.anim.dialog_push_out);
+                    Intent intent = new Intent(this, MusicPlayActivity.class);
+                    intent.putParcelableArrayListExtra("musicItem", mMusicItems);
+                    intent.putExtra("position", mCureentPosition);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.dialog_push_in, R.anim.dialog_push_out);
 
-                    MusicPlayDialogFag.newInstance(mMusicItems, mCureentPosition)
-                                      .show(getSupportFragmentManager(), "music");
+                    //                    MusicPlayDialogFag.newInstance(mMusicItems, mCureentPosition)
+                    //                                      .show(getSupportFragmentManager(), "music");
                     break;
                 } else {
                     ToastUtil.showLong(this, "当前没有可以播放的音乐_-_");
@@ -252,6 +251,7 @@ public class MusicListActivity
         }
     }
 
+    //获取音乐列表
     private void initMusicData() {
         ContentResolver resolver = getContentResolver();
         AsyncQueryHandler handler = new AsyncQueryHandler(resolver) {

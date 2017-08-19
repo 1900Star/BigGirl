@@ -6,6 +6,7 @@
     <string name="option">设置</string>
     <string name="action_setwallpaer">设置壁纸</string>
     <string name="action_share">分享</string>
+    <string name="action_auto_play">自动预览</string>
     <string name="bgm">Music</string>
     <string name="communicate">Communicate</string>
     <string name="about">关于我</string>

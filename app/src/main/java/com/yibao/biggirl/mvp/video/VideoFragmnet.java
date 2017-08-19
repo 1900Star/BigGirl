@@ -20,6 +20,7 @@ import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.app.AppContract;
 import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +55,21 @@ public class VideoFragmnet
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new AppPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_VIDEO, 2);
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            mPresenter.start(Constants.FRAGMENT_VIDEO, 2);
+
+        }
+    }
+
+    @Override
+    public void loadData() {
+                mPresenter.start(Constants.FRAGMENT_ANDROID, 2);
 
     }
 
@@ -68,7 +83,8 @@ public class VideoFragmnet
 
 
         unbinder = ButterKnife.bind(this, view);
-initView();
+        LogUtil.d("Video  *******");
+        initView();
         return view;
     }
 

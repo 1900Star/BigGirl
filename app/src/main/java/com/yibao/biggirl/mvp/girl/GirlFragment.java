@@ -18,10 +18,12 @@ import android.view.ViewGroup;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.base.listener.HideToolbarListener;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
@@ -29,6 +31,7 @@ import com.yibao.biggirl.view.ProgressView;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +40,7 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.yibao.biggirl.R.id.vp;
@@ -51,7 +55,6 @@ public class GirlFragment
         extends Fragment
         implements ViewPager.OnPageChangeListener
 {
-
 
     @BindView(R.id.toolbar)
     Toolbar      mToolbar;
@@ -69,12 +72,16 @@ public class GirlFragment
 
     //PergerView滑动的状态的最值
     public static final int STATUS_MAX_NUM = 3;
-    private GirlAdapter mPagerGirlAdapter;
+    private GirlAdapter mAdapter;
     private View   mView = null;
     private String mUrl  = null;
     private List<String>        mList;
     private CompositeDisposable disposables;
+    private Disposable          mDisposable;
     private MyApplication       mApplication;
+    private MenuItem            mMenuItem;
+    private PagerScroller       mScroller;
+    private boolean isPlay = false;
 
 
     @Override
@@ -113,8 +120,9 @@ public class GirlFragment
 
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setHasOptionsMenu(true);
-        mPagerGirlAdapter = new GirlAdapter(getActivity(), mList);
-        mVp.setAdapter(mPagerGirlAdapter);
+        mScroller = new PagerScroller(getActivity());
+        mAdapter = new GirlAdapter(getActivity(), mList);
+        mVp.setAdapter(mAdapter);
         mVp.setCurrentItem(mPosition);
         mVp.addOnPageChangeListener(this);
     }
@@ -122,11 +130,11 @@ public class GirlFragment
 
     private void setProgress(int progress, int type) {
         mPbDown.setProgress(progress);
-        if (type == 1&&progress == MAX_DOWN_PREGRESS) {
+        if (type == 1 && progress == MAX_DOWN_PREGRESS) {
             SnakbarUtil.showSuccessView(mPbDown);
             return;
         }
-        if (progress == MAX_DOWN_PREGRESS ) {
+        if (progress == MAX_DOWN_PREGRESS) {
             //将下载的图片插入到系统相册
             Observable.just(ImageUitl.insertImageToPhoto())
                       .subscribeOn(Schedulers.io())
@@ -148,7 +156,7 @@ public class GirlFragment
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(data -> GirlFragment.this.setProgress(data.getProgress(),
-                                                                             data.getType())));
+                                                                                     data.getType())));
     }
 
     @Override
@@ -173,8 +181,9 @@ public class GirlFragment
     //toolbar菜单
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
+        //        menu.clear();
         inflater.inflate(R.menu.girl_main, menu);
+        mMenuItem = menu.findItem(R.id.action_auto_play);
 
     }
 
@@ -185,8 +194,22 @@ public class GirlFragment
                 getActivity().finish();
                 break;
             case R.id.action_setwallpaer: //设置壁纸
-                WallPaperUtil.setWallPaper(getActivity(), mPagerGirlAdapter);
+                WallPaperUtil.setWallPaper(getActivity(), mAdapter);
                 SnakbarUtil.setWallpaer(mPbDown);
+                break;
+            case R.id.action_auto_play: //自动播放图册
+                if (isPlay) {
+                    mMenuItem.setIcon(R.drawable.btn_playing_play);
+                    //                    ((HideToolbarListener) getActivity()).showToolbar();
+                    stopLoop();
+                    isPlay = false;
+                } else {
+
+                    mMenuItem.setIcon(R.drawable.btn_playing_pause);
+                    ((HideToolbarListener) getActivity()).hideToolbar();
+                    startLoop();
+                    isPlay = true;
+                }
                 break;
 
             case R.id.action_share_mz:  //分享美女
@@ -220,6 +243,34 @@ public class GirlFragment
         return super.onOptionsItemSelected(item);
     }
 
+    //ViewPager开始自动轮播
+    private void startLoop() {
+
+        mScroller.initViewPagerScroll(mVp, 2000);
+        mDisposable = Observable.interval(3000, 3000, TimeUnit.MILLISECONDS)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(aLong -> {
+                                    int item = mVp.getCurrentItem();
+                                    if (item == mAdapter.getCount()) {
+                                        mVp.setCurrentItem(0);
+
+                                    }
+                                    mVp.setCurrentItem(++item, true);
+
+                                });
+        LogUtil.d("AAAAAAAAA     :   " + mDisposable.isDisposed());
+
+
+    }
+
+    //ViewPager停止轮播
+    private void stopLoop() {
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+        mScroller.setDuration(300);
+        LogUtil.d("CCCCCCCCCCCCC     :   " + mDisposable.isDisposed());
+    }
 
     //图片保存
     @OnClick({R.id.iv_down})
@@ -249,10 +300,22 @@ public class GirlFragment
 
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mDisposable != null) {
+            mMenuItem.setIcon(R.drawable.btn_playing_play);
+            mScroller.setDuration(300);
+            mDisposable.dispose();
+
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        disposables.clear();
         unbinder.unbind();
+
+        disposables.clear();
     }
 
 }

@@ -72,7 +72,11 @@ public class GirlsFragment
 
 
     }
+    @Override
+    public void loadData() {
+//        mPresenter.start(Constants.FRAGMENT_ANDROID, 0);
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -82,11 +86,12 @@ public class GirlsFragment
 
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
         unbinder = ButterKnife.bind(this, view);
+        LogUtil.d("GirlsFragment  *******");
         initView();
         initListener();
-
         return view;
     }
+
 
     private void initListener() {
 

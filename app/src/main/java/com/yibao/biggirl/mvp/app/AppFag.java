@@ -20,6 +20,7 @@ import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.model.dagger2.component.DaggerAppComponent;
 import com.yibao.biggirl.model.dagger2.moduls.AppModuls;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -70,6 +71,11 @@ public class AppFag
 
     }
 
+    @Override
+    public void loadData() {
+//        mPresenter.start(Constants.FRAGMENT_ANDROID, 4);
+
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -79,6 +85,7 @@ public class AppFag
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
 
         unbinder = ButterKnife.bind(this, view);
+        LogUtil.d("App  *******");
         initView();
         return view;
     }

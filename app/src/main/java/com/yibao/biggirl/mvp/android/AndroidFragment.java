@@ -20,6 +20,7 @@ import com.yibao.biggirl.model.android.AndroidAndGirl;
 import com.yibao.biggirl.model.dagger2.component.DaggerAndroidComponent;
 import com.yibao.biggirl.model.dagger2.moduls.AndroidModuls;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -71,6 +72,10 @@ public class AndroidFragment
                                                                                           .build();
         component.in(this);
         mPresenter.start(Constants.FRAGMENT_ANDROID, 1);
+    }
+
+    @Override
+    public void loadData() {
 
     }
 
@@ -84,6 +89,7 @@ public class AndroidFragment
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
 
         unbinder = ButterKnife.bind(this, view);
+        LogUtil.d("Android  *******");
         initView();
         return view;
     }

@@ -8,7 +8,7 @@
     android:background="@color/about"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".mvp.main.MainActivity">
 
 
     <android.support.v4.widget.NestedScrollView

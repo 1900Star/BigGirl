@@ -1,4 +1,4 @@
-package com.yibao.biggirl;
+package com.yibao.biggirl.mvp.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,8 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.yibao.biggirl.MyApplication;
+import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.MyPageChangeListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
@@ -31,7 +33,6 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
-import com.yibao.biggirl.mvp.girls.TabPagerAdapter;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.MusicListActivity;
 import com.yibao.biggirl.mvp.webview.WebActivity;
@@ -133,7 +134,7 @@ public class MainActivity
     private void initData() {
         mTablayout.setupWithViewPager(mViewPager);
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
-        mViewPager.setOffscreenPageLimit(7);
+        mViewPager.setOffscreenPageLimit(Constants.arrTitle.length);
         mViewPager.setAdapter(pagerAdapter);
 
 

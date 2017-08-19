@@ -1,8 +1,8 @@
-package com.yibao.biggirl.mvp.girls;
+package com.yibao.biggirl.mvp.main;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,7 +15,7 @@ import com.yibao.biggirl.util.Constants;
  * 邮箱：strangermy@outlook.com
  */
 public class TabPagerAdapter
-        extends FragmentPagerAdapter
+        extends FragmentStatePagerAdapter
 {
 
     public TabPagerAdapter(FragmentManager fm)

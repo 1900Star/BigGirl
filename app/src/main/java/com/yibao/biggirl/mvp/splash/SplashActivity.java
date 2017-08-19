@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
-import com.yibao.biggirl.MainActivity;
+import com.yibao.biggirl.mvp.main.MainActivity;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;

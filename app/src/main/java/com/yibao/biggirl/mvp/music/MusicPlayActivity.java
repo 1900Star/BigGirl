@@ -20,7 +20,6 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
 import com.yibao.biggirl.model.music.MusicItem;
 import com.yibao.biggirl.model.music.MusicStatusBean;
-import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.ColorUtil;
@@ -32,7 +31,6 @@ import com.yibao.biggirl.view.CircleImageView;
 import com.yibao.biggirl.view.ProgressBtn;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -169,10 +167,6 @@ public class MusicPlayActivity
 
     }
 
-    private int getRandom() {
-        Random random = new Random();
-        return random.nextInt(Api.picUrlArr.length) + 1;
-    }
 
     private void startUpdateProgress() {
         int progress = audioBinder.getProgress();
@@ -258,9 +252,7 @@ public class MusicPlayActivity
         AudioServiceConnection connection = new AudioServiceConnection();
         bindService(intent, connection, Service.BIND_AUTO_CREATE);
         startService(intent);
-        if (1 < audioBinder.getDuration()) {
 
-        }
         // 旋转专辑图片
 
         //        mRotateRl.setBackgroundColor(ColorUtil.transparentColor);

@@ -18,6 +18,7 @@ import com.yibao.biggirl.mvp.app.AppAdapter;
 import com.yibao.biggirl.mvp.app.AppContract;
 import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +57,11 @@ public class IOSFragment
 
     }
 
+    @Override
+    public void loadData() {
+//        mPresenter.start(Constants.FRAGMENT_ANDROID, 4);
 
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -66,6 +71,7 @@ public class IOSFragment
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
 
         unbinder = ButterKnife.bind(this, view);
+        LogUtil.d("Ios  *******");
         initView();
         return view;
     }

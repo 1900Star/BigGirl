@@ -12,6 +12,7 @@ public class Api {
             //**************************胸
             "http://picduotu.ke12345.net/up/2017/allimg/c170305/14XGWaAR0-E234.jpg",
             "http://picduotu.ke12345.net/up/2017/allimg/c170305/14XGWaIY0-K409.jpg",
+            "http://picduotu.ke12345.net/up/2017/allimg/c170305/14XGWaT230-R460.jpg",
             "http://picduotu.ke12345.net/up/2017/allimg/c170305/14XGWc0C30-242049.jpg",
             "http://picduotu.ke12345.net/up/2017/allimg/c170305/14XGWa93630-b561.jpg",
             "http://picduotu.ke12345.net/up/2017/allimg/c170305/14XGWb01W0-105495.jpg",

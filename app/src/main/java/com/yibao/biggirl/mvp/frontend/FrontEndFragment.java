@@ -18,6 +18,7 @@ import com.yibao.biggirl.mvp.app.AppAdapter;
 import com.yibao.biggirl.mvp.app.AppContract;
 import com.yibao.biggirl.mvp.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -56,6 +57,11 @@ public class FrontEndFragment
 
     }
 
+    @Override
+    public void loadData() {
+//        mPresenter.start(Constants.FRAGMENT_ANDROID, 7);
+
+    }
 
     @Nullable
     @Override
@@ -63,10 +69,12 @@ public class FrontEndFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState)
     {
+
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
 
         unbinder = ButterKnife.bind(this, view);
-initView();
+        LogUtil.d("Fron  *******");
+        initView();
         return view;
     }
 
@@ -84,7 +92,7 @@ initView();
 
         RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
 
-//        initListerner(recyclerView);
+        //        initListerner(recyclerView);
 
         mFagContent.addView(recyclerView);
     }
@@ -94,7 +102,7 @@ initView();
     public void loadData(List<ResultsBeanX> list) {
         mList.clear();
         mList.addAll(list);
-        initData(mList,1);
+        initData(mList, 1);
         mSwipeRefresh.setRefreshing(false);
     }
 
