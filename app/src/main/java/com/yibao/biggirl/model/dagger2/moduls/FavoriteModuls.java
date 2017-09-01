@@ -1,6 +1,6 @@
 package com.yibao.biggirl.model.dagger2.moduls;
 
-import com.yibao.biggirl.mvp.favorite.FavoriteFag;
+import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.webview.WebPresenter;
 
 import dagger.Module;
@@ -14,16 +14,16 @@ import dagger.Provides;
 @Module
 public class FavoriteModuls {
 
-    private final FavoriteFag mFavFag;
+    private final FavoriteActivity mActivity;
 
-    public FavoriteModuls(FavoriteFag favoriteFag) {
-        mFavFag = favoriteFag;
+    public FavoriteModuls(FavoriteActivity activity) {
+        mActivity = activity;
     }
 
 
     @Provides
-    public WebPresenter provideFavPresenter() {
-        return new WebPresenter(mFavFag);
+    public WebPresenter provideFavActPresenter() {
+        return new WebPresenter(mActivity);
     }
 
 }

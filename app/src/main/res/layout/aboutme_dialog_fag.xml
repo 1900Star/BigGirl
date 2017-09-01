@@ -68,7 +68,7 @@
                     android:layout_toRightOf="@id/about_header_iv"
                     android:autoLink="web"
                     android:text="@string/about_github"
-                    android:textColor="@color/about_sign"
+                    android:textColor="@color/aboutSign"
                     android:textSize="@dimen/about_sign"/>
 
                 <TextView
@@ -100,7 +100,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/preject_introduce"
-                    android:textColor="@color/about_title"
+                    android:textColor="@color/aboutTitle"
                     android:textSize="@dimen/about_title"
                     android:textStyle="bold"
                     android:typeface="serif"/>
@@ -111,7 +111,7 @@
                     android:autoLink="web"
                     android:lineSpacingExtra="2dp"
                     android:text="@string/about_project_introduce"
-                    android:textColor="@color/about_content"
+                    android:textColor="@color/aboutContent"
                     android:textIsSelectable="true"
                     android:textSize="@dimen/about_content"/>
 

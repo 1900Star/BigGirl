@@ -23,7 +23,6 @@ import com.yibao.biggirl.model.girl.DownGrilProgressData;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.WallPaperUtil;
@@ -119,6 +118,7 @@ public class GirlFragment
                 .setDisplayHomeAsUpEnabled(true);
 
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
         setHasOptionsMenu(true);
         mScroller = new PagerScroller(getActivity());
         mAdapter = new GirlAdapter(getActivity(), mList);
@@ -198,44 +198,12 @@ public class GirlFragment
                 SnakbarUtil.setWallpaer(mPbDown);
                 break;
             case R.id.action_auto_play: //自动播放图册
-                if (isPlay) {
-                    mMenuItem.setIcon(R.drawable.btn_playing_play);
-                    mPbDown.setVisibility(View.VISIBLE);
-                    //                    ((HideToolbarListener) getActivity()).showToolbar();
-                    stopLoop();
-                    isPlay = false;
-                } else {
-
-                    mMenuItem.setIcon(R.drawable.btn_playing_pause);
-                    ((HideToolbarListener) getActivity()).hideToolbar();
-                    mPbDown.setVisibility(View.INVISIBLE);
-                    startLoop();
-                    isPlay = true;
-                }
+                autoPreview();
                 break;
 
             case R.id.action_share_mz:  //分享美女
-                FileUtil.delFile(Constants.deleteDir);
-                Observable.just(ImageUitl.downloadPic(mUrl, Constants.EXISTS))
-                          .subscribeOn(Schedulers.io())
-                          .observeOn(AndroidSchedulers.mainThread())
-                          .subscribe(integer -> {
-                              if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
-                                  Uri    url    = Uri.fromFile(new File(Constants.deleteDir));
-                                  Intent intent = new Intent();
-                                  intent.setAction(Intent.ACTION_SEND);
-                                  intent.putExtra(Intent.EXTRA_STREAM, url);
-                                  intent.setType("image/*");
-                                  startActivity(Intent.createChooser(intent, "将妹子分享到"));
-
-                              } else if (integer == Constants.DWON_PIC_EROOR) {
-                                  SnakbarUtil.showSharePicFail(mPbDown);
-                              }
-                          });
-
-
+                shareGirl();
                 break;
-
             default:
                 break;
 
@@ -243,6 +211,42 @@ public class GirlFragment
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void shareGirl() {
+        FileUtil.delFile(Constants.deleteDir);
+        Observable.just(ImageUitl.downloadPic(mUrl, Constants.EXISTS))
+                  .subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(integer -> {
+                      if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
+                          Uri    url    = Uri.fromFile(new File(Constants.deleteDir));
+                          Intent intent = new Intent();
+                          intent.setAction(Intent.ACTION_SEND);
+                          intent.putExtra(Intent.EXTRA_STREAM, url);
+                          intent.setType("image/*");
+                          startActivity(Intent.createChooser(intent, "将妹子分享到"));
+
+                      } else if (integer == Constants.DWON_PIC_EROOR) {
+                          SnakbarUtil.showSharePicFail(mPbDown);
+                      }
+                  });
+    }
+
+    private void autoPreview() {
+        if (isPlay) {
+            mMenuItem.setIcon(R.drawable.btn_playing_play);
+            mPbDown.setVisibility(View.VISIBLE);
+            stopLoop();          //停止自动播放
+            isPlay = false;
+        } else {
+
+            mMenuItem.setIcon(R.drawable.btn_playing_pause);
+            ((HideToolbarListener) getActivity()).hideToolbar();
+            mPbDown.setVisibility(View.INVISIBLE);
+            startLoop();        //开始自动播放
+            isPlay = true;
+        }
     }
 
     //ViewPager开始自动轮播
@@ -260,7 +264,6 @@ public class GirlFragment
                                     mVp.setCurrentItem(++item, true);
 
                                 });
-        LogUtil.d("AAAAAAAAA     :   " + mDisposable.isDisposed());
 
 
     }
@@ -271,7 +274,6 @@ public class GirlFragment
             mDisposable.dispose();
         }
         mScroller.setDuration(300);
-        LogUtil.d("CCCCCCCCCCCCC     :   " + mDisposable.isDisposed());
     }
 
     //图片保存

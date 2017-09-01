@@ -1,7 +1,7 @@
 package com.yibao.biggirl.model.dagger2.component;
 
 import com.yibao.biggirl.model.dagger2.moduls.FavoriteModuls;
-import com.yibao.biggirl.mvp.favorite.FavoriteFag;
+import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 
 import dagger.Component;
 
@@ -12,5 +12,5 @@ import dagger.Component;
  */
 @Component(modules = FavoriteModuls.class)
 public interface FavoriteComponent {
-    void in(FavoriteFag favoriteFag);
+    void in(FavoriteActivity activity);
 }

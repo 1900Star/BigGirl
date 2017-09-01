@@ -8,7 +8,6 @@ import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.widget.RelativeLayout;
 
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
 
@@ -39,7 +38,7 @@ public class AnimationUtil {
     /**
      * 旋转动画
      */
-    public static ObjectAnimator getRotation(RelativeLayout view) {
+    public static ObjectAnimator getRotation(View view) {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0f, 360f);
         animator.setDuration(15000);
         animator.setInterpolator(new LinearInterpolator());

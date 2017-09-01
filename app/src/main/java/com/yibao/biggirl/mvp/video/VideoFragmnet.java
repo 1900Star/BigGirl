@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.video;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +18,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.mvp.app.AppContract;
-import com.yibao.biggirl.mvp.app.AppPresenter;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class VideoFragmnet
         extends BaseFag<ResultsBeanX>
-        implements AppContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener
+        implements SwipeRefreshLayout.OnRefreshListener
 {
 
 
@@ -47,14 +48,14 @@ public class VideoFragmnet
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
+    @BindView(R.id.fab_fag)
+    FloatingActionButton mFab;
     private VideoAdapter mAdapter;
 
-    AppContract.Presenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new AppPresenter(this);
 
     }
 
@@ -62,14 +63,14 @@ public class VideoFragmnet
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            mPresenter.start(Constants.FRAGMENT_VIDEO, 2);
+//            mGirlsPresenter.start(Constants.FRAGMENT_VIDEO, 2);
 
         }
     }
 
     @Override
-    public void loadData() {
-//                mPresenter.start(Constants.FRAGMENT_ANDROID, 2);
+    public void loadDatas() {
+        //                mGirlsPresenter.start(Constants.FRAGMENT_ANDROID, 2);
 
     }
 
@@ -90,7 +91,6 @@ public class VideoFragmnet
 
 
     protected void initView() {
-        mFab.setOnClickListener(this);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
@@ -134,11 +134,10 @@ public class VideoFragmnet
                         {
                             page++;
 
-                            mPresenter.loadData(size,
-                                                page,
-                                                Constants.FRAGMENT_VIDEO,
-                                                Constants.LOAD_DATA);
-                            //                        mProgressBar.setVisibility(View.VISIBLE);
+//                            mGirlsPresenter.loadData(size,
+//                                                     page,
+//                                                     Constants.FRAGMENT_VIDEO,
+//                                                     Constants.LOAD_DATA);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -178,6 +177,7 @@ public class VideoFragmnet
             }
 
         });
+
         mFagContent.addView(recyclerView);
     }
 
@@ -198,10 +198,10 @@ public class VideoFragmnet
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
 
-                      mPresenter.loadData(size,
-                                          page,
-                                          Constants.FRAGMENT_VIDEO,
-                                          Constants.LOAD_DATA);
+//                      mGirlsPresenter.loadData(size,
+//                                               page,
+//                                               Constants.FRAGMENT_VIDEO,
+//                                               Constants.LOAD_DATA);
 
                       mSwipeRefresh.setRefreshing(true);
                       page = 1;
@@ -252,13 +252,13 @@ public class VideoFragmnet
     }
 
 
-    @Override
-    public void setPrenter(AppContract.Presenter prenter) {
-        mPresenter = prenter;
-    }
+
+
+    @OnClick(R.id.fab_fag)
+    public void onViewClicked() {LogUtil.d("VideoFragment ");}
 
     @Override
-    public void onClick(View view) {
+    public void setPrenter(GirlsContract.Presenter prenter) {
 
     }
 }

@@ -1,13 +1,7 @@
 package com.yibao.biggirl.factory;
 
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.mvp.android.AndroidFragment;
-import com.yibao.biggirl.mvp.app.AppFag;
-import com.yibao.biggirl.mvp.expand.ExpandFragment;
-import com.yibao.biggirl.mvp.frontend.FrontEndFragment;
 import com.yibao.biggirl.mvp.girls.GirlsFragment;
-import com.yibao.biggirl.mvp.ios.IOSFragment;
-import com.yibao.biggirl.mvp.video.VideoFragmnet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,25 +37,25 @@ public class FragmentFactorys {
             case FRAGMENT_GIRLS:
                 fragment = new GirlsFragment();
                 break;
-            case FRAGMENT_ANDROID:
-                fragment = new AndroidFragment();
-                break;
-            case FRAGMENT_VEDIO:
-                fragment = new VideoFragmnet();
-                break;
-            case FRAGMENT_APP:
-                fragment = new AppFag();
-                break;
-            case FRAGMENT_IOS:
-                fragment = new IOSFragment();
-
-                break;
-            case FRAGMENT_FRONT:
-                fragment = new FrontEndFragment();
-                break;
-            case FRAGMENT_EXTEND:
-                fragment = new ExpandFragment();
-                break;
+//            case FRAGMENT_ANDROID:
+//                fragment = new AndroidFragment();
+//                break;
+//            case FRAGMENT_VEDIO:
+//                fragment = new VideoFragmnet();
+//                break;
+//            case FRAGMENT_APP:
+//                fragment = new AppFag();
+//                break;
+//            case FRAGMENT_IOS:
+//                fragment = new IOSFragment();
+//
+//                break;
+//            case FRAGMENT_FRONT:
+//                fragment = new FrontEndFragment();
+//                break;
+//            case FRAGMENT_EXTEND:
+//                fragment = new ExpandFragment();
+//                break;
             default:
                 break;
         }

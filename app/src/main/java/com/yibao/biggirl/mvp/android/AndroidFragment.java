@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.android;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,18 +18,16 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
-import com.yibao.biggirl.model.dagger2.component.DaggerAndroidComponent;
-import com.yibao.biggirl.model.dagger2.moduls.AndroidModuls;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,8 +39,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Time:2017/4/23 06:33
  */
 public class AndroidFragment
-        extends BaseFag
-        implements AndroidContract.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener
+        extends BaseFag<AndroidAndGirl>
+        implements SwipeRefreshLayout.OnRefreshListener
 {
     AndroidContract.Presenter mPresenters;
     @BindView(R.id.fag_content)
@@ -49,6 +48,8 @@ public class AndroidFragment
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
+    @BindView(R.id.fab_fag)
+    FloatingActionButton mFab;
 
     private AndroidAdapter mAdapter;
 
@@ -58,24 +59,25 @@ public class AndroidFragment
     private       boolean loading           = false;
     private final int     VISIBLE_THRESHOLD = 1;
 
-    @Inject
-    AndroidPresenter mPresenter;
+//    @Inject
+//    GirlsPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DaggerAndroidComponent component = (DaggerAndroidComponent) DaggerAndroidComponent.builder()
-                                                                                          .androidModuls(
-                                                                                                  new AndroidModuls(
-                                                                                                          this))
-                                                                                          .build();
-        component.in(this);
-        mPresenter.start(Constants.FRAGMENT_ANDROID, 1);
+//        DaggerAndroidComponent component = (DaggerAndroidComponent) DaggerAndroidComponent.builder()
+//                                                                                          .androidModuls(
+//                                                                                                  new AndroidModuls(
+//                                                                                                          this))
+//                                                                                          .build();
+//        component.in(this);
+//        mGirlsPresenter.start(Constants.FRAGMENT_ANDROID, 1);
     }
 
+
     @Override
-    public void loadData() {
+    public void loadDatas() {
 
     }
 
@@ -95,7 +97,6 @@ public class AndroidFragment
     }
 
     protected void initView() {
-        mFab.setOnClickListener(this);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
@@ -144,9 +145,8 @@ public class AndroidFragment
                         {
                             page++;
 
-                            mPresenter.loadData(size, page, Constants.LOAD_MORE_DATA);
-                            //                        mProgressBar.setVisibility(View.VISIBLE);
-                        }
+//                            mGirlsPresenter.loadData(size, page, Constants.LOAD_MORE_DATA,"Android");
+                }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         mFab.setVisibility(View.INVISIBLE);
@@ -185,6 +185,7 @@ public class AndroidFragment
             }
 
         });
+
     }
 
     //找到数组中的最大值
@@ -211,7 +212,7 @@ public class AndroidFragment
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size, page, Constants.REFRESH_DATA);
+//                      mGirlsPresenter.loadData(size, page, Constants.REFRESH_DATA,"Android");
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
                   });
@@ -238,11 +239,16 @@ public class AndroidFragment
     public void showNormal() {
 
     }
-
     @Override
-    public void setPrenter(AndroidContract.Presenter prenter) {
-        this.mPresenters = prenter;
+    public void setPrenter(GirlsContract.Presenter prenter) {
+
+
     }
+
+//    @Override
+//    public void setPrenter(AndroidContract.Presenter prenter) {
+//        this.mPresenters = prenter;
+//    }
 
     public AndroidFragment newInstance() {
 
@@ -258,9 +264,10 @@ public class AndroidFragment
     }
 
 
-    @Override
-    public void onClick(View view) {
-
+    @OnClick(R.id.fab_fag)
+    public void onViewClicked() {
+        LogUtil.d(" AndroidFragment ");
     }
+
 }
 

@@ -12,6 +12,7 @@ import android.view.View;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.HideToolbarListener;
 import com.yibao.biggirl.util.ActivityUtils;
+import com.yibao.biggirl.util.SystemUiVisibilityUtil;
 
 /**
  * Author：Sid
@@ -32,6 +33,8 @@ public class GirlActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_gril);
+        getSupportActionBar().setTitle("Girl");
+        SystemUiVisibilityUtil.hideStatusBar(getWindow(), true);
         if (savedInstanceState == null) {
             mDecorView = getWindow().getDecorView();
             mActionBar = getSupportActionBar();
@@ -63,6 +66,7 @@ public class GirlActivity
             //                    int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
             //            int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             //            mDecorView.setSystemUiVisibility(option);
+
             getWindow().setNavigationBarColor(Color.TRANSPARENT);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
 

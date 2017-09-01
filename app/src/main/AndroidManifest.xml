@@ -48,7 +48,7 @@
         <activity
             android:name=".mvp.girl.GirlActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/GirlTheme"/>
         <activity
             android:name=".mvp.webview.WebActivity"
             android:configChanges="orientation|screenSize"
@@ -60,7 +60,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name=".mvp.favorite.FavoriteActivity"/>
-        <activity android:name=".mvp.favorite.TestFavoriteActivity"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

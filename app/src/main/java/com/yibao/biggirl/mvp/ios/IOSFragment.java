@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.ios;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,9 +16,7 @@ import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.app.AppAdapter;
-import com.yibao.biggirl.mvp.app.AppContract;
-import com.yibao.biggirl.mvp.app.AppPresenter;
-import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
@@ -25,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,15 +36,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class IOSFragment
         extends BaseFag<ResultsBeanX>
-        implements AppContract.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener
+        implements  SwipeRefreshLayout.OnRefreshListener
 {
-    AppContract.Presenter mPresenter;
+//    AppContract.Presenter mPresenter;
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     @BindView(R.id.fag_content)
-    LinearLayout mFagContent;
+    LinearLayout         mFagContent;
+    @BindView(R.id.fab_fag)
+    FloatingActionButton mFab;
     private AppAdapter mAdapter;
 
 
@@ -52,16 +54,18 @@ public class IOSFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new AppPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_IOS, 4);
+//        new GirlsPresenter(this);
+//        mGirlsPresenter.start(Constants.FRAGMENT_IOS, 4);
 
     }
+
 
     @Override
-    public void loadData() {
-//        mPresenter.start(Constants.FRAGMENT_ANDROID, 4);
+    public void loadDatas() {
+        //        mPresenter.start(Constants.FRAGMENT_ANDROID, 4);
 
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -84,7 +88,7 @@ public class IOSFragment
 
         RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
 
-//        initListerner(recyclerView);
+        //        initListerner(recyclerView);
 
         mFagContent.addView(recyclerView);
     }
@@ -94,7 +98,7 @@ public class IOSFragment
     public void loadData(List<ResultsBeanX> list) {
         mList.clear();
         mList.addAll(list);
-        initData(mList,1);
+        initData(mList, 1);
         mSwipeRefresh.setRefreshing(false);
     }
 
@@ -104,7 +108,7 @@ public class IOSFragment
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size, 1, Constants.FRAGMENT_IOS, Constants.REFRESH_DATA);
+//                      mGirlsPresenter.loadData(size, 1, Constants.FRAGMENT_IOS, Constants.REFRESH_DATA);
 
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
@@ -135,10 +139,6 @@ public class IOSFragment
 
     }
 
-    @Override
-    public void setPrenter(AppContract.Presenter prenter) {
-        this.mPresenter = prenter;
-    }
 
     public IOSFragment newInstance() {
 
@@ -155,15 +155,17 @@ public class IOSFragment
 
 
     protected void initView() {
-        mFab.setOnClickListener(this);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
     }
 
 
+    @OnClick(R.id.fab_fag)
+    public void onViewClicked() {LogUtil.d(" IosFragment ");}
+
     @Override
-    public void onClick(View view) {
+    public void setPrenter(GirlsContract.Presenter prenter) {
 
     }
 }

@@ -1,5 +1,7 @@
 package com.yibao.biggirl.model.dagger2.moduls;
 
+import com.yibao.biggirl.mvp.android.AndroidPresenter;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.mvp.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.girls.GirlsPresenter;
 
@@ -13,16 +15,21 @@ import dagger.Provides;
  */
 @Module
 public class GirlsModuls {
-    private GirlsFragment mGirlsFragment;
+    private GirlsContract.View mView;
 
-    public GirlsModuls(GirlsFragment girlsFragment) {
-        this.mGirlsFragment = girlsFragment;
+    public GirlsModuls(GirlsFragment view) {
+        this.mView = view;
     }
 
-//
+    //
     @Provides
-    public GirlsPresenter provideGirlsPresenter(){
-        return new GirlsPresenter(mGirlsFragment);
+    public GirlsPresenter provideGirlsPresenter() {
+        return new GirlsPresenter(mView);
+    }
+
+    @Provides
+    public AndroidPresenter provideAndroidPresenter() {
+        return new AndroidPresenter(mView);
     }
 
 }

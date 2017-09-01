@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.android;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
 import com.yibao.biggirl.model.android.AndroidDataSource;
 import com.yibao.biggirl.model.android.RemoteAndroidData;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
@@ -15,21 +16,20 @@ import java.util.List;
 
 
 public class AndroidPresenter
-        implements AndroidContract.Presenter
+        implements GirlsContract.Presenter
 {
-    private AndroidContract.View mView;
+    private GirlsContract.View mView;
     private RemoteAndroidData    mRemoteData;
 
-    public AndroidPresenter(AndroidFragment view) {
+    public AndroidPresenter(GirlsContract.View view) {
         this.mView = view;
         mRemoteData = new RemoteAndroidData();
-        mView.setPrenter(this);
     }
 
 
     @Override
     public void start(String type,int code) {
-        loadData(20, 1, Constants.LOAD_DATA);
+        loadData(20, 1, Constants.LOAD_DATA,"Android");
     }
 
     @Override
@@ -42,8 +42,33 @@ public class AndroidPresenter
     }
 
 
+//    @Override
+//    public void loadDatas(int page, int size, String s,final int status) {
+//        mRemoteData.getAndroid(page, size, new AndroidDataSource.LoadADataCallback() {
+//            @Override
+//            public void onLoadData(List<AndroidAndGirl> list) {
+//                if (status == Constants.LOAD_DATA) {
+//                    mView.loadDatas(list);
+//                } else if (status == Constants.REFRESH_DATA) {
+//                    mView.refresh(list);
+//                } else if (status == Constants.LOAD_MORE_DATA) {
+//                    mView.loadMore(list);
+//                }
+//
+//                //                mView.showNormal();
+//            }
+//
+//            @Override
+//            public void onDataNotAvailable() {
+//                mView.showError();
+//
+//            }
+//        });
+//    }
+
+
     @Override
-    public void loadData(int page, int size, final int status) {
+    public void loadData(int size, int page, int status, String dataType) {
         mRemoteData.getAndroid(page, size, new AndroidDataSource.LoadADataCallback() {
             @Override
             public void onLoadData(List<AndroidAndGirl> list) {
@@ -65,6 +90,4 @@ public class AndroidPresenter
             }
         });
     }
-
-
 }

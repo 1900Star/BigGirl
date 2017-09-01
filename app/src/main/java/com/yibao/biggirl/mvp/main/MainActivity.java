@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -31,13 +30,12 @@ import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
-import com.yibao.biggirl.mvp.favorite.TestFavoriteActivity;
+import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.MusicListActivity;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
-import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
@@ -81,18 +79,15 @@ public class MainActivity
     CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.iv_collapsing)
     ImageView               mIvCollapsing;
-    @BindView(R.id.fab)
-    FloatingActionButton    mFab;
+
     @BindView(R.id.root)
-    FrameLayout             mRoot;
+    FrameLayout mRoot;
 
 
     private long exitTime = 0;
     private Unbinder                     mBind;
     private ImageView                    mIvHeader;
     private String                       mUrl;
-    private AudioPlayService.AudioBinder audioBinder;
-    private MenuItem                     mItem;
 
 
     @Override
@@ -113,8 +108,6 @@ public class MainActivity
 
     //加载动态布局
     private void initView() {
-        Menu menu = mNavView.getMenu();
-        mItem = menu.findItem(R.id.action_music);
 
         setSupportActionBar(mToolbar);
         mToolbarLayout.setTitleEnabled(false);
@@ -163,35 +156,6 @@ public class MainActivity
                   });
 
 
-        //                mFab.setOnClickListener(view -> {
-        //                    switch (mCurrentPosition) {
-        //                        case 0:
-        //                            LogUtil.d(mCurrentPosition + "");
-        //                            break;
-        //                        case 1:
-        //                            LogUtil.d(mCurrentPosition + "");
-        //                            break;
-        //                        case 2:
-        //                            LogUtil.d(mCurrentPosition + "");
-        //                            break;
-        //                        case 3:
-        //                            LogUtil.d(mCurrentPosition + "");
-        //                            break;
-        //                        case 4:
-        //                            LogUtil.d(mCurrentPosition + "");
-        //                            break;
-        //                        case 5:
-        //                            LogUtil.d(mCurrentPosition + "");
-        //                            break;
-        //                        case 6:
-        //                            LogUtil.d(mCurrentPosition + "");
-        //                            break;
-        //                        default:
-        //                            break;
-        //                    }
-        //                });
-
-
     }
 
     @Override
@@ -208,7 +172,7 @@ public class MainActivity
 
             case R.id.action_my_favorite:
 
-                startActivity(new Intent(this, TestFavoriteActivity.class));
+                startActivity(new Intent(this, FavoriteActivity.class));
                 break;
             case R.id.action_map:
                 startActivity(new Intent(this, MapsActivity.class));
@@ -247,7 +211,7 @@ public class MainActivity
                 LogUtil.d("Search");
                 break;
             case R.id.main_action_star:
-                LogUtil.d("Star");
+                //TODO
                 break;
             default:
                 break;

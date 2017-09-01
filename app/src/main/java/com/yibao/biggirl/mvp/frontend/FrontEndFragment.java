@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.frontend;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,15 +17,17 @@ import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.app.AppAdapter;
 import com.yibao.biggirl.mvp.app.AppContract;
-import com.yibao.biggirl.mvp.app.AppPresenter;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class FrontEndFragment
         extends BaseFag<ResultsBeanX>
-        implements AppContract.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener
+        implements SwipeRefreshLayout.OnRefreshListener
 {
     AppContract.Presenter mPresenter;
 
@@ -44,22 +47,25 @@ public class FrontEndFragment
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     @BindView(R.id.fag_content)
-    LinearLayout mFagContent;
+    LinearLayout         mFagContent;
+    @BindView(R.id.fab_fag)
+    FloatingActionButton mFab;
     private AppAdapter mAdapter;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        new AppPresenter(this);
+        List<ResultsBeanX> list = new ArrayList<>();
+//        new GirlsPresenter(this);
         mPresenter.start(Constants.FRAGMENT_FRONT, 7);
 
     }
 
+
     @Override
-    public void loadData() {
-//        mPresenter.start(Constants.FRAGMENT_ANDROID, 7);
+    public void loadDatas() {
+        //        mPresenter.start(Constants.FRAGMENT_ANDROID, 7);
 
     }
 
@@ -79,7 +85,6 @@ public class FrontEndFragment
     }
 
     protected void initView() {
-        mFab.setOnClickListener(this);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
@@ -147,10 +152,6 @@ public class FrontEndFragment
 
     }
 
-    @Override
-    public void setPrenter(AppContract.Presenter prenter) {
-        this.mPresenter = prenter;
-    }
 
     public FrontEndFragment newInstance() {
 
@@ -166,8 +167,11 @@ public class FrontEndFragment
     }
 
 
+    @OnClick(R.id.fab_fag)
+    public void onViewClicked() { LogUtil.d(" FrontEndFragment ");}
+
     @Override
-    public void onClick(View view) {
+    public void setPrenter(GirlsContract.Presenter prenter) {
 
     }
 }

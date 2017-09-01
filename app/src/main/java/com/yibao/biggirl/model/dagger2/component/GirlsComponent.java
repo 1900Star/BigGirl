@@ -11,6 +11,6 @@ import dagger.Component;
  * Time:2017/6/8 01:17
  */
 @Component(modules = GirlsModuls.class)
-public interface GirlsComponent {
-    void in(GirlsFragment girlsFragment);
+public interface GirlsComponent<T> {
+    void in(GirlsFragment view);
 }

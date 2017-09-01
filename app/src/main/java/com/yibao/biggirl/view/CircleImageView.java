@@ -34,7 +34,8 @@ public class CircleImageView
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
     //        private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
-    private static final int DEFAULT_BORDER_COLOR = Color.argb(255, 255, 64, 129);
+    //    private static final int DEFAULT_BORDER_COLOR = Color.argb(255, 255, 64, 129);
+    private static final int DEFAULT_BORDER_COLOR = Color.argb(0, 0, 0, 0);
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect   = new RectF();
@@ -95,10 +96,10 @@ public class CircleImageView
 
     @Override
     public void setScaleType(ScaleType scaleType) {
-        if (scaleType != SCALE_TYPE) {
-            throw new IllegalArgumentException(String.format("ScaleType %s not supported.",
-                                                             scaleType));
-        }
+        //        if (scaleType != SCALE_TYPE) {
+        //            throw new IllegalArgumentException(String.format("ScaleType %s not supported.",
+        //                                                             scaleType));
+        //        }
     }
 
     @Override

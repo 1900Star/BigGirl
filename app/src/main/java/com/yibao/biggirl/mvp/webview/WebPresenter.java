@@ -2,9 +2,7 @@ package com.yibao.biggirl.mvp.webview;
 
 import com.yibao.biggirl.model.favorite.FavoriteBean;
 import com.yibao.biggirl.model.favorite.FavoriteDao;
-import com.yibao.biggirl.mvp.favorite.FavoriteContract;
-import com.yibao.biggirl.mvp.favorite.FavoriteFag;
-import com.yibao.biggirl.mvp.favorite.TestFavoriteActivity;
+import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 
 /**
  * Author：Sid
@@ -12,18 +10,13 @@ import com.yibao.biggirl.mvp.favorite.TestFavoriteActivity;
  * Time:2017/6/17 03:05
  */
 public class WebPresenter {
-    private FavoriteDao           mDao;
-    private WebActivity           mWebActivity;
-    private TestFavoriteActivity  mTestFavActivity;
-    private FavoriteContract.View mFag;
+    private FavoriteDao      mDao;
+    private WebActivity      mWebActivity;
+    private FavoriteActivity mTestFavActivity;
 
-    public WebPresenter(FavoriteFag fag) {
 
-        mFag = fag;
-        mDao = new FavoriteDao();
-    }
 
-    public WebPresenter(TestFavoriteActivity activity) {
+    public WebPresenter(FavoriteActivity activity) {
         mTestFavActivity = activity;
         mDao = new FavoriteDao();
     }

@@ -144,6 +144,9 @@ public class MusicPlayActivity
         if (songName.contains("_")) {
             songName = songName.substring(songName.indexOf("_") + 1, songName.length());
         }
+        mPlaySongName.setText(songName);
+        //更新歌手名称
+        mPlayArtistName.setText(musicItem.getArtist());
 
         Glide.with(this)
              .load(RandomUtil.getRandomUrl())
@@ -151,11 +154,9 @@ public class MusicPlayActivity
              .placeholder(R.mipmap.xuan)
              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(mSongAlbum);
-        mPlaySongName.setText(songName);
-        //更新歌手名称
-        mPlayArtistName.setText(musicItem.getArtist());
         //更新进度
         startUpdateProgress();
+
         //获取并记录总时长
         duration = audioBinder.getDuration();
         String time = StringUtil.parseDuration(duration);

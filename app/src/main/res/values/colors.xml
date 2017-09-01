@@ -13,14 +13,21 @@
     <color name="itemBg">#d9d5d5</color>
     <color name="itemType">#ea1ee3</color>
     <color name="colorGreen">#5ab43f</color>
+    <color name="musicFloatBg">#41f79ce1</color>
+
     //about
-    <color name="about_title">#ff000000</color>
-    <color name="about_sign">#ff666666</color>
-    <color name="about_content">#ff414141</color>
+    <color name="aboutTitle">#ff000000</color>
+    <color name="aboutSign">#ff666666</color>
+    <color name="aboutContent">#ff414141</color>
     <color name="about">#f7f1f1</color>
     //GuideView
-    <!-- 透明 -->
-    <color name="timeBar">#cccccccc</color>
 
+    <color name="timeBar">#cccccccc</color>
+    <color name="rvBg">#ccffffff</color>
+    <!--BottomSheetDialogList-->
+    <color name="bottomSheetList">#303030</color>
+
+    <!-- 透明 -->
+    <color name="tarnslation">#00000000</color>
 
 </resources>

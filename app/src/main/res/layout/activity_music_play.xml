@@ -53,7 +53,7 @@
                     android:text="FLOWER"
 
 
-                    android:textColor="@color/about_sign"/>
+                    android:textColor="@color/aboutSign"/>
             </LinearLayout>
             <ImageView
                 android:id="@+id/titlebar_play_list"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:text="@string/startTime"
-            android:textColor="@color/about_sign"/>
+            android:textColor="@color/aboutSign"/>
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="3dp"
             android:text="@string/endTime"
-            android:textColor="@color/about_sign"/>
+            android:textColor="@color/aboutSign"/>
     </LinearLayout>
 
 

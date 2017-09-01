@@ -55,7 +55,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorAccent"
                     android:gravity="center_vertical"
-                    android:textColor="@color/textName"
+                    android:textColor="@color/colorWhite"
                 />
 
             </LinearLayout>
@@ -88,7 +88,7 @@
 
     <LinearLayout
         android:id="@+id/delete_item"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_delete"
         android:gravity="center"

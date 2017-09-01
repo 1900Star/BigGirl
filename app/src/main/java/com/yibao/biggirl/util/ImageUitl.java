@@ -208,9 +208,15 @@ public class ImageUitl {
         return true;
     }
 
-    //初始化数据
+    //初始化默认妹子数据
     public static List<String> getDefultUrl(List<String> list) {
         Collections.addAll(list, Api.picUrlArr);
+        return list;
+    }
+    //初始化Sex数据
+
+    public static List<String> getSexUrl(List<String> list) {
+        Collections.addAll(list, Api.picUrlSex);
         return list;
     }
 

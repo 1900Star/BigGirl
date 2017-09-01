@@ -1,5 +1,6 @@
 package com.yibao.biggirl.mvp.music;
 
+import android.animation.ObjectAnimator;
 import android.app.Service;
 import android.content.AsyncQueryHandler;
 import android.content.ComponentName;
@@ -22,15 +23,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.music.MusicItem;
 import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.service.AudioPlayService;
-import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.RandomUtil;
 import com.yibao.biggirl.util.ToastUtil;
-import com.yibao.biggirl.view.ProgressView;
+import com.yibao.biggirl.view.CircleImageView;
 
 import java.util.ArrayList;
 
@@ -48,33 +50,38 @@ public class MusicListActivity
 {
 
     @BindView(R.id.music_lv)
-    ListView     mMscList;
-    @BindView(R.id.music_float_block_albulm)
-    ImageView    mMusicFloatBlockAlbulm;
-    @BindView(R.id.music_float_song_name)
-    TextView     mMusicFloatSongName;
-    @BindView(R.id.music_float_singer_name)
-    TextView     mMusicFloatSingerName;
-    @BindView(R.id.music_floating_pre)
-    ImageView    mMusicFloatingPre;
-    @BindView(R.id.music_floating_play)
-    ProgressView mMusicFloatingPlay;
-    @BindView(R.id.music_floating_next)
-    ImageView    mMusicFloatingNext;
-    @BindView(R.id.music_floating_block)
-    CardView     mCardFloatBlock;
-    @BindView(R.id.music_toolbar_back)
-    ImageView    mMusicToolbarBack;
+    ListView mMusicList;
 
-    private MusicListAdapter             mAdapter;
-    private AudioPlayService.AudioBinder audioBinder;
-    private CompositeDisposable          disposables;
-    private MusicItem                    musicItem;
-    private ArrayList<MusicItem>         mMusicItems;
-    private int                          mCureentPosition;
-    private Unbinder                     mBind;
+    @BindView(R.id.music_float_song_name)
+    TextView        mMusicFloatSongName;
+    @BindView(R.id.music_float_singer_name)
+    TextView        mMusicFloatSingerName;
+    @BindView(R.id.music_floating_pre)
+    ImageView       mMusicFloatingPre;
+    @BindView(R.id.music_floating_next)
+    ImageView       mMusicFloatingNext;
+    @BindView(R.id.music_floating_block)
+    CardView        mCardFloatBlock;
+    @BindView(R.id.music_toolbar_back)
+    ImageView       mMusicToolbarBack;
+    @BindView(R.id.music_floating_play)
+    ImageView       mMusicFloatingPlay;
+    @BindView(R.id.music_float_block_albulm)
+    CircleImageView mMusicFloatBlockAlbulm;
+
+
+    private        MusicListAdapter             mAdapter;
+    private static AudioPlayService.AudioBinder audioBinder;
+    private        CompositeDisposable          disposables;
+    private        ArrayList<MusicItem>         mMusicItems;
+    private        int                          mCureentPosition;
+    private        Unbinder                     mBind;
     private boolean isInitList = false;
-    private int     i          = 0;
+    private ObjectAnimator           mAnimator;
+    private MyAnimatorUpdateListener mAnimatorListener;
+    private AudioServiceConnection   mConnection;
+    private String                   mSongName;
+    private String                   mArtistName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +89,9 @@ public class MusicListActivity
         setContentView(R.layout.activity_music_list);
         mBind = ButterKnife.bind(this);
         disposables = new CompositeDisposable();
+
         initData();
+        initListener();
         initRxBusData();
         initMusicData();
 
@@ -100,94 +109,82 @@ public class MusicListActivity
 
     //设置歌曲名和歌手名
     private void perpareMusic(MusicItem musicItem) {
-        this.musicItem = musicItem;
-        LogUtil.d("线程名称 ：  " + Thread.currentThread()
-                                     .getName());
         //更新音乐标题
-        String songName = musicItem.getTitle();
-        if (songName.contains("_")) {
-            songName = songName.substring(songName.indexOf("_") + 1, songName.length());
+        mSongName = musicItem.getTitle();
+        if (mSongName.contains("_")) {
+            mSongName = mSongName.substring(mSongName.indexOf("_") + 1, mSongName.length());
         }
-        mMusicFloatSongName.setText(songName);
+        mMusicFloatSongName.setText(mSongName);
         //更新歌手名称
-        mMusicFloatSingerName.setText(musicItem.getArtist());
+        mArtistName = musicItem.getArtist();
+        mMusicFloatSingerName.setText(mArtistName);
         //设置专辑
-
         Glide.with(this)
              .load(RandomUtil.getRandomUrl())
              .asBitmap()
              .placeholder(R.mipmap.xuan)
              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(mMusicFloatBlockAlbulm);
-
-        // //更新进度
-        startUpdateProgress();
-        mMusicFloatingPlay.setMax(audioBinder.getDuration());
-        startUpdateProgress();
         //更新播放状态按钮
         updatePlayStateBtn();
+        //初始化动画
+        initAnimation();
 
 
     }
 
-    //开始更新进度
-    private void startUpdateProgress() {
-        //获取当前进度
-        //        int progress = audioBinder.getProgress();
-        //        System.out.println("这是更新进度  ： " + progress);
-        //设置进度
-        //        updateProgress(progress);
-        //定时更新
+    private void initAnimation() {
+        if (mAnimator == null || mAnimatorListener == null) {
+            mAnimator = AnimationUtil.getRotation(mMusicFloatBlockAlbulm);
+            mAnimatorListener = new MyAnimatorUpdateListener(mAnimator);
+            mAnimator.start();
+        }
+        mAnimator.resume();
+    }
+
+
+    private void updatePlayStateBtn() {
+        //根据当前播放状态设置图片
+        if (audioBinder.isPlaying()) {
+            mMusicFloatingPlay.setImageResource(R.drawable.btn_playing_pause);
+            //            mAnimator.resume();
+        } else {
+            //正在播放
+            MyApplication.getIntstance()
+                         .bus()
+                         .post(new MusicStatusBean(0));
+            mMusicFloatingPlay.setImageResource(R.drawable.btn_playing_play);
+        }
     }
 
     //切换当前播放状态
     private void switchPlayState() {
         if (audioBinder == null) {
             Toast.makeText(this, "当前没有歌曲播放-_-", Toast.LENGTH_SHORT);
-        }
-        if (audioBinder.isPlaying()) {
+            mAnimator.cancel();
+        } else if (audioBinder.isPlaying()) {
+            audioBinder.pause();     //当前播放  暂停
+            mAnimator.pause();
 
-            LogUtil.d("Pause");
-            audioBinder.pause();
-
-
-        } else {
-            //当前暂停  播放
-            LogUtil.d("Start");
-            audioBinder.start();
+        } else if (!audioBinder.isPlaying()) {
+            audioBinder.start();     //当前暂停  播放
+            mAnimator.resume();
 
         }
         //更新播放状态按钮
         updatePlayStateBtn();
     }
 
-    private void updatePlayStateBtn() {
-        //获取当前播放状态
-        //根据当前播放状态设置图片
-        if (audioBinder.isPlaying()) {
-
-
-            //            mMusicFloatingPlay.setImageResource(R.drawable.btn_playing_pause);
-            mMusicFloatingPlay.setIcon(R.drawable.btn_playing_pause);
-
-        } else {
-            //正在播放
-            MyApplication.getIntstance()
-                         .bus()
-                         .post(new MusicStatusBean(0));
-            //            mMusicFloatingPlay.setImageResource(R.drawable.btn_playing_play);
-            mMusicFloatingPlay.setIcon(R.drawable.btn_playing_play);
-        }
-    }
-
 
     private void initData() {
-        mMusicFloatingPlay.setIcon(R.mipmap.xuan);
-
         mAdapter = new MusicListAdapter(this, null);
-        mMscList.setAdapter(mAdapter);
+        mMusicList.setAdapter(mAdapter);
 
-        mMscList.setOnItemClickListener((parent, view, position, id) -> {
+
+    }
+
+    private void initListener() {
+        mMusicList.setOnItemClickListener((parent, view, position, id) -> {
             //获取音乐列表
             mMusicItems = MusicItem.getAudioItems((Cursor) parent.getItemAtPosition(position));
             mCureentPosition = position;
@@ -196,29 +193,27 @@ public class MusicListActivity
             intent.setClass(this, AudioPlayService.class);
             intent.putParcelableArrayListExtra("musicItem", mMusicItems);
             intent.putExtra("position", position);
-            AudioServiceConnection connection = new AudioServiceConnection();
-            bindService(intent, connection, Service.BIND_AUTO_CREATE);
+            mConnection = new AudioServiceConnection();
+            bindService(intent, mConnection, Service.BIND_AUTO_CREATE);
             startService(intent);
             isInitList = true;
-
-
             //            initRxBusData();
 
         });
     }
 
-    @OnClick({R.id.music_toolbar_back,
-              R.id.music_floating_pre,
+
+    @OnClick(R.id.music_toolbar_back)
+    public void onViewClicked() {finish();}
+
+    @OnClick({R.id.music_floating_pre,
               R.id.music_floating_play,
               R.id.music_floating_next,
-              R.id.music_floating_block,
-              R.id.music_float_block_albulm})
+              R.id.music_floating_block})
     public void onViewClicked(View view) {
         if (isInitList) {
             switch (view.getId()) {
-                case R.id.music_toolbar_back:
-                    finish();
-                    break;
+
                 case R.id.music_floating_pre:
                     audioBinder.playPre();
                     break;
@@ -226,29 +221,21 @@ public class MusicListActivity
                     switchPlayState();
                     break;
                 case R.id.music_floating_next:
-
                     audioBinder.playNext();
                     break;
-                case R.id.music_float_block_albulm:
-                    LogUtil.d("点击测试进度  ： " + audioBinder.getProgress());
-                    mMusicFloatingPlay.setProgress(audioBinder.getProgress());
-                    break;
-                case R.id.music_floating_block:
-
-                    //跳转到音乐播放界面
-                    Intent intent = new Intent(this, MusicPlayActivity.class);
-                    intent.putParcelableArrayListExtra("musicItem", mMusicItems);
-                    intent.putExtra("position", mCureentPosition);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.dialog_push_in, R.anim.dialog_push_out);
-
-                    //                    MusicPlayDialogFag.newInstance(mMusicItems, mCureentPosition)
-                    //                                      .show(getSupportFragmentManager(), "music");
+                case R.id.music_floating_block:     //音乐控制浮块
+                    MusicPlayDialogFag.newInstance(mMusicItems, mSongName, mArtistName)
+                                      .show(getSupportFragmentManager(), "music");
                     break;
             }
         } else {
             ToastUtil.showLong(this, "当前没有可以播放的音乐_-_");
         }
+    }
+
+    public static AudioPlayService.AudioBinder getAudioBinder() {
+
+        return audioBinder;
     }
 
     //获取音乐列表
@@ -301,12 +288,28 @@ public class MusicListActivity
     @Override
     protected void onPause() {
         super.onPause();
-        disposables.clear();
+        //        disposables.clear();
+        if (mAnimator != null) {
+            mAnimator.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAnimator != null && audioBinder.isPlaying()) {
+            mAnimator.resume();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mAnimator != null && mAnimatorListener != null && mConnection != null) {
+            mAnimator.cancel();
+            mAnimatorListener.pause();
+            unbindService(mConnection);
+        }
         disposables.clear();
         mBind.unbind();
     }

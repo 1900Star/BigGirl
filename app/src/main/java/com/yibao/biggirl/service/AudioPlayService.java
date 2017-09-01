@@ -52,7 +52,6 @@ public class AudioPlayService
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         mMusicItem = intent.getParcelableArrayListExtra("musicItem");
-
         int enterPosition = intent.getIntExtra("position", -1);
         if (enterPosition != position && enterPosition != -1) {
             position = enterPosition;

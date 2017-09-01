@@ -43,6 +43,7 @@ public class RecyclerViewFactory {
         }
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         return recyclerView;
     }
 

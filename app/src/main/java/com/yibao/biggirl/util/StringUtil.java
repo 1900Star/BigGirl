@@ -21,4 +21,11 @@ public class StringUtil {
             return String.format("%02d:%02d:%02d", hour, min, sec);
         }
     }
+    public static String getSongName(String songName) {
+        if (songName.contains("_")) {
+            songName = songName.substring(songName.indexOf("_") + 1, songName.length());
+        }
+        return songName;
+    }
+
 }

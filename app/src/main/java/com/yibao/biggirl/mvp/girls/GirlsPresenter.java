@@ -14,10 +14,10 @@ import java.util.List;
 public class GirlsPresenter
         implements GirlsContract.Presenter
 {
-    private GirlsContract.View mView;
-    private RemoteGirlsData    mRemoteGirlsData;
+    private GirlsContract.View<String> mView;
+    private RemoteGirlsData               mRemoteGirlsData;
 
-    public GirlsPresenter(GirlsContract.View view) {
+    public GirlsPresenter(GirlsContract.View<String> view) {
         this.mView = view;
         mRemoteGirlsData = new RemoteGirlsData();
     }

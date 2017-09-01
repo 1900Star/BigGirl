@@ -8,7 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:visibility="invisible"
-        android:background="@color/colorAccent"
+        android:background="@color/colorBlack"
         android:layout_width="match_parent"
         app:popupTheme="@style/AppTheme.AppBarOverlay"
         android:layout_height="wrap_content"

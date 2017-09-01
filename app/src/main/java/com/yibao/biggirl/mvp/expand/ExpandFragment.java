@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.expand;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,17 +17,16 @@ import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.app.AppAdapter;
 import com.yibao.biggirl.mvp.app.AppContract;
-import com.yibao.biggirl.mvp.app.AppPresenter;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,7 +38,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class ExpandFragment
         extends BaseFag<ResultsBeanX>
-        implements AppContract.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener
+        implements  SwipeRefreshLayout.OnRefreshListener
 {
     AppContract.Presenter mPresenter;
 
@@ -46,27 +46,31 @@ public class ExpandFragment
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     @BindView(R.id.fag_content)
-    LinearLayout mFagContent;
-    private AppAdapter mAdapter;
+    LinearLayout         mFagContent;
+    @BindView(R.id.fab_fag)
+    FloatingActionButton mFab;
+    private AppAdapter   mAdapter;
     private RecyclerView mRecyclerView;
 
 
-    @Inject
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new AppPresenter(this);
+//        new GirlsPresenter(this);
         mPresenter.start(Constants.FRAGMENT_EXPAND, 6);
 
     }
 
+
     @Override
-    public void loadData() {
-//        mPresenter.start(Constants.FRAGMENT_ANDROID, 6);
+    public void loadDatas() {
+        //        mPresenter.start(Constants.FRAGMENT_ANDROID, 6);
 
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -80,17 +84,15 @@ public class ExpandFragment
         initView();
         return view;
     }
+
     protected void initView() {
-        mFab.setOnClickListener(this);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
     }
 
 
-
-
-    private void initData(List<ResultsBeanX> list,int type) {
+    private void initData(List<ResultsBeanX> list, int type) {
         mAdapter = new AppAdapter(getContext(), list);
         mRecyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
         mFagContent.addView(mRecyclerView);
@@ -102,7 +104,7 @@ public class ExpandFragment
     public void loadData(List<ResultsBeanX> list) {
         mList.clear();
         mList.addAll(list);
-        initData(mList,1);
+        initData(mList, 1);
         mSwipeRefresh.setRefreshing(false);
     }
 
@@ -148,10 +150,6 @@ public class ExpandFragment
 
     }
 
-    @Override
-    public void setPrenter(AppContract.Presenter prenter) {
-        this.mPresenter = prenter;
-    }
 
     public ExpandFragment newInstance() {
 
@@ -166,8 +164,11 @@ public class ExpandFragment
 
     }
 
+    @OnClick(R.id.fab_fag)
+    public void onViewClicked() {LogUtil.d(" ExpandFragment ");}
+
     @Override
-    public void onClick(View view) {
+    public void setPrenter(GirlsContract.Presenter prenter) {
 
     }
 }

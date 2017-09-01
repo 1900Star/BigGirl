@@ -47,13 +47,7 @@ public class AppAdapter
         if (holder instanceof MyViewHolder) {
 
             MyViewHolder viewHolder = (MyViewHolder) holder;
-            //            String       url        = "";
 
-            //自带的图片
-            //            List<String> images = bean.getImages();
-            //            if (images != null && images.size() > 0) {
-            //                url = images.get(0);
-            //            }
             String url = Api.picUrlArr[holder.getAdapterPosition()];
             Glide.with(mContext)
                  .load(url)

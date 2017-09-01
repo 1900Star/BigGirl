@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.app;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,18 +18,15 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.model.dagger2.component.DaggerAppComponent;
-import com.yibao.biggirl.model.dagger2.moduls.AppModuls;
-import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,42 +38,38 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class AppFag
         extends BaseFag<ResultsBeanX>
-        implements AppContract.View, SwipeRefreshLayout.OnRefreshListener
+        implements SwipeRefreshLayout.OnRefreshListener
 {
-    AppContract.Presenter mPresenters;
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     @BindView(R.id.fag_content)
-    LinearLayout mFagContent;
+    LinearLayout         mFagContent;
+    @BindView(R.id.fab_fag)
+    FloatingActionButton mFab;
 
     private AppAdapter mAdapter;
 
 
-    @Inject
-    AppPresenter mPresenter;
+
     private RecyclerView mRecyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DaggerAppComponent component = (DaggerAppComponent) DaggerAppComponent.builder()
-                                                                              .appModuls(new AppModuls(
-                                                                                      this))
-                                                                              .build();
-
-        component.in(this);
-        mPresenter.start(Constants.FRAGMENT_APP, 4);
+//        mGirlsPresenter.start(Constants.FRAGMENT_APP, 4);
 
     }
+
 
     @Override
-    public void loadData() {
-//        mPresenter.start(Constants.FRAGMENT_ANDROID, 4);
+    public void loadDatas() {
+        //        mAppPresenter.start(Constants.FRAGMENT_ANDROID, 4);
 
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -89,12 +83,11 @@ public class AppFag
         initView();
         return view;
     }
+
     protected void initView() {
-//        mFab.setOnClickListener(this);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
-
 
 
     }
@@ -106,10 +99,7 @@ public class AppFag
         mRecyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
 
         initListerner(mRecyclerView);
-//        mFab.setOnClickListener(view -> {
-//            LogUtil.d("这是APP");
-////            mRecyclerView.smoothScrollBy(0,0);
-//        });
+
         mFagContent.addView(mRecyclerView);
     }
 
@@ -144,11 +134,10 @@ public class AppFag
                         {
                             page++;
 
-                            mPresenter.loadData(size,
-                                                page,
-                                                Constants.FRAGMENT_APP,
-                                                Constants.LOAD_MORE_DATA);
-                            //                        mProgressBar.setVisibility(View.VISIBLE);
+//                            mGirlsPresenter.loadData(size,
+//                                                   page,
+//                                                   Constants.FRAGMENT_APP,
+//                                                   Constants.LOAD_MORE_DATA);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -188,6 +177,7 @@ public class AppFag
             }
 
         });
+
     }
 
     //找到数组中的最大值
@@ -202,14 +192,13 @@ public class AppFag
     }
 
 
-
     @Override
     public void onRefresh() {
 
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mPresenter.loadData(size, 1, Constants.FRAGMENT_APP, Constants.REFRESH_DATA);
+//                      mGirlsPresenter.loadData(size, 1, Constants.FRAGMENT_APP, Constants.REFRESH_DATA);
 
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
@@ -249,10 +238,6 @@ public class AppFag
 
     }
 
-    @Override
-    public void setPrenter(AppContract.Presenter prenter) {
-        this.mPresenters = prenter;
-    }
 
     public AppFag newInstance() {
 
@@ -268,5 +253,12 @@ public class AppFag
     }
 
 
+    @OnClick(R.id.fab_fag)
+    public void onViewClicked() { LogUtil.d(" AppFragment ");}
+
+    @Override
+    public void setPrenter(GirlsContract.Presenter prenter) {
+
+    }
 }
 

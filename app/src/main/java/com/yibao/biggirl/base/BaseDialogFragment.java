@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.yibao.biggirl.util.SystemUiVisibilityUtil;
+
 /**
  * Author：Sid
  * Des：${TODO}
@@ -24,6 +26,7 @@ public abstract class BaseDialogFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState)
     {
+
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow()
                    .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
