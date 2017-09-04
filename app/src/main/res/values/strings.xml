@@ -31,11 +31,7 @@
     <string name="title_activity_maps">Map</string>
     //*********音乐
     <string name="music">音乐</string>
-    <string name="startTime">0:00</string>
-    <string name="endTime">0:00</string>
     <string name="short_line">-</string>
-    <string name="songName">Forever</string>
-    <string name="singerName">young</string>
     <string name="large_text">
         "Components with responsive elevations may encounter other components as they move between "
         "their resting elevations and dynamic elevation offsets. Because material cannot pass "

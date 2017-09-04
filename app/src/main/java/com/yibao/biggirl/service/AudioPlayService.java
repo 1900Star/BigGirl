@@ -290,6 +290,7 @@ public class AudioPlayService
                         break;
                     case CLOSE:
                         LogUtil.d("CLOSE");
+                        onDestroy();
                         break;
                     case PREV:
                         mAudioBinder.playPre();
@@ -315,6 +316,16 @@ public class AudioPlayService
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReceiver);
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+        }
+//        MyApplication.getIntstance()
+//                     .bus()
+//                     .post(new MusicStatusBean(2, false));
+        stopSelf();
     }
 }

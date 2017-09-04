@@ -31,6 +31,7 @@ import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.MusicListUtil;
+import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.util.ToastUtil;
 import com.yibao.biggirl.view.CircleImageView;
@@ -95,8 +96,9 @@ public class MusicListActivity
     private String                   mArtistName;
     private Disposable               mDisposable;
     private NotificationManager      mNotificationManager;
-    private int                      mCurrentPosition;
     private Uri                      mAlbumUri;
+    private MusicPlayDialogFag       mPlayDialogFag;
+    private RxBus                    mBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,8 @@ public class MusicListActivity
         setContentView(R.layout.activity_music_list);
         LogUtil.d("   ***********************  onCreate");
         mBind = ButterKnife.bind(this);
+        mBus = MyApplication.getIntstance()
+                            .bus();
         disposables = new CompositeDisposable();
 
         initData();
@@ -112,41 +116,42 @@ public class MusicListActivity
 
     }
 
-    //接收service中更新数据
-    // 和
-    // 播放界面发送的播放状态
     private void initRxBusData() {
-        disposables.add(MyApplication.getIntstance()
-                                     .bus()
-                                     .toObserverable(MusicInfo.class)
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
-                                     .subscribe(this::perpareMusic));
-        disposables.add(MyApplication.getIntstance()
-                                     .bus()
-                                     .toObserverable(MusicStatusBean.class)
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
-                                     .subscribe(bean -> {
-                                         if (bean.getType() == 0) {
+        //接收service发出的数据，更新歌曲信息
 
-                                             if (bean.isPlay()) {
-                                                 audioBinder.pause();
-                                                 mAnimator.pause();
-                                             } else {
-                                                 audioBinder.start();
-                                                 mAnimator.resume();
-                                             }
-                                             MusicListActivity.this.updatePlayBtnStatus();
-                                         } else {
-                                             //                                                 Intent intent = new Intent(getApplicationContext(),
-                                             //                                                                              MusicListActivity.class);
-                                             //                                                 startActivity(intent);
-                                             showMusicDialog();
+        disposables.add(mBus.toObserverable(MusicInfo.class)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::perpareMusic));
+        //   type 用来判断触发消息的源头，0 表示从 MusicPlayDialogFag， 1 表示从通知栏的音乐控制面板发出(Services中的广播)。
+        disposables.add(mBus.toObserverable(MusicStatusBean.class)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(MusicListActivity.this::refreshBtnAndNotif));
 
-                                         }
-                                     }));
+    }
 
+    private void refreshBtnAndNotif(MusicStatusBean bean) {
+        switch (bean.getType()) {
+            case 0:
+                if (bean.isPlay()) {
+                    audioBinder.pause();
+                    mAnimator.pause();
+                } else {
+                    audioBinder.start();
+                    mAnimator.resume();
+                }
+                updatePlayBtnStatus();
+                 break;
+            case 1:
+                showMusicDialog();
+                 break;
+            case 2:
+                finish();
+                break;
+            default:
+                 break;
+        }
     }
 
     //设置歌曲名和歌手名
@@ -178,6 +183,7 @@ public class MusicListActivity
 
         MusicNoification.openMusicNotification(this,
                                                audioBinder.isPlaying(),
+                                               mAlbumUri,
                                                mSongName,
                                                mArtistName);
 
@@ -249,7 +255,6 @@ public class MusicListActivity
             //获取音乐列表
             //            mMusicItems = MusicItem.getAudioItems((Cursor) parent.getItemAtPosition(position));
             mMusicItems = MusicListUtil.getMusicList(this);
-            mCurrentPosition = position;
             //开启服务，播放音乐并且将数据传送过去
             Intent intent = new Intent();
             intent.setClass(this, AudioPlayService.class);
@@ -298,8 +303,12 @@ public class MusicListActivity
                                                    mArtistName,
                                                    mAlbumUri.toString());
 
-        MusicPlayDialogFag.newInstance(info)
-                          .show(getSupportFragmentManager(), "music");
+        //        if (mPlayDialogFag.isVisible()) {
+        //            mPlayDialogFag = MusicPlayDialogFag.newInstance(info);
+        //            mPlayDialogFag.show(getSupportFragmentManager(), "music");
+        //        }
+        mPlayDialogFag = MusicPlayDialogFag.newInstance(info);
+        mPlayDialogFag.show(getSupportFragmentManager(), "music");
         //        mDisposable.dispose();
     }
 

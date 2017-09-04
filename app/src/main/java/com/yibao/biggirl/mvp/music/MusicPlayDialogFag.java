@@ -32,7 +32,7 @@ import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.DialogUtil;
-import com.yibao.biggirl.util.RandomUtil;
+import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.view.CircleImageView;
 
@@ -86,12 +86,15 @@ public class MusicPlayDialogFag
     private SeekBar      mSbVolume;
     private AudioManager mAudioManager;
     private int          mDuration;
+    private RxBus        mBus;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         audioBinder = MusicListActivity.getAudioBinder();
+        mBus = MyApplication.getIntstance()
+                            .bus();
         disposables = new CompositeDisposable();
         registerReceiver();     //注册监听的音量广播
 
@@ -146,7 +149,7 @@ public class MusicPlayDialogFag
 
     }
 
-    //更新进度 和 时间
+    //不停的更新进度 和 时间
     private void startUpdateProgress() {
         setSongDuration();
         if (mSubscribe == null) {
@@ -180,12 +183,37 @@ public class MusicPlayDialogFag
 
     //接收service中更新数据,
     private void initRxBusData() {
-        disposables.add(MyApplication.getIntstance()
-                                     .bus()
-                                     .toObserverable(MusicInfo.class)
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
-                                     .subscribe(this::perpareMusic));
+        disposables.add(mBus.toObserverable(MusicInfo.class)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::perpareMusic));
+        disposables.add(mBus.toObserverable(MusicStatusBean.class)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(this::refreshBtnAndAnim));
+
+
+    }
+
+    private void refreshBtnAndAnim(MusicStatusBean bean) {
+
+        switch (bean.getType()) {
+            case 0:
+                if (bean.isPlay()) {
+                    audioBinder.pause();
+                    mAnimator.pause();
+                } else {
+                    audioBinder.start();
+                    mAnimator.resume();
+                }
+                updatePlayBtnStatus();
+                break;
+            case 2:
+                dismiss();
+                break;
+            default:
+                break;
+        }
     }
 
     //设置歌曲名和歌手名
@@ -197,11 +225,11 @@ public class MusicPlayDialogFag
         mSongName.setText(songName);
         //更新歌手名称
         mArtistName.setText(info.getArtist());
-        mUrl = RandomUtil.getRandomUrl();
-        String url = StringUtil.getAlbulm(info.getAlbumId())
-                               .toString();
+        //        mUrl = RandomUtil.getRandomUrl();
+        mUrl = StringUtil.getAlbulm(info.getAlbumId())
+                         .toString();
         //设置专辑图片
-        setAlbulm(url);
+        setAlbulm(mUrl);
         //设置歌曲时长
         setSongDuration();
         //更新播放状态按钮
@@ -397,9 +425,6 @@ public class MusicPlayDialogFag
         mSbVolume = (SeekBar) root.findViewById(R.id.sb_volume);
     }
 
-    /**
-     * @param info    快速列表数据
-     */
 
     public static MusicPlayDialogFag newInstance(MusicDialogInfo info)
     {
@@ -451,7 +476,7 @@ public class MusicPlayDialogFag
                     //更新音乐进度数值
                     updataProgress(progress);
                     break;
-                case R.id.sb_volume:
+                case R.id.sb_volume:    //更新音乐  SeekBar
                     updateVolume(progress);
                     break;
                 default:
