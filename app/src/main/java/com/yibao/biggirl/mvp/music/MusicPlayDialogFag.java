@@ -2,7 +2,11 @@ package com.yibao.biggirl.mvp.music;
 
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
-import android.graphics.Color;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,24 +15,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
-import com.yibao.biggirl.model.music.MusicItem;
+import com.yibao.biggirl.base.listener.SeekBarChangeListtener;
+import com.yibao.biggirl.model.music.MusicDialogInfo;
+import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.dialogfragment.BottomSheetListDialog;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.DialogUtil;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.RandomUtil;
+import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.view.CircleImageView;
-import com.yibao.biggirl.view.ProgressBtn;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +46,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.yibao.biggirl.util.StringUtil.getSongName;
-import static com.yibao.biggirl.util.StringUtil.parseDuration;
 
 /**
  * Author：Sid
@@ -53,40 +58,42 @@ public class MusicPlayDialogFag
 
 {
 
-    private View                                   root;
-    private android.widget.ImageView               mTitlebarDown;
-    private android.widget.TextView                mSongName;
-    private android.widget.TextView                mArtistName;
-    private android.widget.ImageView               mTitlebarPlayList;
-    private android.widget.TextView                mStartTime;
-    private com.yibao.biggirl.view.ProgressBtn     mProgressBtn;
-    private android.widget.TextView                mEndTime;
-    private android.widget.RelativeLayout          mRotateRl;
-    private com.yibao.biggirl.view.CircleImageView mPlayingSongAlbum;
-    private android.widget.ImageView               mMusicPlayerMode;
-    private android.widget.ImageView               mMusicPlayerPre;
-    private android.widget.ImageView               mMusicPlay;
-    private android.widget.ImageView               mMusicPlayerNext;
-    private android.widget.ImageView               mMusicPlayerRandom;
-    private AudioPlayService.AudioBinder           audioBinder;
-    private CompositeDisposable                    disposables;
-    private ObjectAnimator                         mAnimator;
-    private MyAnimatorUpdateListener               mAnimatorListener;
-    private int                                    duration;
+
+    private View                         root;
+    private ImageView                    mTitlebarDown;
+    private TextView                     mSongName;
+    private TextView                     mArtistName;
+    private ImageView                    mTitlebarPlayList;
+    private TextView                     mStartTime;
+    private TextView                     mEndTime;
+    private RelativeLayout               mRotateRl;
+    private CircleImageView              mPlayingSongAlbum;
+    private ImageView                    mMusicPlayerMode;
+    private ImageView                    mMusicPlayerPre;
+    private ImageView                    mMusicPlay;
+    private ImageView                    mMusicPlayerNext;
+    private ImageView                    mMusicPlayerRandom;
+    private AudioPlayService.AudioBinder audioBinder;
+    private CompositeDisposable          disposables;
+    private ObjectAnimator               mAnimator;
+    private MyAnimatorUpdateListener     mAnimatorListener;
     private boolean isRandomMode = false;
     private String               mUrl;
-    private ArrayList<MusicItem> mList;
+    private ArrayList<MusicInfo> mList;
     private int mProgress = 0;
-    private Disposable mSubscribe;
+    private Disposable   mSubscribe;
+    private SeekBar      mSbProgress;
+    private SeekBar      mSbVolume;
+    private AudioManager mAudioManager;
+    private int          mDuration;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().getWindow()
-                     .setStatusBarColor(Color.WHITE);
         audioBinder = MusicListActivity.getAudioBinder();
         disposables = new CompositeDisposable();
+        registerReceiver();     //注册监听的音量广播
 
 
     }
@@ -94,8 +101,11 @@ public class MusicPlayDialogFag
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSongName.setText(getArguments().getString("songName"));
-        mArtistName.setText(getArguments().getString("artistName"));
+        MusicDialogInfo infos = getArguments().getParcelable("info");
+        mSongName.setText(infos.getSongName());
+        mArtistName.setText(infos.getArtist());
+        setAlbulm(infos.getUrl());
+        mList = infos.getInfos();       //给快速列表用的
     }
 
     @NonNull
@@ -113,90 +123,58 @@ public class MusicPlayDialogFag
 
 
     private void initData() {
-        mList = getArguments().getParcelableArrayList("musicItem");
         if (audioBinder.isPlaying()) {
             initAnimation();
-            updatePlayStateBtn();
+            updatePlayBtnStatus();
             startUpdateProgress();
         }
+        startUpdateProgress();
+
+        //音乐设置
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        mSbVolume.setMax(maxVolume);
+        int volume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        updateVolume(volume);
+    }
+
+    private void updateVolume(int volume) {
+        mSbVolume.setProgress(volume);
+        //更新音量值  flag 0 默认不显示系统控制栏  1 显示系统音量控制
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
 
 
     }
 
     //更新进度 和 时间
     private void startUpdateProgress() {
-        duration = audioBinder.getDuration();
-        String time = parseDuration(duration);
-        mProgressBtn.setMax(duration);
-        mEndTime.setText(time);
-
+        setSongDuration();
         if (mSubscribe == null) {
-
             mSubscribe = Observable.interval(0, 2800, TimeUnit.MICROSECONDS)
                                    .subscribeOn(Schedulers.io())
                                    .observeOn(AndroidSchedulers.mainThread())
                                    .subscribe(aLong -> {
                                        mProgress = audioBinder.getProgress();
-                                       String progressBefor = parseDuration(mProgress);
-                                       mStartTime.setText(progressBefor);    //时间进度
-                                       mProgressBtn.setProgress(mProgress);  //时时播放进度
+                                       updataProgress(mProgress);
                                    });
         }
 
-
     }
 
 
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.titlebar_down:
-                dismiss();
-                break;
-            case R.id.titlebar_play_list:       //快速列表
-                BottomSheetListDialog.newInstance()
-                                     .getBottomDialog(getActivity(), mList);
-
-                break;
-            case R.id.playing_song_album:
-                TopBigPicDialogFragment.newInstance(mUrl)
-                                       .show(getFragmentManager(), "album");
-                break;
-            case R.id.music_player_mode:
-                switchPlayMode();       //切换播放模式
-                break;
-            case R.id.music_player_pre:     //上一曲
-                audioBinder.playPre();
-                break;
-            case R.id.music_play:      //播放
-                switchPlayState();
-                break;
-            case R.id.music_player_next:       //下一曲
-                audioBinder.playNext();
-                break;
-            case R.id.music_player_random:   //随机切换
-                randomMode();
-                break;
-
-
-        }
-
+    private void setSongDuration() {
+        //获取并记录总时长
+        mDuration = audioBinder.getDuration();
+        //设置进度条的总进度
+        mSbProgress.setMax(mDuration);
+        //        //设置歌曲总时长
+        mEndTime.setText(StringUtil.parseDuration(mDuration));
     }
 
-
-    private void randomMode() {
-        if (isRandomMode) {
-            mMusicPlayerRandom.setImageResource(R.drawable.btn_playing_shuffle_on);
-            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_RANDOM);
-            isRandomMode = false;
-
-        } else {
-            mMusicPlayerRandom.setImageResource(R.drawable.btn_playing_shuffle_off);
-            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_ALL);
-            isRandomMode = true;
-
-        }
+    private void updataProgress(int progress) {
+        mStartTime.setText(StringUtil.parseDuration(progress));    //时间进度
+        mSbProgress.setProgress(progress);  //时时播放进度
+        mEndTime.setText(StringUtil.parseDuration(mDuration - progress));       //歌曲总时长递减
     }
 
 
@@ -204,37 +182,41 @@ public class MusicPlayDialogFag
     private void initRxBusData() {
         disposables.add(MyApplication.getIntstance()
                                      .bus()
-                                     .toObserverable(MusicItem.class)
+                                     .toObserverable(MusicInfo.class)
                                      .subscribeOn(Schedulers.io())
                                      .observeOn(AndroidSchedulers.mainThread())
                                      .subscribe(this::perpareMusic));
     }
 
     //设置歌曲名和歌手名
-    private void perpareMusic(MusicItem musicItem) {
+    private void perpareMusic(MusicInfo info) {
+        initAnimation();
         //更新音乐标题
-        String songName = musicItem.getTitle();
+        String songName = info.getTitle();
         songName = getSongName(songName);
         mSongName.setText(songName);
         //更新歌手名称
-        mArtistName.setText(musicItem.getArtist());
-        LogUtil.d("BBBBBB  === " + songName + "      ********     " + musicItem.getArtist());
+        mArtistName.setText(info.getArtist());
         mUrl = RandomUtil.getRandomUrl();
+        String url = StringUtil.getAlbulm(info.getAlbumId())
+                               .toString();
+        //设置专辑图片
+        setAlbulm(url);
+        //设置歌曲时长
+        setSongDuration();
+        //更新播放状态按钮
+        updatePlayBtnStatus();
+
+
+    }
+
+    private void setAlbulm(String url) {
         Glide.with(this)
-             .load(mUrl)
+             .load(url)
              .asBitmap()
              .placeholder(R.mipmap.xuan)
-             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+             //             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(mPlayingSongAlbum);
-        //获取并记录总时长
-        duration = audioBinder.getDuration();
-        String time = parseDuration(duration);
-        mEndTime.setText(time);
-        //设置进度条的总进度
-        mProgressBtn.setMax(duration);
-        //更新播放状态按钮
-        updatePlayStateBtn();
-
     }
 
 
@@ -244,28 +226,33 @@ public class MusicPlayDialogFag
             //当前播放  暂停
             audioBinder.pause();
             mAnimator.pause();
+            MyApplication.getIntstance()
+                         .bus()
+                         .post(new MusicStatusBean(0, true));
         } else {
             //当前暂停  播放
             audioBinder.start();
-            mAnimator.resume();
+            //            mAnimator.resume();
+            //            mAnimator.start();
+            initAnimation();
+            MyApplication.getIntstance()
+                         .bus()
+                         .post(new MusicStatusBean(0, false));
         }
 
 
         //更新播放状态按钮
-        updatePlayStateBtn();
+        updatePlayBtnStatus();
 
 
     }
 
-    private void updatePlayStateBtn() {
-        //根据当前播放状态设置图片
+    //根据当前播放状态设置图片
+    private void updatePlayBtnStatus() {
         if (audioBinder.isPlaying()) {
-
+            //正在播放    设置为暂停
             mMusicPlay.setImageResource(R.drawable.btn_playing_pause);
-
         } else {
-            //正在播放
-
             mMusicPlay.setImageResource(R.drawable.btn_playing_play);
         }
     }
@@ -312,6 +299,59 @@ public class MusicPlayDialogFag
                 break;
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.titlebar_down:
+                dismiss();
+                break;
+            case R.id.titlebar_play_list:       //快速列表
+                BottomSheetListDialog.newInstance()
+                                     .getBottomDialog(getActivity(), mList);
+
+                break;
+            case R.id.playing_song_album:
+                TopBigPicDialogFragment.newInstance(mUrl)
+                                       .show(getFragmentManager(), "album");
+                break;
+            case R.id.music_player_mode:    //切换播放模式
+                switchPlayMode();
+                break;
+            case R.id.music_player_pre:     //上一曲
+                audioBinder.playPre();
+                break;
+            case R.id.music_play:      //播放
+                switchPlayState();
+                break;
+            case R.id.music_player_next:       //下一曲
+                audioBinder.playNext();
+                break;
+            case R.id.music_player_random:   //随机切换
+                randomMode();
+                break;
+
+
+        }
+
+    }
+
+
+    private void randomMode() {
+        if (isRandomMode) {
+            mMusicPlayerRandom.setImageResource(R.drawable.btn_playing_shuffle_on);
+            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_RANDOM);
+            isRandomMode = false;
+
+        } else {
+            mMusicPlayerRandom.setImageResource(R.drawable.btn_playing_shuffle_off);
+            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_ALL);
+            isRandomMode = true;
+
+        }
+    }
+
+
     private void initAnimation() {
         mRotateRl.setBackgroundColor(ColorUtil.transparentColor);
         if (mAnimator == null || mAnimatorListener == null) {
@@ -323,6 +363,7 @@ public class MusicPlayDialogFag
         mAnimator.resume();
 
     }
+
     private void initListener() {
         mTitlebarDown.setOnClickListener(this);
         mTitlebarPlayList.setOnClickListener(this);
@@ -332,6 +373,8 @@ public class MusicPlayDialogFag
         mMusicPlay.setOnClickListener(this);
         mMusicPlayerNext.setOnClickListener(this);
         mMusicPlayerRandom.setOnClickListener(this);
+        mSbProgress.setOnSeekBarChangeListener(new SeekBarListener());
+        mSbVolume.setOnSeekBarChangeListener(new SeekBarListener());
 
 
     }
@@ -342,7 +385,6 @@ public class MusicPlayDialogFag
         mArtistName = (TextView) root.findViewById(R.id.play_artist_name);
         mTitlebarPlayList = (ImageView) root.findViewById(R.id.titlebar_play_list);
         mStartTime = (TextView) root.findViewById(R.id.start_time);
-        mProgressBtn = (ProgressBtn) root.findViewById(R.id.progress_time);
         mEndTime = (TextView) root.findViewById(R.id.end_time);
         mRotateRl = (RelativeLayout) root.findViewById(R.id.rotate_rl);
         mPlayingSongAlbum = (CircleImageView) root.findViewById(R.id.playing_song_album);
@@ -351,28 +393,20 @@ public class MusicPlayDialogFag
         mMusicPlay = (ImageView) root.findViewById(R.id.music_play);
         mMusicPlayerNext = (ImageView) root.findViewById(R.id.music_player_next);
         mMusicPlayerRandom = (ImageView) root.findViewById(R.id.music_player_random);
-
-
+        mSbProgress = (SeekBar) root.findViewById(R.id.sb_progress);
+        mSbVolume = (SeekBar) root.findViewById(R.id.sb_volume);
     }
 
     /**
-     *
-     * @param musicItems    快速列表数据
-     * @param songName      设置歌名
-     * @param artistName    设置歌手
+     * @param info    快速列表数据
      */
-    public static MusicPlayDialogFag newInstance(ArrayList<MusicItem> musicItems,
-                                                 String songName,
-                                                 String artistName)
+
+    public static MusicPlayDialogFag newInstance(MusicDialogInfo info)
     {
         MusicPlayDialogFag fragment = new MusicPlayDialogFag();
         Bundle             bundle   = new Bundle();
-        bundle.putParcelableArrayList("musicItem", musicItems);
-        bundle.putString("songName", songName);
-        bundle.putString("artistName", artistName);
-
+        bundle.putParcelable("info", info);
         fragment.setArguments(bundle);//把参数设置给自己
-
         return fragment;
     }
 
@@ -393,9 +427,61 @@ public class MusicPlayDialogFag
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //        mAnimatorListener.pause();
-        mAnimator.cancel();
-        mSubscribe.dispose();
-        disposables.clear();
+        if (mAnimator != null && mAnimatorListener != null && disposables != null && mSubscribe != null) {
+            //            mAnimatorListener.pause();
+            //            mAnimator.cancel();
+            mSubscribe.dispose();
+            disposables.clear();
+        }
     }
+
+    private class SeekBarListener
+            extends SeekBarChangeListtener
+
+    {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+            super.onProgressChanged(seekBar, progress, b);
+
+            switch (seekBar.getId()) {
+                case R.id.sb_progress:
+                    if (!b) { return; }
+                    //更新音乐播放进度
+                    audioBinder.seekTo(progress);
+                    //更新音乐进度数值
+                    updataProgress(progress);
+                    break;
+                case R.id.sb_volume:
+                    updateVolume(progress);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void registerReceiver() {
+        VolumeReceiver mVolumeReceiver = new VolumeReceiver();
+        IntentFilter   filter          = new IntentFilter();
+        filter.addAction("android.media.VOLUME_CHANGED_ACTION");
+        getActivity().registerReceiver(mVolumeReceiver, filter);
+    }
+
+    //音量监听广播
+    private class VolumeReceiver
+            extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //如果音量发生变化就更新Seekbar
+            if (intent.getAction()
+                      .equals("android.media.VOLUME_CHANGED_ACTION"))
+            {
+                AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                int          currVolume    = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前的媒体音量
+                mSbVolume.setProgress(currVolume);
+            }
+        }
+    }
+
 }

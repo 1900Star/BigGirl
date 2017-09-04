@@ -17,7 +17,7 @@
 
     //about
     <color name="aboutTitle">#ff000000</color>
-    <color name="aboutSign">#ff666666</color>
+    <color name="aboutSign">#5b5b5b</color>
     <color name="aboutContent">#ff414141</color>
     <color name="about">#f7f1f1</color>
     //GuideView
@@ -26,7 +26,9 @@
     <color name="rvBg">#ccffffff</color>
     <!--BottomSheetDialogList-->
     <color name="bottomSheetList">#303030</color>
-
+    <!--SeekBar-->
+    <color name="seekBarP">#8e8e8f</color>
+    <color name="seekBarN">#ccdcdbdb</color>
     <!-- 透明 -->
     <color name="tarnslation">#00000000</color>
 

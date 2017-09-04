@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context="com.yibao.biggirl.mvp.music.MusicPlayActivity">
+    tools:context="com.yibao.biggirl.mvp.music.MusicListActivity">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -27,32 +27,31 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="4dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/music_titlebar_down_selector"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@mipmap/playing_cover_lp"/>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-            >
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" android:gravity="center"
+                android:orientation="vertical">
                 <TextView
                     android:id="@+id/play_song_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Still"
+                    android:maxLength="20"
+                    android:maxLines="1"
                     android:textColor="@color/colorBlack"
                     android:textSize="16sp"/>
                 <TextView
                     android:id="@+id/play_artist_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FLOWER"
-
-
                     android:textColor="@color/aboutSign"/>
             </LinearLayout>
             <ImageView
@@ -63,7 +62,7 @@
                 android:layout_alignParentRight="true"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop" android:src="@mipmap/titlebar_playlist"/>
+                android:scaleType="centerCrop" android:src="@mipmap/playing_cover_lp"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -78,32 +77,29 @@
             android:id="@+id/start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:text="@string/startTime"
             android:textColor="@color/aboutSign"/>
-        <RelativeLayout
+
+
+        <SeekBar
+            android:id="@+id/sb_progress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.yibao.biggirl.view.ProgressBtn
-                android:id="@+id/progress_time"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:background="@color/timeBar"
-                android:contentDescription="@null"
-                android:src="@mipmap/controlbar_playing_bg2_shadow"
-            />
-        </RelativeLayout>
-
+            android:layout_weight="1"
+            android:maxHeight="6dp"
+            android:minHeight="6dp"
+            android:progressDrawable="@drawable/seek_bar"
+            android:thumb="@drawable/playing_control_time"
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/short_line"
+            android:textColor="@color/aboutSign"/>
         <TextView
             android:id="@+id/end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="3dp"
-            android:text="@string/endTime"
             android:textColor="@color/aboutSign"/>
     </LinearLayout>
 
@@ -129,6 +125,7 @@
             android:id="@+id/playing_song_album"
             android:layout_width="130dp"
             android:layout_height="130dp"
+
             android:layout_centerInParent="true"
             android:contentDescription="@null"
             android:maxHeight="130dp"
@@ -174,5 +171,23 @@
 
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <SeekBar
+            android:id="@+id/sb_volume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_folder_shuffle"
+            android:maxHeight="6dp"
+            android:minHeight="6dp"
+            android:progressDrawable="@drawable/seek_bar"
+            android:thumb="@drawable/playing_control_volume"
+        />
 
+
+    </LinearLayout>
 </LinearLayout>

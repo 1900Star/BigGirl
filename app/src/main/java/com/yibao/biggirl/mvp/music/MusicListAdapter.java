@@ -68,7 +68,7 @@ public class MusicListAdapter
         public ViewHolder(View view) {
 
             songName = (TextView) view.findViewById(R.id.song_name);
-            singerPhoto = (ImageView) view.findViewById(R.id.singer_iv);
+            singerPhoto = (ImageView) view.findViewById(R.id.song_album);
             songArtistName = (TextView) view.findViewById(R.id.song_artist_name);
         }
     }

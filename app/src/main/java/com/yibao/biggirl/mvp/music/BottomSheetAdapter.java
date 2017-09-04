@@ -3,11 +3,12 @@ package com.yibao.biggirl.mvp.music;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
-import com.yibao.biggirl.model.music.MusicItem;
+import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.StringUtil;
 
@@ -22,20 +23,23 @@ import butterknife.ButterKnife;
  * Time:2017/8/22 14:31
  */
 public class BottomSheetAdapter
-        extends BaseRvAdapter<MusicItem>
+        extends BaseRvAdapter<MusicInfo>
 {
-    public BottomSheetAdapter(List<MusicItem> list) {
+    public BottomSheetAdapter(List<MusicInfo> list) {
         super(list);
     }
 
     @Override
-    protected void bindView(RecyclerView.ViewHolder holder, MusicItem musicItem) {
+    protected void bindView(RecyclerView.ViewHolder holder, MusicInfo musicItem) {
         if (holder instanceof MusicHolder) {
             MusicHolder musicHolder = (MusicHolder) holder;
             musicHolder.mMusicName.setText(StringUtil.getSongName(musicItem.getTitle()));
             musicHolder.mMusicSinger.setText(musicItem.getArtist());
-            musicHolder.mBottomListItmeClose.setOnClickListener(view -> LogUtil.d(
-                    "*************  删除当前歌曲"));
+            musicHolder.mRootBottomSheet.setOnClickListener(view -> {
+                LogUtil.d("*************  删除当前歌曲");
+                MusicListActivity.getAudioBinder()
+                                 .playPosition(musicHolder.getAdapterPosition());
+            });
 
         }
     }
@@ -59,12 +63,14 @@ public class BottomSheetAdapter
         TextView  mMusicSinger;
         @BindView(R.id.bottom_list_itme_close)
         ImageView mBottomListItmeClose;
-
+        @BindView(R.id.root_bottom_sheet)
+        LinearLayout mRootBottomSheet;
         MusicHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
+
 
 
 }

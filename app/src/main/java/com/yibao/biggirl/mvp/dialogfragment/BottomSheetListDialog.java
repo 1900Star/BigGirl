@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
-import com.yibao.biggirl.model.music.MusicItem;
+import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.mvp.music.BottomSheetAdapter;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -34,7 +34,7 @@ public class BottomSheetListDialog
         return new BottomSheetListDialog();
     }
 
-    public BottomSheetDialog getBottomDialog(Context context, List<MusicItem> list) {
+    public BottomSheetDialog getBottomDialog(Context context, List<MusicInfo> list) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context)
                                   .inflate(R.layout.bottom_sheet_list_dialog, null);
@@ -43,6 +43,8 @@ public class BottomSheetListDialog
         RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(1,
                                                                           new BottomSheetAdapter(
                                                                                   list));
+
+
         mBottomListTitleSize.setText("播放列表(" + list.size() + ")");
         mBottomListContent.addView(recyclerView);
         dialog.setContentView(view);

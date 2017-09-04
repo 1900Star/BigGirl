@@ -1,7 +1,10 @@
 package com.yibao.biggirl.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -11,7 +14,9 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.yibao.biggirl.MyApplication;
-import com.yibao.biggirl.model.music.MusicItem;
+import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicStatusBean;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,14 +29,25 @@ public class AudioPlayService
     private        MediaPlayer mediaPlayer;
     private        AudioBinder mAudioBinder;
     private static int         PLAY_MODE;
-    public static final int PLAY_MODE_ALL    = 0;
-    public static final int PLAY_MODE_SINGLE = 1;
-    public static final int PLAY_MODE_RANDOM = 2;
+    public static final int    PLAY_MODE_ALL    = 0;
+    public static final int    PLAY_MODE_SINGLE = 1;
+    public static final int    PLAY_MODE_RANDOM = 2;
+    //音乐通知栏
+    public static final int    ROOT             = 0;
+    public static final int    PREV             = 1;
+    public static final int    PLAY             = 2;
+    public static final int    NEXT             = 3;
+    public static final int    CLOSE            = 4;
+    public final static String BUTTON_ID        = "ButtonId";
+    public static final String ACTION_MUSIC     = "MUSIC";
+
     String path = Environment.getExternalStorageDirectory()
                              .getAbsolutePath() + "/Music/Song/1773377275_AZ.mp3";
     private int position = -2;
-    private ArrayList<MusicItem> mMusicItem;
-    private SharedPreferences    sp;
+    //    private ArrayList<MusicItem>  mMusicItem;
+    private ArrayList<MusicInfo>  mMusicItem;
+    private SharedPreferences     sp;
+    private MusicBroacastReceiver mReceiver;
 
     @Nullable
     @Override
@@ -43,9 +59,20 @@ public class AudioPlayService
     public void onCreate() {
         super.onCreate();
         mAudioBinder = new AudioBinder();
+        initBroadcast();
         sp = getSharedPreferences("config", MODE_PRIVATE);
         //初始化播放模式
         PLAY_MODE = sp.getInt("play_mode", 0);
+
+    }
+
+    private void initBroadcast() {
+        mReceiver = new MusicBroacastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_MUSIC);
+
+        registerReceiver(mReceiver, filter);
+
     }
 
     @Override
@@ -81,7 +108,7 @@ public class AudioPlayService
             }
             mediaPlayer = MediaPlayer.create(AudioPlayService.this,
                                              Uri.parse(mMusicItem.get(position)
-                                                                 .getPath()));
+                                                                 .getUrl()));
 
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnCompletionListener(this);
@@ -195,11 +222,99 @@ public class AudioPlayService
             mediaPlayer.pause();
         }
 
+        //跳转到指定位置进行播放
+        public void seekTo(int progress) {
+            mediaPlayer.seekTo(progress);
+        }
+
         //播放小列表中当前位置的歌曲
         public void playPosition(int position) {
             AudioPlayService.this.position = position;
             play();
         }
+
+        private void playStatus(int type) {
+            switch (type) {
+                case 0:
+                    if (mAudioBinder.isPlaying()) {
+                        mAudioBinder.pause();
+                        MyApplication.getIntstance()
+                                     .bus()
+                                     .post(new MusicStatusBean(type, true));
+                        LogUtil.d("PAUSE");
+                    } else {
+                        mAudioBinder.start();
+                        MyApplication.getIntstance()
+                                     .bus()
+                                     .post(new MusicStatusBean(type, false));
+                        LogUtil.d("PLAY");
+                    }
+                    break;
+                case 1:
+                    if (mAudioBinder.isPlaying()) {
+                        MyApplication.getIntstance()
+                                     .bus()
+                                     .post(new MusicStatusBean(type, true));
+                        LogUtil.d("PAUSE");
+                    } else {
+                        MyApplication.getIntstance()
+                                     .bus()
+                                     .post(new MusicStatusBean(type, false));
+                        LogUtil.d("PLAY");
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
     }
 
+    //控制通知栏的广播
+    class MusicBroacastReceiver
+            extends BroadcastReceiver
+
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(ACTION_MUSIC)) {
+                int id = intent.getIntExtra(BUTTON_ID, 0);
+                switch (id) {
+                    case ROOT:
+                        LogUtil.d("Root");
+                        mAudioBinder.playStatus(1);
+                        break;
+                    case CLOSE:
+                        LogUtil.d("CLOSE");
+                        break;
+                    case PREV:
+                        mAudioBinder.playPre();
+                        LogUtil.d("PREV");
+                        break;
+                    case PLAY:
+                        mAudioBinder.playStatus(0);
+                        break;
+                    case NEXT:
+                        mAudioBinder.playNext();
+                        LogUtil.d("NEXT");
+                        break;
+
+
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

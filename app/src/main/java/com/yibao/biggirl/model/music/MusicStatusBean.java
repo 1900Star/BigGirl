@@ -6,13 +6,24 @@ package com.yibao.biggirl.model.music;
  * Time:2017/8/13 06:53
  */
 public class MusicStatusBean {
-    public int status=0;
+    /**
+     * type 用来判断触发 MusicPlayDialogFag弹出的源头，0 表示正常弹出，
+     * 1 表示从通知栏的音乐控制面板触发弹出。
+     */
 
-    public int getStatus() {
-        return status;
+    public int     type;
+    public boolean isPlay;
+
+    public MusicStatusBean(int type, boolean isPlay) {
+        this.type = type;
+        this.isPlay = isPlay;
     }
 
-    public MusicStatusBean(int status) {
-        this.status = status;
+    public int getType() {
+        return type;
+    }
+
+    public boolean isPlay() {
+        return isPlay;
     }
 }

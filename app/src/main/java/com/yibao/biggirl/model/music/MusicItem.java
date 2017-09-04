@@ -67,6 +67,7 @@ public class MusicItem
         musicItem.path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
         musicItem.artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
         musicItem.title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
+
         musicItem.title = musicItem.title.substring(0, musicItem.title.lastIndexOf("."));
         //返回audioitem
         return musicItem;

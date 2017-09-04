@@ -21,7 +21,7 @@
             android:title="@string/action_map"/>
         <item
             android:id="@+id/action_music"
-            android:icon="@mipmap/music"
+            android:icon="@mipmap/playing_cover_lp"
             android:title="@string/bgm"/>
 
     </group>
@@ -30,6 +30,7 @@
         <menu>
 
             <item
+                android:id="@+id/action_setting"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/option"/>
 

@@ -1,5 +1,7 @@
 package com.yibao.biggirl.util;
 
+import android.os.Environment;
+
 import com.yibao.biggirl.MyApplication;
 
 /**
@@ -17,8 +19,11 @@ public class Constants {
 
     public static final String dir            = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
     public static final String deleteDir      = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
+   //崩溃日志
+    public static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory()
+                                                           .getPath() + "/CrashLog/log/";
     //保存图片状态码
-    public static       int    FIRST_DWON     = 0;
+    public static int FIRST_DWON = 0;
     public static       int    EXISTS         = 1;
     public static       int    DWON_PIC_EROOR = 2;
     //fragment 加载状态码

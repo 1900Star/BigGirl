@@ -20,6 +20,15 @@ public class ProgressBtn
     private int     max              = 0;
     private int      progress;
     private Drawable mDrawable;
+    private int color = Color.GRAY;
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     /**
      * 是否允许有进度
@@ -63,7 +72,7 @@ public class ProgressBtn
         //        canvas.drawText("haha",20,20,getPaint());
         if (isProgressEnable) {
             if (mDrawable == null) {
-                mDrawable = new ColorDrawable(Color.GREEN);
+                mDrawable = new ColorDrawable(color);
             }
             int left   = 0;
             int top    = 0;

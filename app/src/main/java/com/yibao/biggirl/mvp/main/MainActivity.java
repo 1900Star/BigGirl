@@ -34,6 +34,7 @@ import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.MusicListActivity;
+import com.yibao.biggirl.mvp.splash.SplashActivity;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
@@ -188,6 +189,10 @@ public class MainActivity
                 break;
             case R.id.action_share_me:
                 shareMe();
+                break;
+            case R.id.action_setting:
+                startActivity(new Intent(this, SplashActivity.class));
+                finish();
                 break;
             default:
                 break;

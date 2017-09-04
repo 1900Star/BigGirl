@@ -58,7 +58,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="6dp"
+                android:layout_margin="3dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
@@ -84,9 +84,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:maxLength="20"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="marquee_forever"
                         android:maxLines="1"
-                        android:text="@string/songName"
                         android:textColor="@color/textDes"
                         android:textSize="@dimen/music_loating_title"
                     />
@@ -96,7 +96,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/singerName"
                         android:textColor="@color/textName"
                         android:textSize="@dimen/music_loating_name"
                     />
@@ -133,6 +132,11 @@
 
                 </LinearLayout>
             </LinearLayout>
+            <com.yibao.biggirl.view.ProgressBtn
+                android:id="@+id/music_float_pb"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

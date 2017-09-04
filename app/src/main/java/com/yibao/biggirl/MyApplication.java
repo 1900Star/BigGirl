@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.squareup.leakcanary.LeakCanary;
 import com.yibao.biggirl.model.greendao.DaoMaster;
 import com.yibao.biggirl.model.greendao.DaoSession;
+import com.yibao.biggirl.util.CrashHandler;
 import com.yibao.biggirl.util.RxBus;
 
 import java.util.concurrent.TimeUnit;
@@ -46,6 +47,7 @@ public class MyApplication
         }
         LeakCanary.install(this);
         appContext = this;
+        CrashHandler.getInstance().init(this);
         setUpDataBase();
         mRxBus = new RxBus();
 
