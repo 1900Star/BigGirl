@@ -2,15 +2,17 @@ package com.yibao.biggirl.mvp.favorite;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.BaseActivity;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
@@ -31,6 +33,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -42,7 +46,7 @@ import io.reactivex.schedulers.Schedulers;
  * Time:2017/6/17 18:45
  */
 public class FavoriteActivity
-        extends BaseActivity
+        extends AppCompatActivity
         implements OnDeleteItemClickListener,
                    FavoriteContract.View,
                    OnRvItemClickListener,
@@ -61,8 +65,8 @@ public class FavoriteActivity
     private String TAG = "FavoriteActivity";
     private CompositeDisposable disposables;
     private boolean isUpdateFavo = false;
+    private Unbinder mBind;
 
-    @Override
     protected void initInject() {
         DaggerFavoriteComponent component = (DaggerFavoriteComponent) DaggerFavoriteComponent.builder()
                                                                                              .favoriteModuls(
@@ -72,10 +76,20 @@ public class FavoriteActivity
 
         component.in(this);
 
-        mWebPresenter.queryAllFavorite();
+        //        mWebPresenter.queryAllFavorite();
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activty_favorite);
+        mBind = ButterKnife.bind(this);
+        initInject();
+        initView();
+        initData();
+        initListener();
+    }
+
     protected void initView() {
 
         ActionBar toolbar = getSupportActionBar();
@@ -88,18 +102,15 @@ public class FavoriteActivity
         mSwipeRefresh.setOnRefreshListener(this);
     }
 
-    @Override
     protected void initListener() {
         mWebPresenter.insertFavorite(new FavoriteBean());
 
     }
 
-    @Override
     protected void initData() {
-        updateFavo();
+        //        updateFavo();
     }
 
-    @Override
     public int getLayoutId() {
         return R.layout.activty_favorite;
     }
@@ -131,7 +142,7 @@ public class FavoriteActivity
     @Override
     public void deleteFavorite(Long id) {
         LogUtil.d("要删除的 ID :" + id);
-        mWebPresenter.cancelFavorite(id, 0);
+        //        mWebPresenter.cancelFavorite(id, 0);
     }
 
     @Override
@@ -175,7 +186,7 @@ public class FavoriteActivity
         Observable.timer(2, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      mWebPresenter.queryAllFavorite();
+                      //                      mWebPresenter.queryAllFavorite();
                       //                      mAdapter.notifyDataSetChanged();
                   });
     }
@@ -209,6 +220,7 @@ public class FavoriteActivity
     protected void onDestroy() {
         super.onDestroy();
         disposables.clear();
+        mBind.unbind();
 
     }
 

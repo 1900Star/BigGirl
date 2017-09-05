@@ -24,9 +24,9 @@ public class MyApplication
         extends Application
 {
     private static MyApplication appContext;
-    public static boolean isShowLog=true;
+    public static boolean isShowLog = true;
 
-    private        RxBus         mRxBus;
+    private RxBus mRxBus;
 
     private DaoSession mDaoSession;
 
@@ -47,7 +47,8 @@ public class MyApplication
         }
         LeakCanary.install(this);
         appContext = this;
-        CrashHandler.getInstance().init(this);
+        CrashHandler.getInstance()
+                    .init(this);
         setUpDataBase();
         mRxBus = new RxBus();
 
@@ -66,6 +67,8 @@ public class MyApplication
     public DaoSession getDaoSession() {
         return mDaoSession;
     }
+
+
 
     public RxBus bus() {
         return mRxBus;

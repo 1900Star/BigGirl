@@ -26,12 +26,12 @@ import com.yibao.biggirl.base.listener.SeekBarChangeListtener;
 import com.yibao.biggirl.model.music.MusicDialogInfo;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
-import com.yibao.biggirl.mvp.dialogfragment.BottomSheetListDialog;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.DialogUtil;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.view.CircleImageView;
@@ -77,7 +77,7 @@ public class MusicPlayDialogFag
     private CompositeDisposable          disposables;
     private ObjectAnimator               mAnimator;
     private MyAnimatorUpdateListener     mAnimatorListener;
-    private boolean isRandomMode = false;
+    private boolean isFavorite = false;
     private String               mUrl;
     private ArrayList<MusicInfo> mList;
     private int mProgress = 0;
@@ -87,6 +87,8 @@ public class MusicPlayDialogFag
     private AudioManager mAudioManager;
     private int          mDuration;
     private RxBus        mBus;
+    private String       mArtist;
+
 
 
     @Override
@@ -97,8 +99,6 @@ public class MusicPlayDialogFag
                             .bus();
         disposables = new CompositeDisposable();
         registerReceiver();     //注册监听的音量广播
-
-
     }
 
     @Override
@@ -218,13 +218,15 @@ public class MusicPlayDialogFag
 
     //设置歌曲名和歌手名
     private void perpareMusic(MusicInfo info) {
+        LogUtil.d("SongUrl *******:  " + info.getUrl());
         initAnimation();
         //更新音乐标题
         String songName = info.getTitle();
         songName = getSongName(songName);
         mSongName.setText(songName);
         //更新歌手名称
-        mArtistName.setText(info.getArtist());
+        mArtist = info.getArtist();
+        mArtistName.setText(mArtist);
         //        mUrl = RandomUtil.getRandomUrl();
         mUrl = StringUtil.getAlbulm(info.getAlbumId())
                          .toString();
@@ -335,8 +337,8 @@ public class MusicPlayDialogFag
                 dismiss();
                 break;
             case R.id.titlebar_play_list:       //快速列表
-                BottomSheetListDialog.newInstance()
-                                     .getBottomDialog(getActivity(), mList);
+                MusicBottomSheetDialog.newInstance()
+                                      .getBottomDialog(getActivity(), mList);
 
                 break;
             case R.id.playing_song_album:
@@ -352,11 +354,20 @@ public class MusicPlayDialogFag
             case R.id.music_play:      //播放
                 switchPlayState();
                 break;
+            //TODO
             case R.id.music_player_next:       //下一曲
                 audioBinder.playNext();
+//                List<FavoriteMusicBean> list = dao.queryBuilder()
+//                                                  .build()
+//                                                  .list();
+//                for (int i = 0; i < list.size(); i++) {
+//                    LogUtil.d("AAAAAAAAAAA   "+list.get(i).getSongName());
+//                    LogUtil.d("AAAAAAAAAAA   "+list.get(i).getSongUrl());
+//                    LogUtil.d("AAAAAAAAAAA   "+list.get(i).getFavTime());
+//                }
                 break;
             case R.id.music_player_random:   //随机切换
-                randomMode();
+                favoritMusic();
                 break;
 
 
@@ -365,16 +376,26 @@ public class MusicPlayDialogFag
     }
 
 
-    private void randomMode() {
-        if (isRandomMode) {
-            mMusicPlayerRandom.setImageResource(R.drawable.btn_playing_shuffle_on);
-            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_RANDOM);
-            isRandomMode = false;
+    private void favoritMusic() {
+//        FavoriteMusicBean favoriteMusicBean = new FavoriteMusicBean();
+//        favoriteMusicBean.setAlbumUrl(mUrl);
+//        favoriteMusicBean.setArtist(mArtist);
+//        favoriteMusicBean.setFavTime(System.currentTimeMillis() + "");
+//        favoriteMusicBean.setSongName(mSongName.toString());
+//        favoriteMusicBean.setSongUrl(mUrl);
+//
+//        dao.insert(favoriteMusicBean);
+
+
+        if (isFavorite) {
+            mMusicPlayerRandom.setImageResource(R.drawable.music_fav_selector);
+            //            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_RANDOM);
+            isFavorite = false;
 
         } else {
-            mMusicPlayerRandom.setImageResource(R.drawable.btn_playing_shuffle_off);
-            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_ALL);
-            isRandomMode = true;
+            mMusicPlayerRandom.setImageResource(R.drawable.fav);
+            //            audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_ALL);
+            isFavorite = true;
 
         }
     }

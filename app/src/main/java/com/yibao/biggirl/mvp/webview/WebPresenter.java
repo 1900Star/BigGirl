@@ -6,18 +6,18 @@ import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 
 /**
  * Author：Sid
- * Des：${  mView只负责查询所有、取消收藏，mWebActivity负责：新增收藏、取消收藏、查询是否已经收藏 }
+ * Des：${  FavoritActivity和WeibActivity共用WebPresenter，FavoritActivity需要 查询所有和
+ * 取消收藏操作，WeibActivit需要：新增收藏、取消收藏、查询是否已经收藏 操作}
  * Time:2017/6/17 03:05
  */
 public class WebPresenter {
     private FavoriteDao      mDao;
     private WebActivity      mWebActivity;
-    private FavoriteActivity mTestFavActivity;
-
+    private FavoriteActivity mFavoriteActivity;
 
 
     public WebPresenter(FavoriteActivity activity) {
-        mTestFavActivity = activity;
+        mFavoriteActivity = activity;
         mDao = new FavoriteDao();
     }
 
@@ -34,7 +34,7 @@ public class WebPresenter {
     public void cancelFavorite(Long id, int type) {
         mDao.cancelFavorite(id, cancelId -> {
             if (type == 0) {
-                //                    mTestFavActivity.cancelStatus(cancelId);
+                //                    mFavoriteActivity.cancelStatus(cancelId);
             } else {
 
                 mWebActivity.cancelStatus(cancelId);
@@ -50,7 +50,7 @@ public class WebPresenter {
     }
 
     public void queryAllFavorite() {
-        mDao.queryAllFavorite(list -> mTestFavActivity.queryAllFavorite(list));
+        mDao.queryAllFavorite(list -> mFavoriteActivity.queryAllFavorite(list));
 
     }
 

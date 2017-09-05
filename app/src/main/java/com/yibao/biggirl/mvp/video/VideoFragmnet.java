@@ -18,7 +18,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.mvp.girls.GirlsContract;
+import com.yibao.biggirl.mvp.app.AppContract;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -39,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class VideoFragmnet
         extends BaseFag<ResultsBeanX>
-        implements SwipeRefreshLayout.OnRefreshListener
+        implements SwipeRefreshLayout.OnRefreshListener,AppContract.View
 {
 
 
@@ -257,8 +257,10 @@ public class VideoFragmnet
     @OnClick(R.id.fab_fag)
     public void onViewClicked() {LogUtil.d("VideoFragment ");}
 
+
+
     @Override
-    public void setPrenter(GirlsContract.Presenter prenter) {
+    public void setPrenter(AppContract.Presenter prenter) {
 
     }
 }

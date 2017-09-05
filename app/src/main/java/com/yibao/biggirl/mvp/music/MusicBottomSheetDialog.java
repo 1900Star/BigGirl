@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.dialogfragment;
+package com.yibao.biggirl.mvp.music;
 
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.music.MusicInfo;
-import com.yibao.biggirl.mvp.music.BottomSheetAdapter;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.List;
  * Des：${TODO}
  * Time:2017/8/22 14:11
  */
-public class BottomSheetListDialog
+public class MusicBottomSheetDialog
         implements View.OnClickListener
 {
     private LinearLayout mBottomListContent;
@@ -30,8 +29,8 @@ public class BottomSheetListDialog
     private TextView     mBottomListTitleSize;
 
 
-    public static BottomSheetListDialog newInstance() {
-        return new BottomSheetListDialog();
+    public static MusicBottomSheetDialog newInstance() {
+        return new MusicBottomSheetDialog();
     }
 
     public BottomSheetDialog getBottomDialog(Context context, List<MusicInfo> list) {
@@ -43,7 +42,6 @@ public class BottomSheetListDialog
         RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(1,
                                                                           new BottomSheetAdapter(
                                                                                   list));
-
 
         mBottomListTitleSize.setText("播放列表(" + list.size() + ")");
         mBottomListContent.addView(recyclerView);

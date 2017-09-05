@@ -72,6 +72,7 @@ public static java.lang.String TABLENAME;
 }
 -keep class **$Properties
 -keep class com.yibao.biggirl.model.* {*;}
+
 #保持 Parcelable 不被混淆
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -85,3 +86,10 @@ public static java.lang.String TABLENAME;
 -keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}

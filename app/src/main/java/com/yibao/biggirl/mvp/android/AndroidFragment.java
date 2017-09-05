@@ -18,7 +18,6 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
-import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -40,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class AndroidFragment
         extends BaseFag<AndroidAndGirl>
-        implements SwipeRefreshLayout.OnRefreshListener
+        implements SwipeRefreshLayout.OnRefreshListener,AndroidContract.View
 {
     AndroidContract.Presenter mPresenters;
     @BindView(R.id.fag_content)
@@ -239,11 +238,6 @@ public class AndroidFragment
     public void showNormal() {
 
     }
-    @Override
-    public void setPrenter(GirlsContract.Presenter prenter) {
-
-
-    }
 
 //    @Override
 //    public void setPrenter(AndroidContract.Presenter prenter) {
@@ -269,5 +263,9 @@ public class AndroidFragment
         LogUtil.d(" AndroidFragment ");
     }
 
+    @Override
+    public void setPrenter(AndroidContract.Presenter prenter) {
+
+    }
 }
 

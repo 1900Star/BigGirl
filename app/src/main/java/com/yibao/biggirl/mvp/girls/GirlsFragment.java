@@ -46,7 +46,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class GirlsFragment
         extends BaseFag<String>
-        implements SwipeRefreshLayout.OnRefreshListener, View.OnLongClickListener
+        implements SwipeRefreshLayout.OnRefreshListener,
+                   View.OnLongClickListener,
+                   GirlsContract.View<String>
 {
 
 

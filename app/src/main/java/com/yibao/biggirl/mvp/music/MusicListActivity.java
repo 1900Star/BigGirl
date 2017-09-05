@@ -1,7 +1,6 @@
 package com.yibao.biggirl.mvp.music;
 
 import android.animation.ObjectAnimator;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -83,7 +82,6 @@ public class MusicListActivity
     ProgressBtn     mPb;
 
 
-    private        MusicListAdapter             mAdapter;
     private static AudioPlayService.AudioBinder audioBinder;
     private        CompositeDisposable          disposables;
     private        ArrayList<MusicInfo>         mMusicItems;
@@ -95,7 +93,6 @@ public class MusicListActivity
     private String                   mSongName;
     private String                   mArtistName;
     private Disposable               mDisposable;
-    private NotificationManager      mNotificationManager;
     private Uri                      mAlbumUri;
     private MusicPlayDialogFag       mPlayDialogFag;
     private RxBus                    mBus;
@@ -118,7 +115,6 @@ public class MusicListActivity
 
     private void initRxBusData() {
         //接收service发出的数据，更新歌曲信息
-
         disposables.add(mBus.toObserverable(MusicInfo.class)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -142,15 +138,15 @@ public class MusicListActivity
                     mAnimator.resume();
                 }
                 updatePlayBtnStatus();
-                 break;
+                break;
             case 1:
                 showMusicDialog();
-                 break;
+                break;
             case 2:
                 finish();
                 break;
             default:
-                 break;
+                break;
         }
     }
 
@@ -171,7 +167,7 @@ public class MusicListActivity
         Glide.with(this)
              .load(mAlbumUri.toString())
              .asBitmap()
-             .placeholder(R.mipmap.xuan)
+             .placeholder(R.drawable.dropdown_menu_noalbumcover)
              //             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(mMusicFloatBlockAlbulm);
         //更新播放状态按钮
@@ -180,7 +176,7 @@ public class MusicListActivity
         initAnimation();
 
         updataProgress();
-
+        //打开音乐通知栏
         MusicNoification.openMusicNotification(this,
                                                audioBinder.isPlaying(),
                                                mAlbumUri,
@@ -242,10 +238,8 @@ public class MusicListActivity
 
 
     private void initData() {
-        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mPb.setColor(ColorUtil.errorColor);
-        mAdapter = new MusicListAdapter(this, null);
-        MusicListAdapters adapters = new MusicListAdapters(MusicListUtil.getMusicList(this), this);
+        MusicListAdapter adapters = new MusicListAdapter(MusicListUtil.getMusicList(this), this);
 
         mMusicList.setAdapter(adapters);
     }

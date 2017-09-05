@@ -138,17 +138,20 @@
         <ImageView
             android:id="@+id/music_player_mode"
             android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@null"
             android:src="@drawable/btn_playing_cycle_off"/>
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/music_player_pre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@null" android:src="@drawable/btn_playing_prev"/>
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/music_play"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -156,6 +159,7 @@
             android:contentDescription="@null"
             android:src="@drawable/btn_playing_play"/>
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/music_player_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -165,9 +169,10 @@
             android:id="@+id/music_player_random"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@null"
-            android:src="@drawable/btn_playing_shuffle_off"/>
+            android:src="@drawable/music_fav_selector"/>
 
 
     </LinearLayout>

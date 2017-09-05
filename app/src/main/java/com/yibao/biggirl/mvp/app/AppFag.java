@@ -18,7 +18,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.mvp.girls.GirlsContract;
+import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
@@ -38,7 +38,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class AppFag
         extends BaseFag<ResultsBeanX>
-        implements SwipeRefreshLayout.OnRefreshListener
+        implements SwipeRefreshLayout.OnRefreshListener,AppContract.View
 {
 
     @BindView(R.id.swipe_refresh)
@@ -52,14 +52,14 @@ public class AppFag
     private AppAdapter mAdapter;
 
 
-
+private AppContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        mGirlsPresenter.start(Constants.FRAGMENT_APP, 4);
+        new AppPresenter(this);
+        mPresenter.start(Constants.FRAGMENT_APP, 4);
 
     }
 
@@ -256,9 +256,10 @@ public class AppFag
     @OnClick(R.id.fab_fag)
     public void onViewClicked() { LogUtil.d(" AppFragment ");}
 
-    @Override
-    public void setPrenter(GirlsContract.Presenter prenter) {
 
+    @Override
+    public void setPrenter(AppContract.Presenter prenter) {
+        mPresenter = prenter;
     }
 }
 

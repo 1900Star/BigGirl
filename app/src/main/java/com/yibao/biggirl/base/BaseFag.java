@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import com.yibao.biggirl.mvp.girls.GirlsContract;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
  */
 public abstract class BaseFag<T>
         extends Fragment
-        implements GirlsContract.View<T>
+
 
 
 {

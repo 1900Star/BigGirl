@@ -34,16 +34,16 @@ public class MusicNoification {
         builder.setSmallIcon(R.mipmap.smartisan);
         builder.setAutoCancel(true);
         builder.setOngoing(true);
-        builder.setShowWhen(false);
+        builder.setShowWhen(true);
         remoteView = new RemoteViews(context.getPackageName(), R.layout.music_notify);
         remoteView.setTextViewText(R.id.widget_title, songName);
         remoteView.setTextViewText(R.id.widget_artist, artistName);
-        remoteView.setImageViewUri(R.id.widget_album, uri);
-        remoteView.setImageViewResource(R.id.widget_close, R.drawable.btn_playing_prev);
+        remoteView.setImageViewUri(R.id.widget_album, uri);     //通知栏的专辑图片
+        remoteView.setImageViewResource(R.id.widget_close, R.drawable.notif_clear);
         remoteView.setImageViewResource(R.id.widget_prev, R.drawable.btn_playing_prev);
         remoteView.setImageViewResource(R.id.widget_next, R.drawable.btn_playing_next);
         updatePlayBtn(true);
-        setAciton(context, remoteView);
+        remoteViewListenr(context, remoteView);     //通知栏的监听
         builder.setContent(remoteView);
         Notification notification = builder.build();
 
@@ -64,7 +64,7 @@ public class MusicNoification {
         }
     }
 
-    private static void setAciton(Context context, RemoteViews remoteViews) {
+    private static void remoteViewListenr(Context context, RemoteViews remoteViews) {
         Intent intent = new Intent(AudioPlayService.ACTION_MUSIC);
 
         //Root

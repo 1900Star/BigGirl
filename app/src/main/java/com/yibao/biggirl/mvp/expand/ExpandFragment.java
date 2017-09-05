@@ -17,7 +17,6 @@ import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.app.AppAdapter;
 import com.yibao.biggirl.mvp.app.AppContract;
-import com.yibao.biggirl.mvp.girls.GirlsContract;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -38,7 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class ExpandFragment
         extends BaseFag<ResultsBeanX>
-        implements  SwipeRefreshLayout.OnRefreshListener
+        implements  SwipeRefreshLayout.OnRefreshListener,AppContract.View
 {
     AppContract.Presenter mPresenter;
 
@@ -168,7 +167,7 @@ public class ExpandFragment
     public void onViewClicked() {LogUtil.d(" ExpandFragment ");}
 
     @Override
-    public void setPrenter(GirlsContract.Presenter prenter) {
+    public void setPrenter(AppContract.Presenter prenter) {
 
     }
 }
