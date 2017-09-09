@@ -25,7 +25,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.MyPageChangeListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
-import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
@@ -33,7 +33,7 @@ import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.girl.GirlActivity;
 import com.yibao.biggirl.mvp.map.MapsActivity;
-import com.yibao.biggirl.mvp.music.MusicListActivity;
+import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
 import com.yibao.biggirl.mvp.splash.SplashActivity;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
@@ -97,7 +97,6 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         mBind = ButterKnife.bind(this);
         if (savedInstanceState == null) {
-
             initView();
             initData();
             initListener();
@@ -136,7 +135,7 @@ public class MainActivity
 
     private void initListener() {
 
-        //我的页面
+        //App头像
         mIvHeader.setOnClickListener(view -> MeDialogFragment.newInstance()
                                                              .show(getSupportFragmentManager(),
                                                                    "me"));
@@ -278,7 +277,7 @@ public class MainActivity
 
     //打开WebViewActivity
     @Override
-    public void showDetail(FavoriteBean bean, Long id) {
+    public void showDetail(FavoriteWebBean bean, Long id) {
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("favoriteBean", bean);
         intent.putExtra("id", id);
@@ -290,7 +289,7 @@ public class MainActivity
     @Override
     public void showBigGirl(int position, List<String> list) {
         //设置navHeader头像
-        ImageUitl.loadPic(this, list.get(position), mIvHeader);
+//        ImageUitl.loadPic(this, list.get(position), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);
         intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
         intent.putExtra("position", position);

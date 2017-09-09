@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/root_bottom_sheet"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/root_bottom_sheet"
+              android:layout_height="70dp"
               android:background="@color/bottomSheetList"
               android:orientation="vertical">
     <RelativeLayout
@@ -10,13 +10,13 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
         >
             <TextView
-                android:id="@+id/music_name"
+                android:id="@+id/favorite_music_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -27,27 +27,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
+                android:id="@+id/favorite_artist_name"
                 android:text="-"
                 android:textColor="@color/aboutSign"
                 android:textSize="14sp"
             />
-            <TextView
-                android:id="@+id/music_singer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/timeBar"
-                android:textSize="14sp"
-            />
+
         </LinearLayout>
+        <TextView
+            android:id="@+id/favorite_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/aboutSign"
+            android:textSize="12sp"
+            />
         <ImageView
-            android:id="@+id/bottom_list_itme_close"
+            android:id="@+id/bottom_list_itme_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@mipmap/icon_close"
-        />
+            android:contentDescription="@null"
+            android:src="@mipmap/icon_close"/>
     </RelativeLayout>
 
     <View

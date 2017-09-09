@@ -8,7 +8,7 @@
     android:background="@color/musicFloatBg"
     android:orientation="vertical"
 
-    tools:context="com.yibao.biggirl.mvp.music.MusicListActivity">
+    tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -74,6 +74,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="4dp"
+                android:src="@drawable/dropdown_menu_noalbumcover"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"

@@ -1,7 +1,7 @@
 package com.yibao.biggirl.util;
 
 import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class PackagingDataUtil {
 
     private static String imageUrl;
 
-    public static FavoriteBean objectToFavorite(ResultsBeanX data) {
+    public static FavoriteWebBean objectToFavorite(ResultsBeanX data) {
 
 
         List<String> images = data.getImages();
@@ -28,14 +28,14 @@ public class PackagingDataUtil {
 //        String str  = data.getCreatedAt();
 //        long   id   = FileUtil.getId(str);
         String time = FileUtil.getCreatTime(data.getCreatedAt());
-        FavoriteBean bean = new FavoriteBean((long) 0,
-                                             data.getUrl(),
-                                             data.get_id(),
-                                             imageUrl,
-                                             data.getDesc(),
-                                             name,
-                                             data.getType(),
-                                             time);
+        FavoriteWebBean bean = new FavoriteWebBean((long) 0,
+                                                   data.getUrl(),
+                                                   data.get_id(),
+                                                   imageUrl,
+                                                   data.getDesc(),
+                                                   name,
+                                                   data.getType(),
+                                                   time);
 
         return bean;
 

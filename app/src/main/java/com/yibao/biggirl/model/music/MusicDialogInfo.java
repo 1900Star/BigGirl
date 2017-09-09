@@ -11,23 +11,33 @@ import java.util.ArrayList;
  * Time:2017/9/4 03:04
  */
 public class MusicDialogInfo implements Parcelable{
-    private ArrayList<MusicInfo> mInfos;
-    private String    songName;
-    private String    artist;
-    private String    url;
+    private ArrayList<MusicInfo> mList;
+    private MusicInfo mInfo;
 
-    public MusicDialogInfo(ArrayList<MusicInfo> infos, String songName, String artist, String url) {
-        mInfos = infos;
-        this.songName = songName;
-        this.artist = artist;
-        this.url = url;
+    public MusicDialogInfo(ArrayList<MusicInfo> list, MusicInfo info) {
+        mList = list;
+        mInfo = info;
+    }
+
+    public ArrayList<MusicInfo> getList() {
+        return mList;
+    }
+
+    public void setList(ArrayList<MusicInfo> list) {
+        mList = list;
+    }
+
+    public MusicInfo getInfo() {
+        return mInfo;
+    }
+
+    public void setInfo(MusicInfo info) {
+        mInfo = info;
     }
 
     protected MusicDialogInfo(Parcel in) {
-        mInfos = in.createTypedArrayList(MusicInfo.CREATOR);
-        songName = in.readString();
-        artist = in.readString();
-        url = in.readString();
+        mList = in.createTypedArrayList(MusicInfo.CREATOR);
+        mInfo = in.readParcelable(MusicInfo.class.getClassLoader());
     }
 
     public static final Creator<MusicDialogInfo> CREATOR = new Creator<MusicDialogInfo>() {
@@ -42,22 +52,6 @@ public class MusicDialogInfo implements Parcelable{
         }
     };
 
-    public ArrayList<MusicInfo> getInfos() {
-        return mInfos;
-    }
-
-    public String getSongName() {
-        return songName;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -65,9 +59,7 @@ public class MusicDialogInfo implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeTypedList(mInfos);
-        parcel.writeString(songName);
-        parcel.writeString(artist);
-        parcel.writeString(url);
+        parcel.writeTypedList(mList);
+        parcel.writeParcelable(mInfo, i);
     }
 }

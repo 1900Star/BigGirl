@@ -1,4 +1,4 @@
-package com.yibao.biggirl.model.favorite;
+package com.yibao.biggirl.model.favoriteweb;
 
 /**
  * Author：Sid

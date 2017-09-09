@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context="com.yibao.biggirl.mvp.music.MusicListActivity">
+    tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -74,6 +74,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <TextView
+            android:layout_marginLeft="5dp"
             android:id="@+id/start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,6 +92,7 @@
             android:thumb="@drawable/playing_control_time"
         />
         <TextView
+            android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/short_line"
@@ -166,7 +168,7 @@
             android:layout_weight="1"
             android:contentDescription="@null" android:src="@drawable/btn_playing_next"/>
         <ImageView
-            android:id="@+id/music_player_random"
+            android:id="@+id/iv_favorite_music"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

@@ -1,11 +1,13 @@
-package com.yibao.biggirl.model.favorite;
+package com.yibao.biggirl.model.favoriteweb;
 
 import com.yibao.biggirl.MyApplication;
-import com.yibao.biggirl.model.greendao.FavoriteBeanDao;
+import com.yibao.biggirl.model.greendao.FavoriteWebBeanDao;
 import com.yibao.biggirl.util.LogUtil;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -13,25 +15,30 @@ import io.reactivex.schedulers.Schedulers;
  * Des：${TODO}
  * Time:2017/6/16 02:39
  */
-public class FavoriteDao
+public class FavoriteWebDao
         implements FavoriteDaoInterface
 {
-    private FavoriteBeanDao dao;
+    private FavoriteWebBeanDao dao;
 
-    public FavoriteDao() {
+    public FavoriteWebDao() {
 
-        dao = MyApplication.getIntstance()
-                           .getDaoSession()
-                           .getFavoriteBeanDao();
+         dao = MyApplication.getIntstance()
+                                                             .getDaoSession()
+                                                             .getFavoriteWebBeanDao();
     }
 
     @Override
-    public void insertFavorite(FavoriteBean bean, InsertFavoriteCallBack callBack)
+    public void insertFavorite(FavoriteWebBean bean, InsertFavoriteCallBack callBack)
     {
         Observable.just(dao.insert(bean))
                   .subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(insertStatus -> callBack.insertStatus(bean.getId()));
+                  .subscribe(new Consumer<Long>() {
+                      @Override
+                      public void accept(@NonNull Long insertStatus)
+                              throws Exception
+                      {callBack.insertStatus(bean.getId());}
+                  });
         LogUtil.d("存入后的ID :" + bean.getId());
 
     }
@@ -39,7 +46,6 @@ public class FavoriteDao
 
     @Override
     public void cancelFavorite(Long id, CancelFavoriteCallBack callBack) {
-
         dao.deleteByKey(id);
         callBack.cancelFavorite(id);
 
@@ -49,9 +55,9 @@ public class FavoriteDao
     @Override
     public void quetyConditional(String gankId, QueryConditionalCallBack callBack)
     {
-
+//
         Observable.just(dao.queryBuilder()
-                           .where(FavoriteBeanDao.Properties.GankId.eq(gankId))
+                           .where(FavoriteWebBeanDao.Properties.GankId.eq(gankId))
                            .build()
                            .list())
                   .subscribeOn(Schedulers.io())
@@ -73,7 +79,7 @@ public class FavoriteDao
 
 
     @Override
-    public void updataFavorite(FavoriteBean bean, UpdataFavoriteCallBack callBack)
+    public void updataFavorite(FavoriteWebBean bean, UpdataFavoriteCallBack callBack)
     {
         dao.update(bean);
 

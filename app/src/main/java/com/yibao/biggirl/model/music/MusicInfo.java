@@ -3,34 +3,77 @@ package com.yibao.biggirl.model.music;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
+
 /**
  * Author：Sid
- * Des：${TODO}
+ * Des：${音乐实体类}
  * Time:2017/9/3 14:31
  */
+@Entity
 public class MusicInfo
         implements Parcelable
 {
-
-    private long   id;
+    @Id(autoincrement = true)
+    private Long   id;
     private String title;
     private String artist;
     private String album;
     private long   albumId;
-    private long   duration;
-    private long   size;
-    private String url;
+    private String   time;
+    private String songUrl;
 
-    private String songId;
-    private String songName;
-    private String picUrl;
-    private String audio;
+    public MusicInfo() {
+    }
 
-    public long getId() {
+    protected MusicInfo(Parcel in) {
+        title = in.readString();
+        artist = in.readString();
+        album = in.readString();
+        albumId = in.readLong();
+        time = in.readString();
+        songUrl = in.readString();
+    }
+
+    @Generated(hash = 1887758998)
+    public MusicInfo(Long id, String title, String artist, String album,
+            long albumId, String time, String songUrl) {
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.albumId = albumId;
+        this.time = time;
+        this.songUrl = songUrl;
+    }
+
+    public static final Creator<MusicInfo> CREATOR = new Creator<MusicInfo>() {
+        @Override
+        public MusicInfo createFromParcel(Parcel in) {
+            return new MusicInfo(in);
+        }
+
+        @Override
+        public MusicInfo[] newArray(int size) {
+            return new MusicInfo[size];
+        }
+    };
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,122 +109,29 @@ public class MusicInfo
         this.albumId = albumId;
     }
 
-    public long getDuration() {
-        return duration;
+
+
+    public String getSongUrl() {
+        return songUrl;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
+    public void setSongUrl(String songUrl) {
+        this.songUrl = songUrl;
     }
 
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getSongId() {
-        return songId;
-    }
-
-    public void setSongId(String songId) {
-        this.songId = songId;
-    }
-
-    public String getSongName() {
-        return songName;
-    }
-
-    public void setSongName(String songName) {
-        this.songName = songName;
-    }
-
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public String getAudio() {
-        return audio;
-    }
-
-    public void setAudio(String audio) {
-        this.audio = audio;
-    }
-
-    public static Creator<MusicInfo> getCREATOR() {
-        return CREATOR;
-    }
-
-    public MusicInfo() {
-
-    }
-
-    protected MusicInfo(Parcel in) {
-        id = in.readLong();
-        title = in.readString();
-        artist = in.readString();
-        album = in.readString();
-        albumId = in.readLong();
-        duration = in.readLong();
-        size = in.readLong();
-        url = in.readString();
-        songId = in.readString();
-        songName = in.readString();
-        picUrl = in.readString();
-        audio = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(title);
-        dest.writeString(artist);
-        dest.writeString(album);
-        dest.writeLong(albumId);
-        dest.writeLong(duration);
-        dest.writeLong(size);
-        dest.writeString(url);
-        dest.writeString(songId);
-        dest.writeString(songName);
-        dest.writeString(picUrl);
-        dest.writeString(audio);
-    }
 
     @Override
     public int describeContents() {
         return 0;
     }
 
-    public static final Creator<MusicInfo> CREATOR = new Creator<MusicInfo>() {
-        @Override
-        public MusicInfo createFromParcel(Parcel in) {
-            return new MusicInfo(in);
-        }
-
-        @Override
-        public MusicInfo[] newArray(int size) {
-            return new MusicInfo[size];
-        }
-    };
-
     @Override
-    public String toString() {
-        return "MusicInfo{" + "id=" + id + ", title='" + title + '\'' + ", artist='" + artist + '\'' + ", album='" + album + '\'' + ", albumId=" + albumId + ", duration=" + duration + ", size=" + size + ", url='" + url + '\'' + ", songId='" + songId + '\'' + ", songName='" + songName + '\'' + ", picUrl='" + picUrl + '\'' + ", audio='" + audio + '\'' + '}';
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(artist);
+        parcel.writeString(album);
+        parcel.writeLong(albumId);
+        parcel.writeString(time);
+        parcel.writeString(songUrl);
     }
-
-
 }

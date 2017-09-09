@@ -44,7 +44,6 @@ public class AudioPlayService
     String path = Environment.getExternalStorageDirectory()
                              .getAbsolutePath() + "/Music/Song/1773377275_AZ.mp3";
     private int position = -2;
-    //    private ArrayList<MusicItem>  mMusicItem;
     private ArrayList<MusicInfo>  mMusicItem;
     private SharedPreferences     sp;
     private MusicBroacastReceiver mReceiver;
@@ -108,7 +107,7 @@ public class AudioPlayService
             }
             mediaPlayer = MediaPlayer.create(AudioPlayService.this,
                                              Uri.parse(mMusicItem.get(position)
-                                                                 .getUrl()));
+                                                                 .getSongUrl()));
 
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnCompletionListener(this);
@@ -294,14 +293,12 @@ public class AudioPlayService
                         break;
                     case PREV:
                         mAudioBinder.playPre();
-                        LogUtil.d("PREV");
                         break;
                     case PLAY:
                         mAudioBinder.playStatus(0);
                         break;
                     case NEXT:
                         mAudioBinder.playNext();
-                        LogUtil.d("NEXT");
                         break;
 
 
@@ -323,9 +320,6 @@ public class AudioPlayService
         if (mReceiver != null) {
             unregisterReceiver(mReceiver);
         }
-//        MyApplication.getIntstance()
-//                     .bus()
-//                     .post(new MusicStatusBean(2, false));
         stopSelf();
     }
 }

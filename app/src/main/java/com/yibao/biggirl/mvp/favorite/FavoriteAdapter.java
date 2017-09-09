@@ -14,7 +14,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
-import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 
 import java.util.List;
 
@@ -27,19 +27,19 @@ import butterknife.ButterKnife;
  * Time:2017/4/23 07:08
  */
 public class FavoriteAdapter
-        extends BaseRvAdapter<FavoriteBean>
+        extends BaseRvAdapter<FavoriteWebBean>
 {
 
 
     private Context mContext;
 
-    public FavoriteAdapter(Context context, List<FavoriteBean> list) {
+    public FavoriteAdapter(Context context, List<FavoriteWebBean> list) {
         super(list);
         mContext = context;
     }
 
     //    @Override
-    protected void bindView(RecyclerView.ViewHolder holder, FavoriteBean bean) {
+    protected void bindView(RecyclerView.ViewHolder holder, FavoriteWebBean bean) {
         if (holder instanceof ViewHolder) {
             ViewHolder viewHolder = (ViewHolder) holder;
 
@@ -104,7 +104,7 @@ public class FavoriteAdapter
         TextView       mTvFavoriteType;
         @BindView(R.id.tv_favorite_des)
         TextView       mTvFavoriteDes;
-        @BindView(R.id.tv_favorite_time)
+        @BindView(R.id.favorite_time)
         TextView       mTvFavoriteTime;
         @BindView(R.id.favorite_item)
         RelativeLayout mFavoriteItem;

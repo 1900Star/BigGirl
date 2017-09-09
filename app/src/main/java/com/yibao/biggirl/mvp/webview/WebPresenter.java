@@ -1,8 +1,11 @@
 package com.yibao.biggirl.mvp.webview;
 
-import com.yibao.biggirl.model.favorite.FavoriteBean;
-import com.yibao.biggirl.model.favorite.FavoriteDao;
+import com.yibao.biggirl.model.favoriteweb.FavoriteDaoInterface;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebDao;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
+
+import java.util.List;
 
 /**
  * Author：Sid
@@ -11,22 +14,22 @@ import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
  * Time:2017/6/17 03:05
  */
 public class WebPresenter {
-    private FavoriteDao      mDao;
+    private FavoriteWebDao   mDao;
     private WebActivity      mWebActivity;
     private FavoriteActivity mFavoriteActivity;
 
 
     public WebPresenter(FavoriteActivity activity) {
         mFavoriteActivity = activity;
-        mDao = new FavoriteDao();
+        mDao = new FavoriteWebDao();
     }
 
     public WebPresenter(WebActivity activity) {
         mWebActivity = activity;
-        mDao = new FavoriteDao();
+        mDao = new FavoriteWebDao();
     }
 
-    public void insertFavorite(FavoriteBean favoriteBean) {
+    public void insertFavorite(FavoriteWebBean favoriteBean) {
         mDao.insertFavorite(favoriteBean, insertStatus -> mWebActivity.insertStatus(insertStatus));
     }
 
@@ -42,9 +45,9 @@ public class WebPresenter {
         });
     }
 
-    public void updataFavorite(FavoriteBean bean) {
+    public void updataFavorite(FavoriteWebBean bean) {
         mDao.updataFavorite(bean, list -> {
-            FavoriteBean data = list.get(0);
+            FavoriteWebBean data = list.get(0);
 
         });
     }
@@ -55,7 +58,12 @@ public class WebPresenter {
     }
 
     public void queryFavoriteIsCollect(String gankId) {
-        mDao.quetyConditional(gankId, list -> mWebActivity.queryFavoriteIsCollect(list));
+        mDao.quetyConditional(gankId, new FavoriteDaoInterface.QueryConditionalCallBack() {
+            @Override
+            public void conditionalQuery(List<FavoriteWebBean> list) {
+                mWebActivity.queryFavoriteIsCollect(list);
+            }
+        });
 
     }
 

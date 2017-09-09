@@ -14,7 +14,7 @@ import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.PackagingDataUtil;
 
@@ -75,7 +75,7 @@ public class AppAdapter
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemClickListener) {
                     if (mContext instanceof OnRvItemClickListener) {
-                        FavoriteBean data = PackagingDataUtil.objectToFavorite(bean);
+                        FavoriteWebBean data = PackagingDataUtil.objectToFavorite(bean);
                         ((OnRvItemClickListener) mContext).showDetail(data, data.getId());
                     }
                 }

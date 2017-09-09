@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.music;
+package com.yibao.biggirl.mvp.music.musiclist;
 
 import android.animation.ObjectAnimator;
 import android.app.Service;
@@ -25,10 +25,10 @@ import com.yibao.biggirl.model.music.MusicDialogInfo;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
+import com.yibao.biggirl.mvp.music.musicplay.MusicPlayDialogFag;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.AnimationUtil;
 import com.yibao.biggirl.util.ColorUtil;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.MusicListUtil;
 import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
@@ -90,18 +90,15 @@ public class MusicListActivity
     private ObjectAnimator           mAnimator;
     private MyAnimatorUpdateListener mAnimatorListener;
     private AudioServiceConnection   mConnection;
-    private String                   mSongName;
-    private String                   mArtistName;
     private Disposable               mDisposable;
-    private Uri                      mAlbumUri;
     private MusicPlayDialogFag       mPlayDialogFag;
     private RxBus                    mBus;
+    private MusicInfo                mItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_list);
-        LogUtil.d("   ***********************  onCreate");
         mBind = ButterKnife.bind(this);
         mBus = MyApplication.getIntstance()
                             .bus();
@@ -152,20 +149,18 @@ public class MusicListActivity
 
     //设置歌曲名和歌手名
     private void perpareMusic(MusicInfo musicItem) {
+        mItem = musicItem;
         isInitList = true;
         //更新音乐标题
-        mSongName = musicItem.getTitle();
-        if (mSongName.contains("_")) {
-            mSongName = mSongName.substring(mSongName.indexOf("_") + 1, mSongName.length());
-        }
-        mMusicFloatSongName.setText(mSongName);
+        String songName = StringUtil.getSongName(musicItem.getTitle());
+        mMusicFloatSongName.setText(songName);
         //更新歌手名称
-        mArtistName = musicItem.getArtist();
-        mMusicFloatSingerName.setText(mArtistName);
+        String artistName = musicItem.getArtist();
+        mMusicFloatSingerName.setText(artistName);
         //设置专辑
-        mAlbumUri = StringUtil.getAlbulm(musicItem.getAlbumId());
+        Uri albumUri = StringUtil.getAlbulm(musicItem.getAlbumId());
         Glide.with(this)
-             .load(mAlbumUri.toString())
+             .load(albumUri.toString())
              .asBitmap()
              .placeholder(R.drawable.dropdown_menu_noalbumcover)
              //             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -179,9 +174,7 @@ public class MusicListActivity
         //打开音乐通知栏
         MusicNoification.openMusicNotification(this,
                                                audioBinder.isPlaying(),
-                                               mAlbumUri,
-                                               mSongName,
-                                               mArtistName);
+                                               albumUri, songName, artistName);
 
     }
 
@@ -247,7 +240,6 @@ public class MusicListActivity
     private void initListener() {
         mMusicList.setOnItemClickListener((parent, view, position, id) -> {
             //获取音乐列表
-            //            mMusicItems = MusicItem.getAudioItems((Cursor) parent.getItemAtPosition(position));
             mMusicItems = MusicListUtil.getMusicList(this);
             //开启服务，播放音乐并且将数据传送过去
             Intent intent = new Intent();
@@ -292,10 +284,7 @@ public class MusicListActivity
     }
 
     private void showMusicDialog() {
-        MusicDialogInfo info = new MusicDialogInfo(mMusicItems,
-                                                   mSongName,
-                                                   mArtistName,
-                                                   mAlbumUri.toString());
+        MusicDialogInfo info = new MusicDialogInfo(mMusicItems, mItem);
 
         //        if (mPlayDialogFag.isVisible()) {
         //            mPlayDialogFag = MusicPlayDialogFag.newInstance(info);

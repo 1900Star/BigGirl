@@ -3,6 +3,9 @@ package com.yibao.biggirl.util;
 import android.content.ContentUris;
 import android.net.Uri;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Author：Sid
  * Des：${歌曲的时间格式处理}
@@ -40,5 +43,13 @@ public class StringUtil {
 
     }
 
+    //yyyy-MM-dd HH:mm:ss
+    public static String getCurrentTime() {
+        long             time   = System.currentTimeMillis();
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
+        Date             date   = new Date(time);
+        return format.format(date);
+
+    }
 
 }

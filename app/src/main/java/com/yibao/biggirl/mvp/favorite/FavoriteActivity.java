@@ -18,8 +18,8 @@ import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.dagger2.component.DaggerFavoriteComponent;
 import com.yibao.biggirl.model.dagger2.moduls.FavoriteModuls;
-import com.yibao.biggirl.model.favorite.FavoriteBean;
-import com.yibao.biggirl.model.favorite.UpdataFavorite;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
+import com.yibao.biggirl.model.favoriteweb.UpdataFavorite;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.mvp.webview.WebPresenter;
 import com.yibao.biggirl.util.LogUtil;
@@ -58,7 +58,7 @@ public class FavoriteActivity
     LinearLayout       mFagContent;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
-    private List<FavoriteBean> mList;
+    private List<FavoriteWebBean> mList;
     @Inject
     WebPresenter mWebPresenter;
     private FavoriteAdapter mAdapter;
@@ -74,7 +74,7 @@ public class FavoriteActivity
                                                                                                              this))
                                                                                              .build();
 
-        component.in(this);
+//        component.in(this);
 
         //        mWebPresenter.queryAllFavorite();
     }
@@ -84,10 +84,10 @@ public class FavoriteActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_favorite);
         mBind = ButterKnife.bind(this);
-        initInject();
-        initView();
-        initData();
-        initListener();
+//        initInject();
+//        initView();
+//        initData();
+//        initListener();
     }
 
     protected void initView() {
@@ -103,7 +103,7 @@ public class FavoriteActivity
     }
 
     protected void initListener() {
-        mWebPresenter.insertFavorite(new FavoriteBean());
+        mWebPresenter.insertFavorite(new FavoriteWebBean());
 
     }
 
@@ -130,7 +130,7 @@ public class FavoriteActivity
     }
 
     @Override
-    public void showDetail(FavoriteBean bean, Long id) {
+    public void showDetail(FavoriteWebBean bean, Long id) {
         isUpdateFavo = true;
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("id", id);
@@ -161,7 +161,7 @@ public class FavoriteActivity
     }
 
     @Override
-    public void queryAllFavorite(List<FavoriteBean> list) {
+    public void queryAllFavorite(List<FavoriteWebBean> list) {
         LogUtil.d("Size  " + list.size());
         mList.clear();
         mList.addAll(list);
@@ -177,7 +177,7 @@ public class FavoriteActivity
     }
 
     @Override
-    public void queryFavoriteIsCollect(List<FavoriteBean> list) {
+    public void queryFavoriteIsCollect(List<FavoriteWebBean> list) {
 
     }
 

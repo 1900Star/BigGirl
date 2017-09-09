@@ -1,6 +1,6 @@
 package com.yibao.biggirl.mvp.favorite;
 
-import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ public interface FavoriteContract {
 
         void cancelStatus(Long id);
 
-        void queryAllFavorite(List<FavoriteBean> list);
-        void queryFavoriteIsCollect(List<FavoriteBean> list);
+        void queryAllFavorite(List<FavoriteWebBean> list);
+        void queryFavoriteIsCollect(List<FavoriteWebBean> list);
 
     }
 

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/musicFloatBg"
     android:orientation="vertical"
-    tools:context="com.yibao.biggirl.mvp.music.MusicListActivity">
+    tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -54,7 +54,6 @@
             <com.yibao.biggirl.view.CircleImageView
                 android:id="@+id/music_float_block_albulm"
                 android:layout_width="50dp"
-                android:src="@drawable/dropdown_menu_noalbumcover"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -63,7 +62,8 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-               />
+                android:src="@drawable/dropdown_menu_noalbumcover"
+            />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

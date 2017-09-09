@@ -1,4 +1,4 @@
-package com.yibao.biggirl.model.favorite;
+package com.yibao.biggirl.model.favoriteweb;
 
 import java.util.List;
 
@@ -21,25 +21,24 @@ public interface FavoriteDaoInterface {
 
     interface UpdataFavoriteCallBack {
 
-        void updataAllFavorite(List<FavoriteBean> list);
+        void updataAllFavorite(List<FavoriteWebBean> list);
 
     }
 
     interface QueryAllFavoriteCallBack {
 
-        void queryAllFavorite(List<FavoriteBean> list);
+        void queryAllFavorite(List<FavoriteWebBean> list);
 
     }
 
 
     interface QueryConditionalCallBack {
 
-        void conditionalQuery(List<FavoriteBean> list);
+        void conditionalQuery(List<FavoriteWebBean> list);
 
     }
 
-    void insertFavorite(FavoriteBean bean, InsertFavoriteCallBack callBack);
-
+    void insertFavorite(FavoriteWebBean bean, InsertFavoriteCallBack callBack);
 
     void cancelFavorite(Long id, CancelFavoriteCallBack callBack);
 
@@ -47,6 +46,6 @@ public interface FavoriteDaoInterface {
 
     void queryAllFavorite(QueryAllFavoriteCallBack callBack);
 
-    void updataFavorite(FavoriteBean bean, UpdataFavoriteCallBack callBack);
+    void updataFavorite(FavoriteWebBean bean, UpdataFavoriteCallBack callBack);
 
 }

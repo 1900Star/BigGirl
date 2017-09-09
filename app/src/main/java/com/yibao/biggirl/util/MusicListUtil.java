@@ -40,7 +40,7 @@ public class MusicListUtil {
         ArrayList<MusicInfo> musicInfos = new ArrayList<>();
         for (int i = 0, p = cursor.getCount(); i < p; i++) {
             cursor.moveToNext();
-            MusicInfo mp3Info  = new MusicInfo();
+            MusicInfo info  = new MusicInfo();
             long      id       = cursor.getLong(mId); // 音乐id
             String    title    = cursor.getString(mTitle); // 音乐标题
             String    artist   = cursor.getString(mArtist); // 艺术家
@@ -49,18 +49,15 @@ public class MusicListUtil {
             long      duration = cursor.getLong(mDuration); // 时长
             long      size     = cursor.getLong(mSize); // 文件大小
             String    url      = cursor.getString(mUrl); // 文件路径
-
+            //过滤掉小于2分钟的音乐
             if (size > 21600) {
-                //            int       isMusic  = cursor.getInt(mIsMusic); // 是否为音乐
-                mp3Info.setId(id);
-                mp3Info.setTitle(title);
-                mp3Info.setArtist(artist);
-                mp3Info.setAlbum(album);
-                mp3Info.setAlbumId(albumId);
-                mp3Info.setDuration(duration);
-                mp3Info.setSize(size);
-                mp3Info.setUrl(url);
-                musicInfos.add(mp3Info);
+                info.setTitle(title);
+                info.setArtist(artist);
+                info.setAlbum(album);
+                info.setAlbumId(albumId);
+//                info.setTime(size);
+                info.setSongUrl(url);
+                musicInfos.add(info);
             }
         }
         cursor.close();

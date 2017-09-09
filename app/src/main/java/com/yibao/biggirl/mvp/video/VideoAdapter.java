@@ -11,7 +11,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.model.android.ResultsBeanX;
-import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.util.PackagingDataUtil;
 
 import java.util.List;
@@ -51,8 +51,8 @@ public class VideoAdapter
             viewHolder.mTvVideoDes.setText(bean.getDesc());
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemClickListener) {
-                    FavoriteBean data = PackagingDataUtil.objectToFavorite(bean);
-                    int          position = viewHolder.getAdapterPosition();
+                    FavoriteWebBean data     = PackagingDataUtil.objectToFavorite(bean);
+                    int             position = viewHolder.getAdapterPosition();
                     ((OnRvItemClickListener) mContext).showDetail(data, (long) position);
                 }
             });

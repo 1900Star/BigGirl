@@ -23,8 +23,8 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.dagger2.component.DaggerWebComponent;
 import com.yibao.biggirl.model.dagger2.moduls.WebModuls;
-import com.yibao.biggirl.model.favorite.FavoriteBean;
-import com.yibao.biggirl.model.favorite.UpdataFavorite;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
+import com.yibao.biggirl.model.favoriteweb.UpdataFavorite;
 import com.yibao.biggirl.mvp.favorite.FavoriteContract;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
@@ -60,10 +60,10 @@ public class WebActivity
     @Inject
     WebPresenter mPresenter;
 
-    private String       mUrl;
-    private FavoriteBean mBean;
-    private boolean      isFavorite;
-    private long         mId;
+    private String          mUrl;
+    private FavoriteWebBean mBean;
+    private boolean         isFavorite;
+    private long            mId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,10 +107,11 @@ public class WebActivity
                     shareIntent.setType("text/plain");
                     startActivity(shareIntent);
                     break;
-                case R.id.web_browser://浏览器打开
+                case R.id.web_browser:      //浏览器打开
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(mUrl));
                     startActivity(intent);
+
                     break;
             }
             return false;
@@ -123,7 +124,7 @@ public class WebActivity
             mId = status;
             LogUtil.d("刚存入的  ID :" + mId);
             isFavorite = true;
-            isFavoriteCollect();
+            refreshFavoriteBtn();
             SnakbarUtil.favoriteSuccessView(mWebView, "收藏成功  -_-");
 
 
@@ -141,7 +142,7 @@ public class WebActivity
 
             mId = id;
             isFavorite = false;
-            isFavoriteCollect();
+            refreshFavoriteBtn();
             LogUtil.d(TAG + "已取消收藏  ID :" + id);
             //      通知收藏列表更新
             MyApplication.getIntstance()
@@ -154,19 +155,19 @@ public class WebActivity
 
     //这个方法不会使用
     @Override
-    public void queryAllFavorite(List<FavoriteBean> list) {}
+    public void queryAllFavorite(List<FavoriteWebBean> list) {}
 
     @Override
-    public void queryFavoriteIsCollect(List<FavoriteBean> list) {
+    public void queryFavoriteIsCollect(List<FavoriteWebBean> list) {
         if (list.size() != 0) {
             LogUtil.d("已经存在了     ");
             isFavorite = true;
-            isFavoriteCollect();
+            refreshFavoriteBtn();
         }
     }
 
     //设置收藏图标
-    public void isFavoriteCollect() {
+    public void refreshFavoriteBtn() {
         if (isFavorite) {
             mToolbar.getMenu()
                     .getItem(0)
@@ -191,7 +192,6 @@ public class WebActivity
                 if (url.startsWith("http:") || url.startsWith("https:")) {
                     view.loadUrl(url);
                     return false;
-                    //
                 } else {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     return true;

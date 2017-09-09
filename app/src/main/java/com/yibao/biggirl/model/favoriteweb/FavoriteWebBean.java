@@ -1,4 +1,4 @@
-package com.yibao.biggirl.model.favorite;
+package com.yibao.biggirl.model.favoriteweb;
 
 
 import android.os.Parcel;
@@ -15,7 +15,8 @@ import org.greenrobot.greendao.annotation.Generated;
  * Time:2017/6/16 01:30
  */
 @Entity
-public class FavoriteBean implements Parcelable {
+public class FavoriteWebBean
+        implements Parcelable {
 
     @Id(autoincrement = true)
     private Long   id;
@@ -27,8 +28,20 @@ public class FavoriteBean implements Parcelable {
     private String name;
     private String type;
     private String time;
-    @Generated(hash = 1310196506)
-    public FavoriteBean(Long id, @NotNull String url, String gankId, String imagUrl,
+
+
+    protected FavoriteWebBean(Parcel in) {
+        url = in.readString();
+        gankId = in.readString();
+        imagUrl = in.readString();
+        des = in.readString();
+        name = in.readString();
+        type = in.readString();
+        time = in.readString();
+    }
+
+    @Generated(hash = 1048979491)
+    public FavoriteWebBean(Long id, @NotNull String url, String gankId, String imagUrl,
             String des, String name, String type, String time) {
         this.id = id;
         this.url = url;
@@ -39,80 +52,22 @@ public class FavoriteBean implements Parcelable {
         this.type = type;
         this.time = time;
     }
-    @Generated(hash = 653294794)
-    public FavoriteBean() {
+
+    @Generated(hash = 344432436)
+    public FavoriteWebBean() {
     }
 
-    protected FavoriteBean(Parcel in) {
-        url = in.readString();
-        gankId = in.readString();
-        imagUrl = in.readString();
-        des = in.readString();
-        name = in.readString();
-        type = in.readString();
-        time = in.readString();
-    }
-
-    public static final Creator<FavoriteBean> CREATOR = new Creator<FavoriteBean>() {
+    public static final Creator<FavoriteWebBean> CREATOR = new Creator<FavoriteWebBean>() {
         @Override
-        public FavoriteBean createFromParcel(Parcel in) {
-            return new FavoriteBean(in);
+        public FavoriteWebBean createFromParcel(Parcel in) {
+            return new FavoriteWebBean(in);
         }
 
         @Override
-        public FavoriteBean[] newArray(int size) {
-            return new FavoriteBean[size];
+        public FavoriteWebBean[] newArray(int size) {
+            return new FavoriteWebBean[size];
         }
     };
-
-    public Long getId() {
-        return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getUrl() {
-        return this.url;
-    }
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    public String getGankId() {
-        return this.gankId;
-    }
-    public void setGankId(String gankId) {
-        this.gankId = gankId;
-    }
-    public String getImagUrl() {
-        return this.imagUrl;
-    }
-    public void setImagUrl(String imagUrl) {
-        this.imagUrl = imagUrl;
-    }
-    public String getDes() {
-        return this.des;
-    }
-    public void setDes(String des) {
-        this.des = des;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getType() {
-        return this.type;
-    }
-    public void setType(String type) {
-        this.type = type;
-    }
-    public String getTime() {
-        return this.time;
-    }
-    public void setTime(String time) {
-        this.time = time;
-    }
 
     @Override
     public int describeContents() {
@@ -128,6 +83,70 @@ public class FavoriteBean implements Parcelable {
         parcel.writeString(name);
         parcel.writeString(type);
         parcel.writeString(time);
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getGankId() {
+        return this.gankId;
+    }
+
+    public void setGankId(String gankId) {
+        this.gankId = gankId;
+    }
+
+    public String getImagUrl() {
+        return this.imagUrl;
+    }
+
+    public void setImagUrl(String imagUrl) {
+        this.imagUrl = imagUrl;
+    }
+
+    public String getDes() {
+        return this.des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTime() {
+        return this.time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
 

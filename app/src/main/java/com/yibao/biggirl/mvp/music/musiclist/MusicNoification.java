@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.music;
+package com.yibao.biggirl.mvp.music.musiclist;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -11,7 +11,6 @@ import android.widget.RemoteViews;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.service.AudioPlayService;
-import com.yibao.biggirl.util.LogUtil;
 
 /**
  * Author：Sid
@@ -31,7 +30,7 @@ public class MusicNoification {
     {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.mipmap.smartisan);
+        builder.setSmallIcon(R.mipmap.biggirl);
         builder.setAutoCancel(true);
         builder.setOngoing(true);
         builder.setShowWhen(true);
@@ -55,7 +54,6 @@ public class MusicNoification {
     }
 
     public static void updatePlayBtn(boolean isPlaying) {
-        LogUtil.d(" MusicNoification   :     " + isPlaying);
         if (isPlaying) {
             remoteView.setImageViewResource(R.id.widget_play, R.drawable.btn_playing_pause);
         } else {

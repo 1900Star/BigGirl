@@ -1,6 +1,6 @@
 package com.yibao.biggirl.base.listener;
 
-import com.yibao.biggirl.model.favorite.FavoriteBean;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface OnRvItemClickListener {
 
-    void showDetail(FavoriteBean bean, Long id);
+    void showDetail(FavoriteWebBean bean, Long id);
 
     void showBigGirl(int position, List<String> list);
 }

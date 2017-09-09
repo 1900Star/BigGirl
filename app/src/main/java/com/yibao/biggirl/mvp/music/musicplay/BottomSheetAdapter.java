@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.music;
+package com.yibao.biggirl.mvp.music.musicplay;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.StringUtil;
 
@@ -35,6 +36,7 @@ public class BottomSheetAdapter
             MusicHolder musicHolder = (MusicHolder) holder;
             musicHolder.mMusicName.setText(StringUtil.getSongName(musicItem.getTitle()));
             musicHolder.mMusicSinger.setText(musicItem.getArtist());
+            musicHolder.mFavoriteTime.setText(musicItem.getTime());
             musicHolder.mRootBottomSheet.setOnClickListener(view -> {
                 LogUtil.d("*************  删除当前歌曲");
                 MusicListActivity.getAudioBinder()
@@ -57,20 +59,22 @@ public class BottomSheetAdapter
     static class MusicHolder
             extends RecyclerView.ViewHolder
     {
-        @BindView(R.id.music_name)
-        TextView  mMusicName;
-        @BindView(R.id.music_singer)
-        TextView  mMusicSinger;
-        @BindView(R.id.bottom_list_itme_close)
-        ImageView mBottomListItmeClose;
+        @BindView(R.id.favorite_music_name)
+        TextView     mMusicName;
+        @BindView(R.id.favorite_artist_name)
+        TextView     mMusicSinger;
+        @BindView(R.id.favorite_time)
+        TextView     mFavoriteTime;
+        @BindView(R.id.bottom_list_itme_clear)
+        ImageView    mBottomListItmeClear;
         @BindView(R.id.root_bottom_sheet)
         LinearLayout mRootBottomSheet;
+
         MusicHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
-
 
 
 }

@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.music;
+package com.yibao.biggirl.mvp.music.musicplay;
 
 import android.content.Context;
 import android.support.design.widget.BottomSheetDialog;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.music.MusicInfo;
@@ -27,6 +28,7 @@ public class MusicBottomSheetDialog
     private TextView     mBottomListColection;
     private TextView     mBottomListClear;
     private TextView     mBottomListTitleSize;
+    private RecyclerView recyclerView;
 
 
     public static MusicBottomSheetDialog newInstance() {
@@ -39,11 +41,9 @@ public class MusicBottomSheetDialog
                                   .inflate(R.layout.bottom_sheet_list_dialog, null);
         initView(view);
         initListener();
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(1,
-                                                                          new BottomSheetAdapter(
-                                                                                  list));
+        recyclerView = RecyclerViewFactory.creatRecyclerView(1, new BottomSheetAdapter(list));
 
-        mBottomListTitleSize.setText("播放列表(" + list.size() + ")");
+        mBottomListTitleSize.setText("收藏列表 ( " + list.size() + " )");
         mBottomListContent.addView(recyclerView);
         dialog.setContentView(view);
         dialog.setCancelable(true);
@@ -61,19 +61,25 @@ public class MusicBottomSheetDialog
 
     private void initView(View view) {
         mBottomListContent = (LinearLayout) view.findViewById(R.id.bottom_list_content);
-        mBottomListColection = (TextView) view.findViewById(R.id.bottom_list_collection);
-        mBottomListClear = (TextView) view.findViewById(R.id.bottom_list_clear);
+        mBottomListColection = (TextView) view.findViewById(R.id.bottom_sheet_bar_play);
+        mBottomListClear = (TextView) view.findViewById(R.id.bottom_sheet_bar_clear);
         mBottomListTitleSize = (TextView) view.findViewById(R.id.bottom_list_title_size);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bottom_list_collection:
+            case R.id.bottom_sheet_bar_play:
                 LogUtil.d("********    Collecotion");
                 break;
-            case R.id.bottom_list_clear:
+            case R.id.bottom_sheet_bar_clear:
                 LogUtil.d("********    Clear");
+                MyApplication.getIntstance()
+                             .getDaoSession()
+                             .getMusicInfoDao()
+                             .deleteAll();
+
+
                 break;
             default:
                 break;

@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.music;
+package com.yibao.biggirl.mvp.music.musiclist;
 
 import android.content.Context;
 import android.view.View;
