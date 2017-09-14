@@ -31,14 +31,14 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/music_lv"
+    <com.yibao.biggirl.view.music.MusicView
+        android:id="@+id/musci_view"
+        android:background="@color/listBg"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/listBg">
+        android:layout_weight="1">
 
-    </ListView>
+    </com.yibao.biggirl.view.music.MusicView>
     <android.support.v7.widget.CardView
         android:id="@+id/music_floating_block"
         android:layout_width="match_parent"

@@ -28,7 +28,6 @@ public class MusicBottomSheetDialog
     private TextView     mBottomListColection;
     private TextView     mBottomListClear;
     private TextView     mBottomListTitleSize;
-    private RecyclerView recyclerView;
 
 
     public static MusicBottomSheetDialog newInstance() {
@@ -41,7 +40,9 @@ public class MusicBottomSheetDialog
                                   .inflate(R.layout.bottom_sheet_list_dialog, null);
         initView(view);
         initListener();
-        recyclerView = RecyclerViewFactory.creatRecyclerView(1, new BottomSheetAdapter(list));
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(1,
+                                                                          new BottomSheetAdapter(
+                                                                                  list));
 
         mBottomListTitleSize.setText("收藏列表 ( " + list.size() + " )");
         mBottomListContent.addView(recyclerView);

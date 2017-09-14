@@ -116,23 +116,29 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:contentDescription="@null"
             android:src="@mipmap/playing_lp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" android:contentDescription="@null"
+            android:layout_centerInParent="true"
+            android:contentDescription="@null"
             android:src="@mipmap/playing_veins_lp"/>
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@null"
+            android:src="@mipmap/playing_cover_lp"/>
         <com.yibao.biggirl.view.CircleImageView
             android:id="@+id/playing_song_album"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="132dp"
+            android:layout_height="132dp"
             android:layout_centerInParent="true"
             android:contentDescription="@null"
             android:maxHeight="130dp"
-            android:src="@mipmap/xuan"/>
+        />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -142,48 +148,48 @@
             android:id="@+id/music_player_mode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:contentDescription="@null"
             android:src="@drawable/btn_playing_cycle_off"/>
         <ImageView
-            android:layout_gravity="center_vertical"
             android:id="@+id/music_player_pre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@null" android:src="@drawable/btn_playing_prev"/>
         <ImageView
-            android:layout_gravity="center_vertical"
             android:id="@+id/music_play"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@null"
             android:src="@drawable/btn_playing_play"/>
         <ImageView
-            android:layout_gravity="center_vertical"
             android:id="@+id/music_player_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@null" android:src="@drawable/btn_playing_next"/>
         <ImageView
             android:id="@+id/iv_favorite_music"
             android:layout_width="0dp"
-            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@null"
-            android:src="@drawable/music_fav_selector"/>
+            android:src="@drawable/music_favorite_selector"/>
 
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/btn_folder_shuffle"
+        android:background="@mipmap/btn_folder_shuffle"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <SeekBar

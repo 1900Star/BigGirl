@@ -11,9 +11,8 @@
     tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:elevation="5dp"
-
         app:cardBackgroundColor="@color/colorAccent"
         app:cardCornerRadius="0dp">
 
@@ -41,14 +40,16 @@
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-    <ListView
-        android:id="@+id/music_lv"
+
+    <com.yibao.biggirl.view.music.MusicView
+        android:id="@+id/musci_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/rvBg">
+        android:layout_weight="1">
 
-    </ListView>
+    </com.yibao.biggirl.view.music.MusicView>
+
+
     <android.support.v7.widget.CardView
         android:id="@+id/music_floating_block"
 
@@ -74,11 +75,11 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="4dp"
-                android:src="@drawable/dropdown_menu_noalbumcover"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                />
+                android:src="@drawable/dropdown_menu_noalbumcover"
+            />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,11 +96,6 @@
                     android:layout_weight="1"
 
                     android:orientation="vertical">
-                    <!--  android:sigleLine=true
-
-                  android:ellipsize=marquee
-
-                  android:marqueeRepeatLimit=marquee_forever-->
                     <TextView
                         android:id="@+id/music_float_song_name"
                         android:layout_width="wrap_content"

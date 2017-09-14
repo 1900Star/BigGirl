@@ -17,7 +17,7 @@
             android:title="@string/action_share"/>
         <item
             android:id="@+id/action_map"
-            android:icon="@drawable/dw"
+            android:icon="@mipmap/dw"
             android:title="@string/action_map"/>
         <item
             android:id="@+id/action_music"

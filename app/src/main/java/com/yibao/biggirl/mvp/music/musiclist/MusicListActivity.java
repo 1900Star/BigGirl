@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +20,10 @@ import com.bumptech.glide.Glide;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
-import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
+import com.yibao.biggirl.base.listener.OnMusicRvItemClickListener;
 import com.yibao.biggirl.model.music.MusicDialogInfo;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
-import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.music.musicplay.MusicPlayDialogFag;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.AnimationUtil;
@@ -35,8 +34,10 @@ import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.util.ToastUtil;
 import com.yibao.biggirl.view.CircleImageView;
 import com.yibao.biggirl.view.ProgressBtn;
+import com.yibao.biggirl.view.music.MusicView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -56,11 +57,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MusicListActivity
         extends AppCompatActivity
-        implements OnRvItemLongClickListener
+        implements OnMusicRvItemClickListener
 {
 
-    @BindView(R.id.music_lv)
-    ListView mMusicList;
 
     @BindView(R.id.music_float_song_name)
     TextView        mMusicFloatSongName;
@@ -83,9 +82,11 @@ public class MusicListActivity
 
 
     private static AudioPlayService.AudioBinder audioBinder;
-    private        CompositeDisposable          disposables;
-    private        ArrayList<MusicInfo>         mMusicItems;
-    private        Unbinder                     mBind;
+    @BindView(R.id.musci_view)
+    MusicView mMusciView;
+    private CompositeDisposable  disposables;
+    private ArrayList<MusicInfo> mMusicItems;
+    private Unbinder             mBind;
     private boolean isInitList = false;
     private ObjectAnimator           mAnimator;
     private MyAnimatorUpdateListener mAnimatorListener;
@@ -105,7 +106,7 @@ public class MusicListActivity
         disposables = new CompositeDisposable();
 
         initData();
-        initListener();
+        //        initListener();
         initRxBusData();
 
     }
@@ -116,7 +117,12 @@ public class MusicListActivity
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(this::perpareMusic));
-        //   type 用来判断触发消息的源头，0 表示从 MusicPlayDialogFag， 1 表示从通知栏的音乐控制面板发出(Services中的广播)。
+        /*
+          type = bean.getType() 用来判断触发消息的源头，< 0 >表示是通知栏播放和暂停按钮发出，
+          同时MusicPlayDialogFag在播放和暂停的时候也会发出通知并且type也是< 0 >，
+          MuiscListActivity会接收到两个地方发出的播放状态的消息
+          < 1 >表示从通知栏打开音列表。
+         */
         disposables.add(mBus.toObserverable(MusicStatusBean.class)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -151,6 +157,7 @@ public class MusicListActivity
     private void perpareMusic(MusicInfo musicItem) {
         mItem = musicItem;
         isInitList = true;
+
         //更新音乐标题
         String songName = StringUtil.getSongName(musicItem.getTitle());
         mMusicFloatSongName.setText(songName);
@@ -169,12 +176,7 @@ public class MusicListActivity
         updatePlayBtnStatus();
         //初始化动画
         initAnimation();
-
         updataProgress();
-        //打开音乐通知栏
-        MusicNoification.openMusicNotification(this,
-                                               audioBinder.isPlaying(),
-                                               albumUri, songName, artistName);
 
     }
 
@@ -232,28 +234,33 @@ public class MusicListActivity
 
     private void initData() {
         mPb.setColor(ColorUtil.errorColor);
-        MusicListAdapter adapters = new MusicListAdapter(MusicListUtil.getMusicList(this), this);
+        //        MusicListAdapter adapters = new MusicListAdapter(MusicListUtil.getMusicList(this), this);
 
-        mMusicList.setAdapter(adapters);
+        //        mMusicList.setAdapter(adapters);
+        mMusicItems = MusicListUtil.getMusicList(this);
+        //        sort();
+        StringUtil.getCurrentTime();
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        MusicRvAdapter adapter = new MusicRvAdapter(this, MusicListUtil.getMusicList(this));
+        mMusciView.setAdapter(manager, adapter);
+        adapter.notifyDataSetChanged();
+
+
     }
 
-    private void initListener() {
-        mMusicList.setOnItemClickListener((parent, view, position, id) -> {
-            //获取音乐列表
-            mMusicItems = MusicListUtil.getMusicList(this);
-            //开启服务，播放音乐并且将数据传送过去
-            Intent intent = new Intent();
-            intent.setClass(this, AudioPlayService.class);
-            intent.putParcelableArrayListExtra("musicItem", mMusicItems);
-            intent.putExtra("position", position);
-            mConnection = new AudioServiceConnection();
-            bindService(intent, mConnection, Service.BIND_AUTO_CREATE);
-            startService(intent);
-
-
-        });
+    //开启服务，播放音乐并且将数据传送过去
+    @Override
+    public void startMusicService(int position) {
+        //获取音乐列表
+        Intent intent = new Intent();
+        intent.setClass(this, AudioPlayService.class);
+        intent.putParcelableArrayListExtra("musicItem", mMusicItems);
+        intent.putExtra("position", position);
+        mConnection = new AudioServiceConnection();
+        bindService(intent, mConnection, Service.BIND_AUTO_CREATE);
+        startService(intent);
     }
-
 
     @OnClick(R.id.music_toolbar_back)
     public void onViewClicked() {finish();}
@@ -295,15 +302,28 @@ public class MusicListActivity
         //        mDisposable.dispose();
     }
 
+    public void sort() {
+
+        Collections.sort(mMusicItems, (info, t1) -> {
+            String prev = StringUtil.getPinYin(info.getTitle());
+
+            String last = StringUtil.getPinYin(t1.getTitle());
+            if (prev.equals("#")) {
+                return 1;
+            } else if (last.equals("#")) {
+                return -1;
+            } else {
+                return prev.compareTo(last);
+
+            }
+
+        });
+    }
+
+
     public static AudioPlayService.AudioBinder getAudioBinder() {
 
         return audioBinder;
-    }
-
-    @Override
-    public void showPreview(String url) {
-        TopBigPicDialogFragment.newInstance(url)
-                               .show(getSupportFragmentManager(), "dialog_big_girl");
     }
 
 

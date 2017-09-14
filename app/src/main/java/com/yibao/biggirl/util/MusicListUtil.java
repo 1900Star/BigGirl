@@ -61,7 +61,7 @@ public class MusicListUtil {
             }
         }
         cursor.close();
-            LogUtil.d("SongSize ***** " + musicInfos.size());
+//            LogUtil.d("SongSize ***** " + musicInfos.size());
         return musicInfos;
     }
 

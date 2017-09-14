@@ -35,7 +35,6 @@ import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.DialogUtil;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.RxBus;
-import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.view.CircleImageView;
 
@@ -124,11 +123,11 @@ public class MusicPlayDialogFag
                                        .list();
         if (list.size() == 0) {
             LogUtil.d("Null");
+            mIvMusicFavorite.setImageResource(R.drawable.music_favorite_selector);
             isFavorite = false;
         } else {
 
-            mIvMusicFavorite.setImageResource(R.drawable.fav);
-            SnakbarUtil.picAlreadyExists(mIvMusicFavorite);
+            mIvMusicFavorite.setImageResource(R.mipmap.favorite_yes);
             isFavorite = true;
         }
         return isFavorite;
@@ -165,7 +164,6 @@ public class MusicPlayDialogFag
             startUpdateProgress();
         }
         startUpdateProgress();
-
         //音乐设置
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -253,10 +251,11 @@ public class MusicPlayDialogFag
 
     //设置歌曲名和歌手名
     private void perpareMusic(MusicInfo info) {
-        //只要歌曲发生变化 ，就将isFavorite标记重置为false, 保证收藏正常。
-        isFavorite = false;
-        mIvMusicFavorite.setImageResource(R.drawable.music_fav_selector);
         mMusicInfo = info;
+        //只要歌曲发生变化 ，就将isFavorite标记重置为false, 保证收藏正常。
+        //        isFavorite = false;
+
+        checkCurrentIsFavorite();
         initAnimation();
         //更新音乐标题
         mSongName.setText(getSongName(info.getTitle()));
@@ -280,7 +279,7 @@ public class MusicPlayDialogFag
         Glide.with(this)
              .load(url)
              .asBitmap()
-             .placeholder(R.mipmap.xuan)
+//             .placeholder(R.mipmap.playing_cover_lp)
              //             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(mPlayingSongAlbum);
     }
@@ -412,7 +411,7 @@ public class MusicPlayDialogFag
     private void favoritMusic() {
         if (isFavorite) {
             mInfoDao.delete(mMusicInfo);
-            mIvMusicFavorite.setImageResource(R.drawable.music_fav_selector);
+            mIvMusicFavorite.setImageResource(R.drawable.music_favorite_selector);
             isFavorite = false;
 
         } else {
@@ -420,7 +419,7 @@ public class MusicPlayDialogFag
             LogUtil.d("currentTime  : " + time);
             mMusicInfo.setTime(time);
             mInfoDao.insert(mMusicInfo);
-            mIvMusicFavorite.setImageResource(R.drawable.fav);
+            mIvMusicFavorite.setImageResource(R.mipmap.favorite_yes);
             isFavorite = true;
 
         }

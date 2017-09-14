@@ -86,9 +86,9 @@ public class MainActivity
 
 
     private long exitTime = 0;
-    private Unbinder                     mBind;
-    private ImageView                    mIvHeader;
-    private String                       mUrl;
+    private Unbinder  mBind;
+    private ImageView mIvHeader;
+    private String    mUrl;
 
 
     @Override
@@ -289,7 +289,7 @@ public class MainActivity
     @Override
     public void showBigGirl(int position, List<String> list) {
         //设置navHeader头像
-//        ImageUitl.loadPic(this, list.get(position), mIvHeader);
+        //        ImageUitl.loadPic(this, list.get(position), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);
         intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
         intent.putExtra("position", position);

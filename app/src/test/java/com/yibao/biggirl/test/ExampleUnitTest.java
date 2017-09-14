@@ -4,7 +4,7 @@ import com.yibao.biggirl.util.WallPaperUtil;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -17,8 +17,10 @@ public class ExampleUnitTest {
             throws Exception
     {
         WallPaperUtil paperUtil = new WallPaperUtil();
-        int sum=paperUtil.add(2, 6);
-        assertEquals(8,sum);
+        int           sum       = paperUtil.add(2, 6);
+        assertEquals(8, sum);
 
     }
+
+
 }

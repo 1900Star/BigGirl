@@ -1,5 +1,7 @@
 package com.yibao.biggirl.service;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,13 +11,13 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
+import com.yibao.biggirl.mvp.music.musiclist.MusicNoification;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
@@ -41,13 +43,13 @@ public class AudioPlayService
     public final static String BUTTON_ID        = "ButtonId";
     public static final String ACTION_MUSIC     = "MUSIC";
 
-    String path = Environment.getExternalStorageDirectory()
-                             .getAbsolutePath() + "/Music/Song/1773377275_AZ.mp3";
+//    String path = Environment.getExternalStorageDirectory()
+//                             .getAbsolutePath() + "/Music/Song/1773377275_AZ.mp3";
     private int position = -2;
     private ArrayList<MusicInfo>  mMusicItem;
     private SharedPreferences     sp;
     private MusicBroacastReceiver mReceiver;
-
+    private NotificationManager manager;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -98,6 +100,11 @@ public class AudioPlayService
             implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener
 
     {
+
+        private MusicInfo           mMusicInfo;
+
+
+
         private void play() {
 
             if (mediaPlayer != null) {
@@ -105,9 +112,10 @@ public class AudioPlayService
                 mediaPlayer.release();
                 mediaPlayer = null;
             }
+            mMusicInfo = mMusicItem.get(position);
             mediaPlayer = MediaPlayer.create(AudioPlayService.this,
-                                             Uri.parse(mMusicItem.get(position)
-                                                                 .getSongUrl()));
+                                             Uri.parse(mMusicInfo.getSongUrl()));
+
 
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnCompletionListener(this);
@@ -123,6 +131,19 @@ public class AudioPlayService
             MyApplication.getIntstance()
                          .bus()
                          .post(mMusicItem.get(position));
+
+            showNotification();
+
+
+        }
+
+        private void showNotification() {
+            Notification notification = MusicNoification.getNotification(AudioPlayService.this,
+                                                                         isPlaying(),
+                                                                         mMusicInfo);
+            manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            manager.notify(0, notification);
         }
 
         //获取当前播放进度
@@ -214,11 +235,14 @@ public class AudioPlayService
 
         public void start() {
             mediaPlayer.start();
+//            showNotification();
         }
 
         //暂停播放
         public void pause() {
             mediaPlayer.pause();
+            //            manager.cancel(0);
+
         }
 
         //跳转到指定位置进行播放
@@ -232,6 +256,7 @@ public class AudioPlayService
             play();
         }
 
+        //type : 1 表示点击通知栏进入播放界面，0 表示在通知栏进行播放和暂停的控制，并不进入播放的界面。
         private void playStatus(int type) {
             switch (type) {
                 case 0:
@@ -285,11 +310,12 @@ public class AudioPlayService
                 switch (id) {
                     case ROOT:
                         LogUtil.d("Root");
-                        mAudioBinder.playStatus(1);
+//                        mAudioBinder.playStatus(1);
                         break;
                     case CLOSE:
                         LogUtil.d("CLOSE");
-                        onDestroy();
+                        manager.cancel(0);
+                        //                        onDestroy();
                         break;
                     case PREV:
                         mAudioBinder.playPre();

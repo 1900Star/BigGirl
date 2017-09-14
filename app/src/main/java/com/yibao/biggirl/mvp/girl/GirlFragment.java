@@ -253,7 +253,7 @@ public class GirlFragment
     private void startLoop() {
 
         mScroller.initViewPagerScroll(mVp, 2000);
-        mDisposable = Observable.interval(3000, 3000, TimeUnit.MILLISECONDS)
+        mDisposable = Observable.interval(2000, 3000, TimeUnit.MILLISECONDS)
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(aLong -> {
                                     int item = mVp.getCurrentItem();
