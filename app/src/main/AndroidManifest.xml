@@ -29,7 +29,6 @@
         <activity
             android:name=".mvp.splash.SplashActivity"
             android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -42,7 +41,7 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".mvp.girl.GirlActivity"
+            android:name=".mvp.gank.girl.GirlActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/GirlTheme"/>
         <activity

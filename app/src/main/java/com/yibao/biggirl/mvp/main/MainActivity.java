@@ -31,7 +31,7 @@ import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
-import com.yibao.biggirl.mvp.girl.GirlActivity;
+import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
 import com.yibao.biggirl.mvp.splash.SplashActivity;
@@ -108,11 +108,11 @@ public class MainActivity
 
     //加载动态布局
     private void initView() {
-
         setSupportActionBar(mToolbar);
         mToolbarLayout.setTitleEnabled(false);
         View headerView = mNavView.inflateHeaderView(R.layout.nav_header_main);
-        mIvHeader = (ImageView) headerView.findViewById(R.id.iv_nav_header);
+
+        mIvHeader = headerView.findViewById(R.id.iv_nav_header);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
                                                                  mDrawerLayout,
@@ -171,7 +171,6 @@ public class MainActivity
 
 
             case R.id.action_my_favorite:
-
                 startActivity(new Intent(this, FavoriteActivity.class));
                 break;
             case R.id.action_map:
@@ -212,7 +211,7 @@ public class MainActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_action_search:
-                LogUtil.d("Search");
+
                 break;
             case R.id.main_action_star:
                 //TODO

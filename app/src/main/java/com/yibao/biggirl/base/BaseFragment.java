@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yibao.biggirl.MyApplication;
-import com.yibao.biggirl.mvp.app.AppContract;
+import com.yibao.biggirl.mvp.gank.app.AppContract;
 
 import java.util.List;
 import java.util.Map;

@@ -86,16 +86,16 @@ public class SnakbarUtil {
 
 
     /**
-     * 保存图片提示
+     * GoogleMap提示
      */
-    public static void mapPoint( View view)
+    public static void mapPoint(View view)
     {
 
         //
-                Snackbar snackbar = make(view, "确保您的设备应该包含完整的谷歌服务!", Snackbar.LENGTH_LONG);
-                snackbar.getView()
-                        .setBackgroundColor(picAlreadyExists);
-                snackbar.show();
+        Snackbar snackbar = make(view, "确保您的设备应该包含完整的谷歌服务!", Snackbar.LENGTH_LONG);
+        snackbar.getView()
+                .setBackgroundColor(picAlreadyExists);
+        snackbar.show();
 
     }
 

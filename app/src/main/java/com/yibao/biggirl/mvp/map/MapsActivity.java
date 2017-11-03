@@ -55,7 +55,7 @@ public class MapsActivity
     @Override
     protected void onPause() {
         super.onPause();
-        mMap.clear();
+//        mMap.clear();
     }
 
     @Override

@@ -4,6 +4,8 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.util.Log;
 
+import com.yibao.biggirl.model.music.MusicLyrBean;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -23,6 +26,7 @@ public class StringUtil {
     private static final int    MIN  = 60 * 1000;
     private static final int    SEC  = 1000;
     private static       String TAG  = "StringUtil";
+    private static BufferedReader br;
 
     //解析时间
     public static String parseDuration(int duration) {
@@ -60,20 +64,6 @@ public class StringUtil {
 
     }
 
-    private static File getLrcFile(String path) {
-        File   file;
-        String lrcName = path.replace(".mp3", ".lrc");//找歌曲名称相同的.lrc文件
-        file = new File(lrcName);
-        if (!file.exists()) {
-            lrcName = path.replace(".mp3", ".txt");//歌词可能是.txt结尾
-            file = new File(lrcName);
-            if (!file.exists()) {
-                return null;
-            }
-        }
-        return file;
-
-    }
 
     public static void getLrc(String path) {
         File file = getLrcFile(path);
@@ -95,6 +85,21 @@ public class StringUtil {
         }
     }
 
+    public static File getLrcFile(String path) {
+        File   file;
+        String lrcName = path.replace(".mp3", ".lrc");//找歌曲名称相同的.lrc文件
+        file = new File(lrcName);
+        if (!file.exists()) {
+            lrcName = path.replace(".mp3", ".txt");//歌词可能是.txt结尾
+            file = new File(lrcName);
+            if (!file.exists()) {
+                return null;
+            }
+        }
+        return file;
+
+    }
+
     // 输入汉字返回拼音的通用方法函数。
     public static String getPinYin(String hanzi) {
         ArrayList<HanziToPinyin.Token> tokens = HanziToPinyin.getInstance()
@@ -114,4 +119,64 @@ public class StringUtil {
                  .toUpperCase()
                  .substring(0, 1);
     }
+
+
+    public static ArrayList<MusicLyrBean> getLyrics(File file) {
+        ArrayList<MusicLyrBean> lrcList = new ArrayList<>();
+        //        File                    file    = getLrcFile(path);
+
+        if (file == null || !file.exists()) {
+
+            lrcList.add(new MusicLyrBean(0, "没有发现歌词-_-!"));
+            return lrcList;
+        }
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "gbk"));
+            String line = br.readLine();
+            while (line != null) {
+                ArrayList<MusicLyrBean> been = parseLine(line);
+                lrcList.addAll(been);
+                line = br.readLine();
+                LogUtil.d(TAG, line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            lrcList.add(new MusicLyrBean(0, "歌词加载出错 _-_!"));
+            return lrcList;
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                    br = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Collections.sort(lrcList);
+        return lrcList;
+    }
+
+    private static ArrayList<MusicLyrBean> parseLine(String str) {
+        ArrayList<MusicLyrBean> list    = new ArrayList<>();
+        String[]                arr     = str.split("]");
+        String                  content = arr[arr.length - 1];
+        for (int i = 0; i < arr.length - 1; i++) {
+            int          startTime = parseTime(arr[i]);
+            MusicLyrBean lrcBean   = new MusicLyrBean(startTime, content);
+            list.add(lrcBean);
+        }
+        return list;
+    }
+
+    private static int parseTime(String s) {
+        String[] arr = s.split(":");
+        String   min = arr[0].substring(1);
+        String   sec = arr[1];
+
+        return (int) (Integer.parseInt(min) * 60 * 1000 + Float.parseFloat(sec) * 1000);
+    }
+
+
 }

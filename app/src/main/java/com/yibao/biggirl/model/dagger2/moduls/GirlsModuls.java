@@ -1,9 +1,9 @@
 package com.yibao.biggirl.model.dagger2.moduls;
 
-import com.yibao.biggirl.mvp.android.AndroidPresenter;
-import com.yibao.biggirl.mvp.girls.GirlsContract;
-import com.yibao.biggirl.mvp.girls.GirlsFragment;
-import com.yibao.biggirl.mvp.girls.GirlsPresenter;
+import com.yibao.biggirl.mvp.gank.android.AndroidPresenter;
+import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
+import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
+import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 
 import dagger.Module;
 import dagger.Provides;

@@ -9,7 +9,7 @@
     <color name="textName">#939396</color>
     <color name="textTime">#C8C8CE</color>
     <color name="textDes">#4d4d4d</color>
-    <color name="listBg">#bebaba</color>
+    <color name="listBg">#e9e7e7</color>
     <color name="itemBg">#d9d5d5</color>
     <color name="itemType">#ea1ee3</color>
     <color name="colorGreen">#5ab43f</color>
@@ -30,5 +30,6 @@
     <color name="seekBarP">#8e8e8f</color>
     <color name="seekBarN">#ccdcdbdb</color>
     <!-- 透明 -->
+    <color name="transparent">#00000000</color>
 
 </resources>

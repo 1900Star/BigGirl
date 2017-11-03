@@ -43,13 +43,14 @@ public class AudioPlayService
     public final static String BUTTON_ID        = "ButtonId";
     public static final String ACTION_MUSIC     = "MUSIC";
 
-//    String path = Environment.getExternalStorageDirectory()
-//                             .getAbsolutePath() + "/Music/Song/1773377275_AZ.mp3";
+    //    String path = Environment.getExternalStorageDirectory()
+    //                             .getAbsolutePath() + "/Music/Song/1773377275_AZ.mp3";
     private int position = -2;
     private ArrayList<MusicInfo>  mMusicItem;
     private SharedPreferences     sp;
     private MusicBroacastReceiver mReceiver;
-    private NotificationManager manager;
+    private NotificationManager   manager;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -101,8 +102,7 @@ public class AudioPlayService
 
     {
 
-        private MusicInfo           mMusicInfo;
-
+        private MusicInfo mMusicInfo;
 
 
         private void play() {
@@ -131,7 +131,7 @@ public class AudioPlayService
             MyApplication.getIntstance()
                          .bus()
                          .post(mMusicItem.get(position));
-
+            //显示音乐通知栏
             showNotification();
 
 
@@ -139,7 +139,6 @@ public class AudioPlayService
 
         private void showNotification() {
             Notification notification = MusicNoification.getNotification(AudioPlayService.this,
-                                                                         isPlaying(),
                                                                          mMusicInfo);
             manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -235,13 +234,11 @@ public class AudioPlayService
 
         public void start() {
             mediaPlayer.start();
-//            showNotification();
         }
 
         //暂停播放
         public void pause() {
             mediaPlayer.pause();
-            //            manager.cancel(0);
 
         }
 
@@ -265,7 +262,6 @@ public class AudioPlayService
                         MyApplication.getIntstance()
                                      .bus()
                                      .post(new MusicStatusBean(type, true));
-                        LogUtil.d("PAUSE");
                     } else {
                         mAudioBinder.start();
                         MyApplication.getIntstance()
@@ -279,7 +275,6 @@ public class AudioPlayService
                         MyApplication.getIntstance()
                                      .bus()
                                      .post(new MusicStatusBean(type, true));
-                        LogUtil.d("PAUSE");
                     } else {
                         MyApplication.getIntstance()
                                      .bus()
@@ -310,7 +305,7 @@ public class AudioPlayService
                 switch (id) {
                     case ROOT:
                         LogUtil.d("Root");
-//                        mAudioBinder.playStatus(1);
+                        mAudioBinder.playStatus(1);
                         break;
                     case CLOSE:
                         LogUtil.d("CLOSE");

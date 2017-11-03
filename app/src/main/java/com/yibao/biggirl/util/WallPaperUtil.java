@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
-import com.yibao.biggirl.mvp.girl.GirlAdapter;
+import com.yibao.biggirl.mvp.gank.girl.GirlAdapter;
 
 import java.io.IOException;
 

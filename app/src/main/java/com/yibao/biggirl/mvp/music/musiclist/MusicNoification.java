@@ -5,13 +5,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.service.AudioPlayService;
+import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author：Sid
@@ -22,29 +28,32 @@ public class MusicNoification {
 
 
     private static RemoteViews remoteView;
+    private static RxBus       mBus;
 
-    public static Notification getNotification(Context context, boolean isPlaying, MusicInfo info)
+    public static Notification getNotification(Context context, MusicInfo info)
     {
 
+        mBus = MyApplication.getIntstance()
+                            .bus();
         remoteView = getRemotViews(context,
-                                   isPlaying,
                                    StringUtil.getAlbulm(info.getAlbumId()),
                                    info.getTitle(),
                                    info.getArtist());
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-
+        //        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        Notification.Builder builder = new Notification.Builder(context);
         Notification notification = builder.setSmallIcon(R.mipmap.biggirl)
                                            .setOngoing(true)
+                                           .setAutoCancel(true)
                                            .setContent(remoteView)
                                            .build();
         notification.bigContentView = remoteView;
+
         return notification;
     }
 
     private static RemoteViews getRemotViews(Context context,
-                                             boolean isPlaying,
                                              Uri uri,
                                              String songName,
                                              String artistName)
@@ -56,19 +65,27 @@ public class MusicNoification {
         remoteView.setImageViewResource(R.id.widget_close, R.mipmap.notifycation_close);
         remoteView.setImageViewResource(R.id.widget_prev, R.mipmap.notifycation_prev);
         remoteView.setImageViewResource(R.id.widget_next, R.mipmap.notifycation_next);
-        updatePlayBtn(isPlaying); //通知栏的监听
+        updatePlayBtn(); //通知栏的播放按钮监听
         remoteViewListenr(context, remoteView);
         return remoteView;
 
     }
 
-    private static void updatePlayBtn(boolean isPlaying) {
-        if (isPlaying) {
-            remoteView.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_pause);
-        } else {
-            remoteView.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_play);
+    private static void updatePlayBtn() {
+        mBus.toObserverable(MusicStatusBean.class)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(bean -> {
+                LogUtil.d("*****  Noti  " + bean.isPlay);
+                if (bean.isPlay) {
+                    remoteView.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_play);
+                } else {
+                    remoteView.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_pause);
 
-        }
+                }
+            });
+
+
     }
 
     private static void remoteViewListenr(Context context, RemoteViews remoteViews) {

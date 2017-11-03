@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
-
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorAccent</item>
@@ -44,20 +43,5 @@
         <item name="android:windowTranslucentNavigation">true</item>
 
     </style>
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.NoActionBar.TranslucentDecor"
-           type="text/css">
-        <!-- toolbar（actionbar）颜色 -->
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <!-- 状态栏颜色 -->
-        <item name="colorPrimaryDark">#3A5FCD</item>
-        <!--toolbar文字的颜色-->
-        <item name="@android:textColorPrimary">@android:color/white</item>
-        <!-- 窗口的背景颜色 -->
-        <item name="android:windowBackground">@android:color/white</item>
-
-        <!--toolbar上菜单文字的颜色-->
-        <item name="actionMenuTextColor">#ffffff</item>
-    </style>
-
 
 </resources>

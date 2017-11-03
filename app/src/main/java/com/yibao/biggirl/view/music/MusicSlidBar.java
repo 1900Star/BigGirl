@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.mvp.music.musiclist.MusicRvAdapter;
+import com.yibao.biggirl.mvp.music.musiclist.MusicListAdapter;
 import com.yibao.biggirl.util.LogUtil;
 
 
@@ -106,8 +106,8 @@ public class MusicSlidBar
             if (i == 0) {
                 mTvPaint.setColor(Color.GRAY);
             } else if (i == mIndex) {
-                //                mTvPaint.setColor(Color.parseColor("#6e6e6e"));
-                mTvPaint.setColor(Color.BLUE);
+                mTvPaint.setColor(Color.parseColor("#FF4081"));
+                //                mTvPaint.setColor(Color.BLUE);
                 canvas.drawCircle(viewW / 2,
                                   i * singleHeight + singleHeight / 2 - dip2px(1),
                                   dip2px(12),
@@ -183,7 +183,7 @@ public class MusicSlidBar
         //处理列表section位置
         //        rvListener();
         //获取listview的适配器
-        MusicRvAdapter adapter = (MusicRvAdapter) mRecyclerView.getAdapter();
+        MusicListAdapter adapter = (MusicListAdapter) mRecyclerView.getAdapter();
         //获取sections的集合
         String[] sections = adapter.getSections();
 
@@ -203,6 +203,7 @@ public class MusicSlidBar
         int                 positionForSection = adapter.getPositionForSection(sectionIndex);
         LinearLayoutManager manager            = (LinearLayoutManager) mRecyclerView.getLayoutManager();
         manager.scrollToPositionWithOffset(positionForSection, 0);
+
 
     }
 

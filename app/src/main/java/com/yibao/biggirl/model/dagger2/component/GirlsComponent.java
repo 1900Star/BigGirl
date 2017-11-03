@@ -1,7 +1,7 @@
 package com.yibao.biggirl.model.dagger2.component;
 
 import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
-import com.yibao.biggirl.mvp.girls.GirlsFragment;
+import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
 
 import dagger.Component;
 

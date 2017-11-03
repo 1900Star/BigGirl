@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
@@ -37,6 +39,7 @@ import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.view.CircleImageView;
+import com.yibao.biggirl.view.music.LyricsView;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -81,22 +84,24 @@ public class MusicPlayDialogFag
     private MyAnimatorUpdateListener     mAnimatorListener;
     private boolean                      isFavorite;
     private int mProgress = 0;
-    private Disposable         mSubscribe;
-    private SeekBar            mSbProgress;
-    private SeekBar            mSbVolume;
-    private AudioManager       mAudioManager;
-    private int                mDuration;
-    private RxBus              mBus;
-    private String             mAlbumUrl;
-    private MusicInfo          mMusicInfo;
-    private MusicInfoDao       mInfoDao;
-    private MusicPlayPresenter mPresenter;
-
+    private Disposable   mSubscribe;
+    private SeekBar      mSbProgress;
+    private SeekBar      mSbVolume;
+    private AudioManager mAudioManager;
+    private int          mDuration;
+    private RxBus        mBus;
+    private String       mAlbumUrl;
+    private MusicInfo    mMusicInfo;
+    private MusicInfoDao mInfoDao;
+    private ImageView    mIvLyrSwitch;
+    boolean isShowLyrics = false;
+    private LyricsView     mLyricsView;
+    private Disposable     mDisposableLyr;
+    private VolumeReceiver mVolumeReceiver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new MusicPlayPresenter();
         audioBinder = MusicListActivity.getAudioBinder();
         mBus = MyApplication.getIntstance()
                             .bus();
@@ -104,7 +109,7 @@ public class MusicPlayDialogFag
         mInfoDao = MyApplication.getIntstance()
                                 .getDaoSession()
                                 .getMusicInfoDao();
-        registerReceiver();     //注册监听的音量广播
+        registerVolumeReceiver();     //注册音量监听广播
     }
 
     @Override
@@ -116,13 +121,12 @@ public class MusicPlayDialogFag
 
     }
 
-    private boolean checkCurrentIsFavorite() {
+    private void checkCurrentIsFavorite() {
         List<MusicInfo> list = mInfoDao.queryBuilder()
                                        .where(MusicInfoDao.Properties.Title.eq(mMusicInfo.getTitle()))
                                        .build()
                                        .list();
         if (list.size() == 0) {
-            LogUtil.d("Null");
             mIvMusicFavorite.setImageResource(R.drawable.music_favorite_selector);
             isFavorite = false;
         } else {
@@ -130,7 +134,6 @@ public class MusicPlayDialogFag
             mIvMusicFavorite.setImageResource(R.mipmap.favorite_yes);
             isFavorite = true;
         }
-        return isFavorite;
     }
 
     private void initSongInfo() {
@@ -251,36 +254,37 @@ public class MusicPlayDialogFag
 
     //设置歌曲名和歌手名
     private void perpareMusic(MusicInfo info) {
+        LogUtil.d("Song Url " + info.getSongUrl());
         mMusicInfo = info;
-        //只要歌曲发生变化 ，就将isFavorite标记重置为false, 保证收藏正常。
-        //        isFavorite = false;
-
         checkCurrentIsFavorite();
         initAnimation();
         //更新音乐标题
         mSongName.setText(getSongName(info.getTitle()));
         //更新歌手名称
         mArtistName.setText(info.getArtist());
-        //歌曲Url
-        //设置专辑图片
-        //        mAlbumUrl = RandomUtil.getRandomUrl();
+        //        歌曲Url
+        //        设置专辑图片
+        //                mAlbumUrl = RandomUtil.getRandomUrl();
         mAlbumUrl = StringUtil.getAlbulm(info.getAlbumId())
                               .toString();
         setAlbulm(mAlbumUrl);
         //设置歌曲时长
         setSongDuration();
-        //更新播放状态按钮
+        //        更新播放状态按钮
         updatePlayBtnStatus();
+
+        //              初始化歌词
+        //        mLyricsView.setLrcFile(info.getSongUrl());
+        //        LogUtil.d("SongUrl : " + info.getSongUrl());
 
 
     }
+
 
     private void setAlbulm(String url) {
         Glide.with(this)
              .load(url)
              .asBitmap()
-//             .placeholder(R.mipmap.playing_cover_lp)
-             //             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
              .into(mPlayingSongAlbum);
     }
 
@@ -370,23 +374,14 @@ public class MusicPlayDialogFag
                 dismiss();
                 break;
             case R.id.titlebar_play_list:       //快速列表
-
-                List<MusicInfo> lists = mInfoDao.queryBuilder()
-                                                .build()
-                                                .list();
-                for (int i = 0; i < lists.size(); i++) {
-                    LogUtil.d(" SystemTime   :" + lists.get(i)
-                                                       .getTime());
-
-                }
-                MusicBottomSheetDialog.newInstance()
-                                      .getBottomDialog(getActivity(), lists);
-
                 break;
             case R.id.playing_song_album:      //显示专辑大图
-                TopBigPicDialogFragment.newInstance(mAlbumUrl)
-                                       .show(getFragmentManager(), "album");
                 break;
+            //TODO
+            case R.id.iv_lyrics_switch:    //显示歌词
+                showLyrics();
+                break;
+
             case R.id.music_player_mode:    //切换播放模式
                 switchPlayMode();
                 break;
@@ -399,7 +394,6 @@ public class MusicPlayDialogFag
             case R.id.music_player_next:       //下一曲
                 audioBinder.playNext();
                 break;
-            //TODO
             case R.id.iv_favorite_music:   //收藏
                 favoritMusic();
                 break;
@@ -407,6 +401,43 @@ public class MusicPlayDialogFag
 
     }
 
+
+    //    显示歌词
+
+    private void showLyrics() {
+
+        if (isShowLyrics) {
+            mIvLyrSwitch.setBackgroundResource(R.drawable.music_lrc_close);
+            AnimationDrawable animation = (AnimationDrawable) mIvLyrSwitch.getBackground();
+            animation.start();
+            mDisposableLyr.dispose();
+            mLyricsView.setVisibility(View.INVISIBLE);
+            isShowLyrics = false;
+        } else {
+            mIvLyrSwitch.setBackgroundResource(R.drawable.music_lrc_open);
+            AnimationDrawable animation = (AnimationDrawable) mIvLyrSwitch.getBackground();
+            animation.start();
+            initLyrics();
+
+            mLyricsView.setVisibility(View.VISIBLE);
+            isShowLyrics = true;
+        }
+
+    }
+
+    //          初始化歌词
+    private void initLyrics() {
+        mLyricsView.rollText(audioBinder.getProgress(), audioBinder.getDuration());
+        if (mDisposableLyr == null) {
+            mDisposableLyr = Observable.interval(0, 5000, TimeUnit.MILLISECONDS)
+                                       .subscribeOn(Schedulers.io())
+                                       .observeOn(AndroidSchedulers.mainThread())
+                                       .subscribe(aLong -> initLyrics());
+
+        }
+
+
+    }
 
     private void favoritMusic() {
         if (isFavorite) {
@@ -439,9 +470,10 @@ public class MusicPlayDialogFag
     }
 
     private void initListener() {
+        mIvLyrSwitch.setOnClickListener(this);
         mTitlebarDown.setOnClickListener(this);
-        mTitlebarPlayList.setOnClickListener(this);
-        mPlayingSongAlbum.setOnClickListener(this);
+        //        mTitlebarPlayList.setOnClickListener(this);
+        //        mPlayingSongAlbum.setOnClickListener(this);
         mMusicPlayerMode.setOnClickListener(this);
         mMusicPlayerPre.setOnClickListener(this);
         mMusicPlay.setOnClickListener(this);
@@ -449,26 +481,49 @@ public class MusicPlayDialogFag
         mIvMusicFavorite.setOnClickListener(this);
         mSbProgress.setOnSeekBarChangeListener(new SeekBarListener());
         mSbVolume.setOnSeekBarChangeListener(new SeekBarListener());
+        rxViewClick();
 
 
     }
 
+    private void rxViewClick() {
+
+        RxView.clicks(mTitlebarPlayList)
+              .throttleFirst(1, TimeUnit.SECONDS)
+              .subscribe(o -> {
+                  List<MusicInfo> lists = mInfoDao.queryBuilder()
+                                                  .build()
+                                                  .list();
+                  MusicBottomSheetDialog.newInstance()
+                                        .getBottomDialog(getActivity(), lists);
+
+              });
+
+        RxView.clicks(mPlayingSongAlbum)
+              .throttleFirst(1, TimeUnit.SECONDS)
+              .subscribe(o -> TopBigPicDialogFragment.newInstance(mAlbumUrl)
+                                                     .show(getFragmentManager(), "album"));
+
+    }
+
     private void initView() {
-        mTitlebarDown = (ImageView) root.findViewById(R.id.titlebar_down);
-        mSongName = (TextView) root.findViewById(R.id.play_song_name);
-        mArtistName = (TextView) root.findViewById(R.id.play_artist_name);
-        mTitlebarPlayList = (ImageView) root.findViewById(R.id.titlebar_play_list);
-        mStartTime = (TextView) root.findViewById(R.id.start_time);
-        mEndTime = (TextView) root.findViewById(R.id.end_time);
-        mRotateRl = (RelativeLayout) root.findViewById(R.id.rotate_rl);
-        mPlayingSongAlbum = (CircleImageView) root.findViewById(R.id.playing_song_album);
-        mMusicPlayerMode = (ImageView) root.findViewById(R.id.music_player_mode);
-        mMusicPlayerPre = (ImageView) root.findViewById(R.id.music_player_pre);
-        mMusicPlay = (ImageView) root.findViewById(R.id.music_play);
-        mMusicPlayerNext = (ImageView) root.findViewById(R.id.music_player_next);
-        mIvMusicFavorite = (ImageView) root.findViewById(R.id.iv_favorite_music);
-        mSbProgress = (SeekBar) root.findViewById(R.id.sb_progress);
-        mSbVolume = (SeekBar) root.findViewById(R.id.sb_volume);
+        mTitlebarDown = root.findViewById(R.id.titlebar_down);
+        mSongName = root.findViewById(R.id.play_song_name);
+        mArtistName = root.findViewById(R.id.play_artist_name);
+        mTitlebarPlayList = root.findViewById(R.id.titlebar_play_list);
+        mStartTime = root.findViewById(R.id.start_time);
+        mEndTime = root.findViewById(R.id.end_time);
+        mIvLyrSwitch = root.findViewById(R.id.iv_lyrics_switch);
+        mRotateRl = root.findViewById(R.id.rotate_rl);
+        mPlayingSongAlbum = root.findViewById(R.id.playing_song_album);
+        mMusicPlayerMode = root.findViewById(R.id.music_player_mode);
+        mMusicPlayerPre = root.findViewById(R.id.music_player_pre);
+        mMusicPlay = root.findViewById(R.id.music_play);
+        mMusicPlayerNext = root.findViewById(R.id.music_player_next);
+        mIvMusicFavorite = root.findViewById(R.id.iv_favorite_music);
+        mSbProgress = root.findViewById(R.id.sb_progress);
+        mSbVolume = root.findViewById(R.id.sb_volume);
+        mLyricsView = root.findViewById(R.id.tv_lyrics);
     }
 
 
@@ -504,6 +559,7 @@ public class MusicPlayDialogFag
             mSubscribe.dispose();
             disposables.clear();
         }
+        getActivity().unregisterReceiver(mVolumeReceiver);
     }
 
     private class SeekBarListener
@@ -531,9 +587,9 @@ public class MusicPlayDialogFag
         }
     }
 
-    private void registerReceiver() {
-        VolumeReceiver mVolumeReceiver = new VolumeReceiver();
-        IntentFilter   filter          = new IntentFilter();
+    private void registerVolumeReceiver() {
+        mVolumeReceiver = new VolumeReceiver();
+        IntentFilter filter = new IntentFilter();
         filter.addAction("android.media.VOLUME_CHANGED_ACTION");
         getActivity().registerReceiver(mVolumeReceiver, filter);
     }

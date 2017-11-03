@@ -4,8 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Author：Sid
@@ -22,7 +22,7 @@ public class MusicInfo
     private String artist;
     private String album;
     private long   albumId;
-    private String   time;
+    private String time;
     private String songUrl;
 
     public MusicInfo() {
@@ -38,8 +38,14 @@ public class MusicInfo
     }
 
     @Generated(hash = 1887758998)
-    public MusicInfo(Long id, String title, String artist, String album,
-            long albumId, String time, String songUrl) {
+    public MusicInfo(Long id,
+                     String title,
+                     String artist,
+                     String album,
+                     long albumId,
+                     String time,
+                     String songUrl)
+    {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -110,7 +116,6 @@ public class MusicInfo
     }
 
 
-
     public String getSongUrl() {
         return songUrl;
     }
@@ -134,4 +139,9 @@ public class MusicInfo
         parcel.writeString(time);
         parcel.writeString(songUrl);
     }
+
+//    @Override
+//    public int compareTo(@NonNull MusicInfo info) {
+//        return title.compareTo(info.getTitle());
+//    }
 }

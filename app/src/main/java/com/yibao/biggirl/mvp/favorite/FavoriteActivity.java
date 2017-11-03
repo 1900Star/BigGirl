@@ -67,6 +67,18 @@ public class FavoriteActivity
     private boolean isUpdateFavo = false;
     private Unbinder mBind;
 
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activty_favorite);
+        mBind = ButterKnife.bind(this);
+        initInject();
+        initView();
+        initData();
+        initListener();
+    }
     protected void initInject() {
         DaggerFavoriteComponent component = (DaggerFavoriteComponent) DaggerFavoriteComponent.builder()
                                                                                              .favoriteModuls(
@@ -74,22 +86,10 @@ public class FavoriteActivity
                                                                                                              this))
                                                                                              .build();
 
-//        component.in(this);
+        component.in(this);
 
         //        mWebPresenter.queryAllFavorite();
     }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activty_favorite);
-        mBind = ButterKnife.bind(this);
-//        initInject();
-//        initView();
-//        initData();
-//        initListener();
-    }
-
     protected void initView() {
 
         ActionBar toolbar = getSupportActionBar();

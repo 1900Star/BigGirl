@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yibao.biggirl.factory.FragmentFactorys;
+import com.yibao.biggirl.factory.FragmentFactory;
 import com.yibao.biggirl.util.Constants;
 
 /**
@@ -26,8 +26,8 @@ public class TabPagerAdapter
 
     @Override
     public Fragment getItem(int position) {
-//                return FragmentFactory.createFragment(position);
-        return FragmentFactorys.createFragment(position);
+                return FragmentFactory.createFragment(position);
+//        return FragmentFactorys.INSTANCE.createFragment(position);
     }
 
     @Override

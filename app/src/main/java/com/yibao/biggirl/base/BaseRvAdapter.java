@@ -22,15 +22,15 @@ import butterknife.ButterKnife;
  * Des：${BaseAdapter}
  * Time:2017/6/2 13:07
  */
-public abstract class BaseRvAdapter<ITEMBEANTYPE>
+public abstract class BaseRvAdapter<T>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 {
-    public               List<ITEMBEANTYPE> mList       = null;
-    private static final int                TYPE_ITEM   = 0;
-    private static final int                TYPE_FOOTER = 1;
+    public               List<T> mList       = null;
+    private static final int     TYPE_ITEM   = 0;
+    private static final int     TYPE_FOOTER = 1;
 
-    public BaseRvAdapter(List<ITEMBEANTYPE> list) {
+    public BaseRvAdapter(List<T> list) {
         mList = list;
     }
 
@@ -56,7 +56,7 @@ public abstract class BaseRvAdapter<ITEMBEANTYPE>
         bindView(holder, mList.get(position));
     }
 
-    protected abstract void bindView(RecyclerView.ViewHolder holder, ITEMBEANTYPE itembeantype);
+    protected abstract void bindView(RecyclerView.ViewHolder holder, T t);
 
     protected abstract RecyclerView.ViewHolder getViewHolder(View view);
 
@@ -113,13 +113,13 @@ public abstract class BaseRvAdapter<ITEMBEANTYPE>
     }
 
 
-    public void AddHeader(List<ITEMBEANTYPE> list) {
+    public void AddHeader(List<T> list) {
         mList.addAll(list);
 
 
     }
 
-    public void AddFooter(List<ITEMBEANTYPE> list) {
+    public void AddFooter(List<T> list) {
         mList.addAll(list);
 
     }
