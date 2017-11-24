@@ -214,7 +214,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:background="@mipmap/btn_folder_shuffles"
+        android:background="@mipmap/btn_folder_shuffle"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <SeekBar

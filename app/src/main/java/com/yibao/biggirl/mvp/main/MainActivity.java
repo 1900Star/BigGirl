@@ -100,8 +100,6 @@ public class MainActivity
             initView();
             initData();
             initListener();
-
-
         }
 
     }

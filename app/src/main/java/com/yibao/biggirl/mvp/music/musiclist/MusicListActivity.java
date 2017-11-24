@@ -272,6 +272,7 @@ public class MusicListActivity
         intent.setClass(this, AudioPlayService.class);
         intent.putParcelableArrayListExtra("musicItem", mMusicItems);
         intent.putExtra("position", position);
+        LogUtil.d("MusicListActivity   ** " + position);
         mConnection = new AudioServiceConnection();
         bindService(intent, mConnection, Service.BIND_AUTO_CREATE);
         startService(intent);

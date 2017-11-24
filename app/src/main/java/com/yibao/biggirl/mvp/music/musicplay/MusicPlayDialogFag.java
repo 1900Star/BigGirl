@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -168,6 +169,10 @@ public class MusicPlayDialogFag
             startUpdateProgress();
         }
         startUpdateProgress();
+        //设置播放模式图片
+        SharedPreferences sp   = getActivity().getSharedPreferences("music_mode", 0);
+        int               mode = sp.getInt("play_mode", 0);
+        updatePlayModeImage(mode);
         //音乐设置
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -329,9 +334,9 @@ public class MusicPlayDialogFag
     //切换当前播放模式 全部循环-单曲循环-随机播放
     private void switchPlayMode() {
         //获取当前的播放模式
-        int play_mode = audioBinder.getPalyMode();
+        int playMode = audioBinder.getPalyMode();
         //根据当前播放模式进行切换
-        switch (play_mode) {
+        switch (playMode) {
             case AudioPlayService.PLAY_MODE_ALL:
                 audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_SINGLE);
                 break;
@@ -344,16 +349,13 @@ public class MusicPlayDialogFag
             default:
                 break;
         }
-        //更新播放模式图片
-        updatePlayModeImage();
+        //根据当前模式,更新播放模式图片
+        updatePlayModeImage(audioBinder.getPalyMode());
     }
 
     //更新播放模式图片
-    private void updatePlayModeImage() {
-        //获取当前的播放模式
-        int play_mode = audioBinder.getPalyMode();
-        //根据当前模式设置图片
-        switch (play_mode) {
+    private void updatePlayModeImage(int playMode) {
+        switch (playMode) {
             case AudioPlayService.PLAY_MODE_ALL:
                 mMusicPlayerMode.setImageResource(R.drawable.audio_playmode_allrepeat_selector);
                 break;

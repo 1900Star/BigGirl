@@ -31,6 +31,7 @@ public class AudioPlayService
     private        MediaPlayer mediaPlayer;
     private        AudioBinder mAudioBinder;
     private static int         PLAY_MODE;
+    //三种播放模式
     public static final int    PLAY_MODE_ALL    = 0;
     public static final int    PLAY_MODE_SINGLE = 1;
     public static final int    PLAY_MODE_RANDOM = 2;
@@ -40,11 +41,9 @@ public class AudioPlayService
     public static final int    PLAY             = 2;
     public static final int    NEXT             = 3;
     public static final int    CLOSE            = 4;
+    //广播匹配
     public final static String BUTTON_ID        = "ButtonId";
     public static final String ACTION_MUSIC     = "MUSIC";
-
-    //    String path = Environment.getExternalStorageDirectory()
-    //                             .getAbsolutePath() + "/Music/Song/1773377275_AZ.mp3";
     private int position = -2;
     private ArrayList<MusicInfo>  mMusicItem;
     private SharedPreferences     sp;
@@ -60,9 +59,10 @@ public class AudioPlayService
     @Override
     public void onCreate() {
         super.onCreate();
+        LogUtil.d("Service  onCreate   ** ");
         mAudioBinder = new AudioBinder();
         initBroadcast();
-        sp = getSharedPreferences("config", MODE_PRIVATE);
+        sp = getSharedPreferences("music_mode", MODE_PRIVATE);
         //初始化播放模式
         PLAY_MODE = sp.getInt("play_mode", 0);
 
@@ -82,10 +82,12 @@ public class AudioPlayService
     {
         mMusicItem = intent.getParcelableArrayListExtra("musicItem");
         int enterPosition = intent.getIntExtra("position", -1);
+        LogUtil.d("Ser position  " + enterPosition);
         if (enterPosition != position && enterPosition != -1) {
             position = enterPosition;
             //执行播放
             mAudioBinder.play();
+            LogUtil.d("onStartCommand   ");
         } else if (enterPosition != -1 && enterPosition == position) {
             //通知播放界面更新
             MyApplication.getIntstance()
@@ -131,6 +133,7 @@ public class AudioPlayService
             MyApplication.getIntstance()
                          .bus()
                          .post(mMusicItem.get(position));
+            LogUtil.d("********     onPrepared");
             //显示音乐通知栏
             showNotification();
 
@@ -247,12 +250,6 @@ public class AudioPlayService
             mediaPlayer.seekTo(progress);
         }
 
-        //播放小列表中当前位置的歌曲
-        public void playPosition(int position) {
-            AudioPlayService.this.position = position;
-            play();
-        }
-
         //type : 1 表示点击通知栏进入播放界面，0 表示在通知栏进行播放和暂停的控制，并不进入播放的界面。
         private void playStatus(int type) {
             switch (type) {
@@ -310,7 +307,6 @@ public class AudioPlayService
                     case CLOSE:
                         LogUtil.d("CLOSE");
                         manager.cancel(0);
-                        //                        onDestroy();
                         break;
                     case PREV:
                         mAudioBinder.playPre();

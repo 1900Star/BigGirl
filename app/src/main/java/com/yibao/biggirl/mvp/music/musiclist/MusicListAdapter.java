@@ -17,6 +17,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnMusicListItemClickListener;
 import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.StringUtil;
 
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class MusicListAdapter
             }
             viewHolder.mLlMusicItem.setOnClickListener(view -> {
                 if (mContext instanceof OnMusicListItemClickListener) {
+                    LogUtil.d("MusicListAdapter   ** " + position);
                     ((OnMusicListItemClickListener) mContext).startMusicService(position);
                 }
             });
