@@ -19,11 +19,11 @@ public class Constants {
 
     public static final String dir            = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
     public static final String deleteDir      = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
-   //崩溃日志
+    //崩溃日志
     public static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory()
                                                            .getPath() + "/CrashLog/log/";
     //保存图片状态码
-    public static int FIRST_DWON = 0;
+    public static       int    FIRST_DWON     = 0;
     public static       int    EXISTS         = 1;
     public static       int    DWON_PIC_EROOR = 2;
     //fragment 加载状态码
@@ -33,12 +33,12 @@ public class Constants {
     public static       int    NO_MORE_DATA   = 3;
     public static       int    LOADING_DATA   = 4;
     public static       String arrTitle[]     = {"Girl",
-                                                 "Android",
-                                                 "Video",
                                                  "App",
                                                  "iOS",
+                                                 "Video",
                                                  "前端",
-                                                 "拓展资源"};
+                                                 "拓展资源",
+                                                 "Android"};
 
     public static final String FRAGMENT_GIRLS   = "福利";
     public static final String FRAGMENT_ALL     = "all";

@@ -38,7 +38,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class AppFag
         extends BaseFag<ResultsBeanX>
-        implements SwipeRefreshLayout.OnRefreshListener,AppContract.View
+        implements SwipeRefreshLayout.OnRefreshListener, AppContract.View
 {
 
     @BindView(R.id.swipe_refresh)
@@ -52,21 +52,53 @@ public class AppFag
     private AppAdapter mAdapter;
 
 
-private AppContract.Presenter mPresenter;
-    private RecyclerView mRecyclerView;
+    private AppContract.Presenter mPresenter;
+    private int                   type;
+    private String                mLoadType;
+
+    public AppFag(int type) {
+        this.type = type;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new AppPresenter(this);
-        mPresenter.start(Constants.FRAGMENT_APP, 4);
+        String loadType = getLoadType();
+        mPresenter.start(loadType, 2);
 
+    }
+
+    private String getLoadType() {
+        switch (type) {
+            case 1:
+                mLoadType = Constants.FRAGMENT_APP;
+                break;
+            case 2:
+                mLoadType = Constants.FRAGMENT_IOS;
+                //                mPresenter.start(Constants.FRAGMENT_IOS, 2);
+                break;
+            case 3:
+                mLoadType = Constants.FRAGMENT_VIDEO;
+                //                mPresenter.start(Constants.FRAGMENT_VIDEO, 2);
+                break;
+            case 4:
+                mLoadType = Constants.FRAGMENT_FRONT;
+                //                mPresenter.start(Constants.FRAGMENT_FRONT, 2);
+                break;
+            case 5:
+                mLoadType = Constants.FRAGMENT_EXPAND;
+                break;
+            default:
+                break;
+        }
+        return mLoadType;
     }
 
 
     @Override
     public void loadDatas() {
-        //        mAppPresenter.start(Constants.FRAGMENT_ANDROID, 4);
+        //        mPresenter.start(Constants.FRAGMENT_ANDROID, 2);
 
     }
 
@@ -95,15 +127,17 @@ private AppContract.Presenter mPresenter;
 
         mAdapter = new AppAdapter(getContext(), list);
 
-        mRecyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
 
-        initListerner(mRecyclerView);
+        initListerner(recyclerView);
 
-        mFagContent.addView(mRecyclerView);
+        mFagContent.addView(recyclerView);
     }
 
     public void initListerner(RecyclerView recyclerView) {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 int lastPosition = -1;
@@ -133,10 +167,9 @@ private AppContract.Presenter mPresenter;
                         {
                             page++;
 
-//                            mGirlsPresenter.loadData(size,
-//                                                   page,
-//                                                   Constants.FRAGMENT_APP,
-//                                                   Constants.LOAD_MORE_DATA);
+                            mPresenter.loadData(20, page, mLoadType, Constants.LOAD_MORE_DATA);
+
+
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -197,8 +230,7 @@ private AppContract.Presenter mPresenter;
         Observable.timer(1, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-//                      mGirlsPresenter.loadData(size, 1, Constants.FRAGMENT_APP, Constants.REFRESH_DATA);
-
+                      mPresenter.loadData(size, 1, mLoadType, Constants.REFRESH_DATA);
                       mSwipeRefresh.setRefreshing(false);
                       page = 1;
                   });
@@ -206,9 +238,12 @@ private AppContract.Presenter mPresenter;
 
     @Override
     public void refresh(List<ResultsBeanX> list) {
-
+        mList.clear();
         mAdapter.clear();
+        mList.addAll(list);
         mAdapter.AddHeader(list);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -240,7 +275,7 @@ private AppContract.Presenter mPresenter;
 
     public AppFag newInstance() {
 
-        return new AppFag();
+        return new AppFag(type);
     }
 
     @Override

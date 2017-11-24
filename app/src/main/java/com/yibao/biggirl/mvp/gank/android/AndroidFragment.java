@@ -61,16 +61,11 @@ public class AndroidFragment
 //    @Inject
 //    GirlsPresenter mPresenter;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        DaggerAndroidComponent component = (DaggerAndroidComponent) DaggerAndroidComponent.builder()
-//                                                                                          .androidModuls(
-//                                                                                                  new AndroidModuls(
-//                                                                                                          this))
-//                                                                                          .build();
-//        component.in(this);
+//        mPresenters=new AppPresenter(this);
 //        mGirlsPresenter.start(Constants.FRAGMENT_ANDROID, 1);
     }
 

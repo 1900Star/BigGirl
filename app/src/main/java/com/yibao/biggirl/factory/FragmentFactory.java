@@ -3,7 +3,7 @@ package com.yibao.biggirl.factory;
 import android.support.v4.app.Fragment;
 
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.mvp.gank.android.AndroidFragment;
+import com.yibao.biggirl.mvp.gank.app.AppFag;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
 
 import java.util.HashMap;
@@ -15,14 +15,14 @@ import java.util.Map;
  * Time:2017/5/7 14:55
  */
 public class FragmentFactory {
-    private static final int                    FRAGMENT_GIRLS    = 0;//妹子
-    private static final int                    FRAGMENT_ANDROID  = 1;//安卓
-    private static final int                    FRAGMENT_VEDIO    = 2;//视频
-    private static final  int                   FRAGMENT_APP      = 3;//App
-    private static final  int                   FRAGMENT_IOS      = 4;//iOS
-    private static final  int                   FRAGMENT_FRONT    = 5;//前端
-    private static final  int                   FRAGMENT_EXTEND   = 6;//拓展资源
-    private static        Map<Integer, BaseFag> mCacheFragmentMap = new HashMap<>();
+    private static final int                   FRAGMENT_GIRLS    = 0;//妹子
+    private static final int                   FRAGMENT_APP      = 1;//App
+    private static final int                   FRAGMENT_IOS      = 2;//iOS
+    private static final int                   FRAGMENT_FRONT    = 4;//前端
+    private static final int                   FRAGMENT_EXTEND   = 5;//拓展资源
+    private static final int                   FRAGMENT_VEDIO    = 3;//视频
+    private static final int                   FRAGMENT_ANDROID  = 6;//安卓
+    private static       Map<Integer, BaseFag> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
 
@@ -36,30 +36,27 @@ public class FragmentFactory {
         }
 
         switch (position) {
-
             case FRAGMENT_GIRLS:
                 fragment = new GirlsFragment();
                 break;
-            case FRAGMENT_ANDROID:
-                fragment = new AndroidFragment();
+            case FRAGMENT_APP:
+                fragment = new AppFag(FRAGMENT_APP);
                 break;
-//            case FRAGMENT_VEDIO:
-//                fragment = new VideoFragmnet();
-//
-//                break;
-//            case FRAGMENT_APP:
-//                fragment = new AppFag();
-//                break;
-//            case FRAGMENT_IOS:
-//                fragment = new IOSFragment();
-//
-//                break;
-//            case FRAGMENT_FRONT:
-//                fragment = new FrontEndFragment();
-//                break;
-//            case FRAGMENT_EXTEND:
-//                fragment = new ExpandFragment();
-//                break;
+            case FRAGMENT_IOS:
+                fragment = new AppFag(FRAGMENT_IOS);
+                break;
+            case FRAGMENT_VEDIO:
+                fragment = new AppFag(FRAGMENT_VEDIO);
+                break;
+            case FRAGMENT_FRONT:
+                fragment = new AppFag(FRAGMENT_FRONT);
+                break;
+            case FRAGMENT_EXTEND:
+                fragment = new AppFag(FRAGMENT_EXTEND);
+                break;
+            case FRAGMENT_ANDROID:
+                fragment = new GirlsFragment();
+                break;
             default:
                 break;
         }

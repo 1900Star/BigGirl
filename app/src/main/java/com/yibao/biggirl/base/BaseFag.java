@@ -16,7 +16,6 @@ public abstract class BaseFag<T>
         extends Fragment
 
 
-
 {
 
     public int page = 1;
@@ -29,50 +28,15 @@ public abstract class BaseFag<T>
     public    List<T> mList;
 
 
-
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mList = new ArrayList<>();
-
+        loadDatas();
     }
 
 
-    //    @Override
-    //    public void setUserVisibleHint(boolean isVisibleToUser) {
-    //        super.setUserVisibleHint(isVisibleToUser);
-    //        //        this.isVisibleToUser = isVisibleToUser;
-    //        //        prepareFetchData(false);
-    //        if (isVisibleToUser) {
-    //            loadDatas();
-    //        }
-    //    }
-
-    ////
-    //@Override
-    //public void onActivityCreated(Bundle savedInstanceState) {
-    //    super.onActivityCreated(savedInstanceState);
-    //    isViewInitiated = true;
-    //    prepareFetchData(false);
-    //}
-    ////
     public abstract void loadDatas();
-    ////
-    ////
-    //    protected void prepareFetchData(boolean forceUpdate) {
-    //        if (isVisibleToUser && isViewInitiated && (!isDataInitiated || forceUpdate)) {
-    //            loadDatas();
-    //            isDataInitiated = true;
-    //        }
-    //    }
-    //
-    //
-    //    @Override
-    //    public void onDestroy() {
-    //        super.onDestroy();
-    //    }
 
 
 }

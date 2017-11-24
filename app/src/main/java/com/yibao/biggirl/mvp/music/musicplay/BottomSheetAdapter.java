@@ -1,9 +1,5 @@
 package com.yibao.biggirl.mvp.music.musicplay;
 
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,13 +7,14 @@ import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
+import com.yibao.biggirl.model.music.BottomSheetStatus;
 import com.yibao.biggirl.model.music.MusicInfo;
-import com.yibao.biggirl.service.AudioPlayService;
+import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,13 +30,9 @@ public class BottomSheetAdapter
         implements SectionIndexer
 {
 
-    private List<MusicInfo> mList;
-    private Context         mContext;
 
-    public BottomSheetAdapter(Context context, List<MusicInfo> list) {
+    public BottomSheetAdapter( List<MusicInfo> list) {
         super(list);
-        this.mContext = context;
-        this.mList = list;
 
     }
 
@@ -51,20 +44,13 @@ public class BottomSheetAdapter
             musicHolder.mMusicSinger.setText(musicItem.getArtist());
             musicHolder.mFavoriteTime.setText(musicItem.getTime());
             int position = musicHolder.getAdapterPosition();
-            musicHolder.mRootBottomSheet.setOnClickListener(view -> playMusic(position));
+            RxBus bus = MyApplication.getIntstance()
+                                     .bus();
+            musicHolder.mRootBottomSheet.setOnClickListener(view -> bus.post(new BottomSheetStatus(
+                    position)));
         }
     }
 
-    private void playMusic(int position) {
-        Intent intent = new Intent();
-        intent.setClass(mContext, AudioPlayService.class);
-        intent.putParcelableArrayListExtra("musicItem", (ArrayList<? extends Parcelable>) mList);
-        intent.putExtra("position", position);
-        AudioServiceConnection connection = new AudioServiceConnection();
-        mContext.bindService(intent, connection, Service.BIND_AUTO_CREATE);
-        mContext.startService(intent);
-
-    }
 
     @Override
     protected RecyclerView.ViewHolder getViewHolder(View view) {

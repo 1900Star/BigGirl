@@ -16,8 +16,6 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
-import com.yibao.biggirl.model.dagger2.component.DaggerFavoriteComponent;
-import com.yibao.biggirl.model.dagger2.moduls.FavoriteModuls;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.model.favoriteweb.UpdataFavorite;
 import com.yibao.biggirl.mvp.webview.WebActivity;
@@ -29,8 +27,6 @@ import com.yibao.biggirl.view.SwipeItemLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +55,6 @@ public class FavoriteActivity
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     private List<FavoriteWebBean> mList;
-    @Inject
     WebPresenter mWebPresenter;
     private FavoriteAdapter mAdapter;
     private String TAG = "FavoriteActivity";
@@ -68,28 +63,16 @@ public class FavoriteActivity
     private Unbinder mBind;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activty_favorite);
         mBind = ButterKnife.bind(this);
-        initInject();
+        mWebPresenter = new WebPresenter(this);
         initView();
         initData();
-        initListener();
     }
-    protected void initInject() {
-        DaggerFavoriteComponent component = (DaggerFavoriteComponent) DaggerFavoriteComponent.builder()
-                                                                                             .favoriteModuls(
-                                                                                                     new FavoriteModuls(
-                                                                                                             this))
-                                                                                             .build();
 
-        component.in(this);
-
-        //        mWebPresenter.queryAllFavorite();
-    }
     protected void initView() {
 
         ActionBar toolbar = getSupportActionBar();
@@ -101,18 +84,9 @@ public class FavoriteActivity
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
     }
-
-    protected void initListener() {
-        mWebPresenter.insertFavorite(new FavoriteWebBean());
-
-    }
-
     protected void initData() {
         //        updateFavo();
-    }
-
-    public int getLayoutId() {
-        return R.layout.activty_favorite;
+        mWebPresenter.queryAllFavorite();
     }
 
 
@@ -142,7 +116,7 @@ public class FavoriteActivity
     @Override
     public void deleteFavorite(Long id) {
         LogUtil.d("要删除的 ID :" + id);
-        //        mWebPresenter.cancelFavorite(id, 0);
+        mWebPresenter.cancelFavorite(id, 0);
     }
 
     @Override
@@ -186,8 +160,8 @@ public class FavoriteActivity
         Observable.timer(2, TimeUnit.SECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(aLong -> {
-                      //                      mWebPresenter.queryAllFavorite();
-                      //                      mAdapter.notifyDataSetChanged();
+                      mWebPresenter.queryAllFavorite();
+                      mAdapter.notifyDataSetChanged();
                   });
     }
 
@@ -195,9 +169,9 @@ public class FavoriteActivity
     public void onResume() {
         super.onResume();
         mWebPresenter.queryAllFavorite();
-        //        if (isUpdateFavo) {
-        //            updateFavo();
-        //        }
+        if (isUpdateFavo) {
+            updateFavo();
+        }
     }
 
     public void updateFavo() {
@@ -210,8 +184,8 @@ public class FavoriteActivity
                                      .subscribe(data -> {
                                          LogUtil.d("Update Favorite : " + data.getUpdateFlage());
                                          if (data.getUpdateFlage() == 1) {
-                                             //                                             mAdapter.notifyDataSetChanged();
-                                             //                                             mWebPresenter.queryAllFavorite();
+                                             mAdapter.notifyDataSetChanged();
+                                             mWebPresenter.queryAllFavorite();
                                          }
                                      }));
     }

@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.gank.ios;
+package com.yibao.biggirl.mvp.gank.video;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -52,7 +52,7 @@ public class IOSFragments
         mApplication = (MyApplication) getActivity().getApplication();
         disposables = new CompositeDisposable();
         mPresenter = new AppPresenter(this);
-//        initData();
+        initData();
 //
 //                        mPresenter.start(Constants.FRAGMENT_IOS);
 

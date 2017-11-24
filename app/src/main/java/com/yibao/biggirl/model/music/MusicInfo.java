@@ -9,7 +9,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Author：Sid
- * Des：${音乐实体类}
+ * Des：${音乐实体类,收藏 删除等}
  * Time:2017/9/3 14:31
  */
 @Entity

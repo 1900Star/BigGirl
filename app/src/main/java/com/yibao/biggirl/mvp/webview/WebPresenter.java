@@ -1,11 +1,8 @@
 package com.yibao.biggirl.mvp.webview;
 
-import com.yibao.biggirl.model.favoriteweb.FavoriteDaoInterface;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebDao;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
-
-import java.util.List;
 
 /**
  * Author：Sid
@@ -58,12 +55,7 @@ public class WebPresenter {
     }
 
     public void queryFavoriteIsCollect(String gankId) {
-        mDao.quetyConditional(gankId, new FavoriteDaoInterface.QueryConditionalCallBack() {
-            @Override
-            public void conditionalQuery(List<FavoriteWebBean> list) {
-                mWebActivity.queryFavoriteIsCollect(list);
-            }
-        });
+        mDao.quetyConditional(gankId, list -> mWebActivity.queryFavoriteIsCollect(list));
 
     }
 
