@@ -118,6 +118,7 @@
 
 
         <RelativeLayout
+            android:visibility="visible"
             android:id="@+id/rotate_rl"
             android:layout_width="match_parent"
             android:layout_height="350dp"
@@ -167,6 +168,7 @@
     </FrameLayout>
 
     <LinearLayout
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -221,11 +223,11 @@
         <SeekBar
             android:id="@+id/sb_volume"
             android:layout_width="match_parent"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:maxHeight="6dp"
+            android:maxHeight="8dp"
             android:minHeight="6dp"
             android:progressDrawable="@drawable/seek_bar"
-            android:thumb="@drawable/playing_control_volume"
         />
 
 

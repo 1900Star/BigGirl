@@ -43,9 +43,7 @@
         android:id="@+id/music_floating_block"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_gravity="center"
-        app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="0dp">
+        app:cardBackgroundColor="#fff">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -87,10 +85,9 @@
                         android:layout_marginTop="4dp"
                         android:ellipsize="marquee"
                         android:marqueeRepeatLimit="marquee_forever"
-                        android:maxLines="1"
                         android:textColor="@color/textDes"
                         android:textSize="@dimen/music_loating_title"
-                    />
+                        android:singleLine="true"/>
 
                     <TextView
                         android:id="@+id/music_float_singer_name"

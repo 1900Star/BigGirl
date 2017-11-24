@@ -178,5 +178,9 @@ public class StringUtil {
         return (int) (Integer.parseInt(min) * 60 * 1000 + Float.parseFloat(sec) * 1000);
     }
 
+    public static String getBottomSheetTitile(int size) {
+
+        return "收藏列表 ( " + size + " )";
+    }
 
 }

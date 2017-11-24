@@ -210,14 +210,14 @@ public class MusicSlidBar
     private void initView() {
         FrameLayout parent = (FrameLayout) getParent();//获取父容器
         if (mStickyViwe == null) {
-            mStickyViwe = (TextView) parent.findViewById(R.id.music_rv_sticky_view);
+            mStickyViwe = parent.findViewById(R.id.music_rv_sticky_view);
         }
         if (contact_toast == null) {
-            contact_toast = (TextView) parent.findViewById(R.id.contac_toast);
+            contact_toast = parent.findViewById(R.id.contac_toast);
         }
         //初始化listview
         if (mRecyclerView == null) {
-            mRecyclerView = (RecyclerView) parent.findViewById(R.id.rv);
+            mRecyclerView = parent.findViewById(R.id.rv);
         }
     }
 

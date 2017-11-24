@@ -139,6 +139,7 @@ public class MusicPlayDialogFag
     private void initSongInfo() {
         MusicDialogInfo info = getArguments().getParcelable("info");
         mMusicInfo = info.getInfo();
+
         mSongName.setText(StringUtil.getSongName(mMusicInfo.getTitle()));
         mArtistName.setText(mMusicInfo.getArtist());
         String url = StringUtil.getAlbulm(mMusicInfo.getAlbumId())
@@ -449,6 +450,7 @@ public class MusicPlayDialogFag
             String time = StringUtil.getCurrentTime();
             LogUtil.d("currentTime  : " + time);
             mMusicInfo.setTime(time);
+
             mInfoDao.insert(mMusicInfo);
             mIvMusicFavorite.setImageResource(R.mipmap.favorite_yes);
             isFavorite = true;
@@ -472,8 +474,6 @@ public class MusicPlayDialogFag
     private void initListener() {
         mIvLyrSwitch.setOnClickListener(this);
         mTitlebarDown.setOnClickListener(this);
-        //        mTitlebarPlayList.setOnClickListener(this);
-        //        mPlayingSongAlbum.setOnClickListener(this);
         mMusicPlayerMode.setOnClickListener(this);
         mMusicPlayerPre.setOnClickListener(this);
         mMusicPlay.setOnClickListener(this);
@@ -491,11 +491,11 @@ public class MusicPlayDialogFag
         RxView.clicks(mTitlebarPlayList)
               .throttleFirst(1, TimeUnit.SECONDS)
               .subscribe(o -> {
-                  List<MusicInfo> lists = mInfoDao.queryBuilder()
-                                                  .build()
-                                                  .list();
+                  List<MusicInfo> list = mInfoDao.queryBuilder()
+                                                 .build()
+                                                 .list();
                   MusicBottomSheetDialog.newInstance()
-                                        .getBottomDialog(getActivity(), lists);
+                                        .getBottomDialog(getActivity(), list);
 
               });
 

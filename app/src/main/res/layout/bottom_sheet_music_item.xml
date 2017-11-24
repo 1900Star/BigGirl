@@ -2,13 +2,13 @@
 <LinearLayout android:id="@+id/root_bottom_sheet"
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="70dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="0.1dp"
               android:background="@color/bottomSheetList"
               android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="50dp">
         <LinearLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
@@ -20,15 +20,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:textColor="@color/colorWhite"
+                android:maxLength="20"
+                android:textColor="@color/textTime"
                 android:textSize="16sp"
             />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="8dp"
                 android:id="@+id/favorite_artist_name"
-                android:text="-"
                 android:textColor="@color/aboutSign"
                 android:textSize="14sp"
             />
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="3dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
             android:textColor="@color/aboutSign"
@@ -55,11 +55,4 @@
             android:contentDescription="@null"
             android:src="@mipmap/icon_close"/>
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="10dp"
-        android:background="@android:color/darker_gray"
-    />
 </LinearLayout>
