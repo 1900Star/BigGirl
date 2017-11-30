@@ -66,7 +66,7 @@ public class FavoriteAdapter
                     ((OnDeleteItemClickListener) mContext).deleteFavorite(bean.getId());
                 }
                 mList.remove(position);
-                notifyItemRemoved(position);
+                FavoriteAdapter.this.notifyItemRemoved(position);
             });
             viewHolder.mFavoriteItem.setOnClickListener(view -> { //Item点击的监听
 

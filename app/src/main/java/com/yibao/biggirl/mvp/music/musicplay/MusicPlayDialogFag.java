@@ -96,9 +96,10 @@ public class MusicPlayDialogFag
     private MusicInfoDao mInfoDao;
     private ImageView    mIvLyrSwitch;
     boolean isShowLyrics = false;
-    private LyricsView     mLyricsView;
-    private Disposable     mDisposableLyr;
-    private VolumeReceiver mVolumeReceiver;
+    private LyricsView        mLyricsView;
+    private Disposable        mDisposableLyr;
+    private VolumeReceiver    mVolumeReceiver;
+    private SharedPreferences mPreferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +121,12 @@ public class MusicPlayDialogFag
         checkCurrentIsFavorite();
 
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mPreferences = getActivity().getSharedPreferences("music_mode", 0);
     }
 
     private void checkCurrentIsFavorite() {
@@ -170,8 +177,7 @@ public class MusicPlayDialogFag
         }
         startUpdateProgress();
         //设置播放模式图片
-        SharedPreferences sp   = getActivity().getSharedPreferences("music_mode", 0);
-        int               mode = sp.getInt("play_mode", 0);
+        int mode = mPreferences.getInt("play_mode", 0);
         updatePlayModeImage(mode);
         //音乐设置
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
@@ -539,18 +545,6 @@ public class MusicPlayDialogFag
     }
 
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        //        disposables.clear();
-        //        mAnimator.pause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     public void onDestroyView() {

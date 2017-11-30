@@ -254,6 +254,9 @@ public class AppFag
             case 5:
                 mLoadType = Constants.FRAGMENT_EXPAND;
                 break;
+            case 6:
+                mLoadType = Constants.FRAGMENT_ANDROID;
+                break;
             default:
                 break;
         }

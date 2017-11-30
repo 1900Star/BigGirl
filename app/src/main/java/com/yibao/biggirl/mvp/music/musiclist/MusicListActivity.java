@@ -22,7 +22,9 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
+import com.yibao.biggirl.base.listener.OnItemSwipeFavoriteListener;
 import com.yibao.biggirl.base.listener.OnMusicListItemClickListener;
+import com.yibao.biggirl.model.greendao.MusicInfoDao;
 import com.yibao.biggirl.model.music.MusicDialogInfo;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
@@ -60,7 +62,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MusicListActivity
         extends AppCompatActivity
-        implements OnMusicListItemClickListener
+        implements OnMusicListItemClickListener, OnItemSwipeFavoriteListener
 {
 
 
@@ -98,6 +100,7 @@ public class MusicListActivity
     private RxBus                    mBus;
     private MusicInfo                mItem;
     private int                      mCurrentPosition;
+    private MusicInfoDao             mInfoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,16 +108,18 @@ public class MusicListActivity
         setContentView(R.layout.activity_music_list);
         if (savedInstanceState != null) {
             Bundle bundle = savedInstanceState.getBundle("bundle");
-//            mMusicItems = bundle.getParcelableArrayList("musicItem");
+            //            mMusicItems = bundle.getParcelableArrayList("musicItem");
             mCurrentPosition = bundle.getInt("position");
             LogUtil.d("*** onCreate Position : " + mCurrentPosition);
-//            startMusicService(mCurrentPosition);
+            //            startMusicService(mCurrentPosition);
         }
         mBind = ButterKnife.bind(this);
         mBus = MyApplication.getIntstance()
                             .bus();
         disposables = new CompositeDisposable();
-
+        mInfoDao = MyApplication.getIntstance()
+                                .getDaoSession()
+                                .getMusicInfoDao();
         initData();
         initRxBusData();
 
@@ -252,12 +257,12 @@ public class MusicListActivity
 
         //        mMusicList.setAdapter(adapters);
         mMusicItems = MusicListUtil.getMusicList(this);
-        //        sort();
+
         StringUtil.getCurrentTime();
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         MusicListAdapter adapter = new MusicListAdapter(this, mMusicItems);
-        mMusciView.setAdapter(manager, adapter);
+        mMusciView.setAdapter(this, manager, adapter);
         adapter.notifyDataSetChanged();
 
 
@@ -315,7 +320,7 @@ public class MusicListActivity
                           .show(getSupportFragmentManager(), "music");
     }
 
-    public void sort() {
+    public ArrayList<MusicInfo> sort() {
 
         Collections.sort(mMusicItems, (info, t1) -> {
             String prev = StringUtil.getPinYin(info.getTitle());
@@ -331,8 +336,15 @@ public class MusicListActivity
             }
 
         });
+        return mMusicItems;
     }
 
+    //侧滑收藏当前音乐
+    @Override
+    public void addFavorite(MusicInfo info) {
+        LogUtil.d("测试****   " + info.getTitle());
+        mInfoDao.insert(info);
+    }
 
     public static AudioPlayService.AudioBinder getAudioBinder() {
 
@@ -372,12 +384,12 @@ public class MusicListActivity
         }
     }
 
-//    TODO
+    //    TODO
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList("musicItem", mMusicItems);
+        //        bundle.putParcelableArrayList("musicItem", mMusicItems);
         bundle.putInt("position", mCurrentPosition);
         LogUtil.d("***onSaveInstanceState Position : " + mCurrentPosition);
         outState.putBundle("bundle", bundle);

@@ -48,19 +48,21 @@ public class MapsActivity
         LatLng sydney = new LatLng(22.546213, 114.057430);
         mMap.addMarker(new MarkerOptions().position(sydney)
                                           .title("Marker in Sydney"));
-                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        mMap.clear();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMap.clear();
+        if (mMap != null) {
+            mMap.clear();
+
+        }
     }
 }
