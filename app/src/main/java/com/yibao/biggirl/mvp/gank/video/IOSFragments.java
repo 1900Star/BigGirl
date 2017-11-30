@@ -50,8 +50,8 @@ public class IOSFragments
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication = (MyApplication) getActivity().getApplication();
-        disposables = new CompositeDisposable();
-        mPresenter = new AppPresenter(this);
+//        disposables = new CompositeDisposable();
+//        mPresenter = new AppPresenter(this);
         initData();
 //
 //                        mPresenter.start(Constants.FRAGMENT_IOS);

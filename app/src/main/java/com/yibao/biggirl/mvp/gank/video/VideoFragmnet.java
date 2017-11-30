@@ -19,7 +19,6 @@ import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerViewFactory;
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.mvp.gank.app.AppContract;
-import com.yibao.biggirl.mvp.gank.app.AppPresenter;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -57,14 +56,14 @@ public class VideoFragmnet
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new AppPresenter(this);
+//        mPresenter = new AppPresenter(this);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            mPresenter.start(Constants.FRAGMENT_VIDEO, 6);
+//            mPresenter.start(Constants.FRAGMENT_VIDEO, 6);
         }
     }
 
