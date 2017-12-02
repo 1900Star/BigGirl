@@ -22,6 +22,7 @@ BigGirl
     *glide
     *eventbus
 
+![image](Screenshot_png/c.gif)
 ![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/c.gif)
 ![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/girls.png)
 ![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/b.png)
