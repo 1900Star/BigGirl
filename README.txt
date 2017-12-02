@@ -21,6 +21,7 @@ BigGirl
     *fresco
     *glide
     *eventbus
+    *kotlin
 
 ![image](Screenshot_png/c.gif)
 ![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/c.gif)
