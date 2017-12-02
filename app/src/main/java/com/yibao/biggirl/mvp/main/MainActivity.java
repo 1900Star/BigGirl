@@ -250,10 +250,6 @@ public class MainActivity
             int    girlPosition = random.nextInt(Api.picUrlArr.length);
             mUrl = Api.picUrlArr[girlPosition];
             ImageUitl.loadPicHolder(MyApplication.getIntstance(), mUrl, mIvCollapsing);
-            //触发加载数据
-            //            BaseFragment baseFragment = FragmentFactorys.mCacheFragmentMap.get(position);
-
-            //            baseFragment.mLoadingPager.triggerLoadData();
         }
 
     }
