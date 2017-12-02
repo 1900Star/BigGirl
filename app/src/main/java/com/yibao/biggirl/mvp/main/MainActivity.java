@@ -101,7 +101,8 @@ public class MainActivity
             initData();
             initListener();
         }
-
+sout
+        
     }
 
     //加载动态布局
