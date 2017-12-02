@@ -31,7 +31,7 @@ BigGirl
 ![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/BigGirl.png)
 
 # 提示
-本项目还没写完，只要有空闲的就会更新代码！！
+本项目还没写完，只要有空闲的就会更新代码
 
 ## 干货数据源
 应用中的所有数据均来自[干货集中营][**daimajia**](https://github.com/daimajia)的干货集中营(http://gank.io/api)
