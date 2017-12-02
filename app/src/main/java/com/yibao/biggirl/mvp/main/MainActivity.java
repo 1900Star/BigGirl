@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.yibao.biggirl.MyApplication;
@@ -81,9 +80,6 @@ public class MainActivity
     @BindView(R.id.iv_collapsing)
     ImageView               mIvCollapsing;
 
-    @BindView(R.id.root)
-    FrameLayout mRoot;
-
 
     private long exitTime = 0;
     private Unbinder  mBind;
@@ -101,8 +97,7 @@ public class MainActivity
             initData();
             initListener();
         }
-sout
-        
+        System.out.println("AAAAAAA");
     }
 
     //加载动态布局
@@ -286,7 +281,7 @@ sout
     //打开ViewPager浏览大图
     @Override
     public void showBigGirl(int position, List<String> list) {
-        //设置navHeader头像
+        //设置navHeader头像,待定
         //        ImageUitl.loadPic(this, list.get(position), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);
         intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
