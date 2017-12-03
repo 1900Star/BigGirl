@@ -98,7 +98,6 @@ public class MainActivity
             initData();
             initListener();
         }
-        System.out.println("AAAAAAA");
     }
 
     //加载动态布局

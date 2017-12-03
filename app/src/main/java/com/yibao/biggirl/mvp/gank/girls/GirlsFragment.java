@@ -71,7 +71,6 @@ public class GirlsFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        mList = new ArrayList<>();
         DaggerGirlsComponent.builder()
                             .girlsModuls(new GirlsModuls(this))
                             .build()
@@ -181,24 +180,6 @@ public class GirlsFragment
                         break;
                     default:
                         break;
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-                View lastChildView = recyclerView.getLayoutManager()
-                                                 .getChildAt(recyclerView.getLayoutManager()
-                                                                         .getChildCount() - 1);
-                int lastChildBottom = lastChildView.getBottom();
-                int recyclerBottom  = recyclerView.getBottom() - recyclerView.getPaddingBottom();
-                int lastPosition = recyclerView.getLayoutManager()
-                                               .getPosition(lastChildView);
-
-                if (lastChildBottom == recyclerBottom && lastPosition == recyclerView.getLayoutManager()
-                                                                                     .getItemCount() - 1)
-                {
-
                 }
             }
 
