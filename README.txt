@@ -11,7 +11,7 @@ BigGirl
 
 在这个信息时代非常感谢各种开源社区。由于本人水平有限，项目中难免有所纰漏，如果有问题请与我联系 strangermy98@gmail.com
 
-****
+
 ## 第三方库
     *Rxjava
     *Rxandroid
