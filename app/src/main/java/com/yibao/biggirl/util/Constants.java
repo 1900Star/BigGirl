@@ -50,5 +50,6 @@ public class Constants {
     public static final String FRAGMENT_APP     = "App";
     public static final String SHARE_ME         = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
 
-
+    public static final String TRANSITION_PIC = "transitionPic";
+    public static final String TRANSITION_SEARCHVIEW = "transitionSearchView";
 }

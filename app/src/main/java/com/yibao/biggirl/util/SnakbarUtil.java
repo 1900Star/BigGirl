@@ -91,8 +91,7 @@ public class SnakbarUtil {
     public static void mapPoint(View view)
     {
 
-        //
-        Snackbar snackbar = make(view, "确保您的设备应该包含完整的谷歌服务!", Snackbar.LENGTH_LONG);
+        Snackbar snackbar = make(view, "当前设备不支持完整的谷歌服务!", Snackbar.LENGTH_LONG);
         snackbar.getView()
                 .setBackgroundColor(picAlreadyExists);
         snackbar.show();

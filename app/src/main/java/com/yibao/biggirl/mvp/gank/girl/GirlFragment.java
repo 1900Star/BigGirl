@@ -161,7 +161,6 @@ public class GirlFragment
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override
@@ -174,7 +173,6 @@ public class GirlFragment
 
         if (state < STATUS_MAX_NUM) {
             mPbDown.setProgress(DEFULT_DOWN_PREGRESS);
-
         }
     }
 

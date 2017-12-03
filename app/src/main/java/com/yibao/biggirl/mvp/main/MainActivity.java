@@ -31,6 +31,7 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
+import com.yibao.biggirl.mvp.map.CheckGoogleService;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
 import com.yibao.biggirl.mvp.splash.SplashActivity;
@@ -168,14 +169,19 @@ public class MainActivity
                 startActivity(new Intent(this, FavoriteActivity.class));
                 break;
             case R.id.action_map:
-                startActivity(new Intent(this, MapsActivity.class));
+                boolean checkPlayServices = CheckGoogleService.checkGoogleService(this);
+                if (checkPlayServices) {
+                    startActivity(new Intent(this, MapsActivity.class));
+                } else {
+                    SnakbarUtil.mapPoint(mIvCollapsing);
+                }
 
                 break;
             case R.id.action_music: // ***************** 我的音乐
                 startActivity(new Intent(this, MusicListActivity.class));
                 break;
             case R.id.action_beautiful:
-                //                                                RetrofitHelper.getUnsplashApi();
+//                                                                RetrofitHelper.getUnsplashApi();
                 BeautifulDialogFag.newInstance()
                                   .show(getSupportFragmentManager(), "beautiful");
                 break;
@@ -290,7 +296,6 @@ public class MainActivity
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-
         }
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             //两秒之内按返回键多次就会退出
