@@ -10,5 +10,6 @@ import com.yibao.biggirl.util.LogUtil;
 public class MapUtill {
     public void getMap() {
         LogUtil.d("AAAAAAAAAAAAAAAAAAAAA");
+        LogUtil.d("BBBBBBBBBBBBBBBBBBBBb");
     }
 }
