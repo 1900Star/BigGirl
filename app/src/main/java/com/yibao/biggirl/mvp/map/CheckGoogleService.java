@@ -7,7 +7,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 /**
  * Author：Sid
- * Des：${是否支持GoogleService}
+ * Des：${设备是否支持GoogleService}
  * Time:2017/12/2 23:53
  */
 public class CheckGoogleService {
