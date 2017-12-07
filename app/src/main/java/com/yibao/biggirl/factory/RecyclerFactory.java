@@ -6,24 +6,24 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.MyApplication;
+import com.yibao.biggirl.base.BaseRvAdapter;
 
 /**
  * Author：Sid
  * Des：${TODO}
  * Time:2017/5/9 15:02
  */
-public class RecyclerViewFactory {
+public class RecyclerFactory {
     private static final int RECYCLERVIEW_NORMAL = 1;
 
 
     public static RecyclerView creatRecyclerView(int type,
-                                                 RecyclerView.Adapter<RecyclerView.ViewHolder> adapter)
-    {
-
+                                                 RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         RecyclerView recyclerView = new RecyclerView(MyApplication.getIntstance());
+
         if (type == RECYCLERVIEW_NORMAL) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
-                                                                             RecyclerView.LayoutParams.MATCH_PARENT);
+                    RecyclerView.LayoutParams.MATCH_PARENT);
 
             LinearLayoutManager manager = new LinearLayoutManager(MyApplication.getIntstance());
             manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -36,7 +36,7 @@ public class RecyclerViewFactory {
                     RecyclerView.LayoutParams.MATCH_PARENT,
                     RecyclerView.LayoutParams.MATCH_PARENT);
             StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(type,
-                                                                                StaggeredGridLayoutManager.VERTICAL);
+                    StaggeredGridLayoutManager.VERTICAL);
             manager.setOrientation(StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(manager);
             recyclerView.setLayoutParams(params);
@@ -47,4 +47,10 @@ public class RecyclerViewFactory {
         return recyclerView;
     }
 
+    public static void backTop(RecyclerView recyclerView) {
+        BaseRvAdapter adapter = (BaseRvAdapter) recyclerView.getAdapter();
+        int positionForSection = adapter.getPositionForSection(0);
+        LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        manager.scrollToPositionWithOffset(positionForSection, 0);
+    }
 }

@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,7 +29,7 @@ import butterknife.ButterKnife;
  * Time:2017/4/23 07:08
  */
 public class AppAdapter
-        extends BaseRvAdapter<ResultsBeanX> implements SectionIndexer
+        extends BaseRvAdapter<ResultsBeanX>
 {
 
 
@@ -97,20 +96,7 @@ public class AppAdapter
         return R.layout.item_android_frag;
     }
 
-    @Override
-    public Object[] getSections() {
-        return new Object[0];
-    }
 
-    @Override
-    public int getPositionForSection(int i) {
-        return 0;
-    }
-
-    @Override
-    public int getSectionForPosition(int i) {
-        return 0;
-    }
     static class MyViewHolder
             extends RecyclerView.ViewHolder
     {

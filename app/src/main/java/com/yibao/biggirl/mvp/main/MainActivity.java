@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.MyPageChangeListener;
+import com.yibao.biggirl.base.listener.OnRvITutemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
@@ -31,10 +32,10 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituActivity;
 import com.yibao.biggirl.mvp.map.CheckGoogleService;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
-import com.yibao.biggirl.mvp.splash.SplashActivity;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
@@ -60,32 +61,32 @@ import butterknife.Unbinder;
  */
 public class MainActivity
         extends AppCompatActivity
-        implements OnRvItemClickListener,
-                   NavigationView.OnNavigationItemSelectedListener,
-                   OnRvItemLongClickListener
+        implements OnRvItemClickListener<String>, OnRvITutemClickListener,
+        NavigationView.OnNavigationItemSelectedListener,
+        OnRvItemLongClickListener
 
 {
     @BindView(R.id.nav_view)
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
-    DrawerLayout   mDrawerLayout;
+    DrawerLayout mDrawerLayout;
 
     @BindView(R.id.tablayout)
-    TabLayout               mTablayout;
+    TabLayout mTablayout;
     @BindView(R.id.view_pager)
-    ViewPager               mViewPager;
+    ViewPager mViewPager;
     @BindView(R.id.toolbar)
-    Toolbar                 mToolbar;
+    Toolbar mToolbar;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.iv_collapsing)
-    ImageView               mIvCollapsing;
+    ImageView mIvCollapsing;
 
 
     private long exitTime = 0;
-    private Unbinder  mBind;
+    private Unbinder mBind;
     private ImageView mIvHeader;
-    private String    mUrl;
+    private String mUrl;
 
 
     @Override
@@ -109,10 +110,10 @@ public class MainActivity
         mIvHeader = headerView.findViewById(R.id.iv_nav_header);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
-                                                                 mDrawerLayout,
-                                                                 mToolbar,
-                                                                 R.string.navigation_drawer_open,
-                                                                 R.string.navigation_drawer_close);
+                mDrawerLayout,
+                mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         mNavView.setNavigationItemSelectedListener(this);
@@ -131,23 +132,23 @@ public class MainActivity
 
         //App头像
         mIvHeader.setOnClickListener(view -> MeDialogFragment.newInstance()
-                                                             .show(getSupportFragmentManager(),
-                                                                   "me"));
+                .show(getSupportFragmentManager(),
+                        "me"));
         MyOnpageChangeListener mMyOnpageChangeListener = new MyOnpageChangeListener();
 
         mViewPager.addOnPageChangeListener(mMyOnpageChangeListener);
         //监听ViewPager布局完成
         mViewPager.getViewTreeObserver()
-                  .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                      @Override
-                      public void onGlobalLayout() {
-                          LogUtil.d("ViewPager布局完成");
-                          //手动选中第一页
-                          mMyOnpageChangeListener.onPageSelected(0);
-                          mViewPager.getViewTreeObserver()
-                                    .removeOnGlobalLayoutListener(this);
-                      }
-                  });
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        LogUtil.d("ViewPager布局完成");
+                        //手动选中第一页
+                        mMyOnpageChangeListener.onPageSelected(0);
+                        mViewPager.getViewTreeObserver()
+                                .removeOnGlobalLayoutListener(this);
+                    }
+                });
 
 
     }
@@ -160,7 +161,7 @@ public class MainActivity
             //关于作者
             case R.id.action_about_me:
                 AboutMeDialogFag.newInstance()
-                                .show(getSupportFragmentManager(), "about");
+                        .show(getSupportFragmentManager(), "about");
                 break;
 
 
@@ -182,14 +183,13 @@ public class MainActivity
             case R.id.action_beautiful:
 //                                                                RetrofitHelper.getUnsplashApi();
                 BeautifulDialogFag.newInstance()
-                                  .show(getSupportFragmentManager(), "beautiful");
+                        .show(getSupportFragmentManager(), "beautiful");
                 break;
             case R.id.action_share_me:
                 shareMe();
                 break;
             case R.id.action_setting:
-                startActivity(new Intent(this, SplashActivity.class));
-                finish();
+
                 break;
             default:
                 break;
@@ -214,6 +214,7 @@ public class MainActivity
                 break;
             case R.id.main_action_star:
                 //TODO
+                startActivity(new Intent(this, Kot.class));
                 break;
             default:
                 break;
@@ -240,19 +241,29 @@ public class MainActivity
     public void showPreview(String url) {
 
         TopBigPicDialogFragment.newInstance(url)
-                               .show(getSupportFragmentManager(), "dialog_big_girl");
+                .show(getSupportFragmentManager(), "dialog_big_girl");
+    }
+
+    //打开Meizitutudi
+    @Override
+    public void openMeiziList(String link) {
+        Intent intent = new Intent(this, MeizituActivity.class);
+        intent.putExtra("link", link);
+        startActivity(intent);
+        LogUtil.d("测试中*****  MainActivity   " + link);
+
+
     }
 
 
     //ViewPager监听器
     private class MyOnpageChangeListener
-            extends MyPageChangeListener
-    {
+            extends MyPageChangeListener {
         @Override
         public void onPageSelected(int position) {
             //切换ViewPage随机变换Toolbar的背景图片
-            Random random       = new Random();
-            int    girlPosition = random.nextInt(Api.picUrlArr.length);
+            Random random = new Random();
+            int girlPosition = random.nextInt(Api.picUrlArr.length);
             mUrl = Api.picUrlArr[girlPosition];
             ImageUitl.loadPicHolder(MyApplication.getIntstance(), mUrl, mIvCollapsing);
         }
@@ -282,6 +293,7 @@ public class MainActivity
     //打开ViewPager浏览大图
     @Override
     public void showBigGirl(int position, List<String> list) {
+        LogUtil.d("MainActvity  *****************");
         //设置navHeader头像,待定
         //        ImageUitl.loadPic(this, list.get(position), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);

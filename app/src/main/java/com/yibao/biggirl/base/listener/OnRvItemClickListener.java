@@ -9,9 +9,9 @@ import java.util.List;
  * Des：${TODO}
  * Time:2017/5/14 09:49
  */
-public interface OnRvItemClickListener {
+public interface OnRvItemClickListener<T> {
 
     void showDetail(FavoriteWebBean bean, Long id);
 
-    void showBigGirl(int position, List<String> list);
+    void showBigGirl(int position, List<T> list);
 }

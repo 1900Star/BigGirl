@@ -15,7 +15,7 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
-import com.yibao.biggirl.factory.RecyclerViewFactory;
+import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.model.favoriteweb.UpdataFavorite;
 import com.yibao.biggirl.mvp.webview.WebActivity;
@@ -45,7 +45,7 @@ public class FavoriteActivity
         extends AppCompatActivity
         implements OnDeleteItemClickListener,
                    FavoriteContract.View,
-                   OnRvItemClickListener,
+                   OnRvItemClickListener<FavoriteWebBean>,
                    SwipeRefreshLayout.OnRefreshListener
 {
 
@@ -142,7 +142,7 @@ public class FavoriteActivity
         mSwipeRefresh.setRefreshing(false);
 
         mAdapter = new FavoriteAdapter(this, mList);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(1, mAdapter);
+        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(1, mAdapter);
         recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
         mAdapter.notifyDataSetChanged();
         mFagContent.addView(recyclerView);
@@ -200,7 +200,7 @@ public class FavoriteActivity
 
 
     @Override
-    public void showBigGirl(int position, List<String> list) {
+    public void showBigGirl(int position, List<FavoriteWebBean> list) {
 
     }
 }

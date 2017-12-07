@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.factory.RecyclerViewFactory;
+import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.dagger2.component.DaggerGirlsComponent;
 import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
 import com.yibao.biggirl.util.Constants;
@@ -47,40 +47,39 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class GirlsFragment
         extends BaseFag<String>
         implements SwipeRefreshLayout.OnRefreshListener,
-                   View.OnLongClickListener,
-                   GirlsContract.View<String>
-{
+        View.OnLongClickListener,
+        GirlsContract.View<String> {
 
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     @BindView(R.id.fag_content)
-    LinearLayout         mLlGrils;
+    LinearLayout mLlGrils;
     @BindView(R.id.fab_fag)
     FloatingActionButton mFab;
     private GirlsAdapter mAdapter;
 
     private boolean isShowGankGirl;
 
+
     // 1 指定注入目标
     @Inject
     GirlsPresenter mGirlsPresenter;
+
     private int mRandomNum;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerGirlsComponent.builder()
-                            .girlsModuls(new GirlsModuls(this))
-                            .build()
-                            .in(this);
+                .girlsModuls(new GirlsModuls(this))
+                .build()
+                .in(this);
+
         mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, 0);
 
-
     }
-
-
     @Override
     public void loadDatas() {
 
@@ -89,8 +88,7 @@ public class GirlsFragment
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
 
         View view = View.inflate(getActivity(), R.layout.girls_frag, null);
         unbinder = ButterKnife.bind(this, view);
@@ -140,7 +138,7 @@ public class GirlsFragment
         Random random = new Random();
         mRandomNum = random.nextInt(4) + 1;
         mAdapter = new GirlsAdapter(getActivity(), mList);
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(type, mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -161,14 +159,13 @@ public class GirlsFragment
                         }
 
                         if (lastPosition == recyclerView.getLayoutManager()
-                                                        .getItemCount() - 1)
-                        {
+                                .getItemCount() - 1) {
                             page++;
 
                             mGirlsPresenter.loadData(size,
-                                                     page,
-                                                     Constants.LOAD_MORE_DATA,
-                                                     Constants.FRAGMENT_GIRLS);
+                                    page, 3,
+                                    Constants.LOAD_MORE_DATA,
+                                    Constants.FRAGMENT_GIRLS);
                             LogUtil.d("PAGE===" + page);
                         }
                         break;
@@ -188,31 +185,20 @@ public class GirlsFragment
     }
 
 
-    //找到数组中的最大值
-    private int findMax(int[] lastPositions) {
-        int max = lastPositions[0];
-        for (int value : lastPositions) {
-            if (value > max) {
-                max = value;
-            }
-        }
-        return max;
-    }
-
     //下拉刷新
     @Override
     public void onRefresh() {
         Observable.timer(1, TimeUnit.SECONDS)
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(aLong -> {
-                      mGirlsPresenter.loadData(size,
-                                               1,
-                                               Constants.REFRESH_DATA,
-                                               Constants.FRAGMENT_GIRLS);
-                      mSwipeRefresh.setRefreshing(false);
-                      isShowGankGirl = false;
-                      page = 1;
-                  });
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    mGirlsPresenter.loadData(size,
+                            1, 3,
+                            Constants.REFRESH_DATA,
+                            Constants.FRAGMENT_GIRLS);
+                    mSwipeRefresh.setRefreshing(false);
+                    isShowGankGirl = false;
+                    page = 1;
+                });
     }
 
 
@@ -256,11 +242,6 @@ public class GirlsFragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-
-    public GirlsFragment newInstance() {
-        return new GirlsFragment();
     }
 
 

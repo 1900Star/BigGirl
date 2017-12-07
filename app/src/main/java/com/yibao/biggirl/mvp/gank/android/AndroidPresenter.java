@@ -29,7 +29,7 @@ public class AndroidPresenter
 
     @Override
     public void start(String type,int code) {
-        loadData(20, 1, Constants.LOAD_DATA,"Android");
+        loadData(20, 1, Constants.LOAD_DATA,3,"Android");
     }
 
     @Override
@@ -68,7 +68,7 @@ public class AndroidPresenter
 
 
     @Override
-    public void loadData(int size, int page, int status, String dataType) {
+    public void loadData(int size, int page, int status,int a, String dataType) {
         mRemoteData.getAndroid(page, size, new AndroidDataSource.LoadADataCallback() {
             @Override
             public void onLoadData(List<AndroidAndGirl> list) {
@@ -90,4 +90,6 @@ public class AndroidPresenter
             }
         });
     }
+
+
 }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.mvp.gank.app.AppFag;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +16,14 @@ import java.util.Map;
  * Time:2017/5/7 14:55
  */
 public class FragmentFactory {
-    private static final int                   FRAGMENT_GIRLS    = 0;//妹子
-    private static final int                   FRAGMENT_APP      = 1;//App
-    private static final int                   FRAGMENT_IOS      = 2;//iOS
-    private static final int                   FRAGMENT_FRONT    = 4;//前端
-    private static final int                   FRAGMENT_EXTEND   = 5;//拓展资源
-    private static final int                   FRAGMENT_VEDIO    = 3;//视频
-    private static final int                   FRAGMENT_ANDROID  = 6;//安卓
-    private static       Map<Integer, BaseFag> mCacheFragmentMap = new HashMap<>();
+    private static final int FRAGMENT_GIRLS = 0;//妹子
+    private static final int FRAGMENT_APP = 1;//App
+    private static final int FRAGMENT_IOS = 2;//iOS
+    private static final int FRAGMENT_FRONT = 4;//前端
+    private static final int FRAGMENT_EXTEND = 5;//拓展资源
+    private static final int FRAGMENT_VEDIO = 3;//视频
+    private static final int FRAGMENT_ANDROID = 6;//安卓
+    private static Map<Integer, BaseFag> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
 
@@ -55,7 +56,7 @@ public class FragmentFactory {
                 fragment = new AppFag(FRAGMENT_EXTEND);
                 break;
             case FRAGMENT_ANDROID:
-                fragment = new GirlsFragment();
+                fragment = new MeizituFragment();
                 break;
             default:
                 break;

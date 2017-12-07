@@ -117,7 +117,7 @@ public class IOSFragments
     protected View initSuccessView() {
         LogUtil.d("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
 //        mAdapter = new AppAdapter(getActivity(), mDatas);
-//        return RecyclerViewFactory.creatRecyclerView(1, mFab, mAdapter);
+//        return RecyclerFactory.creatRecyclerView(1, mFab, mAdapter);
 
         return null;
 

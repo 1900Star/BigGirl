@@ -2,6 +2,7 @@ package com.yibao.biggirl.model.android;
 
 import com.yibao.biggirl.model.girls.GirlsBean;
 import com.yibao.biggirl.network.RetrofitHelper;
+import com.yibao.biggirl.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,9 @@ public class RemoteAndroidData
 
     @Override
     public void getAndroid(int size, int page, LoadADataCallback callback) {
-        Observable.zip(RetrofitHelper.getGankApi()
+        Observable.zip(RetrofitHelper.getGankApi(Constants.GANK_API)
                                      .getConmmetApi("Android", size, page),
-                       RetrofitHelper.getGankApi()
+                       RetrofitHelper.getGankApi(Constants.GANK_API)
                                      .getGril("福利", size, page),
                        RemoteAndroidData.this::zipHelper)
                   .subscribeOn(Schedulers.io())

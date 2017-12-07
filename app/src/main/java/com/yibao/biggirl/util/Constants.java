@@ -10,46 +10,50 @@ import com.yibao.biggirl.MyApplication;
  * 邮箱：strangermy@outlook.com
  */
 public class Constants {
-    public static String GANK_API     = "http://gank.io/";
+    public static final java.lang.Object MEIZITU_API = "http://www.mzitu.com/";
+    public static String GANK_API = "http://gank.io/";
     //    public static String UNSPLASH_API = "https://unsplash.it/3896/1920/?random";
     public static String UNSPLASH_API = "https://unsplash.it/1920/1080/?random";
-    public static String UNSPLASH     = "https://api.unsplash.com/photos/?client_id=6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
-    public static String UNSPLASH_ID  = "6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
+    public static String UNSPLASH = "https://api.unsplash.com/photos/?client_id=6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
+    public static String UNSPLASH_ID = "6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
 
 
-    public static final String dir            = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
-    public static final String deleteDir      = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
+    public static final String dir = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
+    public static final String deleteDir = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
     //崩溃日志
     public static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory()
-                                                           .getPath() + "/CrashLog/log/";
+            .getPath() + "/CrashLog/log/";
     //保存图片状态码
-    public static       int    FIRST_DWON     = 0;
-    public static       int    EXISTS         = 1;
-    public static       int    DWON_PIC_EROOR = 2;
+    public static int FIRST_DWON = 0;
+    public static int EXISTS = 1;
+    public static int DWON_PIC_EROOR = 2;
     //fragment 加载状态码
-    public static       int    LOAD_DATA      = 0;
-    public static       int    REFRESH_DATA   = 1;
-    public static       int    LOAD_MORE_DATA = 2;
-    public static       int    NO_MORE_DATA   = 3;
-    public static       int    LOADING_DATA   = 4;
-    public static       String arrTitle[]     = {"Girl",
-                                                 "App",
-                                                 "iOS",
-                                                 "Video",
-                                                 "前端",
-                                                 "拓展资源",
-                                                 "Android"};
+    public static int LOAD_DATA = 0;
+    public static int REFRESH_DATA = 1;
+    public static int LOAD_MORE_DATA = 2;
+    public static int NO_MORE_DATA = 3;
+    public static int LOADING_DATA = 4;
+    public static String arrTitle[] = {"Girl",
+            "App",
+            "iOS",
+            "Video",
+            "前端",
+            "拓展资源",
+            "Android"};
 
-    public static final String FRAGMENT_GIRLS   = "福利";
-    public static final String FRAGMENT_ALL     = "all";
+    public static final String FRAGMENT_GIRLS = "福利";
+    public static final String FRAGMENT_ALL = "all";
     public static final String FRAGMENT_ANDROID = "安卓";
-    public static final String FRAGMENT_VIDEO   = "休息视频";
-    public static final String FRAGMENT_IOS     = "iOS";
-    public static final String FRAGMENT_FRONT   = "前端";
-    public static final String FRAGMENT_EXPAND  = "拓展资源";
-    public static final String FRAGMENT_APP     = "App";
-    public static final String SHARE_ME         = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
+    public static final String FRAGMENT_VIDEO = "休息视频";
+    public static final String FRAGMENT_IOS = "iOS";
+    public static final String FRAGMENT_FRONT = "前端";
+    public static final String FRAGMENT_EXPAND = "拓展资源";
+    public static final String FRAGMENT_APP = "App";
+    public static final String FRAGMENT_MEIZITU = "japan";
+    public static final String SHARE_ME = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
 
     public static final String TRANSITION_PIC = "transitionPic";
     public static final String TRANSITION_SEARCHVIEW = "transitionSearchView";
+    public static final String CLASS_MAIN = "com.yibao.biggirl.mvp.main.MainActivity";
+
 }

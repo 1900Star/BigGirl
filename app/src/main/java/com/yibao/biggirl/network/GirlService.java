@@ -1,6 +1,5 @@
 package com.yibao.biggirl.network;
 
-import com.yibao.biggirl.model.all.AllBean;
 import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.model.girls.GirlsBean;
 import com.yibao.biggirl.model.unsplash.Unsplash;
@@ -29,11 +28,6 @@ public interface GirlService {
                                              @Path("page") int page);
 
 
-    //All
-    @GET("api/data/{type}/{count}/{page}")
-    Observable<AllBean> getAll(@Path("type") String type,
-                               @Path("count") int count,
-                               @Path("page") int page);
 
     //Unsplash
     @GET

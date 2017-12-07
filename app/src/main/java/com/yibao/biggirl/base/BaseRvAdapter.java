@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.yibao.biggirl.R;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
  * Time:2017/6/2 13:07
  */
 public abstract class BaseRvAdapter<T>
-        extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SectionIndexer
 
 {
     public               List<T> mList       = null;
@@ -122,6 +123,20 @@ public abstract class BaseRvAdapter<T>
     public void AddFooter(List<T> list) {
         mList.addAll(list);
 
+    }
+    @Override
+    public Object[] getSections() {
+        return new Object[0];
+    }
+
+    @Override
+    public int getPositionForSection(int i) {
+        return 0;
+    }
+
+    @Override
+    public int getSectionForPosition(int i) {
+        return 0;
     }
 
     static class LoadMoreHolder

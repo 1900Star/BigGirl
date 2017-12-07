@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.factory.RecyclerViewFactory;
+import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.music.BottomSheetStatus;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.service.AudioPlayService;
@@ -68,7 +68,7 @@ public class MusicBottomSheetDialog
         initListener();
         rxData();
         BottomSheetAdapter adapter = new BottomSheetAdapter(mList);
-        mRecyclerView = RecyclerViewFactory.creatRecyclerView(1, adapter);
+        mRecyclerView = RecyclerFactory.creatRecyclerView(1, adapter);
         String title = StringUtil.getBottomSheetTitile(mList.size());
         mBottomListTitleSize.setText(title);
         mBottomListContent.addView(mRecyclerView);

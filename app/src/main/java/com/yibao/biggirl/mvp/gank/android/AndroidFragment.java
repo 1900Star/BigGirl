@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.factory.RecyclerViewFactory;
+import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.android.AndroidAndGirl;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
@@ -101,7 +101,7 @@ public class AndroidFragment
 
         mAdapter = new AndroidAdapter(getContext(), list);
 
-        RecyclerView recyclerView = RecyclerViewFactory.creatRecyclerView(type, mAdapter);
+        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(type, mAdapter);
         initListerner(recyclerView);
         mFagContent.addView(recyclerView);
 
@@ -181,16 +181,7 @@ public class AndroidFragment
 
     }
 
-    //找到数组中的最大值
-    private int findMax(int[] lastPositions) {
-        int max = lastPositions[0];
-        for (int value : lastPositions) {
-            if (value > max) {
-                max = value;
-            }
-        }
-        return max;
-    }
+
 
     @Override
     public void loadData(List<AndroidAndGirl> list) {

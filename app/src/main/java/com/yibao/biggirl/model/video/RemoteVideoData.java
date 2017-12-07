@@ -2,6 +2,7 @@ package com.yibao.biggirl.model.video;
 
 import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.network.RetrofitHelper;
+import com.yibao.biggirl.util.Constants;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,7 +21,7 @@ public class RemoteVideoData
 
     @Override
     public void getVideo(int size, int page,String loadType,LoadVDataCallback callback) {
-        RetrofitHelper.getGankApi()
+        RetrofitHelper.getGankApi(Constants.GANK_API)
                       .getConmmetApi(loadType, size, page)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())

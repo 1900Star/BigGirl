@@ -1,9 +1,16 @@
 package com.yibao.biggirl.util;
 
+import android.text.TextUtils;
+
 import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
+import com.yibao.biggirl.model.girls.Girl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Flowable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author：Sid
@@ -14,6 +21,23 @@ public class PackagingDataUtil {
 
     private static String imageUrl;
 
+    public static List<String> objectToList(List<Girl> list) {
+
+        List<String> data = new ArrayList();
+        Flowable.fromIterable(list)
+                .subscribeOn(Schedulers.io())
+                .subscribe(girl -> {
+                    if (TextUtils.isEmpty(girl.getLink())) {
+                        data.add(girl.getUrl());
+                    } else {
+                        LogUtil.d("**********   PackagingDataUtil");
+                        data.add(girl.getLink());
+                    }
+                });
+
+        return data;
+    }
+
     public static FavoriteWebBean objectToFavorite(ResultsBeanX data) {
 
 
@@ -23,19 +47,17 @@ public class PackagingDataUtil {
         }
         String who = data.getWho();
         String name = who == null
-                      ? "Smartisan"
-                      : who;
-//        String str  = data.getCreatedAt();
-//        long   id   = FileUtil.getId(str);
+                ? "Smartisan"
+                : who;
         String time = FileUtil.getCreatTime(data.getCreatedAt());
         FavoriteWebBean bean = new FavoriteWebBean((long) 0,
-                                                   data.getUrl(),
-                                                   data.get_id(),
-                                                   imageUrl,
-                                                   data.getDesc(),
-                                                   name,
-                                                   data.getType(),
-                                                   time);
+                data.getUrl(),
+                data.get_id(),
+                imageUrl,
+                data.getDesc(),
+                name,
+                data.getType(),
+                time);
 
         return bean;
 

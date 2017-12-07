@@ -29,10 +29,10 @@ public class RetrofitHelper {
 
     private static Retrofit retrofit;
 
-    public static GirlService getGankApi() {
+    public static GirlService getGankApi(String baseUrl) {
         if (retrofit == null) {
             synchronized (RetrofitHelper.class) {
-                retrofit = new Retrofit.Builder().baseUrl(Constants.GANK_API)
+                retrofit = new Retrofit.Builder().baseUrl(baseUrl)
                                                  .addConverterFactory(GsonConverterFactory.create())
                                                  .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                                  .client(MyApplication.defaultOkHttpClient())
@@ -41,6 +41,7 @@ public class RetrofitHelper {
             }
 
         }
+
         return retrofit.create(GirlService.class);
 
 

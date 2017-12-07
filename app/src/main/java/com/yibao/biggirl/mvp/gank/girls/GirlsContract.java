@@ -28,10 +28,42 @@ public interface GirlsContract {
 
     }
 
+    interface ViewTu<T>
+            extends BaseView<Presenter> {
+
+        void loadData(List<T> list);
+
+        void refresh(List<T> list);
+
+        void loadMore(List<T> list);
+
+        void showError();
+
+        void showNormal();
+
+
+    }
+
+    interface ViewTuLists<T>
+            extends BaseView<Presenter> {
+
+        void loadData(List<T> list);
+
+        void refresh(List<T> list);
+
+        void loadMore(List<T> list);
+
+        void showError();
+
+        void showNormal();
+
+
+    }
+
     interface Presenter
             extends BasePresenter
     {
-        void loadData(int size, int page, int loadType, String dataType);
+        void loadData(int size, int page,int type, int loadType, String dataType);
 
     }
 }

@@ -2,6 +2,7 @@ package com.yibao.biggirl.model.app;
 
 import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.network.RetrofitHelper;
+import com.yibao.biggirl.util.Constants;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,7 +21,7 @@ public class RemoteAppData
 
     @Override
     public void getApp(int size, int page, String type, LoadADataCallback callback) {
-        RetrofitHelper.getGankApi()
+        RetrofitHelper.getGankApi(Constants.GANK_API)
                       .getConmmetApi(type, size, page)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())

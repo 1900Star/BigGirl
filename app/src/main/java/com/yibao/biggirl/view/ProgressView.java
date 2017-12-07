@@ -84,7 +84,7 @@ public class ProgressView
         //挂载布局
 
         View view = View.inflate(context, R.layout.progress_btn, this);
-        mIvIcon = (FloatingActionButton) view.findViewById(R.id.fab_progress);
+        mIvIcon = view.findViewById(R.id.fab_progress);
     }
 
     @Override
