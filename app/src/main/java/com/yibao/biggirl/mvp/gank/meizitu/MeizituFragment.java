@@ -14,8 +14,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -30,7 +28,6 @@ import com.yibao.biggirl.model.girls.Girl;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -96,11 +93,7 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
                     case RecyclerView.SCROLL_STATE_IDLE:
                         mFab.setVisibility(View.VISIBLE);
                         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        if (layoutManager instanceof GridLayoutManager) {
-                            lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-                        } else if (layoutManager instanceof LinearLayoutManager) {
-                            lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                        if (layoutManager instanceof StaggeredGridLayoutManager) {
                             int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
                             ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
                                     lastPositions);
@@ -109,14 +102,12 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
 
                         if (lastPosition == recyclerView.getLayoutManager()
                                 .getItemCount() - 1) {
-
                             page++;
 
                             mPresenter.loadData(size,
                                     page, 0,
                                     Constants.LOAD_MORE_DATA,
                                     Constants.FRAGMENT_MEIZITU);
-                            LogUtil.d("PAGE===" + page);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -132,8 +123,9 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
 
         });
         mFagContent.addView(recyclerView);
-    }
+        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
 
+    }
 
 
     //下拉刷新
@@ -169,6 +161,9 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
         mSwipeRefresh.setRefreshing(false);
     }
 
+    public MeizituFragment() {
+    }
+
     @Override
     public void refresh(List<Girl> list) {
 
@@ -195,13 +190,6 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
     public void showNormal() {
 
     }
-
-
-    public MeizituFragment newInstance() {
-        return new MeizituFragment();
-
-    }
-
 
     @Override
     public void onDestroy() {

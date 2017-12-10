@@ -6,7 +6,7 @@ package com.yibao.biggirl.network;
  * 邮箱：strangermy@outlook.com
  */
 public class Api {
-    public static String myFeir  = "http://v.youku.com/v_show/id_XMTYwMTMzODMwNA==.html?firsttime=145&spm=a2hww.20023042.uerCenter.5!2~5~5!2~5~DL~DD~A";
+    public static String myFeir = "http://v.youku.com/v_show/id_XMTYwMTMzODMwNA==.html?firsttime=145&spm=a2hww.20023042.uerCenter.5!2~5~5!2~5~DL~DD~A";
     public static String myXXuan = "http://baike.baidu.com/link?url=7nM74urzS8gNIQMKztXSwvFc8lqtuc0GuvUbDzadat40MdMV4xQN_wJI91n_pYCgGRO3BNwcrhldlxB-z_kWn2F1-9XJKMe6CJdseR6O5HsvP0C94vgXjk0zn8X_7mJz";
 
 
@@ -322,32 +322,14 @@ public class Api {
             "http://pictutu.ke12345.net/picss/2016/allimg/160516/16222G3-2-IN1.jpg"};
     //    TODO
     public static String[] picUrlArr = {
-            //**************************潘雨辰
-            //            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095948.jpg",
-            //            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095946.jpg",
-            //            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095947.jpg",
-            //            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095947-50.jpg",
-            //            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095948-50.jpg",
-            //            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095949.jpg",
-            //            "http://img0.imgtn.bdimg.com/it/u=1908767928,423978649&fm=214&gp=0.jpg",
-            //            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0S5G0BOe0003.jpg",
-            //            "http://s9.album.sina.com.cn/pic/438cd639020004ak",
-            //            "http://s10.album.sina.com.cn/pic/438cd639020004al",
-            //            "http://s12.album.sina.com.cn/pic/438cd639020004an",
-            //            "http://image2.sina.com.cn/ent/d/2005-06-22/U102P28T3D759223F326DT20050622101820.jpg",
-            //            "http://image2.sina.com.cn/ent/d/2005-04-27/U92P28T3D713296F326DT20050427191406.jpg",
-            //            "http://photo.sohu.com/20040927/Img222253764.jpg",
-            //            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0S5G0BOe0003.jpg",
-            //            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0RUQ0BOe0003.jpg",
-            //            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0RQE0BOe0003.jpg",
-            //            "http://1844.img.pp.sohu.com.cn/images/blog/2008/11/6/17/28/11e19331951g213.jpg",
-            //            "http://1832.img.pp.sohu.com.cn/images/blog/2009/3/24/7/6/120e0696c74g214.jpg",
-            //            "http://1862.img.pp.sohu.com.cn/images/blog/2009/3/24/7/5/120e0696126g214.jpg",
-            //            "http://1802.img.pp.sohu.com.cn/images/blog/2009/3/24/7/5/120e067f72fg213.jpg",
-            //            "http://i0.sinaimg.cn/ent/v/m/2008-04-30/U996P28T3D2009570F328DT20080430104256.jpg",
-            //            "https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=c7de5b91a3cc7cd9ee203c8b58684a5a/d1160924ab18972bbf7640b6e6cd7b899e510a79.jpg",
-            //            "https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=45703fdcf603738dca470470d272db34/5882b2b7d0a20cf4cddcbea376094b36acaf997a.jpg",
-            //            "https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=da55de54972bd40756cadbaf1ae0f534/bf096b63f6246b60df42f208ebf81a4c510fa27a.jpg",
+            //原干惠
+            "http://img3.imgtn.bdimg.com/it/u=1855921444,3113130531&fm=27&gp=0.jpg",
+            "http://img4.imgtn.bdimg.com/it/u=901808794,687931204&fm=214&gp=0.jpg",
+            "http://img1.imgtn.bdimg.com/it/u=1598874166,3706761444&fm=214&gp=0.jpg",
+            "http://mtl.ttsqgs.com/images/img/794/10.jpg",
+            "http://mtl.ttsqgs.com/images/img/917/13.jpg",
+            "http://pic.yesky.com/uploadImages/2015/165/55/39SC26W859JP.jpg",
+            "http://img1.ph.126.net/l6afuAcNNBl-MNcbtpGe9g==/2604769434497616551.jpg",
             //**************************松本若菜
             "http://tupian.enterdesk.com/2012/0818/cyf/03/enter%20%282%29.jpg",
             "http://img1.imgtn.bdimg.com/it/u=400990375,2961464935&fm=214&gp=0.jpg",
@@ -1181,6 +1163,33 @@ public class Api {
             "http://img4.duitang.com/uploads/item/201412/01/20141201194617_zurX5.jpeg",
             "http://cdn.duitang.com/uploads/item/201412/01/20141201194626_vAMS8.jpeg",
             "http://imglf1.ph.126.net/fzrb7E08eJIcMuu_uvuj4w==/6608234207724511213.jpg",
+            //**************************潘雨辰
+            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095948.jpg",
+            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095946.jpg",
+            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095947.jpg",
+            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095947-50.jpg",
+            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095948-50.jpg",
+            "http://www.nanrenwo.net/uploads/allimg/151016/8418-151016095949.jpg",
+            "http://img0.imgtn.bdimg.com/it/u=1908767928,423978649&fm=214&gp=0.jpg",
+            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0S5G0BOe0003.jpg",
+            "http://s9.album.sina.com.cn/pic/438cd639020004ak",
+            "http://s10.album.sina.com.cn/pic/438cd639020004al",
+            "http://s12.album.sina.com.cn/pic/438cd639020004an",
+            "http://image2.sina.com.cn/ent/d/2005-06-22/U102P28T3D759223F326DT20050622101820.jpg",
+            "http://image2.sina.com.cn/ent/d/2005-04-27/U92P28T3D713296F326DT20050427191406.jpg",
+            "http://photo.sohu.com/20040927/Img222253764.jpg",
+            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0S5G0BOe0003.jpg",
+            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0RUQ0BOe0003.jpg",
+            "http://cimg2.163.com/photo/0003/2007-05-22/3F3P0RQE0BOe0003.jpg",
+            "http://1844.img.pp.sohu.com.cn/images/blog/2008/11/6/17/28/11e19331951g213.jpg",
+            "http://1832.img.pp.sohu.com.cn/images/blog/2009/3/24/7/6/120e0696c74g214.jpg",
+            "http://1862.img.pp.sohu.com.cn/images/blog/2009/3/24/7/5/120e0696126g214.jpg",
+            "http://1802.img.pp.sohu.com.cn/images/blog/2009/3/24/7/5/120e067f72fg213.jpg",
+            "http://i0.sinaimg.cn/ent/v/m/2008-04-30/U996P28T3D2009570F328DT20080430104256.jpg",
+            "https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=c7de5b91a3cc7cd9ee203c8b58684a5a/d1160924ab18972bbf7640b6e6cd7b899e510a79.jpg",
+            "https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=45703fdcf603738dca470470d272db34/5882b2b7d0a20cf4cddcbea376094b36acaf997a.jpg",
+            "https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=da55de54972bd40756cadbaf1ae0f534/bf096b63f6246b60df42f208ebf81a4c510fa27a.jpg",
+
             //*********************林秀晶
             "http://i0.hdslb.com/group1/M00/68/E9/oYYBAFbX2XWAY4_hAAe4N1kyKTY404.jpg",
             "http://img5.duitang.com/uploads/item/201603/24/20160324191051_P8JyZ.jpeg",

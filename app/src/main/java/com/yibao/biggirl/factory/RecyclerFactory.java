@@ -47,10 +47,18 @@ public class RecyclerFactory {
         return recyclerView;
     }
 
-    public static void backTop(RecyclerView recyclerView) {
+    public static void backTop(RecyclerView recyclerView, int type) {
         BaseRvAdapter adapter = (BaseRvAdapter) recyclerView.getAdapter();
-        int positionForSection = adapter.getPositionForSection(0);
-        LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        manager.scrollToPositionWithOffset(positionForSection, 0);
+        int position = adapter.getPositionForSection(0);
+        if (type == RECYCLERVIEW_NORMAL) {
+            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            manager.scrollToPositionWithOffset(position, 0);
+        } else {
+            StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(type,
+                    StaggeredGridLayoutManager.VERTICAL);
+
+            manager.scrollToPositionWithOffset(position,0);
+        }
+
     }
 }

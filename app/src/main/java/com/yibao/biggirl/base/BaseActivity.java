@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import butterknife.Unbinder;
+import com.yibao.biggirl.MyApplication;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * 作者：Stran on 2017/3/29 15:25
@@ -16,34 +18,35 @@ public abstract class BaseActivity
 
 {
 
-    private Unbinder mBind;
+    public CompositeDisposable mDisposable;
+    public MyApplication mApplication;
+    public String TAG = getClass().getSimpleName() + "    ";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
-
-        initInject();
-        initView();
-        initData();
-        initListener();
+        mDisposable = new CompositeDisposable();
+        mApplication = MyApplication.getIntstance();
     }
 
-    protected abstract void initInject();
 
-    protected abstract void initView();
-
-    protected abstract void initListener();
-
-    protected abstract void initData();
-
-    public abstract int getLayoutId();
-
+    //找到数组中的最大值
+    public int findMax(int[] lastPositions) {
+        int max = lastPositions[0];
+        for (int value : lastPositions) {
+            if (value > max) {
+                max = value;
+            }
+        }
+        return max;
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBind.unbind();
+        if (mDisposable != null) {
+            mDisposable.clear();
+        }
 
     }
 }

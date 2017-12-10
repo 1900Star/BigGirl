@@ -1,8 +1,9 @@
 package com.yibao.biggirl.model.girls;
 
+import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.network.RetrofitHelper;
+import com.yibao.biggirl.service.MeizituService;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +18,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -30,7 +30,6 @@ public class RemoteGirlsData
 
 
     private int totalPages = 1;
-    private int i=1;
 
     @Override
     public void getGirls(String dataType, int size, int page, LoadGDataCallback callback) {
@@ -91,14 +90,13 @@ public class RemoteGirlsData
                 }
 
                 return girls;
-            }).observeOn(AndroidSchedulers.mainThread()).subscribe(girlList -> callback.onLoadDatas(girlList));
+            }).observeOn(AndroidSchedulers.mainThread()).subscribe(callback::onLoadDatas);
         }
     }
 
     @Override
-    public void getMeiziList(String url, LoadGMeizituCallback callback) {
+    public void getMeiziList(String url) {
         Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
-            LogUtil.d("baseUrl  " + url);
             List<Girl> girls = new ArrayList<>();
             try {
                 Document doc = Jsoup.connect(url).timeout(10000).get();
@@ -122,14 +120,13 @@ public class RemoteGirlsData
             return girls;
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(girlList -> {
             for (int i = 0; i < totalPages; i++) {
-                getMeizis(url, i, callback);
+                getMeizis(url, i);
             }
         });
     }
 
-    private void getMeizis(String baseUrl, int page, LoadGMeizituCallback callback) {
+    private void getMeizis(String baseUrl, int page) {
         String url = baseUrl + "/" + page;
-//        LogUtil.d("basBBBB  ");
         final String fakeRefer = baseUrl + "/";
         final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
         Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
@@ -144,18 +141,7 @@ public class RemoteGirlsData
             }
             return girls;
 
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Girl>>() {
-            @Override
-            public void accept(List<Girl> girlList) throws Exception {
-//                LogUtil.d("**************  totalPages  " + totalPages);
-//                List<String> list = new ArrayList<>();
-//                for (int i = 0; i < totalPages; i++) {
-//                    list.add(girlList.get(i).getUrl());
-//                }
-                callback.onLoadDatas(girlList);
-
-            }
-        });
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(girlList -> MeizituService.start(MyApplication.getIntstance(), baseUrl, girlList));
 
 
     }

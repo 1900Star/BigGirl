@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -40,11 +41,11 @@ public class ImageUitl {
 
 
     private static String name;
-    private static File   file;
+    private static File file;
 
     public static ZoomImageView creatZoomView(Context context) {
         ZoomImageView view = new ZoomImageView(context);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(1080,1920);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(1080, 1920);
         view.setScaleType(ImageView.ScaleType.MATRIX);
         view.reSetState();
         view.setLayoutParams(params);
@@ -54,42 +55,42 @@ public class ImageUitl {
     //加载图片
     public static void loadPic(Context context, String url, ImageView view) {
         Glide.with(context)
-             .load(url)
-             .asBitmap()
-             .error(R.mipmap.xuan)
-             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-             .into(view);
+                .load(url)
+                .asBitmap()
+                .error(R.mipmap.xuan)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(view);
 
     }
 
     //Glide加载圆图
     public static void loadPicCirc(Context context, String url, ImageView view) {
         Glide.with(context)
-             .load(url)
-             .asBitmap()
-             .centerCrop()
-             .placeholder(R.mipmap.xuan)
-             .into(new BitmapImageViewTarget(view) {
-                 @Override
-                 protected void setResource(Bitmap resource) {
-                     RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(
-                             context.getResources(),
-                             resource);
-                     circularBitmapDrawable.setCircular(true);
-                     view.setImageDrawable(circularBitmapDrawable);
-                 }
-             });
+                .load(url)
+                .asBitmap()
+                .centerCrop()
+                .placeholder(R.mipmap.xuan)
+                .into(new BitmapImageViewTarget(view) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(
+                                context.getResources(),
+                                resource);
+                        circularBitmapDrawable.setCircular(true);
+                        view.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
     }
 
     //加载需要占位图的图片
     public static void loadPicHolder(Context context, String url, ImageView view) {
         Glide.with(context)
-             .load(url)
-             .asBitmap()
-             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-             .placeholder(R.mipmap.xuan)
-             .error(R.mipmap.xuan)
-             .into(view);
+                .load(url)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .placeholder(R.mipmap.xuan)
+                .error(R.mipmap.xuan)
+                .into(view);
 
 
     }
@@ -97,13 +98,13 @@ public class ImageUitl {
     /**
      * 保存图片
      */
-    public static int downloadPic(String url, int type)
-    {
+    public static int downloadPic(String url, int type) {
         if (type == 1) {
             name = "share_y.jpg";
         } else {
-
-            name = getNameFromUrl(url);
+//            name = getNameFromUrl(url);
+            name = randomUUID() + ".jpg";
+            LogUtil.d("Down*****    " + url);
         }
 
         File path = new File(Constants.dir);
@@ -123,67 +124,67 @@ public class ImageUitl {
             return Constants.EXISTS;
         }
 
-        Request request = new Request.Builder().url(url)
-                                               .build();
+        Request request = new Request.Builder().url(url).addHeader("Accept-Encoding", "identity")
+                .build();
         MyApplication.defaultOkHttpClient()
-                     .newCall(request)
-                     .enqueue(new Callback() {
-                         @Override
-                         public void onFailure(okhttp3.Call call, IOException e) {
-                             e.printStackTrace();
-                             LogUtil.d("下载出错 " + e.toString());
-                         }
+                .newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(okhttp3.Call call, IOException e) {
+                        e.printStackTrace();
+                        LogUtil.d("下载出错 " + e.toString());
+                    }
 
 
-                         @Override
-                         public void onResponse(okhttp3.Call call, Response response)
+                    @Override
+                    public void onResponse(okhttp3.Call call, Response response)
 
-                         {
-                             InputStream      is;
-                             byte[]           buf = new byte[1024 * 4];
-                             int              len;
-                             FileOutputStream fos = null;
+                    {
+                        InputStream is;
+                        byte[] buf = new byte[1024 * 4];
+                        int len;
+                        FileOutputStream fos = null;
 
-                             is = response.body()
-                                          .byteStream();
-                             long total = response.body()
-                                                  .contentLength();
-                             try {
-                                 fos = new FileOutputStream(file);
+                        is = response.body()
+                                .byteStream();
+                        long total = response.body()
+                                .contentLength();
+                        try {
+                            fos = new FileOutputStream(file);
 
-                                 long sum = 0;
-                                 while ((len = is.read(buf)) != -1) {
+                            long sum = 0;
+                            while ((len = is.read(buf)) != -1) {
 
-                                     fos.write(buf, 0, len);
-                                     sum += len;
-                                     int progress = (int) (sum * 1.0f / total * 100);
-                                     //Rxbus发送下载进度
-                                     MyApplication.getIntstance()
-                                                  .bus()
-                                                  .post(new DownGrilProgressData(progress, type));
+                                fos.write(buf, 0, len);
+                                sum += len;
+                                int progress = (int) (sum * 1.0f / total * 100);
+                                //Rxbus发送下载进度
+                                MyApplication.getIntstance()
+                                        .bus()
+                                        .post(new DownGrilProgressData(progress, type));
 
-                                 }
-
-
-                                 fos.flush();
-                                 fos.close();
-
-                             } catch (IOException e) {
-                                 e.printStackTrace();
-
-                             } finally {
-                                 try {
-                                     fos.close();
-                                 } catch (IOException e) {
-                                     e.printStackTrace();
-                                 }
-                             }
+                            }
 
 
-                         }
+                            fos.flush();
+                            fos.close();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+
+                        } finally {
+                            try {
+                                fos.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
 
-                     });
+                    }
+
+
+                });
         return Constants.FIRST_DWON;
 
     }
@@ -193,13 +194,13 @@ public class ImageUitl {
 
         try {
             MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
-                                                             .getContentResolver(),
-                                                file.getAbsolutePath(),
-                                                name,
-                                                null);
+                            .getContentResolver(),
+                    file.getAbsolutePath(),
+                    name,
+                    null);
             MyApplication.getIntstance()
-                         .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                                   Uri.parse("file://" + file)));
+                    .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                            Uri.parse("file://" + file)));
         } catch (Exception e) {
             LogUtil.d("图片保存出错 ！ " + e.toString());
             e.printStackTrace();
@@ -228,10 +229,13 @@ public class ImageUitl {
         return list;
     }
 
+    public static String randomUUID() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
     /**
      * @param url
-     * @return
-     * 从下载连接中解析出文件名
+     * @return 从下载连接中解析出文件名
      */
     @NonNull
     private static String getNameFromUrl(String url) {

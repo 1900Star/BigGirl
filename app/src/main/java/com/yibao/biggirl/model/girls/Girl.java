@@ -9,7 +9,10 @@ package com.yibao.biggirl.model.girls;
  *  @描述：    TODO
  */
 
-public class Girl  {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Girl implements Parcelable {
     private String url;
     private int width = 0;
     private int height = 0;
@@ -18,6 +21,25 @@ public class Girl  {
     public Girl(String url) {
         this.url = url;
     }
+
+    protected Girl(Parcel in) {
+        url = in.readString();
+        width = in.readInt();
+        height = in.readInt();
+        link = in.readString();
+    }
+
+    public static final Creator<Girl> CREATOR = new Creator<Girl>() {
+        @Override
+        public Girl createFromParcel(Parcel in) {
+            return new Girl(in);
+        }
+
+        @Override
+        public Girl[] newArray(int size) {
+            return new Girl[size];
+        }
+    };
 
     public int getHeight() {
         return height;
@@ -52,4 +74,16 @@ public class Girl  {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(url);
+        parcel.writeInt(width);
+        parcel.writeInt(height);
+        parcel.writeString(link);
+    }
 }

@@ -69,6 +69,9 @@ public class GirlsFragment
 
     private int mRandomNum;
 
+    public GirlsFragment() {
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

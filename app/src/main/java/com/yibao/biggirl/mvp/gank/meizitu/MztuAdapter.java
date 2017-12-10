@@ -1,20 +1,22 @@
 package com.yibao.biggirl.mvp.gank.meizitu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
-import com.yibao.biggirl.base.listener.OnRvITutemClickListener;
-import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.girls.Girl;
-import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.util.PackagingDataUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,7 +37,6 @@ public class MztuAdapter
 
     public MztuAdapter(Context context, List<Girl> list) {
         super(list);
-        LogUtil.d("**************  AdapterSize  " + list.size());
         mContext = context;
     }
 
@@ -52,26 +53,31 @@ public class MztuAdapter
 
     @Override
     protected void bindView(RecyclerView.ViewHolder holder, Girl girl) {
+        List<String> list = PackagingDataUtil.objectToList(mList);
         holder.getAdapterPosition();
         if (holder instanceof ViewHolder) {
             String url = girl.getUrl();
             ViewHolder viewHolder = (ViewHolder) holder;
             ImageUitl.loadPicHolder(mContext, url, viewHolder.mGrilImageView);
-
             holder.itemView.setOnClickListener(view -> {
+                if (TextUtils.isEmpty(girl.getLink())) {
+                    if (list!=null&&list.size() != 0) {
+                        LogUtil.d("Adapter Url  " + url);
+                        LogUtil.d("Adapter position     " + holder.getAdapterPosition());
+                        Intent intent = new Intent(mContext, GirlActivity.class);
+                        intent.putStringArrayListExtra("girlList", (ArrayList<String>)list);
+                        intent.putExtra("position", holder.getAdapterPosition());
+                        mContext.startActivity(intent);
 
-                boolean b = mContext.getClass().getName().toString().equals(Constants.CLASS_MAIN);
-                if (mContext instanceof OnRvITutemClickListener && b) {
-                    LogUtil.d(" BBBBBBBB ***  " + girl.getLink());
-                    LogUtil.d("  ClassName  ****" + mContext.getClass().getName().toString());
-                    ((OnRvITutemClickListener) mContext).openMeiziList(girl.getLink());
+                    }
                 } else {
-                    LogUtil.d("  ClassName Tu ****" + mContext.getClass().getName().toString());
-                    ((OnRvItemClickListener) mContext).showBigGirl(holder.getAdapterPosition(), mList);
-
+                    Intent intent = new Intent(mContext, MeizituActivity.class);
+                    intent.putExtra("link", girl.getLink());
+                    mContext.startActivity(intent);
                 }
 
             });
+
 
             holder.itemView.setOnLongClickListener(view -> {
                 if (mContext instanceof OnRvItemLongClickListener) {
@@ -81,6 +87,17 @@ public class MztuAdapter
                 return true;
             });
         }
+    }
+
+    public void setNewData(List<Girl> data) {
+        this.mList = data;
+
+        notifyDataSetChanged();
+    }
+
+    public void addData(int position, List<Girl> data) {
+        this.mList.addAll(position, data);
+        this.notifyItemRangeInserted(position, data.size());
     }
 
     static class ViewHolder

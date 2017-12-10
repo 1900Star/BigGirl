@@ -52,13 +52,12 @@ import static com.yibao.biggirl.R.id.vp;
  */
 public class GirlFragment
         extends Fragment
-        implements ViewPager.OnPageChangeListener
-{
+        implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.toolbar)
-    Toolbar      mToolbar;
+    Toolbar mToolbar;
     @BindView(vp)
-    ViewPager    mVp;
+    ViewPager mVp;
     @BindView(R.id.iv_down)
     ProgressView mPbDown;
     Unbinder unbinder;
@@ -67,21 +66,23 @@ public class GirlFragment
     //默认下载进度
     public static final int DEFULT_DOWN_PREGRESS = 0;
     //下载进度最大值
-    public static       int MAX_DOWN_PREGRESS    = 100;
+    public static int MAX_DOWN_PREGRESS = 100;
 
     //PergerView滑动的状态的最值
     public static final int STATUS_MAX_NUM = 3;
     private GirlAdapter mAdapter;
-    private View   mView = null;
-    private String mUrl  = null;
-    private List<String>        mList;
+    private View mView = null;
+    private String mUrl = null;
+    private List<String> mList;
     private CompositeDisposable disposables;
-    private Disposable          mDisposable;
-    private MyApplication       mApplication;
-    private MenuItem            mMenuItem;
-    private PagerScroller       mScroller;
+    private Disposable mDisposable;
+    private MyApplication mApplication;
+    private MenuItem mMenuItem;
+    private PagerScroller mScroller;
     private boolean isPlay = false;
 
+    public GirlFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,8 +99,7 @@ public class GirlFragment
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         if (savedInstanceState == null) {
 
             mView = inflater.inflate(R.layout.girl_frag, container, false);
@@ -121,7 +121,9 @@ public class GirlFragment
 
         setHasOptionsMenu(true);
         mScroller = new PagerScroller(getActivity());
-        mAdapter = new GirlAdapter(getActivity(), mList);
+        if (mList.size() != 0) {
+            mAdapter = new GirlAdapter(getActivity(), mList);
+        }
         mVp.setAdapter(mAdapter);
         mVp.setCurrentItem(mPosition);
         mVp.addOnPageChangeListener(this);
@@ -137,26 +139,26 @@ public class GirlFragment
         if (progress == MAX_DOWN_PREGRESS) {
             //将下载的图片插入到系统相册
             Observable.just(ImageUitl.insertImageToPhoto())
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .subscribe(aBoolean -> {
-                          if (aBoolean) {
-                              SnakbarUtil.showSuccessView(mPbDown);
-                          } else {
-                              SnakbarUtil.showDownPicFail(mPbDown);
-                          }
-                      });
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aBoolean -> {
+                        if (aBoolean) {
+                            SnakbarUtil.showSuccessView(mPbDown);
+                        } else {
+                            SnakbarUtil.showDownPicFail(mPbDown);
+                        }
+                    });
         }
     }
 
     //Rxbus接收下载进度 ，设置progress进度
     public void getProgress() {
         disposables.add(mApplication.bus()
-                                    .toObserverable(DownGrilProgressData.class)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(data -> GirlFragment.this.setProgress(data.getProgress(),
-                                                                                     data.getType())));
+                .toObserverable(DownGrilProgressData.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> GirlFragment.this.setProgress(data.getProgress(),
+                        data.getType())));
     }
 
     @Override
@@ -211,25 +213,6 @@ public class GirlFragment
         return super.onOptionsItemSelected(item);
     }
 
-    private void shareGirl() {
-        FileUtil.delFile(Constants.deleteDir);
-        Observable.just(ImageUitl.downloadPic(mUrl, Constants.EXISTS))
-                  .subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(integer -> {
-                      if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
-                          Uri    url    = Uri.fromFile(new File(Constants.deleteDir));
-                          Intent intent = new Intent();
-                          intent.setAction(Intent.ACTION_SEND);
-                          intent.putExtra(Intent.EXTRA_STREAM, url);
-                          intent.setType("image/*");
-                          startActivity(Intent.createChooser(intent, "将妹子分享到"));
-
-                      } else if (integer == Constants.DWON_PIC_EROOR) {
-                          SnakbarUtil.showSharePicFail(mPbDown);
-                      }
-                  });
-    }
 
     private void autoPreview() {
         if (isPlay) {
@@ -252,16 +235,16 @@ public class GirlFragment
 
         mScroller.initViewPagerScroll(mVp, 2000);
         mDisposable = Observable.interval(2000, 3000, TimeUnit.MILLISECONDS)
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(aLong -> {
-                                    int item = mVp.getCurrentItem();
-                                    if (item == mAdapter.getCount()) {
-                                        mVp.setCurrentItem(0);
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    int item = mVp.getCurrentItem();
+                    if (item == mAdapter.getCount()) {
+                        mVp.setCurrentItem(0);
 
-                                    }
-                                    mVp.setCurrentItem(++item, true);
+                    }
+                    mVp.setCurrentItem(++item, true);
 
-                                });
+                });
 
 
     }
@@ -282,23 +265,45 @@ public class GirlFragment
         boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
         if (isConnected) {
             Observable.just(ImageUitl.downloadPic(mUrl, Constants.FIRST_DWON))
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .subscribe(integer -> {
-                          if (integer == Constants.EXISTS) {
-                              SnakbarUtil.picAlreadyExists(mPbDown);
-                          } else if (integer == Constants.DWON_PIC_EROOR) {
-                              SnakbarUtil.showDownPicFail(mPbDown);
-                          }
-                      });
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(integer -> {
+                        if (integer == Constants.EXISTS) {
+                            SnakbarUtil.picAlreadyExists(mPbDown);
+                        } else if (integer == Constants.DWON_PIC_EROOR) {
+                            SnakbarUtil.showDownPicFail(mPbDown);
+                        }
+                    });
         } else {
             SnakbarUtil.netErrors(mPbDown);
         }
 
     }
 
+    private void shareGirl() {
+        FileUtil.delFile(Constants.deleteDir);
+        Observable.just(ImageUitl.downloadPic(mUrl, Constants.EXISTS))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> {
+                    if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
+                        Uri url = Uri.fromFile(new File(Constants.deleteDir));
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_STREAM, url);
+                        intent.setType("image/*");
+                        startActivity(Intent.createChooser(intent, "将妹子分享到"));
 
-    public GirlFragment newInstance() { return new GirlFragment(); }
+                    } else if (integer == Constants.DWON_PIC_EROOR) {
+                        SnakbarUtil.showSharePicFail(mPbDown);
+                    }
+                });
+    }
+
+
+    public GirlFragment newInstance() {
+        return new GirlFragment();
+    }
 
 
     @Override

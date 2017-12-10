@@ -44,21 +44,6 @@ public interface GirlsContract {
 
     }
 
-    interface ViewTuLists<T>
-            extends BaseView<Presenter> {
-
-        void loadData(List<T> list);
-
-        void refresh(List<T> list);
-
-        void loadMore(List<T> list);
-
-        void showError();
-
-        void showNormal();
-
-
-    }
 
     interface Presenter
             extends BasePresenter

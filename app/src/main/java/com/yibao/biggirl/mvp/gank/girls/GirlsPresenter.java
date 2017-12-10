@@ -4,7 +4,6 @@ import com.yibao.biggirl.model.girls.Girl;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -17,7 +16,6 @@ public class GirlsPresenter
         implements GirlsContract.Presenter {
     private GirlsContract.View<String> mView;
     private GirlsContract.ViewTu<Girl> mTuView;
-    private GirlsContract.ViewTuLists<Girl> mTuListView;
     private RemoteGirlsData mRemoteGirlsData;
 
 
@@ -26,13 +24,12 @@ public class GirlsPresenter
         mRemoteGirlsData = new RemoteGirlsData();
     }
 
-    public GirlsPresenter(GirlsContract.ViewTu<Girl> view) {
-        this.mTuView = view;
+    public GirlsPresenter() {
         mRemoteGirlsData = new RemoteGirlsData();
     }
 
-    public GirlsPresenter(GirlsContract.ViewTuLists<Girl> view) {
-        this.mTuListView = view;
+    public GirlsPresenter(GirlsContract.ViewTu<Girl> view) {
+        this.mTuView = view;
         mRemoteGirlsData = new RemoteGirlsData();
     }
 
@@ -70,7 +67,6 @@ public class GirlsPresenter
             mRemoteGirlsData.getMeizitu(dataType, page, codeId, new GrilsDataSource.LoadGMeizituCallback() {
                 @Override
                 public void onLoadDatas(List<Girl> girlList) {
-                    LogUtil.d("请求图集======");
                     if (loadType == Constants.REFRESH_DATA) {
                         mTuView.refresh(girlList);
                     } else if (loadType == Constants.LOAD_DATA) {
@@ -89,20 +85,8 @@ public class GirlsPresenter
                 }
             });
         } else {
-            LogUtil.d(" 请求图集里面*****");
-            mRemoteGirlsData.getMeiziList(dataType, new GrilsDataSource.LoadGMeizituCallback() {
-                @Override
-                public void onLoadDatas(List<Girl> urlList) {
-                    mTuListView.loadData(urlList);
-
-
-                }
-
-                @Override
-                public void onDataNotAvailable() {
-
-                }
-            });
+//            LogUtil.d(" 请求图集里面*****");
+            mRemoteGirlsData.getMeiziList(dataType);
         }
 
     }

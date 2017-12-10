@@ -33,6 +33,7 @@ public abstract class BaseRvAdapter<T>
 
     public BaseRvAdapter(List<T> list) {
         mList = list;
+
     }
 
     @Override
@@ -138,6 +139,13 @@ public abstract class BaseRvAdapter<T>
     public int getSectionForPosition(int i) {
         return 0;
     }
+
+
+
+    public List<T> getData() {
+        return mList;
+    }
+
 
     static class LoadMoreHolder
             extends RecyclerView.ViewHolder

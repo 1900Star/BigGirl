@@ -1,14 +1,20 @@
-package com.yibao.biggirl.service;
+package com.yibao.biggirl.model.girl;
 
+/*
+ *  @项目名：  BigGirl 
+ *  @包名：    com.yibao.biggirl.model.girl
+ *  @文件名:   MeizituData
+ *  @创建者:   Stran
+ *  @创建时间:  2017/12/10 14:50
+ *  @描述：    TODO
+ */
 
 import com.yibao.biggirl.model.girls.Girl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class GirlsComingEvent {
-
+public class MeizituData {
     private List<Girl> girls;
 
     private String from;
@@ -21,12 +27,12 @@ public class GirlsComingEvent {
         this.from = from;
     }
 
-    public GirlsComingEvent(String from, List<Girl> girls) {
+    public MeizituData(String from, List<Girl> girls) {
         this.girls = girls;
         this.from = from;
     }
 
-    public GirlsComingEvent(String from, Girl girl) {
+    public MeizituData(String from, Girl girl) {
         this.girls = new ArrayList<>();
         girls.add(girl);
         this.from = from;

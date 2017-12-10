@@ -30,7 +30,6 @@ public class PackagingDataUtil {
                     if (TextUtils.isEmpty(girl.getLink())) {
                         data.add(girl.getUrl());
                     } else {
-                        LogUtil.d("**********   PackagingDataUtil");
                         data.add(girl.getLink());
                     }
                 });

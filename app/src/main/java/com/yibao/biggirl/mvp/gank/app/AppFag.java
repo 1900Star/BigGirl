@@ -55,6 +55,9 @@ public class AppFag
     private String mLoadType;
     private RecyclerView mRecyclerView;
 
+    public AppFag() {
+    }
+
     public AppFag(int type) {
         this.type = type;
     }
@@ -205,7 +208,7 @@ public class AppFag
 
     @OnClick(R.id.fab_fag)
     public void onViewClicked() {
-        RecyclerFactory.backTop(mRecyclerView);
+        RecyclerFactory.backTop(mRecyclerView,1);
     }
 
     public AppFag newInstance() {

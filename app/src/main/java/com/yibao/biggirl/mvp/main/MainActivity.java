@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.MyPageChangeListener;
-import com.yibao.biggirl.base.listener.OnRvITutemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
@@ -32,7 +31,6 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituActivity;
 import com.yibao.biggirl.mvp.map.CheckGoogleService;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
@@ -47,6 +45,7 @@ import com.yibao.biggirl.util.SnakbarUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +60,7 @@ import butterknife.Unbinder;
  */
 public class MainActivity
         extends AppCompatActivity
-        implements OnRvItemClickListener<String>, OnRvITutemClickListener,
+        implements OnRvItemClickListener<String>,
         NavigationView.OnNavigationItemSelectedListener,
         OnRvItemLongClickListener
 
@@ -210,11 +209,11 @@ public class MainActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_action_search:
-
                 break;
             case R.id.main_action_star:
                 //TODO
                 startActivity(new Intent(this, Kot.class));
+
                 break;
             default:
                 break;
@@ -242,17 +241,6 @@ public class MainActivity
 
         TopBigPicDialogFragment.newInstance(url)
                 .show(getSupportFragmentManager(), "dialog_big_girl");
-    }
-
-    //打开Meizitutudi
-    @Override
-    public void openMeiziList(String link) {
-        Intent intent = new Intent(this, MeizituActivity.class);
-        intent.putExtra("link", link);
-        startActivity(intent);
-        LogUtil.d("测试中*****  MainActivity   " + link);
-
-
     }
 
 
@@ -293,7 +281,6 @@ public class MainActivity
     //打开ViewPager浏览大图
     @Override
     public void showBigGirl(int position, List<String> list) {
-        LogUtil.d("MainActvity  *****************");
         //设置navHeader头像,待定
         //        ImageUitl.loadPic(this, list.get(position), mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);

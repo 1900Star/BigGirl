@@ -57,17 +57,9 @@
         <activity android:name=".mvp.favorite.FavoriteActivity" />
         <activity
             android:name=".mvp.gank.meizitu.MeizituActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".mvp.main.Kot" />
 
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -76,7 +68,12 @@
             android:name=".mvp.map.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
 
-        <service android:name=".service.AudioPlayService" />
+        <service
+            android:name=".service.AudioPlayService"
+            android:enabled="true" />
+        <service
+            android:name=".service.MeizituService"
+            android:enabled="true" />
 
         <activity
             android:name=".mvp.music.musiclist.MusicListActivity"

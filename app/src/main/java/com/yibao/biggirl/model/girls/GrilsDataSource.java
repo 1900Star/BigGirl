@@ -29,6 +29,7 @@ public interface GrilsDataSource {
     void getGirls(String dataType,int size, int page, LoadGDataCallback callback);
 
     void getMeizitu(String type,int page,int codeId, LoadGMeizituCallback callback);
-    void getMeiziList(String url,LoadGMeizituCallback callback);
+
+    void getMeiziList(String url);
 
 }
