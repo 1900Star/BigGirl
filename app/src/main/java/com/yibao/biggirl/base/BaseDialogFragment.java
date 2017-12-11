@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.yibao.biggirl.util.SystemUiVisibilityUtil;
+import com.yibao.biggirl.MyApplication;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Author：Sid
@@ -20,6 +22,10 @@ import com.yibao.biggirl.util.SystemUiVisibilityUtil;
 public abstract class BaseDialogFragment
         extends DialogFragment
 {
+
+    public MyApplication mApplication;
+    public CompositeDisposable mDisposable;
+    public static int MAX_DOWN_PREGRESS = 100;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -31,11 +37,19 @@ public abstract class BaseDialogFragment
         getDialog().getWindow()
                    .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-
+        mApplication = (MyApplication) getActivity().getApplication();
+        mDisposable = new CompositeDisposable();
         return getViews();
     }
 
 
     public abstract View getViews();
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDisposable != null) {
+        mDisposable.clear();
+        }
+    }
 }

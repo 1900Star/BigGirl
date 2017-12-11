@@ -40,5 +40,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="playAll">播放全部</string>
+    <string name="save_pic">保存</string>
 
 </resources>

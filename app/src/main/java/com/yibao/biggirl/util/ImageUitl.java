@@ -104,7 +104,6 @@ public class ImageUitl {
         } else {
 //            name = getNameFromUrl(url);
             name = randomUUID() + ".jpg";
-            LogUtil.d("Down*****    " + url);
         }
 
         File path = new File(Constants.dir);

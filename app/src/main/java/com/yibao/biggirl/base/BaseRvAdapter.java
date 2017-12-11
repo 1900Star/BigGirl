@@ -117,8 +117,6 @@ public abstract class BaseRvAdapter<T>
 
     public void AddHeader(List<T> list) {
         mList.addAll(list);
-
-
     }
 
     public void AddFooter(List<T> list) {
@@ -129,7 +127,6 @@ public abstract class BaseRvAdapter<T>
             mList.add(t);
 
         }
-
 //        mList.addAll(list);
 
     }
@@ -168,6 +165,8 @@ public abstract class BaseRvAdapter<T>
             super(view);
             ButterKnife.bind(this, view);
         }
+
+
     }
 
 

@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseActivity;
+import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girl.MeizituData;
+import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.service.MeizituService;
@@ -30,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
  * Time:2017/4/8 04:24
  */
 public class MeizituActivity
-        extends BaseActivity {
+        extends BaseActivity implements OnRvItemLongClickListener{
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -121,4 +123,9 @@ public class MeizituActivity
     }
 
 
+    @Override
+    public void showPreview(String url) {
+        TopBigPicDialogFragment.newInstance(url)
+                .show(getSupportFragmentManager(), "dialog_meizitu_girl");
+    }
 }

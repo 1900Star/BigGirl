@@ -53,6 +53,7 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
 
 
     private int type;
+    private String mLoadType;
 
     public MeizituFag(int type) {
         this.type = type;
@@ -66,8 +67,8 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
 
     @Override
     public void loadDatas() {
-        String loadType = Constants.getLoadType(type);
-        mPresenter.start(loadType, Constants.MEIZITU);
+        mLoadType = Constants.getLoadType(type);
+        mPresenter.start(mLoadType, Constants.MEIZITU);
 
     }
 
@@ -113,7 +114,7 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
                             page++;
 
                             mPresenter.loadData(size,
-                                    page, 0,
+                                    page, Constants.MEIZITU,
                                     Constants.LOAD_MORE_DATA,
                                     Constants.FRAGMENT_JAPAN);
                         }
@@ -146,7 +147,7 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
                     mPresenter.loadData(size,
                             1, 0,
                             Constants.REFRESH_DATA,
-                            Constants.FRAGMENT_JAPAN);
+                            mLoadType);
                     mSwipeRefresh.setRefreshing(false);
                     page = 1;
                 });
@@ -186,7 +187,7 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
     @Override
     public void loadMore(List<Girl> list) {
         mList.addAll(list);
-        mAdapter.AddFooter(list);
+        mAdapter.AddFooter(mList);
         mAdapter.notifyDataSetChanged();
     }
 
