@@ -27,9 +27,9 @@ public abstract class BaseRvAdapter<T>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SectionIndexer
 
 {
-    public               List<T> mList       = null;
-    private static final int     TYPE_ITEM   = 0;
-    private static final int     TYPE_FOOTER = 1;
+    public List<T> mList = null;
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
 
     public BaseRvAdapter(List<T> list) {
         mList = list;
@@ -41,11 +41,11 @@ public abstract class BaseRvAdapter<T>
         if (viewType == TYPE_ITEM) {
 
             View view = LayoutInflater.from(parent.getContext())
-                                      .inflate(getLayoutId(), parent, false);
+                    .inflate(getLayoutId(), parent, false);
             return getViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
             View view = LayoutInflater.from(parent.getContext())
-                                      .inflate(R.layout.load_more_footview, parent, false);
+                    .inflate(R.layout.load_more_footview, parent, false);
             return new LoadMoreHolder(view);
         }
 
@@ -67,14 +67,14 @@ public abstract class BaseRvAdapter<T>
     public int getItemCount() {
 
         return mList == null
-               ? 0
-               : mList.size();
+                ? 0
+                : mList.size();
     }
 
 
     @Override
     public int getItemViewType(int position) {
-        if (position>10&&position == getItemCount()-1) {
+        if (position > 10 && position == getItemCount() - 1) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -101,8 +101,8 @@ public abstract class BaseRvAdapter<T>
                 @Override
                 public int getSpanSize(int position) {
                     return getItemViewType(position) == TYPE_FOOTER
-                           ? gridManager.getSpanCount()
-                           : 1;
+                            ? gridManager.getSpanCount()
+                            : 1;
                 }
             });
         }
@@ -122,9 +122,18 @@ public abstract class BaseRvAdapter<T>
     }
 
     public void AddFooter(List<T> list) {
-        mList.addAll(list);
+        for (T t : list) {
+            if (mList.contains(t)) {
+                continue;
+            }
+            mList.add(t);
+
+        }
+
+//        mList.addAll(list);
 
     }
+
     @Override
     public Object[] getSections() {
         return new Object[0];
@@ -141,19 +150,17 @@ public abstract class BaseRvAdapter<T>
     }
 
 
-
     public List<T> getData() {
         return mList;
     }
 
 
     static class LoadMoreHolder
-            extends RecyclerView.ViewHolder
-    {
+            extends RecyclerView.ViewHolder {
         @BindView(R.id.pbLoad)
-        ProgressBar  mPbLoad;
+        ProgressBar mPbLoad;
         @BindView(R.id.tvLoadText)
-        TextView     mTvLoadText;
+        TextView mTvLoadText;
         @BindView(R.id.loadLayout)
         LinearLayout mLoadLayout;
 
