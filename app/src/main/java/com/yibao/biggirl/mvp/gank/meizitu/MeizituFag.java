@@ -3,7 +3,7 @@ package com.yibao.biggirl.mvp.gank.meizitu;
 /*
  *  @项目名：  BigGirl 
  *  @包名：    com.yibao.biggirl.mvp.gank.meizitu
- *  @文件名:   MeizituFragment
+ *  @文件名:   MeizituFag
  *  @创建者:   Stran
  *  @创建时间:  2017/12/5 1:54
  *  @描述：    TODO
@@ -38,9 +38,9 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefreshListener,
+public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefreshListener,
         View.OnLongClickListener,
-        GirlsContract.ViewTu<Girl> {
+        GirlsContract.ViewMeizi<Girl> {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
@@ -51,6 +51,13 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
     private GirlsContract.Presenter mPresenter;
     private MztuAdapter mAdapter;
 
+
+    private int type;
+
+    public MeizituFag(int type) {
+        this.type = type;
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -59,7 +66,8 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
 
     @Override
     public void loadDatas() {
-        mPresenter.start(Constants.FRAGMENT_MEIZITU, 0);
+        String loadType = Constants.getLoadType(type);
+        mPresenter.start(loadType, Constants.MEIZITU);
 
     }
 
@@ -107,7 +115,7 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
                             mPresenter.loadData(size,
                                     page, 0,
                                     Constants.LOAD_MORE_DATA,
-                                    Constants.FRAGMENT_MEIZITU);
+                                    Constants.FRAGMENT_JAPAN);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
@@ -138,7 +146,7 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
                     mPresenter.loadData(size,
                             1, 0,
                             Constants.REFRESH_DATA,
-                            Constants.FRAGMENT_MEIZITU);
+                            Constants.FRAGMENT_JAPAN);
                     mSwipeRefresh.setRefreshing(false);
                     page = 1;
                 });
@@ -161,7 +169,8 @@ public class MeizituFragment extends BaseFag<Girl> implements SwipeRefreshLayout
         mSwipeRefresh.setRefreshing(false);
     }
 
-    public MeizituFragment() {
+
+    public MeizituFag() {
     }
 
     @Override

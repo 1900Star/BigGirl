@@ -67,31 +67,28 @@ public class RemoteGirlsData
     }
 
     @Override
-    public void getMeizitu(String type, int page, int codeId, LoadGMeizituCallback callback) {
-        if (codeId == 0) {
+    public void getMeizitu(String type, int page, LoadGMeizituCallback callback) {
+        String url = Constants.MEIZITU_API + type + "/page/" + page;
+        final String fakeRefer = url + "/";
+        final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";// 然后用自己的服务器进行转发
+        Observable.just(Constants.MEIZITU_API).subscribeOn(Schedulers.io()).map(s -> {
 
-            String url = Constants.MEIZITU_API + type + "/page/" + page;
-            final String fakeRefer = url + "/";
-            final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";// 然后用自己的服务器进行转发
-            Observable.just(Constants.MEIZITU_API).subscribeOn(Schedulers.io()).map(s -> {
-
-                List<Girl> girls = new ArrayList<>();
-                try {
-                    Document doc = Jsoup.connect(url).timeout(10000).get();
-                    Element total = doc.select("div.postlist").first();
-                    Elements items = total.select("li");
-                    for (Element element : items) {
-                        Girl girl = new Girl(String.format(realUrl, element.select("img").first().attr("data-original"), fakeRefer));
-                        girl.setLink(element.select("a[href]").attr("href"));
-                        girls.add(girl);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+            List<Girl> girls = new ArrayList<>();
+            try {
+                Document doc = Jsoup.connect(url).timeout(10000).get();
+                Element total = doc.select("div.postlist").first();
+                Elements items = total.select("li");
+                for (Element element : items) {
+                    Girl girl = new Girl(String.format(realUrl, element.select("img").first().attr("data-original"), fakeRefer));
+                    girl.setLink(element.select("a[href]").attr("href"));
+                    girls.add(girl);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-                return girls;
-            }).observeOn(AndroidSchedulers.mainThread()).subscribe(callback::onLoadDatas);
-        }
+            return girls;
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(callback::onLoadDatas);
     }
 
     @Override
@@ -126,6 +123,7 @@ public class RemoteGirlsData
     }
 
     private void getMeizis(String baseUrl, int page) {
+
         String url = baseUrl + "/" + page;
         final String fakeRefer = baseUrl + "/";
         final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";

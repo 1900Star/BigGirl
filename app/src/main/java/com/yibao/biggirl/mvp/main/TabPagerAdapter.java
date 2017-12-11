@@ -15,25 +15,21 @@ import com.yibao.biggirl.util.Constants;
  * 邮箱：strangermy@outlook.com
  */
 public class TabPagerAdapter
-        extends FragmentStatePagerAdapter
-{
+        extends FragmentStatePagerAdapter {
 
-    public TabPagerAdapter(FragmentManager fm)
-    {
+    public TabPagerAdapter(FragmentManager fm) {
         super(fm);
 
     }
 
     @Override
     public Fragment getItem(int position) {
-                return FragmentFactory.createFragment(position);
-//        return FragmentFactorys.INSTANCE.createFragment(position);
+        return FragmentFactory.createFragment(position);
     }
 
     @Override
     public int getCount() {
         return Constants.arrTitle.length;
-//        return 6;
     }
 
     @Override

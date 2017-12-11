@@ -62,7 +62,6 @@ public class MztuAdapter
             holder.itemView.setOnClickListener(view -> {
                 if (TextUtils.isEmpty(girl.getLink())) {
                     if (list!=null&&list.size() != 0) {
-                        LogUtil.d("Adapter Url  " + url);
                         LogUtil.d("Adapter position     " + holder.getAdapterPosition());
                         Intent intent = new Intent(mContext, GirlActivity.class);
                         intent.putStringArrayListExtra("girlList", (ArrayList<String>)list);

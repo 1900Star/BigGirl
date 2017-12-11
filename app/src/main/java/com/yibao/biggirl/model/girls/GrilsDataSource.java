@@ -10,7 +10,7 @@ import java.util.List;
 public interface GrilsDataSource {
     //这个接口用于将数据回调给对应Presenter层
     interface LoadGDataCallback {
-//        void onLoadDatas(GirlsBean girlBean);
+        //        void onLoadDatas(GirlsBean girlBean);
         void onLoadDatas(List<String> urlList);
 
         void onDataNotAvailable();
@@ -26,9 +26,9 @@ public interface GrilsDataSource {
 
     }
 
-    void getGirls(String dataType,int size, int page, LoadGDataCallback callback);
+    void getGirls(String dataType, int size, int page, LoadGDataCallback callback);
 
-    void getMeizitu(String type,int page,int codeId, LoadGMeizituCallback callback);
+    void getMeizitu(String type, int page, LoadGMeizituCallback callback);
 
     void getMeiziList(String url);
 

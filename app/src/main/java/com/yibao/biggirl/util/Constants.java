@@ -6,16 +6,20 @@ import com.yibao.biggirl.MyApplication;
 
 /**
  * 作者：Stran on 2017/3/23 15:26
- * 描述：${TODO}
+ * 描述：${常量类}
  * 邮箱：strangermy@outlook.com
  */
 public class Constants {
     public static final java.lang.Object MEIZITU_API = "http://www.mzitu.com/";
+    public static final int MEIZITU = 3;
+    public static int MeiSingle = 2;
+    public static final int GIRLS = 0;
     public static String GANK_API = "http://gank.io/";
-    //    public static String UNSPLASH_API = "https://unsplash.it/3896/1920/?random";
-    public static String UNSPLASH_API = "https://unsplash.it/1920/1080/?random";
+    //    Unsplsh
+    public static String UNSPLASH_API = "https://unsplash.it/3896/1920/?random";
+    //    public static String UNSPLASH_API = "https://unsplash.it/1920/1080/?random";
     public static String UNSPLASH = "https://api.unsplash.com/photos/?client_id=6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
-    public static String UNSPLASH_ID = "6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
+//    public static String UNSPLASH_ID = "6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
 
 
     public static final String dir = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
@@ -31,29 +35,76 @@ public class Constants {
     public static int LOAD_DATA = 0;
     public static int REFRESH_DATA = 1;
     public static int LOAD_MORE_DATA = 2;
-    public static int NO_MORE_DATA = 3;
-    public static int LOADING_DATA = 4;
+    //    public static int NO_MORE_DATA = 3;
+//    public static int LOADING_DATA = 4;
     public static String arrTitle[] = {"Girl",
             "App",
             "iOS",
             "Video",
             "前端",
             "拓展资源",
-            "Android"};
+            "Japan", "Hot", "Sex", "Cute"};
+    public static final int TYPE_GIRLS = 0;//妹子
+    private static final int TYPE_APP = 1;//App
+    private static final int TYPE_IOS = 2;//iOS
+    private static final int TYPE_VEDIO = 3;//视频
+    private static final int TYPE_FRONT = 4;//前端
+    private static final int TYPE_EXTEND = 5;//拓展资源
+    private static final int TYPE_JAPAN = 6;//Japan
+    private static final int TYPE_HOT = 7;//Hot
+    private static final int TYPE_SEX = 8;//Sex
+    private static final int TYPE_CUTE = 9;//Cute
+
 
     public static final String FRAGMENT_GIRLS = "福利";
-    public static final String FRAGMENT_ALL = "all";
-    public static final String FRAGMENT_ANDROID = "安卓";
     public static final String FRAGMENT_VIDEO = "休息视频";
     public static final String FRAGMENT_IOS = "iOS";
-    public static final String FRAGMENT_FRONT = "前端";
-    public static final String FRAGMENT_EXPAND = "拓展资源";
-    public static final String FRAGMENT_APP = "App";
-    public static final String FRAGMENT_MEIZITU = "japan";
+    private static final String FRAGMENT_FRONT = "前端";
+    private static final String FRAGMENT_EXPAND = "拓展资源";
+    private static final String FRAGMENT_APP = "App";
+    private static final String FRAGMENT_HOT = "hot";
+    public static final String FRAGMENT_JAPAN = "japan";
+    private static final String FRAGMENT_SEX = "xinggan";
+    private static final String FRAGMENT_CUTE = "mm";
+
+    public static final String FRAGMENT_ANDROID = "安卓";
+    //    public static final String FRAGMENT_ALL = "all";
     public static final String SHARE_ME = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
 
-    public static final String TRANSITION_PIC = "transitionPic";
-    public static final String TRANSITION_SEARCHVIEW = "transitionSearchView";
-    public static final String CLASS_MAIN = "com.yibao.biggirl.mvp.main.MainActivity";
+    private static String mLoadType;
 
+    public static String getLoadType(int type) {
+        switch (type) {
+            case TYPE_APP:
+                mLoadType = Constants.FRAGMENT_APP;
+                break;
+            case TYPE_IOS:
+                mLoadType = Constants.FRAGMENT_IOS;
+                break;
+            case TYPE_VEDIO:
+                mLoadType = Constants.FRAGMENT_VIDEO;
+                break;
+            case TYPE_FRONT:
+                mLoadType = Constants.FRAGMENT_FRONT;
+                break;
+            case TYPE_EXTEND:
+                mLoadType = Constants.FRAGMENT_EXPAND;
+                break;
+            case TYPE_JAPAN:
+                mLoadType = Constants.FRAGMENT_JAPAN;
+                break;
+            case TYPE_HOT:
+                mLoadType = Constants.FRAGMENT_HOT;
+                break;
+            case TYPE_SEX:
+                mLoadType = Constants.FRAGMENT_SEX;
+                break;
+            case TYPE_CUTE:
+                mLoadType = Constants.FRAGMENT_CUTE;
+                break;
+            default:
+                break;
+        }
+        return mLoadType;
+    }
 }

@@ -68,9 +68,11 @@ public class AppFag
         new AppPresenter(this);
 
     }
+
     @Override
     public void loadDatas() {
-        mPresenter.start(getLoadType(), 2);
+        String loadType = Constants.getLoadType(type);
+        mPresenter.start(loadType, 2);
 
     }
 
@@ -156,8 +158,6 @@ public class AppFag
     }
 
 
-
-
     @Override
     public void onRefresh() {
 
@@ -208,13 +208,9 @@ public class AppFag
 
     @OnClick(R.id.fab_fag)
     public void onViewClicked() {
-        RecyclerFactory.backTop(mRecyclerView,1);
+        RecyclerFactory.backTop(mRecyclerView, 1);
     }
 
-    public AppFag newInstance() {
-
-        return new AppFag(type);
-    }
 
     @Override
     public void onDestroyView() {
@@ -222,32 +218,6 @@ public class AppFag
         unbinder.unbind();
 
 
-    }
-
-    private String getLoadType() {
-        switch (type) {
-            case 1:
-                mLoadType = Constants.FRAGMENT_APP;
-                break;
-            case 2:
-                mLoadType = Constants.FRAGMENT_IOS;
-                break;
-            case 3:
-                mLoadType = Constants.FRAGMENT_VIDEO;
-                break;
-            case 4:
-                mLoadType = Constants.FRAGMENT_FRONT;
-                break;
-            case 5:
-                mLoadType = Constants.FRAGMENT_EXPAND;
-                break;
-            case 6:
-                mLoadType = Constants.FRAGMENT_ANDROID;
-                break;
-            default:
-                break;
-        }
-        return mLoadType;
     }
 
 

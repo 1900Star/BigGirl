@@ -16,6 +16,7 @@ import com.yibao.biggirl.model.girl.MeizituData;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.service.MeizituService;
+import com.yibao.biggirl.util.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +50,8 @@ public class MeizituActivity
         unbinder = ButterKnife.bind(this);
         mUrl = getIntent().getStringExtra("link");
         mPresenter = new GirlsPresenter();
-        mPresenter.start(mUrl, 0);
+        mPresenter.start(mUrl, Constants.MeiSingle);
+
         getMeizituData();
         initView();
     }

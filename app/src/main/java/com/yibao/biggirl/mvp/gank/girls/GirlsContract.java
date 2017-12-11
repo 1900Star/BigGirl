@@ -28,7 +28,7 @@ public interface GirlsContract {
 
     }
 
-    interface ViewTu<T>
+    interface ViewMeizi<T>
             extends BaseView<Presenter> {
 
         void loadData(List<T> list);

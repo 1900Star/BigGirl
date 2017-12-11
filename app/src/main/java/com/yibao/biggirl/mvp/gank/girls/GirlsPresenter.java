@@ -15,7 +15,7 @@ import java.util.List;
 public class GirlsPresenter
         implements GirlsContract.Presenter {
     private GirlsContract.View<String> mView;
-    private GirlsContract.ViewTu<Girl> mTuView;
+    private GirlsContract.ViewMeizi<Girl> mTuView;
     private RemoteGirlsData mRemoteGirlsData;
 
 
@@ -28,7 +28,7 @@ public class GirlsPresenter
         mRemoteGirlsData = new RemoteGirlsData();
     }
 
-    public GirlsPresenter(GirlsContract.ViewTu<Girl> view) {
+    public GirlsPresenter(GirlsContract.ViewMeizi<Girl> view) {
         this.mTuView = view;
         mRemoteGirlsData = new RemoteGirlsData();
     }
@@ -62,9 +62,8 @@ public class GirlsPresenter
                     mView.showError();
                 }
             });
-        } else if (dataType.equals(Constants.FRAGMENT_MEIZITU)) {
-
-            mRemoteGirlsData.getMeizitu(dataType, page, codeId, new GrilsDataSource.LoadGMeizituCallback() {
+        } else if (codeId == Constants.MEIZITU) {
+            mRemoteGirlsData.getMeizitu(dataType, page, new GrilsDataSource.LoadGMeizituCallback() {
                 @Override
                 public void onLoadDatas(List<Girl> girlList) {
                     if (loadType == Constants.REFRESH_DATA) {
@@ -84,12 +83,12 @@ public class GirlsPresenter
                     mTuView.showError();
                 }
             });
-        } else {
-//            LogUtil.d(" 请求图集里面*****");
+        } else if (codeId == Constants.MeiSingle) {
             mRemoteGirlsData.getMeiziList(dataType);
-        }
 
+        }
     }
+
 
     @Override
     public void subscribe() {

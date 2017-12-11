@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.mvp.gank.app.AppFag;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituFragment;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituFag;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +19,13 @@ public class FragmentFactory {
     private static final int FRAGMENT_GIRLS = 0;//妹子
     private static final int FRAGMENT_APP = 1;//App
     private static final int FRAGMENT_IOS = 2;//iOS
+    private static final int FRAGMENT_VEDIO = 3;//视频
     private static final int FRAGMENT_FRONT = 4;//前端
     private static final int FRAGMENT_EXTEND = 5;//拓展资源
-    private static final int FRAGMENT_VEDIO = 3;//视频
-    private static final int FRAGMENT_ANDROID = 6;//安卓
+    private static final int FRAGMENT_JAPAN = 6;//Japan
+    private static final int FRAGMENT_HOT = 7;//Hot
+    private static final int FRAGMENT_SEX = 8;//Sex
+    private static final int FRAGMENT_CUTE = 9;//Cute
     private static Map<Integer, BaseFag> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
@@ -55,8 +58,17 @@ public class FragmentFactory {
             case FRAGMENT_EXTEND:
                 fragment = new AppFag(FRAGMENT_EXTEND);
                 break;
-            case FRAGMENT_ANDROID:
-                fragment = new MeizituFragment();
+            case FRAGMENT_JAPAN:
+                fragment = new MeizituFag(FRAGMENT_JAPAN);
+                break;
+            case FRAGMENT_HOT:
+                fragment = new MeizituFag(FRAGMENT_HOT);
+                break;
+            case FRAGMENT_SEX:
+                fragment = new MeizituFag(FRAGMENT_SEX);
+                break;
+            case FRAGMENT_CUTE:
+                fragment = new MeizituFag(FRAGMENT_CUTE);
                 break;
             default:
                 break;

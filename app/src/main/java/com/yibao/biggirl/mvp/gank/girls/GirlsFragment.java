@@ -80,7 +80,7 @@ public class GirlsFragment
                 .build()
                 .in(this);
 
-        mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, 0);
+        mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, Constants.GIRLS);
 
     }
     @Override
