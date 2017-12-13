@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +22,10 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girls.Girl;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -74,6 +71,14 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
     }
 
     @Override
+    protected void loadMoreData() {
+        mPresenter.loadData(size,
+                page, Constants.MEIZITU,
+                Constants.LOAD_MORE_DATA,
+                Constants.FRAGMENT_JAPAN);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,53 +95,6 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
         mSwipeRefresh.setRefreshing(true);
 
     }
-
-
-    private void initRecyclerView(List<Girl> mList, int type) {
-        mAdapter = new MztuAdapter(getActivity(), mList,0);
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(type, mAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                int lastPosition = -1;
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        mFab.setVisibility(View.VISIBLE);
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        if (layoutManager instanceof StaggeredGridLayoutManager) {
-                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
-                                    lastPositions);
-                            lastPosition = findMax(lastPositions);
-                        }
-
-                        if (lastPosition == recyclerView.getLayoutManager()
-                                .getItemCount() - 1) {
-                            page++;
-                            LogUtil.d("Fag page  ==    "+page);
-                            mPresenter.loadData(size,
-                                    page, Constants.MEIZITU,
-                                    Constants.LOAD_MORE_DATA,
-                                    Constants.FRAGMENT_JAPAN);
-                        }
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-        });
-        mFagContent.addView(recyclerView);
-        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
-
-    }
-
 
     //下拉刷新
     @Override
@@ -167,8 +125,11 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
     @Override
     public void loadData(List<Girl> list) {
         mList.addAll(list);
-        initRecyclerView(mList, 2);
+        mAdapter = new MztuAdapter(getActivity(), mList, 0);
+        RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
+        mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
+
     }
 
 

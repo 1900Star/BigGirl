@@ -1,6 +1,5 @@
 package com.yibao.biggirl.model.dagger2.moduls;
 
-import com.yibao.biggirl.mvp.gank.android.AndroidPresenter;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
@@ -25,11 +24,6 @@ public class GirlsModuls {
     @Provides
     public GirlsPresenter provideGirlsPresenter() {
         return new GirlsPresenter(mView);
-    }
-
-    @Provides
-    public AndroidPresenter provideAndroidPresenter() {
-        return new AndroidPresenter(mView);
     }
 
 }

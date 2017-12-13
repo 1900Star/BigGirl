@@ -15,14 +15,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girls.Girl;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
@@ -36,8 +34,7 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class DuotuFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefreshListener,
-        android.view.View.OnLongClickListener,
+public class DuotuFag extends BaseFag<Girl> implements
         DuotuContract.View<Girl> {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -67,6 +64,12 @@ public class DuotuFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefr
     }
 
     @Override
+    protected void loadMoreData() {
+        mPresenter.loadData(mLoadType, page, Constants.LOAD_MORE_DATA);
+    }
+
+
+    @Override
     public android.view.View onCreateView(LayoutInflater inflater,
                                           ViewGroup container,
                                           Bundle savedInstanceState) {
@@ -76,57 +79,6 @@ public class DuotuFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefr
         initView();
         return view;
     }
-
-    private void initView() {
-        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
-        mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setRefreshing(true);
-
-    }
-
-
-    private void initRecyclerView(List<Girl> mList) {
-        mAdapter = new MztuAdapter(getActivity(), mList, 1);
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(2, mAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                int lastPosition = -1;
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        mFab.setVisibility(android.view.View.VISIBLE);
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        if (layoutManager instanceof StaggeredGridLayoutManager) {
-                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
-                                    lastPositions);
-                            lastPosition = findMax(lastPositions);
-                        }
-
-                        if (lastPosition == recyclerView.getLayoutManager()
-                                .getItemCount() - 1) {
-                            page++;
-
-                            mPresenter.loadData(mLoadType, page, Constants.LOAD_MORE_DATA);
-                        }
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        mFab.setVisibility(android.view.View.INVISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        mFab.setVisibility(android.view.View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-        });
-        mFagContent.addView(recyclerView);
-        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
-
-    }
-
 
     //下拉刷新
     @Override
@@ -144,25 +96,26 @@ public class DuotuFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefr
                 });
     }
 
-    @Override
-    public boolean onLongClick(android.view.View view) {
-        return false;
-    }
-
-    @Override
-    public void setPrenter(DuotuContract.Presenter prenter) {
-        this.mPresenter = prenter;
-    }
 
     @Override
     public void loadData(List<Girl> list) {
         mList.addAll(list);
-        initRecyclerView(mList);
+//        initRecyclerView(mList);
+        mAdapter = new MztuAdapter(getActivity(), mList, 1);
+        RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
+        mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
     }
 
 
     public DuotuFag() {
+    }
+
+    private void initView() {
+        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
+        mSwipeRefresh.setOnRefreshListener(this);
+        mSwipeRefresh.setRefreshing(true);
+
     }
 
     @Override
@@ -180,6 +133,11 @@ public class DuotuFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefr
         mList.addAll(list);
         mAdapter.AddFooter(mList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setPrenter(DuotuContract.Presenter prenter) {
+        this.mPresenter = prenter;
     }
 
     public DuotuFag(int type) {

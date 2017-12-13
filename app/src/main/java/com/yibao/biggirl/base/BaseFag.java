@@ -3,6 +3,12 @@ package com.yibao.biggirl.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.widget.ImageView;
+
+import com.yibao.biggirl.factory.RecyclerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +19,7 @@ import java.util.List;
  * Time:2017/6/4 21:55
  */
 public abstract class BaseFag<T>
-        extends Fragment
+        extends Fragment implements SwipeRefreshLayout.OnRefreshListener
 
 
 {
@@ -24,6 +30,8 @@ public abstract class BaseFag<T>
 
     public List<T> mList;
 
+    public abstract void loadDatas();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,8 +40,48 @@ public abstract class BaseFag<T>
 
     }
 
+    public RecyclerView getRecyclerView(ImageView fab, int rvType, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(rvType, adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                int lastPosition = -1;
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        fab.setVisibility(android.view.View.VISIBLE);
+                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                        if (layoutManager instanceof StaggeredGridLayoutManager) {
+                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
+                                    lastPositions);
+                            lastPosition = findMax(lastPositions);
+                        }
 
-    public abstract void loadDatas();
+                        if (lastPosition == recyclerView.getLayoutManager()
+                                .getItemCount() - 1) {
+                            page++;
+                            loadMoreData();
+
+                        }
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        fab.setVisibility(android.view.View.INVISIBLE);
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        fab.setVisibility(android.view.View.INVISIBLE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        });
+        fab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, rvType));
+        return recyclerView;
+    }
+
+    protected abstract void loadMoreData();
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -43,7 +91,7 @@ public abstract class BaseFag<T>
         }
     }
 
-      
+
     //找到数组中的最大值
     public int findMax(int[] lastPositions) {
         int max = lastPositions[0];

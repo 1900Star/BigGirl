@@ -60,6 +60,11 @@ public class VideoFragmnet
     }
 
     @Override
+    protected void loadMoreData() {
+
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {

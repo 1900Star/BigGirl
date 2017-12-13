@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +51,6 @@ public class AppFag
     private int type;
     private String mLoadType;
     private RecyclerView mRecyclerView;
-    private String mLoadType1;
 
     public AppFag() {
     }
@@ -68,6 +64,11 @@ public class AppFag
         super.onCreate(savedInstanceState);
         new AppPresenter(this);
 
+    }
+
+    @Override
+    protected void loadMoreData() {
+        mPresenter.loadData(size, page, mLoadType, Constants.LOAD_MORE_DATA);
     }
 
     @Override
@@ -97,68 +98,6 @@ public class AppFag
 
     }
 
-    private void initData(List<ResultsBeanX> list) {
-
-        mAdapter = new AppAdapter(getContext(), list);
-
-        mRecyclerView = RecyclerFactory.creatRecyclerView(1, mAdapter);
-
-        initListerner(mRecyclerView);
-
-        mFagContent.addView(mRecyclerView);
-    }
-
-    public void initListerner(RecyclerView recyclerView) {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                int lastPosition = -1;
-                switch (newState) {
-                    //当前状态为停止滑动状态SCROLL_STATE_IDLE时
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        mFab.setVisibility(View.VISIBLE);
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        if (layoutManager instanceof GridLayoutManager) {
-                            //通过LayoutManager找到当前显示的最后的item的position
-                            lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-                        } else if (layoutManager instanceof LinearLayoutManager) {
-                            lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                            //因为StaggeredGridLayoutManager的特殊性可能导致最后显示的item存在多个，所以这里取到的是一个数组
-                            //得到这个数组后再取到数组中position值最大的那个就是最后显示的position值了
-                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
-                                    lastPositions);
-                            lastPosition = findMax(lastPositions);
-                        }
-
-                        //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
-                        //如果相等则说明已经滑动到最后了
-                        if (lastPosition == recyclerView.getLayoutManager()
-                                .getItemCount() - 1) {
-                            page++;
-
-                            mPresenter.loadData(size, page, mLoadType, Constants.LOAD_MORE_DATA);
-
-                        }
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-
-    }
-
-
     @Override
     public void onRefresh() {
 
@@ -185,7 +124,10 @@ public class AppFag
     public void loadData(List<ResultsBeanX> list) {
         mList.clear();
         mList.addAll(list);
-        initData(mList);
+//        initData(mList);
+        mAdapter = new AppAdapter(getContext(), list);
+        RecyclerView recyclerView = getRecyclerView(mFab, 1, mAdapter);
+        mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
     }
 

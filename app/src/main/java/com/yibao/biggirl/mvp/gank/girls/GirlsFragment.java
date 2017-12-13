@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +14,10 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.dagger2.component.DaggerGirlsComponent;
 import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.ImageUitl;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,7 +40,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class GirlsFragment
         extends BaseFag<String>
-        implements SwipeRefreshLayout.OnRefreshListener,
+        implements
         View.OnLongClickListener,
         GirlsContract.View<String> {
 
@@ -83,6 +77,15 @@ public class GirlsFragment
         mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, Constants.GIRLS);
 
     }
+
+    @Override
+    protected void loadMoreData() {
+        mGirlsPresenter.loadData(size,
+                page, 3,
+                Constants.LOAD_MORE_DATA,
+                Constants.FRAGMENT_GIRLS);
+    }
+
     @Override
     public void loadDatas() {
 
@@ -103,6 +106,7 @@ public class GirlsFragment
 
     private void initListener() {
         mFab.setOnLongClickListener(this);
+        mFab.setOnClickListener(view -> initData(0));
     }
 
 
@@ -141,49 +145,7 @@ public class GirlsFragment
         Random random = new Random();
         mRandomNum = random.nextInt(4) + 1;
         mAdapter = new GirlsAdapter(getActivity(), mList);
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(type, mAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                int lastPosition = -1;
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        mFab.setVisibility(View.VISIBLE);
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        if (layoutManager instanceof GridLayoutManager) {
-                            lastPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-                        } else if (layoutManager instanceof LinearLayoutManager) {
-                            lastPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
-                                    lastPositions);
-                            lastPosition = findMax(lastPositions);
-                        }
-
-                        if (lastPosition == recyclerView.getLayoutManager()
-                                .getItemCount() - 1) {
-                            page++;
-
-                            mGirlsPresenter.loadData(size,
-                                    page, 3,
-                                    Constants.LOAD_MORE_DATA,
-                                    Constants.FRAGMENT_GIRLS);
-                            LogUtil.d("PAGE===" + page);
-                        }
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-        });
+        RecyclerView recyclerView = getRecyclerView(mFab, type, mAdapter);
         mLlGrils.addView(recyclerView);
     }
 
@@ -231,22 +193,6 @@ public class GirlsFragment
 
     }
 
-    @Override
-    public void showError() {
-    }
-
-    @Override
-    public void showNormal() {
-
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
 
     //切换干货和默认妹子
 
@@ -265,19 +211,29 @@ public class GirlsFragment
 
     @Override
     public void setPrenter(GirlsContract.Presenter prenter) {
-        //        mGirlsPresenter = (GirlsPresenter) prenter;
     }
 
-
-    @OnClick(R.id.fab_fag)
-    public void onViewClicked() {
-        initData(0);
-    }
 
     @Override
     public boolean onLongClick(View view) {
         initData(1);
         return true;
+    }
+
+    @Override
+    public void showError() {
+    }
+
+    @Override
+    public void showNormal() {
+
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 
