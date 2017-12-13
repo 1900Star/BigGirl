@@ -76,7 +76,6 @@ public abstract class BaseFag<T>
             }
 
         });
-        fab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, rvType));
         return recyclerView;
     }
 

@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,7 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class AppFag
         extends BaseFag<ResultsBeanX>
-        implements SwipeRefreshLayout.OnRefreshListener, AppContract.View {
+        implements AppContract.View {
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -48,21 +47,23 @@ public class AppFag
 
 
     private AppContract.Presenter mPresenter;
-    private int type;
     private String mLoadType;
-    private RecyclerView mRecyclerView;
+    private int mType;
 
-    public AppFag() {
-    }
+    public static AppFag newInstance(int loadType) {
+        AppFag fragment = new AppFag();
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", loadType);
+        fragment.setArguments(bundle);
 
-    public AppFag(int type) {
-        this.type = type;
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new AppPresenter(this);
+        mType = getArguments().getInt("type");
 
     }
 
@@ -73,8 +74,8 @@ public class AppFag
 
     @Override
     public void loadDatas() {
-        mLoadType = Constants.getLoadType(type);
-        mPresenter.start(mLoadType, 2);
+        mLoadType = Constants.getLoadType(mType);
+        mPresenter.start(mLoadType, Constants.LOAD_DATA);
 
     }
 
@@ -124,15 +125,16 @@ public class AppFag
     public void loadData(List<ResultsBeanX> list) {
         mList.clear();
         mList.addAll(list);
-//        initData(mList);
         mAdapter = new AppAdapter(getContext(), list);
         RecyclerView recyclerView = getRecyclerView(mFab, 1, mAdapter);
+        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 1));
         mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void loadMore(List<ResultsBeanX> list) {
+
         mAdapter.AddFooter(list);
         mAdapter.notifyDataSetChanged();
 
@@ -147,11 +149,6 @@ public class AppFag
     @Override
     public void showNormal() {
 
-    }
-
-    @OnClick(R.id.fab_fag)
-    public void onViewClicked() {
-        RecyclerFactory.backTop(mRecyclerView, 1);
     }
 
 

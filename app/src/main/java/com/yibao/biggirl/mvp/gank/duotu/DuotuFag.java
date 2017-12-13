@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
+import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girls.Girl;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
@@ -47,18 +48,28 @@ public class DuotuFag extends BaseFag<Girl> implements
     private MztuAdapter mAdapter;
 
 
-    private int type;
     private String mLoadType;
+    private int mType;
+
+    public static DuotuFag newInstance(int loadType) {
+        DuotuFag fragment = new DuotuFag();
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", loadType);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     @Override
-    public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mPresenter = new DuotuPresenter(this);
+        mType = getArguments().getInt("type");
     }
 
     @Override
     public void loadDatas() {
-        mLoadType = Constants.getLoadType(type);
+        mLoadType = Constants.getLoadType(mType);
         mPresenter.start(mLoadType, page);
 
     }
@@ -100,9 +111,9 @@ public class DuotuFag extends BaseFag<Girl> implements
     @Override
     public void loadData(List<Girl> list) {
         mList.addAll(list);
-//        initRecyclerView(mList);
         mAdapter = new MztuAdapter(getActivity(), mList, 1);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
+        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
         mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
     }
@@ -140,9 +151,6 @@ public class DuotuFag extends BaseFag<Girl> implements
         this.mPresenter = prenter;
     }
 
-    public DuotuFag(int type) {
-        this.type = type;
-    }
 
     @Override
     public void onDestroy() {

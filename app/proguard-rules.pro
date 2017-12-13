@@ -27,7 +27,7 @@
 -dontwarn com.android.internal.com.yibao.biggirl.http.multipart.**
 -keep class com.android.internal.com.yibao.biggirl.http.multipart.** { *;}
 
-# 避免混淆泛型
+#避免混淆泛型 如果混淆报错建议关掉
 -keepattributes Signature
 
 # Keep native methods
@@ -66,8 +66,8 @@
 # 因为这些子类都有可能被外部调用
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Appliction
-#-keep public class * extends android.app.Service
-#-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
@@ -97,27 +97,28 @@
 -keepclassmembers class * extends android.webkit.webViewClient {
     public void *(android.webkit.webView, jav.lang.String);
 }
-#避免混淆泛型 如果混淆报错建议关掉
-#-keepattributes Signature
 
-# ------------------------------第三方-----------------------------------------------
-# OkHttp3----------------------------------------------------------------
--dontwarn com.squareup.okhttp3.**
--keep class com.squareup.okhttp3.** { *;}
--dontwarn okio.**
+# ----------------------------------------第三方-----------------------------------------------
+# OkHttp3
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
 
-# Okio
--dontwarn com.squareup.**
+#okio
 -dontwarn okio.**
--keep public class org.codehaus.* { *; }
--keep public class java.nio.* { *; }
+-keep class okio.**{*;}
 
 
 #greendao3.2.2
--keep class org.greenrobot.greendao.**{*;}
 -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
 public static java.lang.String TABLENAME;
 }
+-keep class **$Properties
+# If you do not use SQLCipher:
+-dontwarn org.greenrobot.greendao.database.**
+# If you do not use RxJava:
+-dontwarn rx.**
+
 # Retrofit
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
@@ -156,4 +157,6 @@ public static java.lang.String TABLENAME;
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
-
+#jsoup
+-dontwarn org.jsoup.**
+-keep class org.jsoup.**{*;}

@@ -12,7 +12,6 @@ import com.bumptech.glide.request.target.Target;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.model.girl.MeizituData;
 import com.yibao.biggirl.model.girls.Girl;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

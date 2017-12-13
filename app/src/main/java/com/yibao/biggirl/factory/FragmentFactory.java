@@ -53,50 +53,51 @@ public class FragmentFactory {
                 fragment = new GirlsFragment();
                 break;
             case FRAGMENT_APP:
-                fragment = new AppFag(FRAGMENT_APP);
+                fragment = AppFag.newInstance(FRAGMENT_APP);
                 break;
             case FRAGMENT_IOS:
-                fragment = new AppFag(FRAGMENT_IOS);
+                fragment = AppFag.newInstance(FRAGMENT_IOS);
                 break;
             case FRAGMENT_VEDIO:
-                fragment = new AppFag(FRAGMENT_VEDIO);
+                fragment = AppFag.newInstance(FRAGMENT_VEDIO);
                 break;
             case FRAGMENT_FRONT:
-                fragment = new AppFag(FRAGMENT_FRONT);
+                fragment = AppFag.newInstance(FRAGMENT_FRONT);
                 break;
             case FRAGMENT_EXTEND:
-                fragment = new AppFag(FRAGMENT_EXTEND);
+                fragment = AppFag.newInstance(FRAGMENT_EXTEND);
                 break;
+//                妹子图
             case FRAGMENT_JAPAN:
-                fragment = new MeizituFag(FRAGMENT_JAPAN);
+                fragment = MeizituFag.newInstance(FRAGMENT_JAPAN);
                 break;
             case FRAGMENT_HOT:
-                fragment = new MeizituFag(FRAGMENT_HOT);
+                fragment = MeizituFag.newInstance(FRAGMENT_HOT);
                 break;
             case FRAGMENT_SEX:
-                fragment = new MeizituFag(FRAGMENT_SEX);
+                fragment = MeizituFag.newInstance(FRAGMENT_SEX);
                 break;
             case FRAGMENT_CUTE:
-                fragment = new MeizituFag(FRAGMENT_CUTE);
+                fragment = MeizituFag.newInstance(FRAGMENT_CUTE);
                 break;
 //                多图
             case FRAGMENT_MFSTAR:
-                fragment = new DuotuFag(FRAGMENT_MFSTAR);
+                fragment = DuotuFag.newInstance(FRAGMENT_MFSTAR);
                 break;
             case FRAGMENT_PANS:
-                fragment = new DuotuFag(FRAGMENT_PANS);
+                fragment = DuotuFag.newInstance(FRAGMENT_PANS);
                 break;
             case FRAGMENT_UGIRLS:
-                fragment = new DuotuFag(FRAGMENT_UGIRLS);
+                fragment = DuotuFag.newInstance(FRAGMENT_UGIRLS);
                 break;
             case FRAGMENT_ROSI:
-                fragment = new DuotuFag(FRAGMENT_ROSI);
+                fragment = DuotuFag.newInstance(FRAGMENT_ROSI);
                 break;
             case FRAGMENT_MEIYAN:
-                fragment = new DuotuFag(FRAGMENT_MEIYAN);
+                fragment = DuotuFag.newInstance(FRAGMENT_MEIYAN);
                 break;
             case FRAGMENT_TUIGIRL:
-                fragment = new DuotuFag(FRAGMENT_TUIGIRL);
+                fragment = DuotuFag.newInstance(FRAGMENT_TUIGIRL);
                 break;
             default:
                 break;

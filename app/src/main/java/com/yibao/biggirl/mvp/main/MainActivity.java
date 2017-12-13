@@ -45,7 +45,6 @@ import com.yibao.biggirl.util.SnakbarUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

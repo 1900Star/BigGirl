@@ -4,8 +4,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.CountDownTimer;
 
-import com.yibao.biggirl.util.LogUtil;
-
 /**
  * Author：Sid
  * Des：${动画监听器}

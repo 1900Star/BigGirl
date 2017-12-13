@@ -147,6 +147,7 @@ public class GirlsFragment
         mAdapter = new GirlsAdapter(getActivity(), mList);
         RecyclerView recyclerView = getRecyclerView(mFab, type, mAdapter);
         mLlGrils.addView(recyclerView);
+        mFab.setOnClickListener(view -> initData(0));
     }
 
 

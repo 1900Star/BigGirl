@@ -127,7 +127,6 @@ public abstract class BaseRvAdapter<T>
             mList.add(t);
 
         }
-//        mList.addAll(list);
 
     }
 

@@ -13,10 +13,9 @@ import java.util.List;
  * Time:2017/4/22 10:03
  */
 public class AppPresenter
-        implements AppContract.Presenter
-{
+        implements AppContract.Presenter {
     private AppContract.View mView;
-    private RemoteAppData    mRemoteAppData;
+    private RemoteAppData mRemoteAppData;
 
     public AppPresenter(AppContract.View view) {
         this.mView = view;
@@ -26,18 +25,10 @@ public class AppPresenter
 
 
     @Override
-    public void start(String type, int codeId) {
-        loadData(20, 1, type, Constants.LOAD_DATA);
+    public void start(String type, int loadType) {
+        loadData(20, 1, type, loadType);
     }
 
-    @Override
-    public void subscribe() {
-    }
-
-    @Override
-    public void unsubscribe() {
-
-    }
 
 
     @Override
@@ -66,5 +57,13 @@ public class AppPresenter
 
     }
 
+    @Override
+    public void subscribe() {
+    }
+
+    @Override
+    public void unsubscribe() {
+
+    }
 
 }

@@ -22,7 +22,6 @@
     <color name="about">#f7f1f1</color>
     //GuideView
 
-    <color name="timeBar">#cccccccc</color>
     <color name="rvBg">#ccffffff</color>
     <!--BottomSheetDialogList-->
     <color name="bottomSheetList">#303030</color>
@@ -30,6 +29,5 @@
     <color name="seekBarP">#8e8e8f</color>
     <color name="seekBarN">#ccdcdbdb</color>
     <!-- 透明 -->
-    <color name="transparent">#00000000</color>
 
 </resources>

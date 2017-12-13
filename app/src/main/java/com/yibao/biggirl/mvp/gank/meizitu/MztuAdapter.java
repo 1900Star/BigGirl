@@ -56,7 +56,6 @@ public class MztuAdapter
     @Override
     protected void bindView(RecyclerView.ViewHolder holder, Girl girl) {
         List<String> list = PackagingDataUtil.objectToList(mList);
-        holder.getAdapterPosition();
         if (holder instanceof ViewHolder) {
             String url = girl.getUrl();
             ViewHolder viewHolder = (ViewHolder) holder;

@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
+import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girls.Girl;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
@@ -36,8 +37,8 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefreshListener,
-        View.OnLongClickListener,
+public class MeizituFag extends BaseFag<Girl> implements
+
         GirlsContract.ViewMeizi<Girl> {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -50,22 +51,27 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
     private MztuAdapter mAdapter;
 
 
-    private int type;
     private String mLoadType;
+    private int mType;
 
-    public MeizituFag(int type) {
-        this.type = type;
+    public static MeizituFag newInstance(int loadType) {
+        MeizituFag fragment = new MeizituFag();
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", loadType);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mPresenter = new GirlsPresenter(this);
+        mType = getArguments().getInt("type");
     }
 
     @Override
     public void loadDatas() {
-        mLoadType = Constants.getLoadType(type);
+        mLoadType = Constants.getLoadType(mType);
         mPresenter.start(mLoadType, Constants.MEIZITU);
 
     }
@@ -112,10 +118,6 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
                 });
     }
 
-    @Override
-    public boolean onLongClick(View view) {
-        return false;
-    }
 
     @Override
     public void setPrenter(GirlsContract.Presenter prenter) {
@@ -127,13 +129,10 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
         mList.addAll(list);
         mAdapter = new MztuAdapter(getActivity(), mList, 0);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
+        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
         mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
 
-    }
-
-
-    public MeizituFag() {
     }
 
     @Override

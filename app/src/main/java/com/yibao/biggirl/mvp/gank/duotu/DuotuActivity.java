@@ -19,7 +19,6 @@ import com.yibao.biggirl.model.girls.Girl;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +91,6 @@ public class DuotuActivity
                         if (lastPosition == recyclerView.getLayoutManager()
                                 .getItemCount() - 1) {
                             page++;
-                            LogUtil.d(" Page  ==    "+page);
                             mPresenter.loadDataList(mUrl,
                                     page, Constants.LOAD_MORE_DATA);
                         }

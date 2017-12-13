@@ -1,7 +1,6 @@
 package com.yibao.biggirl.model.duotu;
 
 import com.yibao.biggirl.model.girls.Girl;
-import com.yibao.biggirl.util.LogUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -55,7 +54,6 @@ public class RemoteDuotuGirls
 //                截取字符串第三个小数点之前的字符串
 //        String s="30.6.9";s.substring(0,s.indexOf(".",s.indexOf(".")+2));
         String baseUrl = getBaseUrl(url, page);
-        LogUtil.d("BaseUrl ==  " + baseUrl);
         Observable.just(baseUrl).subscribeOn(Schedulers.io()).map(s -> {
             List<Girl> girls = new ArrayList<>();
             try {
