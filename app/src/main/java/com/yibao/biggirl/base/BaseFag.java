@@ -22,9 +22,6 @@ public abstract class BaseFag<T>
     public int size = 20;
 
 
-    protected boolean isViewInitiated; //控件是否初始化完成
-    protected boolean isVisibleToUser; //页面是否可见
-    protected boolean isDataInitiated; //数据是否加载
     public List<T> mList;
 
 
@@ -32,6 +29,7 @@ public abstract class BaseFag<T>
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mList = new ArrayList<>();
+
     }
 
 
@@ -45,6 +43,7 @@ public abstract class BaseFag<T>
         }
     }
 
+      
     //找到数组中的最大值
     public int findMax(int[] lastPositions) {
         int max = lastPositions[0];

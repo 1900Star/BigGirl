@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.mvp.gank.app.AppFag;
+import com.yibao.biggirl.mvp.gank.duotu.DuotuFag;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MeizituFag;
 
@@ -26,6 +27,14 @@ public class FragmentFactory {
     private static final int FRAGMENT_HOT = 7;//Hot
     private static final int FRAGMENT_SEX = 8;//Sex
     private static final int FRAGMENT_CUTE = 9;//Cute
+
+    private static final int FRAGMENT_MFSTAR = 10;//MFStar
+    private static final int FRAGMENT_PANS = 11;//Pans
+    private static final int FRAGMENT_UGIRLS = 12;//Ugirls
+    private static final int FRAGMENT_ROSI = 13;//Rosi
+    private static final int FRAGMENT_MEIYAN = 14;//Meiyan
+    private static final int FRAGMENT_TUIGIRL = 15;//TuiGirl
+
     private static Map<Integer, BaseFag> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
@@ -69,6 +78,25 @@ public class FragmentFactory {
                 break;
             case FRAGMENT_CUTE:
                 fragment = new MeizituFag(FRAGMENT_CUTE);
+                break;
+//                多图
+            case FRAGMENT_MFSTAR:
+                fragment = new DuotuFag(FRAGMENT_MFSTAR);
+                break;
+            case FRAGMENT_PANS:
+                fragment = new DuotuFag(FRAGMENT_PANS);
+                break;
+            case FRAGMENT_UGIRLS:
+                fragment = new DuotuFag(FRAGMENT_UGIRLS);
+                break;
+            case FRAGMENT_ROSI:
+                fragment = new DuotuFag(FRAGMENT_ROSI);
+                break;
+            case FRAGMENT_MEIYAN:
+                fragment = new DuotuFag(FRAGMENT_MEIYAN);
+                break;
+            case FRAGMENT_TUIGIRL:
+                fragment = new DuotuFag(FRAGMENT_TUIGIRL);
                 break;
             default:
                 break;

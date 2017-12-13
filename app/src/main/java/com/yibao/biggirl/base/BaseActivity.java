@@ -21,7 +21,8 @@ public abstract class BaseActivity
     public CompositeDisposable mDisposable;
     public MyApplication mApplication;
     public String TAG = getClass().getSimpleName() + "    ";
-
+    public int size = 20;
+    public int page = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

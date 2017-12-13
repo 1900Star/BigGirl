@@ -53,7 +53,6 @@ public class MeizituActivity
         mUrl = getIntent().getStringExtra("link");
         mPresenter = new GirlsPresenter();
         mPresenter.start(mUrl, Constants.MeiSingle);
-
         getMeizituData();
         initView();
     }
@@ -61,7 +60,7 @@ public class MeizituActivity
 
     private void initView() {
         mSwipeRefresh.setRefreshing(true);
-        mAdapter = new MztuAdapter(this, null);
+        mAdapter = new MztuAdapter(this, null,0);
         if (mAdapter.getData() == null || mAdapter.getData().size() == 0) {
             mPresenter.start(mUrl, 0);
         } else {

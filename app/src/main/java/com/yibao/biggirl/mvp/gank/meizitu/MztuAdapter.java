@@ -11,9 +11,9 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.mvp.gank.duotu.DuotuActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.util.ImageUitl;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.PackagingDataUtil;
 
 import java.util.ArrayList;
@@ -34,10 +34,12 @@ public class MztuAdapter
 
 {
     private Context mContext;
+    private int mType;
 
-    public MztuAdapter(Context context, List<Girl> list) {
+    public MztuAdapter(Context context, List<Girl> list, int type) {
         super(list);
         mContext = context;
+        mType = type;
     }
 
 
@@ -61,18 +63,25 @@ public class MztuAdapter
             ImageUitl.loadPicHolder(mContext, url, viewHolder.mGrilImageView);
             holder.itemView.setOnClickListener(view -> {
                 if (TextUtils.isEmpty(girl.getLink())) {
-                    if (list!=null&&list.size() != 0) {
-                        LogUtil.d("Adapter position     " + holder.getAdapterPosition());
+                    if (list != null && list.size() != 0) {
                         Intent intent = new Intent(mContext, GirlActivity.class);
-                        intent.putStringArrayListExtra("girlList", (ArrayList<String>)list);
+                        intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
                         intent.putExtra("position", holder.getAdapterPosition());
                         mContext.startActivity(intent);
 
                     }
                 } else {
-                    Intent intent = new Intent(mContext, MeizituActivity.class);
-                    intent.putExtra("link", girl.getLink());
-                    mContext.startActivity(intent);
+                    if (mType == 0) {
+                        Intent intent = new Intent(mContext, MeizituActivity.class);
+                        intent.putExtra("link", girl.getLink());
+                        mContext.startActivity(intent);
+
+                    } else if (mType == 1) {
+                        Intent intent = new Intent(mContext, DuotuActivity.class);
+                        intent.putExtra("link", girl.getLink());
+                        mContext.startActivity(intent);
+
+                    }
                 }
 
             });

@@ -54,6 +54,7 @@ public class AppFag
     private int type;
     private String mLoadType;
     private RecyclerView mRecyclerView;
+    private String mLoadType1;
 
     public AppFag() {
     }
@@ -71,8 +72,8 @@ public class AppFag
 
     @Override
     public void loadDatas() {
-        String loadType = Constants.getLoadType(type);
-        mPresenter.start(loadType, 2);
+        mLoadType = Constants.getLoadType(type);
+        mPresenter.start(mLoadType, 2);
 
     }
 

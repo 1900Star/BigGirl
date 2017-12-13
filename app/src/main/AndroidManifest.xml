@@ -78,6 +78,9 @@
         <activity
             android:name=".mvp.music.musiclist.MusicListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mvp.gank.duotu.DuotuActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.yibao.biggirl.mvp.gank.meizitu;
+package com.yibao.biggirl.mvp.gank.duotu;
 
 /*
  *  @项目名：  BigGirl 
@@ -6,7 +6,7 @@ package com.yibao.biggirl.mvp.gank.meizitu;
  *  @文件名:   MeizituFag
  *  @创建者:   Stran
  *  @创建时间:  2017/12/5 1:54
- *  @描述：    TODO
+ *  @描述：    多图
  */
 
 import android.graphics.Color;
@@ -17,7 +17,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -25,10 +24,8 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girls.Girl;
-import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
-import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
+import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -39,9 +36,9 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefreshListener,
-        View.OnLongClickListener,
-        GirlsContract.ViewMeizi<Girl> {
+public class DuotuFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRefreshListener,
+        android.view.View.OnLongClickListener,
+        DuotuContract.View<Girl> {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
@@ -49,36 +46,32 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
     LinearLayout mFagContent;
     @BindView(R.id.fab_fag)
     FloatingActionButton mFab;
-    private GirlsContract.Presenter mPresenter;
+    private DuotuContract.Presenter mPresenter;
     private MztuAdapter mAdapter;
 
 
     private int type;
     private String mLoadType;
 
-    public MeizituFag(int type) {
-        this.type = type;
-    }
-
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(android.view.View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new GirlsPresenter(this);
+        mPresenter = new DuotuPresenter(this);
     }
 
     @Override
     public void loadDatas() {
         mLoadType = Constants.getLoadType(type);
-        mPresenter.start(mLoadType, Constants.MEIZITU);
+        mPresenter.start(mLoadType, page);
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
+    public android.view.View onCreateView(LayoutInflater inflater,
+                                          ViewGroup container,
+                                          Bundle savedInstanceState) {
 
-        View view = View.inflate(getActivity(), R.layout.girls_frag, null);
+        android.view.View view = android.view.View.inflate(getActivity(), R.layout.girls_frag, null);
         unbinder = ButterKnife.bind(this, view);
         initView();
         return view;
@@ -92,16 +85,16 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
     }
 
 
-    private void initRecyclerView(List<Girl> mList, int type) {
-        mAdapter = new MztuAdapter(getActivity(), mList,0);
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(type, mAdapter);
+    private void initRecyclerView(List<Girl> mList) {
+        mAdapter = new MztuAdapter(getActivity(), mList, 1);
+        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(2, mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 int lastPosition = -1;
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        mFab.setVisibility(View.VISIBLE);
+                        mFab.setVisibility(android.view.View.VISIBLE);
                         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
                         if (layoutManager instanceof StaggeredGridLayoutManager) {
                             int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
@@ -113,18 +106,15 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
                         if (lastPosition == recyclerView.getLayoutManager()
                                 .getItemCount() - 1) {
                             page++;
-                            LogUtil.d("Fag page  ==    "+page);
-                            mPresenter.loadData(size,
-                                    page, Constants.MEIZITU,
-                                    Constants.LOAD_MORE_DATA,
-                                    Constants.FRAGMENT_JAPAN);
+
+                            mPresenter.loadData(mLoadType, page, Constants.LOAD_MORE_DATA);
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
-                        mFab.setVisibility(View.INVISIBLE);
+                        mFab.setVisibility(android.view.View.INVISIBLE);
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
-                        mFab.setVisibility(View.INVISIBLE);
+                        mFab.setVisibility(android.view.View.INVISIBLE);
                         break;
                     default:
                         break;
@@ -145,34 +135,34 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
 
-                    mPresenter.loadData(size,
-                            1, 0,
-                            Constants.REFRESH_DATA,
-                            mLoadType);
+                    mPresenter.loadData(
+                            mLoadType, page,
+                            Constants.REFRESH_DATA
+                    );
                     mSwipeRefresh.setRefreshing(false);
                     page = 1;
                 });
     }
 
     @Override
-    public boolean onLongClick(View view) {
+    public boolean onLongClick(android.view.View view) {
         return false;
     }
 
     @Override
-    public void setPrenter(GirlsContract.Presenter prenter) {
+    public void setPrenter(DuotuContract.Presenter prenter) {
         this.mPresenter = prenter;
     }
 
     @Override
     public void loadData(List<Girl> list) {
         mList.addAll(list);
-        initRecyclerView(mList, 2);
+        initRecyclerView(mList);
         mSwipeRefresh.setRefreshing(false);
     }
 
 
-    public MeizituFag() {
+    public DuotuFag() {
     }
 
     @Override
@@ -192,14 +182,8 @@ public class MeizituFag extends BaseFag<Girl> implements SwipeRefreshLayout.OnRe
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void showError() {
-
-    }
-
-    @Override
-    public void showNormal() {
-
+    public DuotuFag(int type) {
+        this.type = type;
     }
 
     @Override

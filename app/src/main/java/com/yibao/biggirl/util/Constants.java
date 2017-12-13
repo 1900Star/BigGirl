@@ -10,9 +10,31 @@ import com.yibao.biggirl.MyApplication;
  * 邮箱：strangermy@outlook.com
  */
 public class Constants {
-    public static final java.lang.Object MEIZITU_API = "http://www.mzitu.com/";
+    /**
+     * 多图API
+     */
+    //    多图   MFStar模范学院
+    public static String DUOTU_MOFAN_API = "http://www.duotu555.com/mm/51/list_51_";
+    //    多图  Pans写真
+    public static String DUOTU_PANS_API = "http://www.duotu555.com/mm/46/list_46_";
+    //    多图 尤果网
+    public static String DUOTU_UGIRLS_API = "http://www.duotu555.com/mm/5/list_5_";
+    //    多图 ROSI写真
+    public static String DUOTU_ROSI_API = "http://www.duotu555.com/mm/6/list_6_";
+    //   多图 魅妍社
+    public static String DUOTU_MEIYAN_API = "http://www.duotu555.com/mm/11/list_11_";
+    //    多图 推女郎
+    public static String DUOTU_TUGIRL_API = "http://www.duotu555.com/mm/14/list_14_";
+    /**
+     * 妹子图 API
+     */
+    public static String MEIZITU_API = "http://www.mzitu.com/";
     public static final int MEIZITU = 3;
     public static int MeiSingle = 2;
+
+    /**
+     * GANK.IO  API
+     */
     public static final int GIRLS = 0;
     public static String GANK_API = "http://gank.io/";
     //    Unsplsh
@@ -43,7 +65,7 @@ public class Constants {
             "Video",
             "前端",
             "拓展资源",
-            "Japan", "Hot", "Sex", "Cute"};
+            "Japan", "Hot", "Sex", "Cute", "MFStar", "Pans", "Ugirls", "Rosi", "Meiyan", "TuiGirl"};
     public static final int TYPE_GIRLS = 0;//妹子
     private static final int TYPE_APP = 1;//App
     private static final int TYPE_IOS = 2;//iOS
@@ -54,6 +76,13 @@ public class Constants {
     private static final int TYPE_HOT = 7;//Hot
     private static final int TYPE_SEX = 8;//Sex
     private static final int TYPE_CUTE = 9;//Cute
+
+    private static final int TYPE_MFSTAR = 10;//MFStar
+    private static final int TYPE_PANS = 11;//Pans
+    private static final int TYPE_UGIRLS = 12;//Ugirls
+    private static final int TYPE_ROSI = 13;//Rosi
+    private static final int TYPE_MEIYAN = 14;//Meiyan
+    private static final int TYPE_TUIGIRL = 15;//TuiGirl
 
 
     public static final String FRAGMENT_GIRLS = "福利";
@@ -101,6 +130,24 @@ public class Constants {
                 break;
             case TYPE_CUTE:
                 mLoadType = Constants.FRAGMENT_CUTE;
+                break;
+            case TYPE_MFSTAR:
+                mLoadType = Constants.DUOTU_MOFAN_API;
+                break;
+            case TYPE_PANS:
+                mLoadType = Constants.DUOTU_PANS_API;
+                break;
+            case TYPE_UGIRLS:
+                mLoadType = Constants.DUOTU_UGIRLS_API;
+                break;
+            case TYPE_ROSI:
+                mLoadType = Constants.DUOTU_ROSI_API;
+                break;
+            case TYPE_MEIYAN:
+                mLoadType = Constants.DUOTU_MEIYAN_API;
+                break;
+            case TYPE_TUIGIRL:
+                mLoadType = Constants.DUOTU_TUGIRL_API;
                 break;
             default:
                 break;
