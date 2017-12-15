@@ -108,10 +108,7 @@ public class MusicListActivity
         setContentView(R.layout.activity_music_list);
         if (savedInstanceState != null) {
             Bundle bundle = savedInstanceState.getBundle("bundle");
-            //            mMusicItems = bundle.getParcelableArrayList("musicItem");
             mCurrentPosition = bundle.getInt("position");
-            LogUtil.d("*** onCreate Position : " + mCurrentPosition);
-            //            startMusicService(mCurrentPosition);
         }
         mBind = ButterKnife.bind(this);
         mBus = MyApplication.getIntstance()

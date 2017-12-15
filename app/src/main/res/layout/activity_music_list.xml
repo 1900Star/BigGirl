@@ -133,6 +133,7 @@
             <com.yibao.biggirl.view.ProgressBtn
                 android:id="@+id/music_float_pb"
                 android:layout_width="match_parent"
+                android:background="@color/colorWhite"
                 android:layout_height="2dp"
                 android:layout_alignParentBottom="true"/>
         </RelativeLayout>

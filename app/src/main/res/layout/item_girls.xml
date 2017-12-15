@@ -14,6 +14,5 @@
         android:minHeight="150dp"
         android:contentDescription="@null"
     />
-        <!--android:layout_margin="1dp"-->
 
 </LinearLayout>

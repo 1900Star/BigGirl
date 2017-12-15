@@ -57,7 +57,7 @@ public class DuotuActivity
         unbinder = ButterKnife.bind(this);
         mUrl = getIntent().getStringExtra("link");
         mPresenter = new DuotuPresenter(this);
-        mPresenter.loadDataList(mUrl,page,Constants.LOAD_DATA);
+        mPresenter.loadDataList(mUrl, page, Constants.LOAD_DATA);
         initView();
     }
 
@@ -70,9 +70,9 @@ public class DuotuActivity
 
     }
 
-    private void initRecyclerView(List<Girl> mList, int type) {
+    private void initRecyclerView(List<Girl> mList) {
         mAdapter = new MztuAdapter(this, mList, 1);
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(type, mAdapter);
+        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(2, mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -116,7 +116,7 @@ public class DuotuActivity
     @Override
     public void loadData(List<Girl> list) {
         mList.addAll(list);
-        initRecyclerView(mList, 2);
+        initRecyclerView(mList);
         mSwipeRefresh.setRefreshing(false);
 
     }

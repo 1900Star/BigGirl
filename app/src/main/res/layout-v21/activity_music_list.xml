@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +8,7 @@
     android:orientation="vertical"
 
     tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
-        >
+            >
+
             <ImageView
                 android:id="@+id/music_toolbar_back"
                 android:layout_width="wrap_content"
@@ -29,14 +30,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_arrow_back_black_24dp"/>
+                android:src="@drawable/ic_arrow_back_black_24dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/music"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/big_tv"/>
+                android:textSize="@dimen/big_tv" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -59,14 +61,13 @@
         android:elevation="5dp"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="0dp"
-        app:cardPreventCornerOverlap="true"
-    >
+        app:cardPreventCornerOverlap="true">
         <!-- app:cardUseCompatPadding="true"
  -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        >
+            android:layout_height="wrap_content">
+
             <com.yibao.biggirl.view.CircleImageView
                 android:id="@+id/music_float_block_albulm"
                 android:layout_width="58dp"
@@ -78,8 +79,8 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                android:src="@drawable/dropdown_menu_noalbumcover"
-            />
+                android:src="@drawable/dropdown_menu_noalbumcover" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,6 +97,7 @@
                     android:layout_weight="1"
 
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/music_float_song_name"
                         android:layout_width="wrap_content"
@@ -104,8 +106,7 @@
                         android:marqueeRepeatLimit="marquee_forever"
                         android:maxLines="1"
                         android:textColor="@color/textDes"
-                        android:textSize="@dimen/music_loating_title"
-                    />
+                        android:textSize="@dimen/music_loating_title" />
 
                     <TextView
                         android:id="@+id/music_float_singer_name"
@@ -113,10 +114,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:textColor="@color/textName"
-                        android:textSize="@dimen/music_loating_name"
-                    />
+                        android:textSize="@dimen/music_loating_name" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -130,14 +131,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@null"
-                        android:src="@drawable/btn_playing_prev"/>
+                        android:src="@drawable/btn_playing_prev" />
+
                     <ImageView
                         android:id="@+id/music_floating_play"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@null"
-                        android:src="@drawable/btn_playing_play"/>
+                        android:src="@drawable/btn_playing_play" />
+
                     <ImageView
 
                         android:id="@+id/music_floating_next"
@@ -145,14 +148,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@null"
-                        android:src="@drawable/btn_playing_next"/>
+                        android:src="@drawable/btn_playing_next" />
                 </LinearLayout>
             </LinearLayout>
+
             <com.yibao.biggirl.view.ProgressBtn
                 android:id="@+id/music_float_pb"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorWhite" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
