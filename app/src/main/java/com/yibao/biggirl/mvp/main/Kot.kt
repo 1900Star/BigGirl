@@ -3,6 +3,7 @@ package com.yibao.biggirl.mvp.main
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.yibao.biggirl.R
+import kotlinx.android.synthetic.main.kot.*
 
 
 /*
@@ -17,6 +18,7 @@ class Kot : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.kot)
+        kot_iv.setImageResource(R.mipmap.xuan)
 
 
     }
