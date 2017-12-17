@@ -19,5 +19,7 @@ class Kot : AppCompatActivity() {
         setContentView(R.layout.kot)
 
 
+
     }
+
 }

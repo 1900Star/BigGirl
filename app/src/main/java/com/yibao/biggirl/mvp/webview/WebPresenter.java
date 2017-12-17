@@ -44,7 +44,7 @@ public class WebPresenter {
 
     public void updataFavorite(FavoriteWebBean bean) {
         mDao.updataFavorite(bean, list -> {
-            FavoriteWebBean data = list.get(0);
+//            FavoriteWebBean data = list.get(0);
 
         });
     }

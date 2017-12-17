@@ -44,14 +44,13 @@ import io.reactivex.schedulers.Schedulers;
 public class FavoriteActivity
         extends AppCompatActivity
         implements OnDeleteItemClickListener,
-                   FavoriteContract.View,
-                   OnRvItemClickListener<FavoriteWebBean>,
-                   SwipeRefreshLayout.OnRefreshListener
-{
+        FavoriteContract.View,
+        OnRvItemClickListener<FavoriteWebBean>,
+        SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.fag_content)
-    LinearLayout       mFagContent;
+    LinearLayout mFagContent;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     private List<FavoriteWebBean> mList;
@@ -84,6 +83,7 @@ public class FavoriteActivity
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
     }
+
     protected void initData() {
         //        updateFavo();
         mWebPresenter.queryAllFavorite();
@@ -119,9 +119,9 @@ public class FavoriteActivity
         mWebPresenter.cancelFavorite(id, 0);
     }
 
+    //收藏页面没有增加收藏功能，这个方法不会执行。
     @Override
     public void insertStatus(Long status) {
-
     }
 
     @Override
@@ -136,7 +136,6 @@ public class FavoriteActivity
 
     @Override
     public void queryAllFavorite(List<FavoriteWebBean> list) {
-        LogUtil.d("Size  " + list.size());
         mList.clear();
         mList.addAll(list);
         mSwipeRefresh.setRefreshing(false);
@@ -158,36 +157,37 @@ public class FavoriteActivity
     @Override
     public void onRefresh() {
         Observable.timer(2, TimeUnit.SECONDS)
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(aLong -> {
-                      mWebPresenter.queryAllFavorite();
-                      mAdapter.notifyDataSetChanged();
-                  });
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    mWebPresenter.queryAllFavorite();
+                    mAdapter.notifyDataSetChanged();
+                });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mWebPresenter.queryAllFavorite();
         if (isUpdateFavo) {
-            updateFavo();
+            LogUtil.d("收藏页面刷新       ******************");
+            mAdapter.refreshItem();
+
         }
     }
 
     public void updateFavo() {
 
         disposables.add(MyApplication.getIntstance()
-                                     .bus()
-                                     .toObserverable(UpdataFavorite.class)
-                                     .subscribeOn(Schedulers.io())
-                                     .observeOn(AndroidSchedulers.mainThread())
-                                     .subscribe(data -> {
-                                         LogUtil.d("Update Favorite : " + data.getUpdateFlage());
-                                         if (data.getUpdateFlage() == 1) {
-                                             mAdapter.notifyDataSetChanged();
-                                             mWebPresenter.queryAllFavorite();
-                                         }
-                                     }));
+                .bus()
+                .toObserverable(UpdataFavorite.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    LogUtil.d("Update Favorite : " + data.getUpdateFlage());
+                    if (data.getUpdateFlage() == 1) {
+                        mAdapter.notifyDataSetChanged();
+                        mWebPresenter.queryAllFavorite();
+                    }
+                }));
     }
 
     @Override
