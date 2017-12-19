@@ -22,15 +22,12 @@ import com.yibao.biggirl.util.ImageUitl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 
 /**
@@ -153,18 +150,13 @@ public class GirlsFragment
 
     //下拉刷新
     @Override
-    public void onRefresh() {
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mGirlsPresenter.loadData(size,
-                            1, 3,
-                            Constants.REFRESH_DATA,
-                            Constants.FRAGMENT_GIRLS);
-                    mSwipeRefresh.setRefreshing(false);
-                    isShowGankGirl = false;
-                    page = 1;
-                });
+    protected void refreshData() {
+        mGirlsPresenter.loadData(size,
+                1, 3,
+                Constants.REFRESH_DATA,
+                Constants.FRAGMENT_GIRLS);
+        mSwipeRefresh.setRefreshing(false);
+        isShowGankGirl = false;
     }
 
 
@@ -203,7 +195,7 @@ public class GirlsFragment
         if (type == 1) {
             defultUrl = ImageUitl.getSexUrl(new ArrayList<>());
         } else {
-            defultUrl = ImageUitl.getDefultUrl(new ArrayList<>());
+            defultUrl = ImageUitl.getNormalUrl(new ArrayList<>());
 
         }
         initRecyclerView(defultUrl, mRandomNum);

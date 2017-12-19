@@ -209,7 +209,7 @@ public class ImageUitl {
     }
 
     //初始化默认妹子数据
-    public static List<String> getDefultUrl(List<String> list) {
+    public static List<String> getNormalUrl(List<String> list) {
         Collections.addAll(list, Api.picUrlArr);
         return list;
     }

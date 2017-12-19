@@ -12,6 +12,10 @@ import com.yibao.biggirl.factory.RecyclerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：Sid
@@ -78,8 +82,22 @@ public abstract class BaseFag<T>
         });
         return recyclerView;
     }
+    @Override
+    public void onRefresh() {
+
+        Observable.timer(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                   refreshData();
+                    page = 1;
+                });
+    }
+
+    protected abstract void refreshData();
 
     protected abstract void loadMoreData();
+
+
 
 
     @Override

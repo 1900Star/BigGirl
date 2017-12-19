@@ -60,8 +60,8 @@ public class BeautifulDialogFag
 
 
     private void initView() {
-        TextView feir = (TextView) mView.findViewById(R.id.tv_feir);
-        TextView xuan = (TextView) mView.findViewById(R.id.tv_fxx);
+        TextView feir = mView.findViewById(R.id.tv_feir);
+        TextView xuan = mView.findViewById(R.id.tv_fxx);
         feir.setOnClickListener(view1 -> showDesDetall(getActivity(), Api.myFeir));
         xuan.setOnClickListener(view12 -> showDesDetall(getActivity(), Api.myXXuan));
     }

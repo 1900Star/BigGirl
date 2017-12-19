@@ -18,13 +18,10 @@ import com.yibao.biggirl.model.android.ResultsBeanX;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：Sid
@@ -62,8 +59,15 @@ public class AppFag
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new AppPresenter(this);
         mType = getArguments().getInt("type");
+        new AppPresenter(this);
+
+    }
+
+    @Override
+    protected void refreshData() {
+        mPresenter.loadData(size, 1, mLoadType, Constants.REFRESH_DATA);
+        mSwipeRefresh.setRefreshing(false);
 
     }
 
@@ -99,17 +103,6 @@ public class AppFag
 
     }
 
-    @Override
-    public void onRefresh() {
-
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mPresenter.loadData(size, 1, mLoadType, Constants.REFRESH_DATA);
-                    mSwipeRefresh.setRefreshing(false);
-                    page = 1;
-                });
-    }
 
     @Override
     public void refresh(List<ResultsBeanX> list) {

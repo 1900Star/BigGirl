@@ -70,7 +70,7 @@ public class RemoteGirlsData
     public void getMeizitu(String type, int page, LoadGMeizituCallback callback) {
         String url = Constants.MEIZITU_API + type + "/page/" + page;
         final String fakeRefer = url + "/";
-        final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";// 然后用自己的服务器进行转发
+        final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
         Observable.just(Constants.MEIZITU_API).subscribeOn(Schedulers.io()).map(s -> {
 
             List<Girl> girls = new ArrayList<>();
@@ -106,7 +106,7 @@ public class RemoteGirlsData
                         if (page >= totalPages)
                             totalPages = page;
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
 
                 }

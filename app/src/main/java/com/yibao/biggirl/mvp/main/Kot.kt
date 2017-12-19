@@ -21,5 +21,7 @@ class Kot : AppCompatActivity() {
         kot_iv.setImageResource(R.mipmap.xuan)
 
 
+
     }
+
 }

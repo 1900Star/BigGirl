@@ -15,6 +15,7 @@ import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -27,8 +28,7 @@ import butterknife.ButterKnife;
  * Time:2017/4/23 07:08
  */
 public class FavoriteAdapter
-        extends BaseRvAdapter<FavoriteWebBean>
-{
+        extends BaseRvAdapter<FavoriteWebBean> {
 
 
     private Context mContext;
@@ -36,6 +36,7 @@ public class FavoriteAdapter
     public FavoriteAdapter(Context context, List<FavoriteWebBean> list) {
         super(list);
         mContext = context;
+        LogUtil.d("Size  " + list.size());
     }
 
     //    @Override
@@ -45,15 +46,15 @@ public class FavoriteAdapter
 
 
             Glide.with(mContext)
-                 .load(bean.getImagUrl())
-                 .asBitmap()
-                 .placeholder(R.mipmap.xuan)
-                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                 .into(viewHolder.mIvFavorite);
+                    .load(bean.getImagUrl())
+                    .asBitmap()
+                    .placeholder(R.mipmap.xuan)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(viewHolder.mIvFavorite);
             String who = bean.getName();
             String name = who == null
-                          ? "Smartisan"
-                          : who;
+                    ? "Smartisan"
+                    : who;
 
             viewHolder.mTvFavoriteName.setText(name);
 
@@ -79,6 +80,9 @@ public class FavoriteAdapter
         }
     }
 
+    public void refreshItem() {
+        notifyDataSetChanged();
+    }
 
     //对应的ViewHolder
     @Override
@@ -94,18 +98,17 @@ public class FavoriteAdapter
 
 
     static class ViewHolder
-            extends RecyclerView.ViewHolder
-    {
+            extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_favorite)
-        ImageView      mIvFavorite;
+        ImageView mIvFavorite;
         @BindView(R.id.tv_favorite_name)
-        TextView       mTvFavoriteName;
+        TextView mTvFavoriteName;
         @BindView(R.id.tv_favorite_type)
-        TextView       mTvFavoriteType;
+        TextView mTvFavoriteType;
         @BindView(R.id.tv_favorite_des)
-        TextView       mTvFavoriteDes;
+        TextView mTvFavoriteDes;
         @BindView(R.id.favorite_time)
-        TextView       mTvFavoriteTime;
+        TextView mTvFavoriteTime;
         @BindView(R.id.favorite_item)
         RelativeLayout mFavoriteItem;
 

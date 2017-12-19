@@ -29,13 +29,10 @@ import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class MeizituFag extends BaseFag<Girl> implements
 
@@ -103,19 +100,14 @@ public class MeizituFag extends BaseFag<Girl> implements
     }
 
     //下拉刷新
-    @Override
-    public void onRefresh() {
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
 
-                    mPresenter.loadData(size,
-                            1, 0,
-                            Constants.REFRESH_DATA,
-                            mLoadType);
-                    mSwipeRefresh.setRefreshing(false);
-                    page = 1;
-                });
+    @Override
+    protected void refreshData() {
+        mPresenter.loadData(size,
+                1, 0,
+                Constants.REFRESH_DATA,
+                mLoadType);
+        mSwipeRefresh.setRefreshing(false);
     }
 
 
