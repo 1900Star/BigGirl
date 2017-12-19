@@ -27,13 +27,10 @@ import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class DuotuFag extends BaseFag<Girl> implements
         DuotuContract.View<Girl> {
@@ -93,18 +90,12 @@ public class DuotuFag extends BaseFag<Girl> implements
 
     //下拉刷新
     @Override
-    public void onRefresh() {
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-
-                    mPresenter.loadData(
-                            mLoadType, page,
-                            Constants.REFRESH_DATA
-                    );
-                    mSwipeRefresh.setRefreshing(false);
-                    page = 1;
-                });
+    protected void refreshData() {
+        mPresenter.loadData(
+                mLoadType, page,
+                Constants.REFRESH_DATA
+        );
+        mSwipeRefresh.setRefreshing(false);
     }
 
 
