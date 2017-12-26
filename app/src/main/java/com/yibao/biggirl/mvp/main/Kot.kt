@@ -22,8 +22,5 @@ import kotlinx.android.synthetic.main.kot.*
 
     }
 
-    init {
-
-    }
 
 }
