@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.kot.*
  *  @创建时间:  2017/12/3 23:13
  *  @描述：    TODO
  */
-class Kot : AppCompatActivity() {
+ class Kot : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.kot)
