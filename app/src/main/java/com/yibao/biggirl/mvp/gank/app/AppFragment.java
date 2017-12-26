@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerFactory;
-import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
@@ -28,7 +28,7 @@ import butterknife.Unbinder;
  * Des：${TODO}
  * Time:2017/4/23 06:33
  */
-public class AppFag
+public class AppFragment
         extends BaseFag<ResultsBeanX>
         implements AppContract.View {
 
@@ -47,8 +47,8 @@ public class AppFag
     private String mLoadType;
     private int mType;
 
-    public static AppFag newInstance(int loadType) {
-        AppFag fragment = new AppFag();
+    public static AppFragment newInstance(int loadType) {
+        AppFragment fragment = new AppFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("type", loadType);
         fragment.setArguments(bundle);

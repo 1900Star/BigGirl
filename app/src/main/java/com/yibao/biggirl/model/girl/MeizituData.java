@@ -9,8 +9,6 @@ package com.yibao.biggirl.model.girl;
  *  @描述：    TODO
  */
 
-import com.yibao.biggirl.model.girls.Girl;
-
 import java.util.ArrayList;
 import java.util.List;
 

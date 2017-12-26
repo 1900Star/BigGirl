@@ -1,4 +1,4 @@
-package com.yibao.biggirl.model.android;
+package com.yibao.biggirl.model.app;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -12,7 +12,7 @@ import java.util.List;
  * Des：${Android 页面}
  * Time:2017/4/23 07:29
  */
-public class AndroidDesBean
+public class GankDesBean
         implements Parcelable
 {
 
@@ -25,26 +25,26 @@ public class AndroidDesBean
     private boolean            error;
     private List<ResultsBeanX> results;
 
-    protected AndroidDesBean(Parcel in) {
+    protected GankDesBean(Parcel in) {
         error = in.readByte() != 0;
         results = in.createTypedArrayList(ResultsBeanX.CREATOR);
     }
 
-    public static final Creator<AndroidDesBean> CREATOR = new Creator<AndroidDesBean>() {
+    public static final Creator<GankDesBean> CREATOR = new Creator<GankDesBean>() {
         @Override
-        public AndroidDesBean createFromParcel(Parcel in) {
-            return new AndroidDesBean(in);
+        public GankDesBean createFromParcel(Parcel in) {
+            return new GankDesBean(in);
         }
 
         @Override
-        public AndroidDesBean[] newArray(int size) {
-            return new AndroidDesBean[size];
+        public GankDesBean[] newArray(int size) {
+            return new GankDesBean[size];
         }
     };
 
-    public static AndroidDesBean objectFromData(String str) {
+    public static GankDesBean objectFromData(String str) {
 
-        return new Gson().fromJson(str, AndroidDesBean.class);
+        return new Gson().fromJson(str, GankDesBean.class);
     }
 
     public boolean isError() { return error;}

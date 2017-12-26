@@ -1,7 +1,5 @@
 package com.yibao.biggirl.model.app;
 
-import com.yibao.biggirl.model.android.ResultsBeanX;
-
 import java.util.List;
 
 /**

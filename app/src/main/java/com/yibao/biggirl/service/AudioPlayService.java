@@ -13,8 +13,10 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.widget.RemoteViews;
 
 import com.yibao.biggirl.MyApplication;
+import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.music.musiclist.MusicNoification;
@@ -25,30 +27,30 @@ import java.util.Random;
 
 
 public class AudioPlayService
-        extends Service
-{
+        extends Service {
 
-    private        MediaPlayer mediaPlayer;
-    private        AudioBinder mAudioBinder;
-    private static int         PLAY_MODE;
+    private MediaPlayer mediaPlayer;
+    private AudioBinder mAudioBinder;
+    private static int PLAY_MODE;
     //三种播放模式
-    public static final int    PLAY_MODE_ALL    = 0;
-    public static final int    PLAY_MODE_SINGLE = 1;
-    public static final int    PLAY_MODE_RANDOM = 2;
+    public static final int PLAY_MODE_ALL = 0;
+    public static final int PLAY_MODE_SINGLE = 1;
+    public static final int PLAY_MODE_RANDOM = 2;
     //音乐通知栏
-    public static final int    ROOT             = 0;
-    public static final int    PREV             = 1;
-    public static final int    PLAY             = 2;
-    public static final int    NEXT             = 3;
-    public static final int    CLOSE            = 4;
+    public static final int ROOT = 0;
+    public static final int PREV = 1;
+    public static final int PLAY = 2;
+    public static final int NEXT = 3;
+    public static final int CLOSE = 4;
     //广播匹配
-    public final static String BUTTON_ID        = "ButtonId";
-    public static final String ACTION_MUSIC     = "MUSIC";
+    public final static String BUTTON_ID = "ButtonId";
+    public static final String ACTION_MUSIC = "MUSIC";
     private int position = -2;
-    private ArrayList<MusicInfo>  mMusicItem;
-    private SharedPreferences     sp;
+    private ArrayList<MusicInfo> mMusicItem;
+    private SharedPreferences sp;
     private MusicBroacastReceiver mReceiver;
-    private NotificationManager   manager;
+    private NotificationManager manager;
+    private RemoteViews mRemoteViews;
 
     @Nullable
     @Override
@@ -59,8 +61,8 @@ public class AudioPlayService
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtil.d("Service  onCreate   ** ");
         mAudioBinder = new AudioBinder();
+        mRemoteViews = new RemoteViews(getPackageName(), R.layout.music_notify);
         initBroadcast();
         sp = getSharedPreferences("music_mode", MODE_PRIVATE);
         //初始化播放模式
@@ -78,8 +80,7 @@ public class AudioPlayService
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         mMusicItem = intent.getParcelableArrayListExtra("musicItem");
         int enterPosition = intent.getIntExtra("position", -1);
         LogUtil.d("Ser position  " + enterPosition);
@@ -91,8 +92,8 @@ public class AudioPlayService
         } else if (enterPosition != -1 && enterPosition == position) {
             //通知播放界面更新
             MyApplication.getIntstance()
-                         .bus()
-                         .post(mMusicItem.get(position));
+                    .bus()
+                    .post(mMusicItem.get(position));
         }
         return START_NOT_STICKY;
     }
@@ -116,8 +117,7 @@ public class AudioPlayService
             }
             mMusicInfo = mMusicItem.get(position);
             mediaPlayer = MediaPlayer.create(AudioPlayService.this,
-                                             Uri.parse(mMusicInfo.getSongUrl()));
-
+                    Uri.parse(mMusicInfo.getSongUrl()));
 
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnCompletionListener(this);
@@ -131,8 +131,8 @@ public class AudioPlayService
             mediaPlayer.start();
             //通知播放界面更新
             MyApplication.getIntstance()
-                         .bus()
-                         .post(mMusicItem.get(position));
+                    .bus()
+                    .post(mMusicItem.get(position));
             LogUtil.d("********     onPrepared");
             //显示音乐通知栏
             showNotification();
@@ -141,8 +141,8 @@ public class AudioPlayService
         }
 
         private void showNotification() {
-            Notification notification = MusicNoification.getNotification(AudioPlayService.this,
-                                                                         mMusicInfo);
+            Notification notification = MusicNoification.getNotification(getApplicationContext(), mRemoteViews,
+                    mMusicInfo);
             manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             manager.notify(0, notification);
@@ -195,8 +195,8 @@ public class AudioPlayService
             PLAY_MODE = playmode;
             //保存播放模式
             sp.edit()
-              .putInt("play_mode", PLAY_MODE)
-              .commit();
+                    .putInt("play_mode", PLAY_MODE)
+                    .commit();
         }
 
         //手动播放上一曲
@@ -257,25 +257,25 @@ public class AudioPlayService
                     if (mAudioBinder.isPlaying()) {
                         mAudioBinder.pause();
                         MyApplication.getIntstance()
-                                     .bus()
-                                     .post(new MusicStatusBean(type, true));
+                                .bus()
+                                .post(new MusicStatusBean(type, true));
                     } else {
                         mAudioBinder.start();
                         MyApplication.getIntstance()
-                                     .bus()
-                                     .post(new MusicStatusBean(type, false));
+                                .bus()
+                                .post(new MusicStatusBean(type, false));
                         LogUtil.d("PLAY");
                     }
                     break;
                 case 1:
                     if (mAudioBinder.isPlaying()) {
                         MyApplication.getIntstance()
-                                     .bus()
-                                     .post(new MusicStatusBean(type, true));
+                                .bus()
+                                .post(new MusicStatusBean(type, true));
                     } else {
                         MyApplication.getIntstance()
-                                     .bus()
-                                     .post(new MusicStatusBean(type, false));
+                                .bus()
+                                .post(new MusicStatusBean(type, false));
                         LogUtil.d("PLAY");
                     }
 
@@ -306,19 +306,23 @@ public class AudioPlayService
                         break;
                     case CLOSE:
                         LogUtil.d("CLOSE");
+//                        mAudioBinder.pause();
+                        mAudioBinder.playStatus
+                                (0);
                         manager.cancel(0);
                         break;
                     case PREV:
                         mAudioBinder.playPre();
+                        updatePlayBtn();
                         break;
                     case PLAY:
                         mAudioBinder.playStatus(0);
+                        updatePlayBtn();
                         break;
                     case NEXT:
                         mAudioBinder.playNext();
+                        updatePlayBtn();
                         break;
-
-
                     default:
                         break;
                 }
@@ -326,6 +330,16 @@ public class AudioPlayService
         }
     }
 
+    //通知栏的播放按钮监听
+    private void updatePlayBtn() {
+        if (mAudioBinder.isPlaying()) {
+            mRemoteViews.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_play);
+            LogUtil.d("===  play =");
+        } else {
+            LogUtil.d("===  pause =");
+            mRemoteViews.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_pause);
+        }
+    }
 
     @Override
     public void onDestroy() {

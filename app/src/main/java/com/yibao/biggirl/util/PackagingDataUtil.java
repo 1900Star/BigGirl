@@ -2,9 +2,9 @@ package com.yibao.biggirl.util;
 
 import android.text.TextUtils;
 
-import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author：Sid
- * Des：${TODO}
+ * Des：${将数据转换成其它类型，放到集合中并返回}
  * Time:2017/6/18 22:44
  */
 public class PackagingDataUtil {

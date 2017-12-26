@@ -20,7 +20,9 @@ class Kot : AppCompatActivity() {
         setContentView(R.layout.kot)
         kot_iv.setImageResource(R.mipmap.xuan)
 
+    }
 
+    init {
 
     }
 

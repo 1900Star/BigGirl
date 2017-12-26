@@ -81,6 +81,7 @@
         <activity
             android:name=".mvp.gank.duotu.DuotuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".network.Main2Activity"></activity>
     </application>
 
 </manifest>

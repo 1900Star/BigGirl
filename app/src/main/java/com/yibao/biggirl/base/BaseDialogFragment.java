@@ -42,7 +42,6 @@ public abstract class BaseDialogFragment
         return getViews();
     }
 
-
     public abstract View getViews();
 
     @Override

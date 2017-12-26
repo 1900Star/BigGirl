@@ -1,4 +1,4 @@
-package com.yibao.biggirl.model.girls;
+package com.yibao.biggirl.model.girl;
 
 /*
  *  @项目名：  BigGirl 
@@ -6,7 +6,7 @@ package com.yibao.biggirl.model.girls;
  *  @文件名:   Girl
  *  @创建者:   Stran
  *  @创建时间:  2017/12/5 2:15
- *  @描述：    TODO
+ *  @描述：    用于封装从网页中解析出的图片地址
  */
 
 import android.os.Parcel;

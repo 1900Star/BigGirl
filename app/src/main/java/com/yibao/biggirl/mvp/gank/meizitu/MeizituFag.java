@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerFactory;
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.util.Constants;

@@ -1,6 +1,7 @@
 package com.yibao.biggirl.mvp.gank.meizitu;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -32,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
  * Time:2017/4/8 04:24
  */
 public class MeizituActivity
-        extends BaseActivity implements OnRvItemLongClickListener{
+        extends BaseActivity implements OnRvItemLongClickListener {
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -57,10 +58,17 @@ public class MeizituActivity
         initView();
     }
 
+    @Override
+    protected void refreshData() {
+        mPresenter.start(mUrl, Constants.MeiSingle);
+    }
+
 
     private void initView() {
+        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
+        mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
-        mAdapter = new MztuAdapter(this, null,0);
+        mAdapter = new MztuAdapter(this, null, 0);
         if (mAdapter.getData() == null || mAdapter.getData().size() == 0) {
             mPresenter.start(mUrl, 0);
         } else {
@@ -95,7 +103,7 @@ public class MeizituActivity
         });
     }
 
-
+    //    数据来自MeizituService页面的RxBus发送
     public void getMeizituData() {
         mDisposable.add(mApplication.bus()
                 .toObserverable(MeizituData.class)
@@ -107,6 +115,7 @@ public class MeizituActivity
                     mSwipeRefresh.setRefreshing(false);
                     if (mAdapter.getData() == null || mAdapter.getData().size() == 0) {
                         mAdapter.setNewData(data.getGirls());
+                        mSwipeRefresh.setRefreshing(false);
                     } else {
                         mAdapter.addData(mAdapter.getData().size(), data.getGirls());
                     }

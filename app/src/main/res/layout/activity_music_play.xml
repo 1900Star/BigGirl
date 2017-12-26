@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +7,7 @@
     android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -17,28 +17,27 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        >
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/titlebar_down"
                 android:layout_width="24dp"
-                android:layout_centerInParent="true"
                 android:layout_height="24dp"
                 android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="4dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_star_green_24dp"/>
+                android:src="@mipmap/tiltebar_down" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-            >
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/play_song_name"
                     android:layout_width="wrap_content"
@@ -47,25 +46,28 @@
                     android:maxLength="20"
                     android:maxLines="1"
                     android:textColor="@color/colorBlack"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
+
                 <TextView
                     android:id="@+id/play_artist_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/aboutSign"/>
+                    android:textColor="@color/aboutSign" />
             </LinearLayout>
+
             <ImageView
-                android:layout_centerInParent="true"
                 android:id="@+id/titlebar_play_list"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginRight="4dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/titlebar_down"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="4dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop" android:src="@drawable/ic_star_accent_24dp"/>
+                android:scaleType="centerCrop"
+                android:src="@mipmap/favoret_list" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -76,13 +78,14 @@
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
 
-            android:textColor="@color/aboutSign"/>
+            android:textColor="@color/aboutSign" />
 
 
         <SeekBar
@@ -93,20 +96,20 @@
             android:maxHeight="6dp"
             android:minHeight="6dp"
             android:progressDrawable="@drawable/seek_bar"
-            android:thumb="@drawable/playing_control_time"
-        />
+            android:thumb="@drawable/playing_control_time" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/short_line"
-            android:textColor="@color/aboutSign"/>
+            android:textColor="@color/aboutSign" />
+
         <TextView
             android:id="@+id/end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:textColor="@color/aboutSign"/>
+            android:textColor="@color/aboutSign" />
     </LinearLayout>
 
 
@@ -114,64 +117,76 @@
         android:layout_width="match_parent"
         android:layout_height="350dp"
 
-    >
+        >
 
 
         <RelativeLayout
-            android:visibility="visible"
             android:id="@+id/rotate_rl"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:gravity="center"
-        >
+            android:visibility="visible">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:contentDescription="@null"
-                android:src="@mipmap/playing_lp"/>
+                android:src="@mipmap/playing_lp" />
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:contentDescription="@null"
-                android:src="@mipmap/playing_veins_lp"/>
+                android:src="@mipmap/playing_veins_lp" />
+
             <ImageView
                 android:layout_width="350dp"
                 android:layout_height="350dp"
                 android:layout_centerInParent="true"
                 android:contentDescription="@null"
-                android:src="@mipmap/playing_cover_lp"
-            />
+                android:src="@mipmap/playing_cover_lp" />
+
             <com.yibao.biggirl.view.CircleImageView
                 android:id="@+id/playing_song_album"
                 android:layout_width="132dp"
                 android:layout_height="132dp"
                 android:layout_centerInParent="true"
-                android:contentDescription="@null" android:maxHeight="130dp"/>
+                android:contentDescription="@null"
+                android:maxHeight="130dp" />
         </RelativeLayout>
 
         <com.yibao.biggirl.view.music.LyricsView
             android:id="@+id/tv_lyrics"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
-        <ImageView
-            android:id="@+id/iv_lyrics_switch"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="40dp"
-            android:contentDescription="@null"
-            android:src="@drawable/btn_unbrella_icon0"/>
+            android:background="@mipmap/lyrics_bm">
+
+
+            <ImageView
+                android:id="@+id/iv_lyrics_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/btn_unbrella_icon0" />
+        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/music_player_mode"
             android:layout_width="0dp"
@@ -179,29 +194,34 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@null"
-            android:src="@drawable/btn_playing_cycle_off"/>
+            android:src="@drawable/btn_playing_cycle_off" />
+
         <ImageView
             android:id="@+id/music_player_pre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:contentDescription="@null" android:src="@drawable/btn_playing_prev"/>
+            android:contentDescription="@null"
+            android:src="@drawable/btn_playing_prev" />
+
         <ImageView
             android:id="@+id/music_play"
-            android:layout_width="0dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
             android:contentDescription="@null"
-            android:src="@drawable/btn_playing_play"/>
+            android:src="@drawable/btn_playing_play" />
+
         <ImageView
             android:id="@+id/music_player_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:contentDescription="@null" android:src="@drawable/btn_playing_next"/>
+            android:contentDescription="@null"
+            android:src="@drawable/btn_playing_next" />
+
         <ImageView
             android:id="@+id/iv_favorite_music"
             android:layout_width="0dp"
@@ -209,10 +229,11 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:contentDescription="@null"
-            android:src="@drawable/music_favorite_selector"/>
+            android:src="@drawable/music_favorite_selector" />
 
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -220,15 +241,15 @@
         android:background="@mipmap/btn_folder_shuffle"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <SeekBar
             android:id="@+id/sb_volume"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:maxHeight="8dp"
             android:minHeight="6dp"
-            android:progressDrawable="@drawable/seek_bar"
-        />
+            android:progressDrawable="@drawable/seek_bar" />
 
 
     </LinearLayout>

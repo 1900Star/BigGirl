@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseFag;
 import com.yibao.biggirl.factory.RecyclerFactory;
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
 
@@ -110,8 +110,6 @@ public class DuotuFag extends BaseFag<Girl> implements
     }
 
 
-    public DuotuFag() {
-    }
 
     private void initView() {
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);

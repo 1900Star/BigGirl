@@ -27,11 +27,10 @@ import butterknife.ButterKnife;
  */
 public class BottomSheetAdapter
         extends BaseRvAdapter<MusicInfo>
-        implements SectionIndexer
-{
+        implements SectionIndexer {
 
 
-    public BottomSheetAdapter( List<MusicInfo> list) {
+    public BottomSheetAdapter(List<MusicInfo> list) {
         super(list);
 
     }
@@ -45,7 +44,8 @@ public class BottomSheetAdapter
             musicHolder.mFavoriteTime.setText(musicItem.getTime());
             int position = musicHolder.getAdapterPosition();
             RxBus bus = MyApplication.getIntstance()
-                                     .bus();
+                    .bus();
+//            MusicBottomSheetDialog页面接收
             musicHolder.mRootBottomSheet.setOnClickListener(view -> bus.post(new BottomSheetStatus(
                     position)));
         }
@@ -79,16 +79,15 @@ public class BottomSheetAdapter
     }
 
     static class MusicHolder
-            extends RecyclerView.ViewHolder
-    {
+            extends RecyclerView.ViewHolder {
         @BindView(R.id.favorite_music_name)
-        TextView     mMusicName;
+        TextView mMusicName;
         @BindView(R.id.favorite_artist_name)
-        TextView     mMusicSinger;
+        TextView mMusicSinger;
         @BindView(R.id.favorite_time)
-        TextView     mFavoriteTime;
+        TextView mFavoriteTime;
         @BindView(R.id.bottom_list_itme_clear)
-        ImageView    mBottomListItmeClear;
+        ImageView mBottomListItmeClear;
         @BindView(R.id.root_bottom_sheet)
         LinearLayout mRootBottomSheet;
 

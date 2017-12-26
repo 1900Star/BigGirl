@@ -11,7 +11,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.model.girl.MeizituData;
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +23,10 @@ import java.util.List;
  *  @文件名:   MeizituService
  *  @创建者:   Stran
  *  @创建时间:  2017/12/10 14:42
- *  @描述：    TODO
+ *  @描述：    {解析网页中的图片地址}
  */
 
 public class MeizituService extends IntentService {
-    private static int num = 1;
-    private static final String TAG = "MeizituService    ";
     private static final String KEY_EXTRA_GIRL_FROM = "from";
     private static final String KEY_EXTRA_GIRL_LIST = "data";
 
@@ -51,7 +49,6 @@ public class MeizituService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String from = intent.getStringExtra(KEY_EXTRA_GIRL_FROM);
         List<Girl> girls = intent.getParcelableArrayListExtra(KEY_EXTRA_GIRL_LIST);
-        System.out.println(TAG + girls.size());
         for (final Girl girl : girls) {
             Bitmap bitmap = null;
             try {
@@ -68,6 +65,7 @@ public class MeizituService extends IntentService {
                 girl.setHeight(bitmap.getHeight());
                 girl.setWidth(bitmap.getWidth());
             }
+//            将数据发到MeizituActivity页面
             MyApplication.getIntstance().bus().post(new MeizituData(from, girl));
         }
     }

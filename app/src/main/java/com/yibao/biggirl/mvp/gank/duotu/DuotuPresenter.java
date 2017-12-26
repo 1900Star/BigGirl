@@ -2,7 +2,7 @@ package com.yibao.biggirl.mvp.gank.duotu;
 
 import com.yibao.biggirl.model.duotu.DuotuDataSource;
 import com.yibao.biggirl.model.duotu.RemoteDuotuGirls;
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;

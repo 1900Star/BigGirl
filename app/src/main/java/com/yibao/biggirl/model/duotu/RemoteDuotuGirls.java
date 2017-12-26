@@ -1,6 +1,6 @@
 package com.yibao.biggirl.model.duotu;
 
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,6 +1,6 @@
 package com.yibao.biggirl.mvp.gank.girls;
 
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.model.girls.GrilsDataSource;
 import com.yibao.biggirl.model.girls.RemoteGirlsData;
 import com.yibao.biggirl.util.Constants;

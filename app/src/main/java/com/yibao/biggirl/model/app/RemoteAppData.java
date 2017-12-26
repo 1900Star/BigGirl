@@ -1,6 +1,5 @@
 package com.yibao.biggirl.model.app;
 
-import com.yibao.biggirl.model.android.AndroidDesBean;
 import com.yibao.biggirl.network.RetrofitHelper;
 import com.yibao.biggirl.util.Constants;
 
@@ -25,15 +24,15 @@ public class RemoteAppData
                       .getConmmetApi(type, size, page)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
-                      .subscribe(new Observer<AndroidDesBean>() {
+                      .subscribe(new Observer<GankDesBean>() {
                           @Override
                           public void onSubscribe(@NonNull Disposable d) {
 
                           }
 
                           @Override
-                          public void onNext(@NonNull AndroidDesBean androidDesBean) {
-                              callback.onLoadData(androidDesBean.getResults());
+                          public void onNext(@NonNull GankDesBean gankDesBean) {
+                              callback.onLoadData(gankDesBean.getResults());
                           }
 
                           @Override

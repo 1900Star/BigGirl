@@ -1,6 +1,6 @@
 package com.yibao.biggirl.mvp.gank.app;
 
-import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.model.app.AppDataSource;
 import com.yibao.biggirl.model.app.RemoteAppData;
 import com.yibao.biggirl.util.Constants;

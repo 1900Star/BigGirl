@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.MyPageChangeListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
@@ -29,6 +28,7 @@ import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
+import com.yibao.biggirl.mvp.dialogfragment.UnSplashDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.mvp.map.CheckGoogleService;
@@ -85,6 +85,7 @@ public class MainActivity
     private Unbinder mBind;
     private ImageView mIvHeader;
     private String mUrl;
+    private String mHeaderUrl;
 
 
     @Override
@@ -120,7 +121,9 @@ public class MainActivity
     private void initData() {
         mTablayout.setupWithViewPager(mViewPager);
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
-        mViewPager.setOffscreenPageLimit(Constants.arrTitle.length);
+//        保存Fragment的数量过多容易导致OOM，根据实际情况确定需要保存Fragment的数量
+//        mViewPager.setOffscreenPageLimit(Constants.arrTitle.length);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(pagerAdapter);
 
 
@@ -158,7 +161,7 @@ public class MainActivity
         switch (id) {
             //关于作者
             case R.id.action_about_me:
-                AboutMeDialogFag.newInstance()
+                AboutMeDialogFag.newInstance(mHeaderUrl)
                         .show(getSupportFragmentManager(), "about");
                 break;
 
@@ -187,7 +190,7 @@ public class MainActivity
                 shareMe();
                 break;
             case R.id.action_setting:
-
+                UnSplashDialogFragment.newInstance().show(getSupportFragmentManager(), "unsplash");
                 break;
             default:
                 break;
@@ -237,9 +240,9 @@ public class MainActivity
     //长按显示预览
     @Override
     public void showPreview(String url) {
-
         TopBigPicDialogFragment.newInstance(url)
                 .show(getSupportFragmentManager(), "dialog_big_girl");
+        mHeaderUrl = url;
     }
 
 
@@ -252,7 +255,7 @@ public class MainActivity
             Random random = new Random();
             int girlPosition = random.nextInt(Api.picUrlArr.length);
             mUrl = Api.picUrlArr[girlPosition];
-            ImageUitl.loadPicHolder(MyApplication.getIntstance(), mUrl, mIvCollapsing);
+            ImageUitl.loadPicHolder(MainActivity.this, mUrl, mIvCollapsing);
         }
 
     }
@@ -281,7 +284,8 @@ public class MainActivity
     @Override
     public void showBigGirl(int position, List<String> list) {
         //设置navHeader头像,待定
-        //        ImageUitl.loadPic(this, list.get(position), mIvHeader);
+        mHeaderUrl = list.get(position);
+        ImageUitl.loadPic(this, mHeaderUrl, mIvHeader);
         Intent intent = new Intent(this, GirlActivity.class);
         intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
         intent.putExtra("position", position);

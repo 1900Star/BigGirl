@@ -1,8 +1,10 @@
 package com.yibao.biggirl.base;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,14 +25,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：Sid
- * Des：${BaseFag}
- * Time:2017/6/4 21:55
+ * Des：${全屏的DialogFragment}
+ * Time:2017/5/31 18:50
  */
-public abstract class BaseFag<T>
-        extends Fragment implements SwipeRefreshLayout.OnRefreshListener
+public abstract class BaseDialogFra<T>
+        extends DialogFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-
-{
 
     public int page = 1;
     public int size = 20;
@@ -38,7 +38,7 @@ public abstract class BaseFag<T>
 
     public List<T> mList;
 
-    public abstract void loadDatas();
+    public abstract Dialog getFagDialog();
 
     protected abstract void refreshData();
 
@@ -52,16 +52,15 @@ public abstract class BaseFag<T>
     }
 
 
+    @NonNull
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            loadDatas();
-        }
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return getFagDialog();
     }
 
     public RecyclerView getRecyclerView(ImageView fab, int rvType, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(rvType, adapter);
+        fab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -150,5 +149,12 @@ public abstract class BaseFag<T>
             }
         }
         return max;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

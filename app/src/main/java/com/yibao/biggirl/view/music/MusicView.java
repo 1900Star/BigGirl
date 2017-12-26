@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListAdapter;
-import com.yibao.biggirl.view.SwipeItemLayout;
 
 /**
  * Author：Sid
@@ -59,7 +58,6 @@ public class MusicView
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(context));
         //        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
         //            @Override
         //            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

@@ -65,40 +65,40 @@ public class MusicPlayDialogFag
 {
 
 
-    private View                         root;
-    private ImageView                    mTitlebarDown;
-    private TextView                     mSongName;
-    private TextView                     mArtistName;
-    private ImageView                    mTitlebarPlayList;
-    private TextView                     mStartTime;
-    private TextView                     mEndTime;
-    private RelativeLayout               mRotateRl;
-    private CircleImageView              mPlayingSongAlbum;
-    private ImageView                    mMusicPlayerMode;
-    private ImageView                    mMusicPlayerPre;
-    private ImageView                    mMusicPlay;
-    private ImageView                    mMusicPlayerNext;
-    private ImageView                    mIvMusicFavorite;
+    private View root;
+    private ImageView mTitlebarDown;
+    private TextView mSongName;
+    private TextView mArtistName;
+    private ImageView mTitlebarPlayList;
+    private TextView mStartTime;
+    private TextView mEndTime;
+    private RelativeLayout mRotateRl;
+    private CircleImageView mPlayingSongAlbum;
+    private ImageView mMusicPlayerMode;
+    private ImageView mMusicPlayerPre;
+    private ImageView mMusicPlay;
+    private ImageView mMusicPlayerNext;
+    private ImageView mIvMusicFavorite;
     private AudioPlayService.AudioBinder audioBinder;
-    private CompositeDisposable          disposables;
-    private ObjectAnimator               mAnimator;
-    private MyAnimatorUpdateListener     mAnimatorListener;
-    private boolean                      isFavorite;
+    private CompositeDisposable disposables;
+    private ObjectAnimator mAnimator;
+    private MyAnimatorUpdateListener mAnimatorListener;
+    private boolean isFavorite;
     private int mProgress = 0;
-    private Disposable   mSubscribe;
-    private SeekBar      mSbProgress;
-    private SeekBar      mSbVolume;
+    private Disposable mSubscribe;
+    private SeekBar mSbProgress;
+    private SeekBar mSbVolume;
     private AudioManager mAudioManager;
-    private int          mDuration;
-    private RxBus        mBus;
-    private String       mAlbumUrl;
-    private MusicInfo    mMusicInfo;
+    private int mDuration;
+    private RxBus mBus;
+    private String mAlbumUrl;
+    private MusicInfo mMusicInfo;
     private MusicInfoDao mInfoDao;
-    private ImageView    mIvLyrSwitch;
+    private ImageView mIvLyrSwitch;
     boolean isShowLyrics = false;
-    private LyricsView        mLyricsView;
-    private Disposable        mDisposableLyr;
-    private VolumeReceiver    mVolumeReceiver;
+    private LyricsView mLyricsView;
+    private Disposable mDisposableLyr;
+    private VolumeReceiver mVolumeReceiver;
     private SharedPreferences mPreferences;
 
     @Override
@@ -106,11 +106,11 @@ public class MusicPlayDialogFag
         super.onCreate(savedInstanceState);
         audioBinder = MusicListActivity.getAudioBinder();
         mBus = MyApplication.getIntstance()
-                            .bus();
+                .bus();
         disposables = new CompositeDisposable();
         mInfoDao = MyApplication.getIntstance()
-                                .getDaoSession()
-                                .getMusicInfoDao();
+                .getDaoSession()
+                .getMusicInfoDao();
         registerVolumeReceiver();     //注册音量监听广播
     }
 
@@ -131,9 +131,9 @@ public class MusicPlayDialogFag
 
     private void checkCurrentIsFavorite() {
         List<MusicInfo> list = mInfoDao.queryBuilder()
-                                       .where(MusicInfoDao.Properties.Title.eq(mMusicInfo.getTitle()))
-                                       .build()
-                                       .list();
+                .where(MusicInfoDao.Properties.Title.eq(mMusicInfo.getTitle()))
+                .build()
+                .list();
         if (list.size() == 0) {
             mIvMusicFavorite.setImageResource(R.drawable.music_favorite_selector);
             isFavorite = false;
@@ -151,7 +151,7 @@ public class MusicPlayDialogFag
         mSongName.setText(StringUtil.getSongName(mMusicInfo.getTitle()));
         mArtistName.setText(mMusicInfo.getArtist());
         String url = StringUtil.getAlbulm(mMusicInfo.getAlbumId())
-                               .toString();
+                .toString();
         setAlbulm(url);
     }
 
@@ -164,7 +164,6 @@ public class MusicPlayDialogFag
         initRxBusData();
         initData();
         initListener();
-
         return DialogUtil.getDialogFag(getActivity(), root);
     }
 
@@ -200,12 +199,12 @@ public class MusicPlayDialogFag
         setSongDuration();
         if (mSubscribe == null) {
             mSubscribe = Observable.interval(0, 2800, TimeUnit.MICROSECONDS)
-                                   .subscribeOn(Schedulers.io())
-                                   .observeOn(AndroidSchedulers.mainThread())
-                                   .subscribe(aLong -> {
-                                       mProgress = audioBinder.getProgress();
-                                       updataProgress(mProgress);
-                                   });
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
+                        mProgress = audioBinder.getProgress();
+                        updataProgress(mProgress);
+                    });
         }
 
     }
@@ -230,15 +229,15 @@ public class MusicPlayDialogFag
     //接收service中更新数据,
     private void initRxBusData() {
         disposables.add(mBus.toObserverable(MusicInfo.class)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(this::perpareMusic));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::perpareMusic));
         //   type 用来判断触发消息的源头，0 表示从 MusicPlayDialogFag发出，
         // 1 表示从通知栏的音乐控制面板发出(Services中的广播)。
         disposables.add(mBus.toObserverable(MusicStatusBean.class)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(this::refreshBtnAndAnim));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::refreshBtnAndAnim));
 
 
     }
@@ -278,16 +277,13 @@ public class MusicPlayDialogFag
         //        设置专辑图片
         //                mAlbumUrl = RandomUtil.getRandomUrl();
         mAlbumUrl = StringUtil.getAlbulm(info.getAlbumId())
-                              .toString();
+                .toString();
         setAlbulm(mAlbumUrl);
         //设置歌曲时长
         setSongDuration();
         //        更新播放状态按钮
         updatePlayBtnStatus();
 
-        //              初始化歌词
-        //        mLyricsView.setLrcFile(info.getSongUrl());
-        //        LogUtil.d("SongUrl : " + info.getSongUrl());
 
 
     }
@@ -295,9 +291,9 @@ public class MusicPlayDialogFag
 
     private void setAlbulm(String url) {
         Glide.with(this)
-             .load(url)
-             .asBitmap()
-             .into(mPlayingSongAlbum);
+                .load(url)
+                .asBitmap()
+                .into(mPlayingSongAlbum);
     }
 
 
@@ -308,15 +304,15 @@ public class MusicPlayDialogFag
             audioBinder.pause();
             mAnimator.pause();
             MyApplication.getIntstance()
-                         .bus()
-                         .post(new MusicStatusBean(0, true));
+                    .bus()
+                    .post(new MusicStatusBean(0, true));
         } else {
             //当前暂停  播放
             audioBinder.start();
             initAnimation();
             MyApplication.getIntstance()
-                         .bus()
-                         .post(new MusicStatusBean(0, false));
+                    .bus()
+                    .post(new MusicStatusBean(0, false));
         }
 
 
@@ -382,8 +378,7 @@ public class MusicPlayDialogFag
             case R.id.titlebar_down:
                 dismiss();
                 break;
-            case R.id.titlebar_play_list:       //快速列表
-                break;
+
             case R.id.playing_song_album:      //显示专辑大图
                 break;
             //TODO
@@ -426,6 +421,10 @@ public class MusicPlayDialogFag
             mIvLyrSwitch.setBackgroundResource(R.drawable.music_lrc_open);
             AnimationDrawable animation = (AnimationDrawable) mIvLyrSwitch.getBackground();
             animation.start();
+
+            //              初始化歌词
+            mLyricsView.setLrcFile(mMusicInfo.getSongUrl());
+            LogUtil.d("SongUrl : " + mMusicInfo.getSongUrl());
             initLyrics();
 
             mLyricsView.setVisibility(View.VISIBLE);
@@ -439,9 +438,9 @@ public class MusicPlayDialogFag
         mLyricsView.rollText(audioBinder.getProgress(), audioBinder.getDuration());
         if (mDisposableLyr == null) {
             mDisposableLyr = Observable.interval(0, 5000, TimeUnit.MILLISECONDS)
-                                       .subscribeOn(Schedulers.io())
-                                       .observeOn(AndroidSchedulers.mainThread())
-                                       .subscribe(aLong -> initLyrics());
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> initLyrics());
 
         }
 
@@ -497,20 +496,20 @@ public class MusicPlayDialogFag
     private void rxViewClick() {
 
         RxView.clicks(mTitlebarPlayList)
-              .throttleFirst(1, TimeUnit.SECONDS)
-              .subscribe(o -> {
-                  List<MusicInfo> list = mInfoDao.queryBuilder()
-                                                 .build()
-                                                 .list();
-                  MusicBottomSheetDialog.newInstance()
-                                        .getBottomDialog(getActivity(), list);
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(o -> {
+                    List<MusicInfo> list = mInfoDao.queryBuilder()
+                            .build()
+                            .list();
+                    MusicBottomSheetDialog.newInstance()
+                            .getBottomDialog(getActivity(), list);
 
-              });
+                });
 
         RxView.clicks(mPlayingSongAlbum)
-              .throttleFirst(1, TimeUnit.SECONDS)
-              .subscribe(o -> TopBigPicDialogFragment.newInstance(mAlbumUrl)
-                                                     .show(getFragmentManager(), "album"));
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(o -> TopBigPicDialogFragment.newInstance(mAlbumUrl)
+                        .show(getFragmentManager(), "album"));
 
     }
 
@@ -535,15 +534,13 @@ public class MusicPlayDialogFag
     }
 
 
-    public static MusicPlayDialogFag newInstance(MusicDialogInfo info)
-    {
+    public static MusicPlayDialogFag newInstance(MusicDialogInfo info) {
         MusicPlayDialogFag fragment = new MusicPlayDialogFag();
-        Bundle             bundle   = new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putParcelable("info", info);
         fragment.setArguments(bundle);//把参数设置给自己
         return fragment;
     }
-
 
 
     @Override
@@ -568,7 +565,9 @@ public class MusicPlayDialogFag
 
             switch (seekBar.getId()) {
                 case R.id.sb_progress:
-                    if (!b) { return; }
+                    if (!b) {
+                        return;
+                    }
                     //更新音乐播放进度
                     audioBinder.seekTo(progress);
                     //更新音乐进度数值
@@ -592,16 +591,14 @@ public class MusicPlayDialogFag
 
     //音量监听广播
     private class VolumeReceiver
-            extends BroadcastReceiver
-    {
+            extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             //如果系统音量发生变化就更新Seekbar
             if (intent.getAction()
-                      .equals("android.media.VOLUME_CHANGED_ACTION"))
-            {
+                    .equals("android.media.VOLUME_CHANGED_ACTION")) {
                 AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                int          currVolume    = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前的媒体音量
+                int currVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前的媒体音量
                 mSbVolume.setProgress(currVolume);
             }
         }

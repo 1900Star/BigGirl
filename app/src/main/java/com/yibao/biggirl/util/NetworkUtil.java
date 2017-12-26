@@ -18,11 +18,11 @@ public class NetworkUtil {
     public static boolean isNetworkConnected(Context context) {
 
         if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(
                     Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            if (mNetworkInfo != null) {
-                return mNetworkInfo.isAvailable();
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            if (info != null) {
+                return info.isAvailable();
             }
         }
         return false;

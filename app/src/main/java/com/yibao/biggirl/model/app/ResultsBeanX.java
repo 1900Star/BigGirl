@@ -1,4 +1,4 @@
-package com.yibao.biggirl.model.android;
+package com.yibao.biggirl.model.app;
 
 import android.os.Parcel;
 import android.os.Parcelable;

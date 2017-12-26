@@ -38,18 +38,21 @@ import io.reactivex.schedulers.Schedulers;
  * Time:2017/8/22 14:11
  */
 public class MusicBottomSheetDialog
-        implements View.OnClickListener
-{
-    private LinearLayout              mBottomListContent;
-    private TextView                  mBottomListColection;
-    private TextView                  mBottomListClear;
-    private TextView                  mBottomListTitleSize;
-    private Context                   mContext;
-    private List<MusicInfo>           mList;
-    private RecyclerView              mRecyclerView;
-    private CompositeDisposable       mDisposable;
-    private RxBus                     mBus;
+        implements View.OnClickListener {
+    private LinearLayout mBottomListContent;
+    private TextView mBottomListColection;
+    private TextView mBottomListClear;
+    private TextView mBottomListTitleSize;
+    private Context mContext;
+    private List<MusicInfo> mList;
+    private RecyclerView mRecyclerView;
     private BottomSheetBehavior<View> mBehavior;
+
+    private CompositeDisposable
+            mDisposable = new CompositeDisposable();
+    private RxBus
+            mBus = MyApplication.getIntstance()
+            .bus();
 
     public static MusicBottomSheetDialog newInstance() {
         return new MusicBottomSheetDialog();
@@ -58,36 +61,38 @@ public class MusicBottomSheetDialog
     void getBottomDialog(Context context, List<MusicInfo> list) {
         this.mContext = context;
         this.mList = list;
-        mDisposable = new CompositeDisposable();
-        mBus = MyApplication.getIntstance()
-                            .bus();
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context)
-                                  .inflate(R.layout.bottom_sheet_list_dialog, null);
+                .inflate(R.layout.bottom_sheet_list_dialog, null);
         initView(view);
         initListener();
         rxData();
+        initData(dialog, view);
+        dialog.show();
+    }
+
+    private void initData(BottomSheetDialog dialog, View view) {
         BottomSheetAdapter adapter = new BottomSheetAdapter(mList);
         mRecyclerView = RecyclerFactory.creatRecyclerView(1, adapter);
-        String title = StringUtil.getBottomSheetTitile(mList.size());
-        mBottomListTitleSize.setText(title);
+        String size = StringUtil.getBottomSheetTitile(mList.size());
+        mBottomListTitleSize.setText(size);
         mBottomListContent.addView(mRecyclerView);
         dialog.setContentView(view);
         dialog.setCancelable(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             dialog.getWindow()
-                  .addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    .addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         dialog.setCanceledOnTouchOutside(true);
         mBehavior = BottomSheetBehavior.from((View) view.getParent());
-        dialog.show();
     }
 
+    //    接收BottomSheetAdapter发过来的当前点击Item的Position
     private void rxData() {
         mDisposable.add(mBus.toObserverable(BottomSheetStatus.class)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(bean -> MusicBottomSheetDialog.this.playMusic(bean.getType())));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bean -> MusicBottomSheetDialog.this.playMusic(bean.getType())));
     }
 
     private void initListener() {
@@ -120,16 +125,16 @@ public class MusicBottomSheetDialog
 
     private void clearFavoriteMusic() {
         MyApplication.getIntstance()
-                     .getDaoSession()
-                     .getMusicInfoDao()
-                     .deleteAll();
+                .getDaoSession()
+                .getMusicInfoDao()
+                .deleteAll();
         mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     private void backTop() {
-        BottomSheetAdapter  adapter            = (BottomSheetAdapter) mRecyclerView.getAdapter();
-        int                 positionForSection = adapter.getPositionForSection(0);
-        LinearLayoutManager manager            = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        BottomSheetAdapter adapter = (BottomSheetAdapter) mRecyclerView.getAdapter();
+        int positionForSection = adapter.getPositionForSection(0);
+        LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
         manager.scrollToPositionWithOffset(positionForSection, 0);
     }
 

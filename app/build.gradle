@@ -4,7 +4,7 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "com.yibao.biggirl"
         minSdkVersion 16
@@ -48,10 +48,11 @@ android {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
+            debuggable false
         }
 
         debug {
-            zipAlignEnabled true
+            zipAlignEnabled false
             minifyEnabled false
             debuggable true
         }

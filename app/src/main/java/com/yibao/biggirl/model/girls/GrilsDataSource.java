@@ -1,5 +1,7 @@
 package com.yibao.biggirl.model.girls;
 
+import com.yibao.biggirl.model.girl.Girl;
+
 import java.util.List;
 
 /**

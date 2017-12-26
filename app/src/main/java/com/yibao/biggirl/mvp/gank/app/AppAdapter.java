@@ -13,7 +13,7 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
-import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.PackagingDataUtil;

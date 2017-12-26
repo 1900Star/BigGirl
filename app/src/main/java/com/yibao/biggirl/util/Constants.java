@@ -14,17 +14,17 @@ public class Constants {
      * 多图API
      */
     //    多图   MFStar模范学院
-    public static String DUOTU_MOFAN_API = "http://www.duotu555.com/mm/51/list_51_";
+    private static String DUOTU_MOFAN_API = "http://www.duotu555.com/mm/51/list_51_";
     //    多图  Pans写真
-    public static String DUOTU_PANS_API = "http://www.duotu555.com/mm/46/list_46_";
+    private static String DUOTU_PANS_API = "http://www.duotu555.com/mm/46/list_46_";
     //    多图 尤果网
-    public static String DUOTU_UGIRLS_API = "http://www.duotu555.com/mm/5/list_5_";
+    private static String DUOTU_UGIRLS_API = "http://www.duotu555.com/mm/5/list_5_";
     //    多图 ROSI写真
-    public static String DUOTU_ROSI_API = "http://www.duotu555.com/mm/6/list_6_";
+    private static String DUOTU_ROSI_API = "http://www.duotu555.com/mm/6/list_6_";
     //   多图 魅妍社
-    public static String DUOTU_MEIYAN_API = "http://www.duotu555.com/mm/11/list_11_";
+    private static String DUOTU_MEIYAN_API = "http://www.duotu555.com/mm/11/list_11_";
     //    多图 推女郎
-    public static String DUOTU_TUGIRL_API = "http://www.duotu555.com/mm/14/list_14_";
+    private static String DUOTU_TUGIRL_API = "http://www.duotu555.com/mm/14/list_14_";
     /**
      * 妹子图 API
      */
@@ -39,6 +39,9 @@ public class Constants {
     public static String GANK_API = "http://gank.io/";
     //    Unsplsh
     public static String UNSPLASH_API = "https://unsplash.it/3896/1920/?random";
+    //    https://picsum.photos/3896/1920/?image=22
+    public static String UNSPLASH_RANDOM_URL = "https://picsum.photos/3896/1920/?image=";
+    public static String UNSPLASH_URL = "https://picsum.photos/1920/1080/?image=";
     //    public static String UNSPLASH_API = "https://unsplash.it/1920/1080/?random";
     public static String UNSPLASH = "https://api.unsplash.com/photos/?client_id=6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
 //    public static String UNSPLASH_ID = "6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
@@ -86,8 +89,8 @@ public class Constants {
 
 
     public static final String FRAGMENT_GIRLS = "福利";
-    public static final String FRAGMENT_VIDEO = "休息视频";
-    public static final String FRAGMENT_IOS = "iOS";
+    private static final String FRAGMENT_VIDEO = "休息视频";
+    private static final String FRAGMENT_IOS = "iOS";
     private static final String FRAGMENT_FRONT = "前端";
     private static final String FRAGMENT_EXPAND = "拓展资源";
     private static final String FRAGMENT_APP = "App";

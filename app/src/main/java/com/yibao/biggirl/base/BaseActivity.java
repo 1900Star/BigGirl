@@ -2,10 +2,15 @@ package com.yibao.biggirl.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import com.yibao.biggirl.MyApplication;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
@@ -14,7 +19,7 @@ import io.reactivex.disposables.CompositeDisposable;
  * 邮箱：strangermy@outlook.com
  */
 public abstract class BaseActivity
-        extends AppCompatActivity
+        extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
 
 {
 
@@ -41,6 +46,18 @@ public abstract class BaseActivity
         }
         return max;
     }
+
+    @Override
+    public void onRefresh() {
+        Observable.timer(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    refreshData();
+                    page = 1;
+                });
+    }
+
+    protected abstract void refreshData();
 
     @Override
     protected void onDestroy() {

@@ -11,13 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
-import com.yibao.biggirl.model.favoriteweb.UpdataFavorite;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.mvp.webview.WebPresenter;
 import com.yibao.biggirl.util.LogUtil;
@@ -33,8 +31,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author：Sid
@@ -57,7 +53,6 @@ public class FavoriteActivity
     WebPresenter mWebPresenter;
     private FavoriteAdapter mAdapter;
     private String TAG = "FavoriteActivity";
-    private CompositeDisposable disposables;
     private boolean isUpdateFavo = false;
     private Unbinder mBind;
 
@@ -78,7 +73,6 @@ public class FavoriteActivity
         toolbar.setTitle("收藏");
         toolbar.setDisplayHomeAsUpEnabled(true);
         mList = new ArrayList<>();
-        disposables = new CompositeDisposable();
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
@@ -149,6 +143,7 @@ public class FavoriteActivity
 
     }
 
+    //这个方法不需要，WebActivity需要
     @Override
     public void queryFavoriteIsCollect(List<FavoriteWebBean> list) {
 
@@ -174,26 +169,9 @@ public class FavoriteActivity
         }
     }
 
-    public void updateFavo() {
-
-        disposables.add(MyApplication.getIntstance()
-                .bus()
-                .toObserverable(UpdataFavorite.class)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> {
-                    LogUtil.d("Update Favorite : " + data.getUpdateFlage());
-                    if (data.getUpdateFlage() == 1) {
-                        mAdapter.notifyDataSetChanged();
-                        mWebPresenter.queryAllFavorite();
-                    }
-                }));
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposables.clear();
         mBind.unbind();
 
     }

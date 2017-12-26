@@ -46,7 +46,7 @@ public class GirlsFragment
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
     @BindView(R.id.fag_content)
-    LinearLayout mLlGrils;
+    LinearLayout mLlGrilsContent;
     @BindView(R.id.fab_fag)
     FloatingActionButton mFab;
     private GirlsAdapter mAdapter;
@@ -54,7 +54,7 @@ public class GirlsFragment
     private boolean isShowGankGirl;
 
 
-    // 1 指定注入目标
+    //     1 指定注入目标
     @Inject
     GirlsPresenter mGirlsPresenter;
 
@@ -119,7 +119,7 @@ public class GirlsFragment
         switch (type) {
             case 0:
                 if (isShowGankGirl) {
-                    mLlGrils.removeAllViews();
+                    mLlGrilsContent.removeAllViews();
                     initRecyclerView(mList, 2);
                     mSwipeRefresh.setRefreshing(false);
                     isShowGankGirl = false;
@@ -143,12 +143,12 @@ public class GirlsFragment
         mRandomNum = random.nextInt(4) + 1;
         mAdapter = new GirlsAdapter(getActivity(), mList);
         RecyclerView recyclerView = getRecyclerView(mFab, type, mAdapter);
-        mLlGrils.addView(recyclerView);
+        mLlGrilsContent.addView(recyclerView);
         mFab.setOnClickListener(view -> initData(0));
     }
 
 
-    //下拉刷新
+    //    下拉刷新
     @Override
     protected void refreshData() {
         mGirlsPresenter.loadData(size,
@@ -160,7 +160,7 @@ public class GirlsFragment
     }
 
 
-    //刷新回调
+    //    刷新回调
     @Override
     public void refresh(List<String> list) {
         mList.clear();
@@ -190,7 +190,7 @@ public class GirlsFragment
     //切换干货和默认妹子
 
     private void getDefultGirl(int type) {
-        mLlGrils.removeAllViews();
+        mLlGrilsContent.removeAllViews();
         List<String> defultUrl;
         if (type == 1) {
             defultUrl = ImageUitl.getSexUrl(new ArrayList<>());

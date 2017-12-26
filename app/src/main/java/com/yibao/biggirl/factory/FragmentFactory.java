@@ -3,7 +3,7 @@ package com.yibao.biggirl.factory;
 import android.support.v4.app.Fragment;
 
 import com.yibao.biggirl.base.BaseFag;
-import com.yibao.biggirl.mvp.gank.app.AppFag;
+import com.yibao.biggirl.mvp.gank.app.AppFragment;
 import com.yibao.biggirl.mvp.gank.duotu.DuotuFag;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MeizituFag;
@@ -53,19 +53,19 @@ public class FragmentFactory {
                 fragment = new GirlsFragment();
                 break;
             case FRAGMENT_APP:
-                fragment = AppFag.newInstance(FRAGMENT_APP);
+                fragment = AppFragment.newInstance(FRAGMENT_APP);
                 break;
             case FRAGMENT_IOS:
-                fragment = AppFag.newInstance(FRAGMENT_IOS);
+                fragment = AppFragment.newInstance(FRAGMENT_IOS);
                 break;
             case FRAGMENT_VEDIO:
-                fragment = AppFag.newInstance(FRAGMENT_VEDIO);
+                fragment = AppFragment.newInstance(FRAGMENT_VEDIO);
                 break;
             case FRAGMENT_FRONT:
-                fragment = AppFag.newInstance(FRAGMENT_FRONT);
+                fragment = AppFragment.newInstance(FRAGMENT_FRONT);
                 break;
             case FRAGMENT_EXTEND:
-                fragment = AppFag.newInstance(FRAGMENT_EXTEND);
+                fragment = AppFragment.newInstance(FRAGMENT_EXTEND);
                 break;
 //                妹子图
             case FRAGMENT_JAPAN:

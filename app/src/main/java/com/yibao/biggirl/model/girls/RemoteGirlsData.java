@@ -1,6 +1,7 @@
 package com.yibao.biggirl.model.girls;
 
 import com.yibao.biggirl.MyApplication;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.network.RetrofitHelper;
 import com.yibao.biggirl.service.MeizituService;
 import com.yibao.biggirl.util.Constants;

@@ -52,7 +52,7 @@ public class BeautifulDialogFag
     }
 
     //        @Override
-    //        public View getViews() {
+    //        public View getDialog() {
     //            mView = LinearLayout.inflate(getActivity(), R.layout.beautiful_dialog_fag, null);
     //            initData();
     //            return mView;

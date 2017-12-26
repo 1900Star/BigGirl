@@ -20,13 +20,14 @@ public class WallPaperUtil {
 
     /**
      * 将当前图片设置为壁纸
+     *
      * @param adapter
      */
 
     public static void setWallPaper(Context context, GirlAdapter adapter) {
         WallpaperManager mWpManager = WallpaperManager.getInstance(context);
-        ImageView        view       = (ImageView) adapter.getPrimaryItem();
-        Bitmap           bitmap     = BitmapUtil.drawableToBitmap(view.getDrawable());
+        ImageView view = (ImageView) adapter.getPrimaryItem();
+        Bitmap bitmap = BitmapUtil.drawableToBitmap(view.getDrawable());
 
         try {
             mWpManager.setBitmap(bitmap);
@@ -38,6 +39,7 @@ public class WallPaperUtil {
 
     /**
      * 从图库选择壁纸
+     *
      * @param context
      */
     public static void choiceWallPaper(Context context) {
@@ -46,9 +48,17 @@ public class WallPaperUtil {
     }
 
     public int add(int a, int b) {
-        return a+b;
+        return a + b;
     }
 
 
+    public void str() {
+
+        StringBuilder sb = new StringBuilder("www.smartisan.com/page/");
+        for (int i = 1; i < 10; i++) {
+            LogUtil.d("StringBuilder   == " + sb.append(i));
+        }
+
+    }
 
 }

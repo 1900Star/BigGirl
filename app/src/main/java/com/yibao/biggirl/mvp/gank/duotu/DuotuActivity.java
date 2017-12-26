@@ -15,20 +15,17 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseActivity;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.factory.RecyclerFactory;
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：Sid
@@ -123,7 +120,6 @@ public class DuotuActivity
 
     @Override
     public void refresh(List<Girl> list) {
-
         mList.clear();
         mAdapter.clear();
         mList.addAll(list);
@@ -140,16 +136,10 @@ public class DuotuActivity
 
 
     @Override
-    public void onRefresh() {
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-
-                    mPresenter.loadDataList(mUrl, 1,
-                            Constants.REFRESH_DATA);
-                    mSwipeRefresh.setRefreshing(false);
-                    page = 1;
-                });
+    protected void refreshData() {
+        mPresenter.loadDataList(mUrl, 1,
+                Constants.REFRESH_DATA);
+        mSwipeRefresh.setRefreshing(false);
     }
 
     @Override

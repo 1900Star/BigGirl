@@ -9,13 +9,9 @@ import com.yibao.biggirl.model.greendao.DaoSession;
 import com.yibao.biggirl.util.CrashHandler;
 import com.yibao.biggirl.util.RxBus;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * 作者：Stran on 2017/3/23 15:12
@@ -82,27 +78,6 @@ public class MyApplication
                 .writeTimeout(3, TimeUnit.SECONDS)
                 .readTimeout(3, TimeUnit.SECONDS)
                 .build();
-    }
-    public static OkHttpClient genericClient() {
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request()
-                                .newBuilder()
-                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                                .addHeader("Accept-Encoding", "gzip, deflate")
-                                .addHeader("Connection", "keep-alive")
-                                .addHeader("Accept", "*/*")
-                                .addHeader("Cookie", "add cookies here")
-                                .build();
-                        return chain.proceed(request);
-                    }
-
-                })
-                .build();
-
-        return httpClient;
     }
 
 }

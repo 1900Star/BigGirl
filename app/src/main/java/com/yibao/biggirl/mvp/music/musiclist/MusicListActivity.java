@@ -22,7 +22,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
-import com.yibao.biggirl.base.listener.OnItemSwipeFavoriteListener;
 import com.yibao.biggirl.base.listener.OnMusicListItemClickListener;
 import com.yibao.biggirl.model.greendao.MusicInfoDao;
 import com.yibao.biggirl.model.music.MusicDialogInfo;
@@ -62,45 +61,44 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MusicListActivity
         extends AppCompatActivity
-        implements OnMusicListItemClickListener, OnItemSwipeFavoriteListener
-{
+        implements OnMusicListItemClickListener{
 
 
     @BindView(R.id.music_float_song_name)
-    TextView        mMusicFloatSongName;
+    TextView mMusicFloatSongName;
     @BindView(R.id.music_float_singer_name)
-    TextView        mMusicFloatSingerName;
+    TextView mMusicFloatSingerName;
     @BindView(R.id.music_floating_pre)
-    ImageView       mMusicFloatingPre;
+    ImageView mMusicFloatingPre;
     @BindView(R.id.music_floating_next)
-    ImageView       mMusicFloatingNext;
+    ImageView mMusicFloatingNext;
     @BindView(R.id.music_floating_block)
-    CardView        mCardFloatBlock;
+    CardView mCardFloatBlock;
     @BindView(R.id.music_toolbar_back)
-    ImageView       mMusicToolbarBack;
+    ImageView mMusicToolbarBack;
     @BindView(R.id.music_floating_play)
-    ImageView       mMusicFloatingPlay;
+    ImageView mMusicFloatingPlay;
     @BindView(R.id.music_float_block_albulm)
     CircleImageView mMusicFloatBlockAlbulm;
     @BindView(R.id.music_float_pb)
-    ProgressBtn     mPb;
+    ProgressBtn mPb;
 
 
     private static AudioPlayService.AudioBinder audioBinder;
     @BindView(R.id.musci_view)
     MusicView mMusciView;
-    private CompositeDisposable  disposables;
+    private CompositeDisposable disposables;
     private ArrayList<MusicInfo> mMusicItems;
-    private Unbinder             mBind;
+    private Unbinder mBind;
     private boolean isInitList = false;
-    private ObjectAnimator           mAnimator;
+    private ObjectAnimator mAnimator;
     private MyAnimatorUpdateListener mAnimatorListener;
-    private AudioServiceConnection   mConnection;
-    private Disposable               mDisposable;
-    private RxBus                    mBus;
-    private MusicInfo                mItem;
-    private int                      mCurrentPosition;
-    private MusicInfoDao             mInfoDao;
+    private AudioServiceConnection mConnection;
+    private Disposable mDisposable;
+    private RxBus mBus;
+    private MusicInfo mItem;
+    private int mCurrentPosition;
+    private MusicInfoDao mInfoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,11 +110,11 @@ public class MusicListActivity
         }
         mBind = ButterKnife.bind(this);
         mBus = MyApplication.getIntstance()
-                            .bus();
+                .bus();
         disposables = new CompositeDisposable();
         mInfoDao = MyApplication.getIntstance()
-                                .getDaoSession()
-                                .getMusicInfoDao();
+                .getDaoSession()
+                .getMusicInfoDao();
         initData();
         initRxBusData();
 
@@ -125,9 +123,9 @@ public class MusicListActivity
     private void initRxBusData() {
         //接收service发出的数据，时时更新播放歌曲 进度 歌名 歌手信息
         disposables.add(mBus.toObserverable(MusicInfo.class)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(this::perpareMusic));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::perpareMusic));
         /*
           type = bean.getType() 用来判断触发消息的源头，
           < 0 >表示是通知栏播放和暂停按钮发出，
@@ -137,9 +135,9 @@ public class MusicListActivity
           < 2 >表示在通知栏关闭通知栏
          */
         disposables.add(mBus.toObserverable(MusicStatusBean.class)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(MusicListActivity.this::refreshBtnAndNotif));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(MusicListActivity.this::refreshBtnAndNotif));
 
     }
 
@@ -182,11 +180,11 @@ public class MusicListActivity
         //设置专辑
         Uri albumUri = StringUtil.getAlbulm(musicItem.getAlbumId());
         Glide.with(this)
-             .load(albumUri.toString())
-             .asBitmap()
-             .placeholder(R.drawable.dropdown_menu_noalbumcover)
-             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-             .into(mMusicFloatBlockAlbulm);
+                .load(albumUri.toString())
+                .asBitmap()
+                .placeholder(R.drawable.dropdown_menu_noalbumcover)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(mMusicFloatBlockAlbulm);
         //更新播放状态按钮
         updatePlayBtnStatus();
         //初始化动画
@@ -202,9 +200,9 @@ public class MusicListActivity
         if (mDisposable == null) {
 
             mDisposable = Observable.interval(0, 2800, TimeUnit.MICROSECONDS)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(aLong -> mPb.setProgress(audioBinder.getProgress()));
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> mPb.setProgress(audioBinder.getProgress()));
         }
 
     }
@@ -227,6 +225,8 @@ public class MusicListActivity
 
             mMusicFloatingPlay.setImageResource(R.drawable.btn_playing_play);
         }
+//        更新通知栏的按钮状态
+//        MusicNoification.updatePlayBtn(audioBinder.isPlaying());
     }
 
     //切换当前播放状态
@@ -281,12 +281,14 @@ public class MusicListActivity
     }
 
     @OnClick(R.id.music_toolbar_back)
-    public void onViewClicked() {finish();}
+    public void onViewClicked() {
+        finish();
+    }
 
     @OnClick({R.id.music_floating_pre,
-              R.id.music_floating_play,
-              R.id.music_floating_next,
-              R.id.music_floating_block})
+            R.id.music_floating_play,
+            R.id.music_floating_next,
+            R.id.music_floating_block})
     public void onViewClicked(View view) {
         if (isInitList) {
             switch (view.getId()) {
@@ -301,12 +303,12 @@ public class MusicListActivity
                     break;
                 case R.id.music_floating_block:     //音乐控制浮块
                     RxView.clicks(mCardFloatBlock)
-                          .throttleFirst(1, TimeUnit.SECONDS)
-                          .subscribe(o -> showMusicDialog());
+                            .throttleFirst(1, TimeUnit.SECONDS)
+                            .subscribe(o -> showMusicDialog());
                     break;
             }
         } else {
-            ToastUtil.showLong(this, "当前没有可以播放的音乐_-_");
+            ToastUtil.showShort(this, "当前没有可以播放的音乐_-_");
         }
     }
 
@@ -314,7 +316,7 @@ public class MusicListActivity
         MusicDialogInfo info = new MusicDialogInfo(mMusicItems, mItem);
 
         MusicPlayDialogFag.newInstance(info)
-                          .show(getSupportFragmentManager(), "music");
+                .show(getSupportFragmentManager(), "music");
     }
 
     public ArrayList<MusicInfo> sort() {
@@ -336,12 +338,7 @@ public class MusicListActivity
         return mMusicItems;
     }
 
-    //侧滑收藏当前音乐
-    @Override
-    public void addFavorite(MusicInfo info) {
-        LogUtil.d("测试****   " + info.getTitle());
-        mInfoDao.insert(info);
-    }
+
 
     public static AudioPlayService.AudioBinder getAudioBinder() {
 
@@ -350,8 +347,7 @@ public class MusicListActivity
 
 
     private class AudioServiceConnection
-            implements ServiceConnection
-    {
+            implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             audioBinder = (AudioPlayService.AudioBinder) service;

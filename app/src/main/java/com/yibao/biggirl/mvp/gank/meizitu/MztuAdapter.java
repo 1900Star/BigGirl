@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
-import com.yibao.biggirl.model.girls.Girl;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.gank.duotu.DuotuActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.util.ImageUitl;

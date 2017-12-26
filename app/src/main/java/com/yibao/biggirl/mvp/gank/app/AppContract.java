@@ -2,7 +2,7 @@ package com.yibao.biggirl.mvp.gank.app;
 
 import com.yibao.biggirl.base.BasePresenter;
 import com.yibao.biggirl.base.BaseView;
-import com.yibao.biggirl.model.android.ResultsBeanX;
+import com.yibao.biggirl.model.app.ResultsBeanX;
 
 import java.util.List;
 

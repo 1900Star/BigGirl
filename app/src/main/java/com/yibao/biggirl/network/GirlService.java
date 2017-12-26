@@ -1,6 +1,6 @@
 package com.yibao.biggirl.network;
 
-import com.yibao.biggirl.model.android.AndroidDesBean;
+import com.yibao.biggirl.model.app.GankDesBean;
 import com.yibao.biggirl.model.girls.GirlsBean;
 import com.yibao.biggirl.model.unsplash.Unsplash;
 
@@ -21,17 +21,17 @@ public interface GirlService {
                                   @Path("count") int count,
                                   @Path("page") int page);
 
-    //Android
+    //Gank
     @GET("api/data/{type}/{count}/{page}")
-    Observable<AndroidDesBean> getConmmetApi(@Path("type") String type,
-                                             @Path("count") int count,
-                                             @Path("page") int page);
+    Observable<GankDesBean> getConmmetApi(@Path("type") String type,
+                                          @Path("count") int count,
+                                          @Path("page") int page);
 
 
 
     //Unsplash
-    @GET
-    Observable<Unsplash> getUnsplash();
+    @GET("{page}")
+    Observable<Unsplash> getUnsplash(@Path("page") int page);
 
 
 }

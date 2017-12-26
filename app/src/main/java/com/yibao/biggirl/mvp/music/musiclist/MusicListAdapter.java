@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
-import com.yibao.biggirl.base.listener.OnItemSwipeFavoriteListener;
 import com.yibao.biggirl.base.listener.OnMusicListItemClickListener;
 import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.util.StringUtil;
@@ -81,12 +80,7 @@ public class MusicListAdapter
             } else {
                 viewHolder.mTvStickyView.setVisibility(View.VISIBLE);
             }
-            //            Item侧滑收藏监听
-            viewHolder.mLlMusicItem.setOnClickListener(view -> {
-                if (mContext instanceof OnItemSwipeFavoriteListener) {
-                    ((OnItemSwipeFavoriteListener) mContext).addFavorite(info);
-                }
-            });
+
             //            Item点击监听
             viewHolder.mLlMusicItem.setOnClickListener(view -> {
                 if (mContext instanceof OnMusicListItemClickListener) {
