@@ -23,22 +23,14 @@ BigGirl
     *eventbus
     *kotlin
 
-<<<<<<< HEAD
-![image](Screenshot_png/c.gif)
-![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/c.gif)
-![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/girls.png)
-![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/b.png)
-![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/android.png)
-![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/webview.png)
-![image](https://github.com/1900Star/BigGirl/blob/kotlin/Screenshot_png/BigGirl.png)
-=======
+
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/c.gif)
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/girls.png)
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/b.png)
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/android.png)
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/webview.png)
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/BigGirl.png)
->>>>>>> eacc174eaea7c3c376fd75087a74d172ed04f1c2
+
 
 # 提示
 本项目还没写完，只要有空闲的就会更新代码
