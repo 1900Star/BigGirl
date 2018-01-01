@@ -15,7 +15,7 @@ import com.yibao.biggirl.base.BaseRvAdapter;
  */
 public class RecyclerFactory {
     private static final int RECYCLERVIEW_NORMAL = 1;
-
+    private static final int RECYCLERVIEW_STAGGERED = 2;
 
     public static RecyclerView creatRecyclerView(int type,
                                                  RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
@@ -53,7 +53,7 @@ public class RecyclerFactory {
         if (type == RECYCLERVIEW_NORMAL) {
             LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
             manager.scrollToPositionWithOffset(position, 0);
-        } else {
+        } else if (type==RECYCLERVIEW_STAGGERED){
             StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(type,
                     StaggeredGridLayoutManager.VERTICAL);
 

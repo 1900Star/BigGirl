@@ -9,9 +9,9 @@ import android.widget.ImageView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.girl.Girl;
-import com.yibao.biggirl.mvp.gank.duotu.DuotuActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.PackagingDataUtil;
@@ -35,6 +35,7 @@ public class MztuAdapter
 {
     private Context mContext;
     private int mType;
+    private int mCode;
 
     public MztuAdapter(Context context, List<Girl> list, int type) {
         super(list);
@@ -70,17 +71,29 @@ public class MztuAdapter
 
                     }
                 } else {
-                    if (mType == 0) {
-                        Intent intent = new Intent(mContext, MeizituActivity.class);
-                        intent.putExtra("link", girl.getLink());
-                        mContext.startActivity(intent);
-
-                    } else if (mType == 1) {
-                        Intent intent = new Intent(mContext, DuotuActivity.class);
-                        intent.putExtra("link", girl.getLink());
-                        mContext.startActivity(intent);
-
+                    if (mContext instanceof OnRvItemClickListener) {
+                        if (mType == 0) {
+                            mCode = 2;
+                        } else if (mType == 1){
+                            mCode = 3;
+                        }
+                            ((OnRvItemClickListener) mContext).showBigGirl(0, null, mCode, girl.getLink());
                     }
+//                    if (mType == 0) {
+//                        if (mContext instanceof OnRvItemClickListener) {
+//                        }
+//
+//
+//                    } else if (mType == 1) {
+//                        if (mContext instanceof OnRvItemClickListener) {
+//                            ((OnRvItemClickListener) mContext).showBigGirl(0,null,3,girl.getLink());
+//                        }
+//
+//                        Intent intent = new Intent(mContext, DuotuPicActivity.class);
+//                        intent.putExtra("link", girl.getLink());
+//                        mContext.startActivity(intent);
+//
+//                    }
                 }
 
             });

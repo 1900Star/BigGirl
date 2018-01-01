@@ -54,8 +54,8 @@ public class GirlsAdapter
 
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemClickListener) {
-                    ((OnRvItemClickListener) mContext).showBigGirl(holder.getAdapterPosition(),
-                                                                   mList);
+                    ((OnRvItemClickListener) mContext).showBigGirl(holder.getAdapterPosition(), mList, 1, null);
+
                 }
             });
 

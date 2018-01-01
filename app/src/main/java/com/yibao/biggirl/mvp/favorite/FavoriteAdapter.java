@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
-import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.util.LogUtil;
@@ -63,8 +63,8 @@ public class FavoriteAdapter
             viewHolder.mTvFavoriteDes.setText(bean.getDes());
             viewHolder.mDeleteItem.setOnClickListener(view -> { //侧滑删除的监听
                 int position = holder.getAdapterPosition();
-                if (mContext instanceof OnDeleteItemClickListener) {
-                    ((OnDeleteItemClickListener) mContext).deleteFavorite(bean.getId());
+                if (mContext instanceof OnRvItemSlideListener) {
+                    ((OnRvItemSlideListener) mContext).deleteFavorite(bean.getId());
                 }
                 mList.remove(position);
                 FavoriteAdapter.this.notifyItemRemoved(position);

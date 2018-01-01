@@ -11,6 +11,7 @@ import com.yibao.biggirl.util.RxBus;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 import okhttp3.OkHttpClient;
 
 /**
@@ -48,7 +49,7 @@ public class MyApplication
                 .init(this);
         setUpDataBase();
         mRxBus = new RxBus();
-
+        BGASwipeBackHelper.init(this, null);
 
     }
 

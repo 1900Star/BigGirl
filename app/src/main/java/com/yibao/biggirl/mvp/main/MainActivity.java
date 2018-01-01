@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,7 +19,8 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.MyPageChangeListener;
+import com.yibao.biggirl.base.BaseActivity;
+import com.yibao.biggirl.base.listener.MyPageChangeListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
@@ -30,7 +30,9 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.UnSplashDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
+import com.yibao.biggirl.mvp.gank.duotu.DuotuPicActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituPicActivity;
 import com.yibao.biggirl.mvp.map.CheckGoogleService;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
@@ -58,7 +60,7 @@ import butterknife.Unbinder;
  * 邮箱：strangermy@outlook.com
  */
 public class MainActivity
-        extends AppCompatActivity
+        extends BaseActivity
         implements OnRvItemClickListener<String>,
         NavigationView.OnNavigationItemSelectedListener,
         OnRvItemLongClickListener
@@ -282,14 +284,33 @@ public class MainActivity
 
     //打开ViewPager浏览大图
     @Override
-    public void showBigGirl(int position, List<String> list) {
-        //设置navHeader头像,待定
-        mHeaderUrl = list.get(position);
-        ImageUitl.loadPic(this, mHeaderUrl, mIvHeader);
-        Intent intent = new Intent(this, GirlActivity.class);
-        intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
-        intent.putExtra("position", position);
-        startActivity(intent);
+    public void showBigGirl(int position, List<String> list, int type, String link) {
+        switch (type) {
+            case 1:
+                //设置navHeader头像,待定
+                mHeaderUrl = list.get(position);
+                ImageUitl.loadPic(this, mHeaderUrl, mIvHeader);
+                Intent intent = new Intent(this, GirlActivity.class);
+                intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
+                intent.putExtra("position", position);
+                startActivity(intent);
+                break;
+            case 2:
+                Intent meizituIntent = new Intent(this, MeizituPicActivity.class);
+                meizituIntent.putExtra("link", link);
+                mSwipeBackHelper.forward(meizituIntent);
+                break;
+            case 3:
+                Intent duotuIntent = new Intent(this, DuotuPicActivity.class);
+                duotuIntent.putExtra("link", link);
+                mSwipeBackHelper.forward(duotuIntent);
+                break;
+            case 4:
+                break;
+            default:
+                break;
+        }
+
     }
 
 

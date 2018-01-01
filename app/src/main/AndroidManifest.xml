@@ -10,12 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -29,7 +23,8 @@
         <activity
             android:name=".mvp.splash.SplashActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Splash.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +51,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".mvp.favorite.FavoriteActivity" />
         <activity
-            android:name=".mvp.gank.meizitu.MeizituActivity"
+            android:name=".mvp.gank.meizitu.MeizituPicActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".mvp.main.Kot" />
 
@@ -79,9 +74,8 @@
             android:name=".mvp.music.musiclist.MusicListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.gank.duotu.DuotuActivity"
+            android:name=".mvp.gank.duotu.DuotuPicActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".network.Main2Activity"></activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@ package com.yibao.biggirl.base.listener;
  * Des：${TODO}
  * Time:2017/5/14 09:49
  */
-public interface OnDeleteItemClickListener {
+public interface OnRvItemSlideListener {
     void deleteFavorite(Long id);
 
 }
