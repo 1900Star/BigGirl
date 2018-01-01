@@ -17,7 +17,7 @@ public interface AppContract {
     {
         void loadData(List<ResultsBeanX> list);
         void refresh(List<ResultsBeanX> list);
-        void loadMore(List<ResultsBeanX> list);
+        void onLoadMore(List<ResultsBeanX> list);
 
         void showError();
         void showNormal();

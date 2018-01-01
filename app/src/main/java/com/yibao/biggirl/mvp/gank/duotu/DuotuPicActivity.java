@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.BaseActivity;
+import com.yibao.biggirl.base.BasePicActivity;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girl.Girl;
@@ -32,8 +32,8 @@ import butterknife.Unbinder;
  * Des：${解析网页中的Girl}
  * Time:2017/4/8 04:24
  */
-public class DuotuActivity
-        extends BaseActivity implements DuotuContract.View<Girl>, OnRvItemLongClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class DuotuPicActivity
+        extends BasePicActivity implements DuotuContract.View<Girl>, OnRvItemLongClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;

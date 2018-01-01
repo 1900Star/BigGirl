@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.BaseActivity;
+import com.yibao.biggirl.base.BasePicActivity;
 import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girl.MeizituData;
@@ -32,8 +32,8 @@ import io.reactivex.schedulers.Schedulers;
  * Des：${解析网页中的Girl}
  * Time:2017/4/8 04:24
  */
-public class MeizituActivity
-        extends BaseActivity implements OnRvItemLongClickListener {
+public class MeizituPicActivity
+        extends BasePicActivity implements OnRvItemLongClickListener {
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -126,7 +126,7 @@ public class MeizituActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MeizituService.stop(MeizituActivity.this);
+        MeizituService.stop(MeizituPicActivity.this);
         unbinder.unbind();
     }
 

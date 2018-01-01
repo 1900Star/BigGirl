@@ -2,11 +2,11 @@ package com.yibao.biggirl.factory;
 
 import android.support.v4.app.Fragment;
 
-import com.yibao.biggirl.base.BaseFag;
+import com.yibao.biggirl.base.BaseRecyclerFag;
 import com.yibao.biggirl.mvp.gank.app.AppFragment;
-import com.yibao.biggirl.mvp.gank.duotu.DuotuFag;
+import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerFag;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituFag;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituRecyclerFag;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,12 +34,16 @@ public class FragmentFactory {
     private static final int FRAGMENT_ROSI = 13;//Rosi
     private static final int FRAGMENT_MEIYAN = 14;//Meiyan
     private static final int FRAGMENT_TUIGIRL = 15;//TuiGirl
+    private static final int FRAGMENT_BOBOSHE = 16;//Boboshe
+    private static final int FRAGMENT_DISIYINGXIANG = 17;//第四印象
+    private static final int FRAGMENT_YUNVLANG = 18;//Yunvlang
+    private static final int FRAGMENT_XIUREN = 19;//秀人
 
-    private static Map<Integer, BaseFag> mCacheFragmentMap = new HashMap<>();
+    private static Map<Integer, BaseRecyclerFag> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
 
-        BaseFag fragment = null;
+        BaseRecyclerFag fragment = null;
 
 
         //优先从集合中取出来
@@ -69,35 +73,47 @@ public class FragmentFactory {
                 break;
 //                妹子图
             case FRAGMENT_JAPAN:
-                fragment = MeizituFag.newInstance(FRAGMENT_JAPAN);
+                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_JAPAN);
                 break;
             case FRAGMENT_HOT:
-                fragment = MeizituFag.newInstance(FRAGMENT_HOT);
+                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_HOT);
                 break;
             case FRAGMENT_SEX:
-                fragment = MeizituFag.newInstance(FRAGMENT_SEX);
+                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_SEX);
                 break;
             case FRAGMENT_CUTE:
-                fragment = MeizituFag.newInstance(FRAGMENT_CUTE);
+                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_CUTE);
                 break;
 //                多图
             case FRAGMENT_MFSTAR:
-                fragment = DuotuFag.newInstance(FRAGMENT_MFSTAR);
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_MFSTAR);
                 break;
             case FRAGMENT_PANS:
-                fragment = DuotuFag.newInstance(FRAGMENT_PANS);
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_PANS);
                 break;
             case FRAGMENT_UGIRLS:
-                fragment = DuotuFag.newInstance(FRAGMENT_UGIRLS);
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_UGIRLS);
                 break;
             case FRAGMENT_ROSI:
-                fragment = DuotuFag.newInstance(FRAGMENT_ROSI);
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_ROSI);
                 break;
             case FRAGMENT_MEIYAN:
-                fragment = DuotuFag.newInstance(FRAGMENT_MEIYAN);
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_MEIYAN);
                 break;
             case FRAGMENT_TUIGIRL:
-                fragment = DuotuFag.newInstance(FRAGMENT_TUIGIRL);
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_TUIGIRL);
+                break;
+            case FRAGMENT_BOBOSHE:
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_BOBOSHE);
+                break;
+            case FRAGMENT_DISIYINGXIANG:
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_DISIYINGXIANG);
+                break;
+            case FRAGMENT_YUNVLANG:
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_YUNVLANG);
+                break;
+            case FRAGMENT_XIUREN:
+                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_XIUREN);
                 break;
             default:
                 break;

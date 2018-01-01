@@ -1,4 +1,4 @@
-package com.yibao.biggirl.base;
+package com.yibao.biggirl.base.listener;
 
 import android.support.v4.view.ViewPager;
 

@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.listener.OnDeleteItemClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
@@ -39,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class FavoriteActivity
         extends AppCompatActivity
-        implements OnDeleteItemClickListener,
+        implements OnRvItemSlideListener,
         FavoriteContract.View,
         OnRvItemClickListener<FavoriteWebBean>,
         SwipeRefreshLayout.OnRefreshListener {
@@ -178,7 +178,7 @@ public class FavoriteActivity
 
 
     @Override
-    public void showBigGirl(int position, List<FavoriteWebBean> list) {
+    public void showBigGirl(int position, List<FavoriteWebBean> list,int type,String link) {
 
     }
 }

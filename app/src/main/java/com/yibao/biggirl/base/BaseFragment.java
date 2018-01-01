@@ -1,92 +1,124 @@
 package com.yibao.biggirl.base;
 
-
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.yibao.biggirl.MyApplication;
-import com.yibao.biggirl.mvp.gank.app.AppContract;
-
-import java.util.List;
-import java.util.Map;
-
-
-/**
- * 作者：Stran on 2017/3/29 15:24
- * 描述：${这个是GooglgePlay的}
- * 邮箱：strangermy@outlook.com
+/*
+ *  @项目名：  BigGirl
+ *  @包名：    com.yibao.biggirl.base
+ *  @文件名:   BaseFragment
+ *  @创建者:   Stran
+ *  @创建时间:  2018/1/1 17:36
+ *  @描述：    TODO
  */
-public abstract class BaseFragment
-        extends Fragment
-        implements AppContract.View
-{
-    public LoadingPager mLoadingPager;
+public abstract class BaseFragment extends Fragment {
+    protected String TAG;
+    protected View mContentView;
+    protected Activity mActivity;
 
+    protected boolean mIsLoadedData = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        TAG = this.getClass().getSimpleName();
+        mActivity = getActivity();
+    }
 
-        if (mLoadingPager == null) {
-            startLoad();
-            mLoadingPager = new LoadingPager(MyApplication.getIntstance()) {
-                @Override
-                public LoadedResult initData() {
-                    return BaseFragment.this.initData();
-                }
-
-                @Override
-                public View initSuccessView() {
-                    return BaseFragment.this.initSuccessView();
-                }
-            };
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isResumed()) {
+            handleOnVisibilityChangedToUser(isVisibleToUser);
         }
-
-        return mLoadingPager;
     }
 
 
-    protected abstract LoadingPager.LoadedResult initData();
-
-    protected abstract View initSuccessView();
-
-    protected abstract void startLoad();
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    /**
+     * 处理对用户是否可见
+     *
+     * @param isVisibleToUser
+     */
+    private void handleOnVisibilityChangedToUser(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            // 对用户可见
+            if (!mIsLoadedData) {
+                mIsLoadedData = true;
+                onLazyLoadOnce();
+            }
+            onVisibleToUser();
+        } else {
+            // 对用户不可见
+            onInvisibleToUser();
+        }
     }
 
     /**
-     * 根据请求回来的数据,返回具体的LoadedResult类型值
+     * 懒加载一次。如果只想在对用户可见时才加载数据，并且只加载一次数据，在子类中重写该方法
+     */
+    protected void onLazyLoadOnce() {
+    }
+
+    /**
+     * 对用户可见时触发该方法。如果只想在对用户可见时才加载数据，在子类中重写该方法
+     */
+    protected void onVisibleToUser() {
+    }
+
+    /**
+     * 对用户不可见时触发该方法
+     */
+    protected void onInvisibleToUser() {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 避免多次从xml中加载布局文件
+        if (mContentView == null) {
+            initView(savedInstanceState);
+            processLogic(savedInstanceState);
+        } else {
+            ViewGroup parent = (ViewGroup) mContentView.getParent();
+            if (parent != null) {
+                parent.removeView(mContentView);
+            }
+        }
+        return mContentView;
+    }
+
+    protected void setContentView(@LayoutRes int layoutResID) {
+        mContentView = LayoutInflater.from(mActivity).inflate(layoutResID, null);
+    }
+
+    /**
+     * 初始化View控件
+     */
+    protected abstract void initView(Bundle savedInstanceState);
+
+    /**
+     * 处理业务逻辑，状态恢复等操作
      *
-     * @param resResult
+     * @param savedInstanceState
+     */
+    protected abstract void processLogic(Bundle savedInstanceState);
+
+    /**
+     * 查找View
+     *
+     * @param id   控件的id
+     * @param <VT> View类型
      * @return
      */
-
-    public LoadingPager.LoadedResult checkResResult(Object resResult) {
-        if (resResult == null) {
-            return LoadingPager.LoadedResult.EMPTY;
-        }
-        //list
-        if (resResult instanceof List) {
-            if (((List) resResult).size() == 0) {
-                return LoadingPager.LoadedResult.EMPTY;
-            }
-        }
-        //map
-        if (resResult instanceof Map) {
-            if (((Map) resResult).size() == 0) {
-                return LoadingPager.LoadedResult.EMPTY;
-            }
-        }
-        return LoadingPager.LoadedResult.SUCCESS;
+    protected <VT extends View> VT getViewById(@IdRes int id) {
+        return (VT) mContentView.findViewById(id);
     }
+
 
 
 }

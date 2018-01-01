@@ -5,6 +5,7 @@ import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.network.RetrofitHelper;
 import com.yibao.biggirl.service.MeizituService;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -69,18 +70,31 @@ public class RemoteGirlsData
 
     @Override
     public void getMeizitu(String type, int page, LoadGMeizituCallback callback) {
+//        4399网站
+//        String url = "https://www.4493.com/xingganmote/index-2.htm";
         String url = Constants.MEIZITU_API + type + "/page/" + page;
+
         final String fakeRefer = url + "/";
         final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
+        //            LogUtil.d(" 4399 ===    " + urlList.size());
+//                for (int i = 0; i < urlList.size(); i++) {
+//                    Girl girl = urlList.get(i);
+//                    LogUtil.d("mm131  Link==    " + girl.getLink());
+//                    LogUtil.d("mm131   Url==    " + girl.getUrl());
+//                }
         Observable.just(Constants.MEIZITU_API).subscribeOn(Schedulers.io()).map(s -> {
 
             List<Girl> girls = new ArrayList<>();
             try {
                 Document doc = Jsoup.connect(url).timeout(10000).get();
+//                        4399网站
+//                Element total = doc.select("div.piclist").first();
+//                Elements items = total.select("li");
                 Element total = doc.select("div.postlist").first();
                 Elements items = total.select("li");
                 for (Element element : items) {
                     Girl girl = new Girl(String.format(realUrl, element.select("img").first().attr("data-original"), fakeRefer));
+//                    Girl girl = new Girl(String.format(realUrl, element.select("img").first().attr("src"), fakeRefer));
                     girl.setLink(element.select("a[href]").attr("href"));
                     girls.add(girl);
                 }
@@ -94,6 +108,8 @@ public class RemoteGirlsData
 
     @Override
     public void getMeiziList(String url) {
+//            4399
+//        String url = "https://www.4493.com/xingganmote/140883/1.htm";
         Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
             List<Girl> girls = new ArrayList<>();
             try {
@@ -117,6 +133,7 @@ public class RemoteGirlsData
 
             return girls;
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(girlList -> {
+            LogUtil.d("totalPages ==== " + totalPages);
             for (int i = 0; i < totalPages; i++) {
                 getMeizis(url, i);
             }
@@ -124,15 +141,20 @@ public class RemoteGirlsData
     }
 
     private void getMeizis(String baseUrl, int page) {
-
+//        LogUtil.d("mm131   Url==    " + baseUrl);
         String url = baseUrl + "/" + page;
+
+
+//        String url = "https://www.4493.com/xingganmote/140883/1.htm";
         final String fakeRefer = baseUrl + "/";
         final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
         Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
             List<Girl> girls = new ArrayList<>();
             try {
                 Document doc = Jsoup.connect(s).timeout(10000).get();
-                Element total = doc.select("div.main-image").first();
+            Element total = doc.select("div.main-image").first();
+//                    4399
+//                    Element total = doc.select("div.picsbox picsboxcenter").first();
                 String attr = total.select("img").first().attr("src");
                 girls.add(new Girl(String.format(realUrl, attr, fakeRefer)));
             } catch (IOException e) {

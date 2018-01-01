@@ -1,8 +1,9 @@
 package com.yibao.biggirl.base;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -23,22 +26,21 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Author：Sid
- * Des：${BaseFag}
+ * Des：${BaseRecyclerFag}
  * Time:2017/6/4 21:55
  */
-public abstract class BaseFag<T>
-        extends Fragment implements SwipeRefreshLayout.OnRefreshListener
-
+public abstract class BaseRecyclerFag<T>
+        extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener
 
 {
 
     public int page = 1;
     public int size = 20;
-
-
     public List<T> mList;
 
-    public abstract void loadDatas();
+    public FloatingActionButton mFab;
+    public SwipeRefreshLayout mSwipeRefresh;
+    public LinearLayout mFagContent;
 
     protected abstract void refreshData();
 
@@ -51,13 +53,16 @@ public abstract class BaseFag<T>
 
     }
 
-
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            loadDatas();
-        }
+    protected void initView(Bundle savedInstanceState) {
+        setContentView(R.layout.girls_frag);
+        mSwipeRefresh = getViewById(R.id.swipe_refresh);
+        mFagContent = getViewById(R.id.fag_content);
+        mFab = getViewById(R.id.fab_fag);
+
+        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
+        mSwipeRefresh.setOnRefreshListener(this);
+        mSwipeRefresh.setRefreshing(true);
     }
 
     public RecyclerView getRecyclerView(ImageView fab, int rvType, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
@@ -151,4 +156,6 @@ public abstract class BaseFag<T>
         }
         return max;
     }
+
+
 }

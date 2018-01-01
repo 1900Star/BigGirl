@@ -1,19 +1,11 @@
 package com.yibao.biggirl.mvp.gank.girls;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.BaseFag;
+import com.yibao.biggirl.base.BaseRecyclerFag;
 import com.yibao.biggirl.model.dagger2.component.DaggerGirlsComponent;
 import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
 import com.yibao.biggirl.util.Constants;
@@ -25,10 +17,6 @@ import java.util.Random;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 
 /**
  * 作者：Stran on 2017/3/29 01:18
@@ -36,19 +24,11 @@ import butterknife.Unbinder;
  * 邮箱：strangermy@outlook.com
  */
 public class GirlsFragment
-        extends BaseFag<String>
+        extends BaseRecyclerFag<String>
         implements
         View.OnLongClickListener,
         GirlsContract.View<String> {
 
-
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefresh;
-    Unbinder unbinder;
-    @BindView(R.id.fag_content)
-    LinearLayout mLlGrilsContent;
-    @BindView(R.id.fab_fag)
-    FloatingActionButton mFab;
     private GirlsAdapter mAdapter;
 
     private boolean isShowGankGirl;
@@ -63,9 +43,9 @@ public class GirlsFragment
     public GirlsFragment() {
     }
 
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void processLogic(Bundle savedInstanceState) {
         DaggerGirlsComponent.builder()
                 .girlsModuls(new GirlsModuls(this))
                 .build()
@@ -75,51 +55,12 @@ public class GirlsFragment
 
     }
 
-    @Override
-    protected void loadMoreData() {
-        mGirlsPresenter.loadData(size,
-                page, 3,
-                Constants.LOAD_MORE_DATA,
-                Constants.FRAGMENT_GIRLS);
-    }
-
-    @Override
-    public void loadDatas() {
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = View.inflate(getActivity(), R.layout.girls_frag, null);
-        unbinder = ButterKnife.bind(this, view);
-        initView();
-        initListener();
-        return view;
-    }
-
-
-    private void initListener() {
-        mFab.setOnLongClickListener(this);
-        mFab.setOnClickListener(view -> initData(0));
-    }
-
-
-    protected void initView() {
-        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
-        mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setRefreshing(true);
-
-
-    }
 
     private void initData(int type) {
         switch (type) {
             case 0:
                 if (isShowGankGirl) {
-                    mLlGrilsContent.removeAllViews();
+                    mFagContent.removeAllViews();
                     initRecyclerView(mList, 2);
                     mSwipeRefresh.setRefreshing(false);
                     isShowGankGirl = false;
@@ -141,10 +82,11 @@ public class GirlsFragment
     private void initRecyclerView(List<String> mList, int type) {
         Random random = new Random();
         mRandomNum = random.nextInt(4) + 1;
-        mAdapter = new GirlsAdapter(getActivity(), mList);
+        mAdapter = new GirlsAdapter(mActivity, mList);
         RecyclerView recyclerView = getRecyclerView(mFab, type, mAdapter);
-        mLlGrilsContent.addView(recyclerView);
+        mFagContent.addView(recyclerView);
         mFab.setOnClickListener(view -> initData(0));
+        mFab.setOnLongClickListener(this);
     }
 
 
@@ -170,6 +112,14 @@ public class GirlsFragment
         mAdapter.notifyDataSetChanged();
     }
 
+    //    RecyclerView上拉加载更多
+    @Override
+    protected void loadMoreData() {
+        mGirlsPresenter.loadData(size,
+                page, 3,
+                Constants.LOAD_MORE_DATA,
+                Constants.FRAGMENT_GIRLS);
+    }
 
     @Override
     public void loadData(List<String> list) {
@@ -190,7 +140,7 @@ public class GirlsFragment
     //切换干货和默认妹子
 
     private void getDefultGirl(int type) {
-        mLlGrilsContent.removeAllViews();
+        mFagContent.removeAllViews();
         List<String> defultUrl;
         if (type == 1) {
             defultUrl = ImageUitl.getSexUrl(new ArrayList<>());
@@ -220,13 +170,6 @@ public class GirlsFragment
     @Override
     public void showNormal() {
 
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
 

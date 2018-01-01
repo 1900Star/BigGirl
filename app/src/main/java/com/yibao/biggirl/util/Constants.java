@@ -25,6 +25,15 @@ public class Constants {
     private static String DUOTU_MEIYAN_API = "http://www.duotu555.com/mm/11/list_11_";
     //    多图 推女郎
     private static String DUOTU_TUGIRL_API = "http://www.duotu555.com/mm/14/list_14_";
+    //    多图 波波社
+    private static String DUOTU_BOBOSHE_API = "http://www.duotu555.com/mm/9/list_9_";
+    //    多图 第四印象
+    private static String DUOTU_DISIYINGXIANG_API = "http://www.duotu555.com/mm/49/list_49_";
+    //    Yunvlang
+    private static String DUOTU_YUNVLANG_API = "http://www.duotu555.com/mm/32/list_32_";
+    //    XieRen
+    private static String DUOTU_XIUREN_API = "http://www.duotu555.com/mm/8/list_8_";
+
     /**
      * 妹子图 API
      */
@@ -68,7 +77,7 @@ public class Constants {
             "Video",
             "前端",
             "拓展资源",
-            "Japan", "Hot", "Sex", "Cute", "MFStar", "Pans", "Ugirls", "Rosi", "Meiyan", "TuiGirl"};
+            "Japan", "Hot", "Sex", "Cute", "MFStar", "Pans", "Ugirls", "Rosi", "Meiyan", "TuiGirl", "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren"};
     public static final int TYPE_GIRLS = 0;//妹子
     private static final int TYPE_APP = 1;//App
     private static final int TYPE_IOS = 2;//iOS
@@ -86,7 +95,10 @@ public class Constants {
     private static final int TYPE_ROSI = 13;//Rosi
     private static final int TYPE_MEIYAN = 14;//Meiyan
     private static final int TYPE_TUIGIRL = 15;//TuiGirl
-
+    private static final int TYPE_TUIBOBO = 16;//Boboshe
+    private static final int TYPE_DISIYINGXIANG = 17;//Disiyingxinag
+    private static final int TYPE_YUNVLANG = 18;//Disiyingxinag
+    private static final int TYPE_XIUREN = 19;//Xiuren
 
     public static final String FRAGMENT_GIRLS = "福利";
     private static final String FRAGMENT_VIDEO = "休息视频";
@@ -151,6 +163,18 @@ public class Constants {
                 break;
             case TYPE_TUIGIRL:
                 mLoadType = Constants.DUOTU_TUGIRL_API;
+                break;
+            case TYPE_TUIBOBO:
+                mLoadType = Constants.DUOTU_BOBOSHE_API;
+                break;
+            case TYPE_DISIYINGXIANG:
+                mLoadType = Constants.DUOTU_DISIYINGXIANG_API;
+                break;
+            case TYPE_YUNVLANG:
+                mLoadType = Constants.DUOTU_YUNVLANG_API;
+                break;
+            case TYPE_XIUREN:
+                mLoadType = Constants.DUOTU_XIUREN_API;
                 break;
             default:
                 break;
