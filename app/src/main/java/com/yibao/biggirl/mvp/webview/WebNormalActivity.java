@@ -38,15 +38,17 @@ public class WebNormalActivity
 {
     private static final String TAG = "WebActivity";
     @BindView(toolbar)
-    Toolbar     mToolbar;
+    Toolbar mToolbar;
     @BindView(R.id.progress_bar_web)
     ProgressBar mProgressBarWeb;
     @BindView(R.id.content_web)
     FrameLayout mContentWeb;
-    private WebView  mWebView;
+    private WebView mWebView;
     private Unbinder mBind;
     private String mUrl;
 
+    private String HTTP_FLAG = "http";
+    private String HTTPS_FLAG = "https";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,23 +71,26 @@ public class WebNormalActivity
                 case android.R.id.home:
                     finish();
                     break;
-                case R.id.web_normal_share://分享
+                // 分享
+                case R.id.web_normal_share:
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
                     shareIntent.putExtra(Intent.EXTRA_TEXT, mUrl);
                     shareIntent.setType("text/plain");
                     startActivity(shareIntent);
                     break;
-                case R.id.web_normal_browser://浏览器打开
+                // 浏览器打开
+                case R.id.web_normal_browser:
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(mUrl));
                     startActivity(intent);
+                    break;
+                default:
                     break;
             }
             return false;
         });
     }
-
 
 
     private void initData() {
@@ -98,7 +103,7 @@ public class WebNormalActivity
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.startsWith("http:") || url.startsWith("https:")) {
+                if (url.startsWith(HTTP_FLAG) || url.startsWith(HTTPS_FLAG)) {
                     view.loadUrl(url);
                     return false;
                     //
@@ -158,8 +163,7 @@ public class WebNormalActivity
             public boolean onCreateWindow(WebView view,
                                           boolean isDialog,
                                           boolean isUserGesture,
-                                          Message resultMsg)
-            {
+                                          Message resultMsg) {
                 WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
                 transport.setWebView(view);
                 resultMsg.sendToTarget();
@@ -171,7 +175,7 @@ public class WebNormalActivity
 
         mWebView = new WebView(this.getApplicationContext());
         mWebView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT,
-                                                            ViewGroup.LayoutParams.MATCH_PARENT));
+                ViewGroup.LayoutParams.MATCH_PARENT));
         mContentWeb.addView(mWebView);
         WebSettings settings = mWebView.getSettings();
         // 基本设置
@@ -186,7 +190,7 @@ public class WebNormalActivity
         settings.setDatabaseEnabled(true);
         settings.setAppCacheEnabled(true);
         String appCachePath = getApplicationContext().getCacheDir()
-                                                     .getAbsolutePath();
+                .getAbsolutePath();
         settings.setAppCachePath(appCachePath);
 
         //html中的_bank标签就是新建窗口打开，有时会打不开，需要加以下

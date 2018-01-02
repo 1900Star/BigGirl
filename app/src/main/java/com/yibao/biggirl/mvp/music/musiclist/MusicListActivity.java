@@ -30,6 +30,7 @@ import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.music.musicplay.MusicPlayDialogFag;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.AnimationUtil;
+import com.yibao.biggirl.util.CollectionsUtil;
 import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.MusicListUtil;
@@ -41,7 +42,6 @@ import com.yibao.biggirl.view.ProgressBtn;
 import com.yibao.biggirl.view.music.MusicView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -98,7 +98,6 @@ public class MusicListActivity
     private RxBus mBus;
     private MusicInfo mItem;
     private int mCurrentPosition;
-    private MusicInfoDao mInfoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +111,7 @@ public class MusicListActivity
         mBus = MyApplication.getIntstance()
                 .bus();
         disposables = new CompositeDisposable();
-        mInfoDao = MyApplication.getIntstance()
+        MusicInfoDao infoDao = MyApplication.getIntstance()
                 .getDaoSession()
                 .getMusicInfoDao();
         initData();
@@ -266,6 +265,11 @@ public class MusicListActivity
     }
 
     //开启服务，播放音乐并且将数据传送过去
+
+    /**
+     *
+     * @param position
+     */
     @Override
     public void startMusicService(int position) {
         mCurrentPosition = position;
@@ -301,11 +305,12 @@ public class MusicListActivity
                 case R.id.music_floating_next:
                     audioBinder.playNext();
                     break;
-                case R.id.music_floating_block:     //音乐控制浮块
+                case R.id.music_floating_block:
                     RxView.clicks(mCardFloatBlock)
                             .throttleFirst(1, TimeUnit.SECONDS)
                             .subscribe(o -> showMusicDialog());
                     break;
+                    default:
             }
         } else {
             ToastUtil.showShort(this, "当前没有可以播放的音乐_-_");
@@ -321,21 +326,7 @@ public class MusicListActivity
 
     public ArrayList<MusicInfo> sort() {
 
-        Collections.sort(mMusicItems, (info, t1) -> {
-            String prev = StringUtil.getPinYin(info.getTitle());
-
-            String last = StringUtil.getPinYin(t1.getTitle());
-            if (prev.equals("#")) {
-                return 1;
-            } else if (last.equals("#")) {
-                return -1;
-            } else {
-                return prev.compareTo(last);
-
-            }
-
-        });
-        return mMusicItems;
+        return CollectionsUtil.getMusicList(mMusicItems);
     }
 
 

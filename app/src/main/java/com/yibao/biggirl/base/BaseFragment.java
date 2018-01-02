@@ -9,16 +9,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-/*
- *  @项目名：  BigGirl
+ /**
+ *  @author Stran
+  * @项目名：  BigGirl
  *  @包名：    com.yibao.biggirl.base
  *  @文件名:   BaseFragment
- *  @创建者:   Stran
  *  @创建时间:  2018/1/1 17:36
  *  @描述：    TODO
  */
 public abstract class BaseFragment extends Fragment {
-    protected String TAG;
+    protected String tag;
     protected View mContentView;
     protected Activity mActivity;
 
@@ -27,7 +27,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        TAG = this.getClass().getSimpleName();
+        tag = this.getClass().getSimpleName();
         mActivity = getActivity();
     }
 
@@ -35,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isResumed()) {
-            handleOnVisibilityChangedToUser(isVisibleToUser);
+            viewStatusProcessing(isVisibleToUser);
         }
     }
 
@@ -45,12 +45,12 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param isVisibleToUser
      */
-    private void handleOnVisibilityChangedToUser(boolean isVisibleToUser) {
+    private void viewStatusProcessing(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             // 对用户可见
             if (!mIsLoadedData) {
                 mIsLoadedData = true;
-                onLazyLoadOnce();
+                onLazyLoadData();
             }
             onVisibleToUser();
         } else {
@@ -62,7 +62,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 懒加载一次。如果只想在对用户可见时才加载数据，并且只加载一次数据，在子类中重写该方法
      */
-    protected void onLazyLoadOnce() {
+    protected void onLazyLoadData() {
     }
 
     /**

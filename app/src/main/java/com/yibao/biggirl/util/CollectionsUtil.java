@@ -1,7 +1,5 @@
 package com.yibao.biggirl.util;
 
-import android.content.Context;
-
 import com.yibao.biggirl.model.music.MusicInfo;
 
 import java.util.ArrayList;
@@ -13,17 +11,16 @@ import java.util.Collections;
  * Time:2017/9/10 01:19
  */
 public class CollectionsUtil {
+    private static String hashtag = "#";
+    public static ArrayList<MusicInfo> getMusicList(ArrayList<MusicInfo> musicList) {
 
-    public static ArrayList<MusicInfo> getMusicList(Context context) {
-
-        ArrayList<MusicInfo> musicList = MusicListUtil.getMusicList(context);
         Collections.sort(musicList, (info, t1) -> {
             String prev = StringUtil.getPinYin(info.getTitle());
 
             String last = StringUtil.getPinYin(t1.getTitle());
-            if (prev.equals("#")) {
+            if (hashtag.equals(prev)) {
                 return 1;
-            } else if (last.equals("#")) {
+            } else if (hashtag.equals(last)) {
                 return -1;
             } else {
                 return prev.compareTo(last);

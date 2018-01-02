@@ -90,7 +90,6 @@ public class AppAdapter
         return new MyViewHolder(view);
     }
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.item_android_frag;

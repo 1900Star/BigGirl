@@ -15,15 +15,20 @@ import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
+import com.yibao.biggirl.R;
+
 /**
  * Author：Sid
  * Des：${TODO}
  * Time:2016/11/5 00:25
+ * @author Stran
  */
 
 public class SwipeItemLayout
-        extends ViewGroup
-{
+        extends ViewGroup {
+    /**
+     * 触摸标记
+     */
     private enum Mode {
         RESET,
         DRAG,
@@ -37,8 +42,8 @@ public class SwipeItemLayout
     private ViewGroup mSideView;
 
     private ScrollRunnable mScrollRunnable;
-    private int            mScrollOffset;
-    private int            mMaxScrollOffset;
+    private int mScrollOffset;
+    private int mMaxScrollOffset;
 
     private boolean mInLayout;
     private boolean mIsLaidOut;
@@ -71,6 +76,8 @@ public class SwipeItemLayout
                 break;
             case RESET:
                 break;
+            default:
+                break;
         }
 
         mTouchMode = mode;
@@ -79,7 +86,9 @@ public class SwipeItemLayout
     public void open() {
         if (mScrollOffset != -mMaxScrollOffset) {
             //正在open，不需要处理
-            if (mTouchMode == Mode.FLING && mScrollRunnable.isScrollToLeft()) { return; }
+            if (mTouchMode == Mode.FLING && mScrollRunnable.isScrollToLeft()) {
+                return;
+            }
 
             //当前正在向右滑，abort
             if (mTouchMode == Mode.FLING /*&& !mScrollRunnable.mScrollToLeft*/) {
@@ -93,7 +102,9 @@ public class SwipeItemLayout
     public void close() {
         if (mScrollOffset != 0) {
             //正在close，不需要处理
-            if (mTouchMode == Mode.FLING && !mScrollRunnable.isScrollToLeft()) { return; }
+            if (mTouchMode == Mode.FLING && !mScrollRunnable.isScrollToLeft()) {
+                return;
+            }
 
             //当前正向左滑，abort
             if (mTouchMode == Mode.FLING /*&& mScrollRunnable.mScrollToLeft*/) {
@@ -109,14 +120,20 @@ public class SwipeItemLayout
     }
 
     void revise() {
-        if (mScrollOffset < -mMaxScrollOffset / 2) { open(); } else { close(); }
+        if (mScrollOffset < -mMaxScrollOffset / 2) {
+            open();
+        } else {
+            close();
+        }
     }
 
     boolean trackMotionScroll(int deltaX) {
-        if (deltaX == 0) { return false; }
+        if (deltaX == 0) {
+            return false;
+        }
 
-        boolean over    = false;
-        int     newLeft = mScrollOffset + deltaX;
+        boolean over = false;
+        int newLeft = mScrollOffset + deltaX;
         if ((deltaX > 0 && newLeft > 0) || (deltaX < 0 && newLeft < -mMaxScrollOffset)) {
             over = true;
             newLeft = Math.min(newLeft, 0);
@@ -131,21 +148,29 @@ public class SwipeItemLayout
     private boolean ensureChildren() {
         int childCount = getChildCount();
 
-        if (childCount != 2) { return false; }
+        if (childCount != 2) {
+            return false;
+        }
 
         View childView = getChildAt(0);
-        if (!(childView instanceof ViewGroup)) { return false; }
+        if (!(childView instanceof ViewGroup)) {
+            return false;
+        }
         mMainView = (ViewGroup) childView;
 
         childView = getChildAt(1);
-        if (!(childView instanceof ViewGroup)) { return false; }
+        if (!(childView instanceof ViewGroup)) {
+            return false;
+        }
         mSideView = (ViewGroup) childView;
         return true;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (!ensureChildren()) { throw new RuntimeException("SwipeItemLayout的子视图不符合规定"); }
+        if (!ensureChildren()) {
+            throw new RuntimeException(getContext().getString(R.string.childe_view_not));
+        }
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -163,31 +188,33 @@ public class SwipeItemLayout
 
         setMeasuredDimension(widthSize, heightSize);
 
-        int                childWidthSpec;
-        int                childHeightSpec;
+        int childWidthSpec;
+        int childHeightSpec;
         MarginLayoutParams lp;
-        int                childWidth  = widthSize - getPaddingLeft() - getPaddingRight();
-        int                childHeight = heightSize - getPaddingTop() - getPaddingBottom();
+        int childWidth = widthSize - getPaddingLeft() - getPaddingRight();
+        int childHeight = heightSize - getPaddingTop() - getPaddingBottom();
 
         //main layout占据真个layout frame
         lp = (MarginLayoutParams) mMainView.getLayoutParams();
         childWidthSpec = MeasureSpec.makeMeasureSpec(childWidth - lp.leftMargin - lp.rightMargin,
-                                                     MeasureSpec.EXACTLY);
+                MeasureSpec.EXACTLY);
         childHeightSpec = MeasureSpec.makeMeasureSpec(childHeight - lp.topMargin - lp.bottomMargin,
-                                                      MeasureSpec.EXACTLY);
+                MeasureSpec.EXACTLY);
         mMainView.measure(childWidthSpec, childHeightSpec);
 
         //side layout大小为自身实际大小
         lp = (MarginLayoutParams) mSideView.getLayoutParams();
         childWidthSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
         childHeightSpec = MeasureSpec.makeMeasureSpec(childHeight - lp.topMargin - lp.bottomMargin,
-                                                      MeasureSpec.EXACTLY);
+                MeasureSpec.EXACTLY);
         mSideView.measure(childWidthSpec, childHeightSpec);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (!ensureChildren()) { throw new RuntimeException("SwipeItemLayout的子视图不符合规定"); }
+        if (!ensureChildren()) {
+            throw new RuntimeException("SwipeItemLayout的子视图不符合规定");
+        }
 
         mInLayout = true;
 
@@ -196,12 +223,12 @@ public class SwipeItemLayout
         int pr = getPaddingRight();
         int pb = getPaddingBottom();
 
-        MarginLayoutParams mainLp     = (MarginLayoutParams) mMainView.getLayoutParams();
+        MarginLayoutParams mainLp = (MarginLayoutParams) mMainView.getLayoutParams();
         MarginLayoutParams sideParams = (MarginLayoutParams) mSideView.getLayoutParams();
 
-        int childLeft   = pl + mainLp.leftMargin;
-        int childTop    = pt + mainLp.topMargin;
-        int childRight  = getWidth() - (pr + mainLp.rightMargin);
+        int childLeft = pl + mainLp.leftMargin;
+        int childTop = pt + mainLp.topMargin;
+        int childRight = getWidth() - (pr + mainLp.rightMargin);
         int childBottom = getHeight() - (mainLp.bottomMargin + pb);
         mMainView.layout(childLeft, childTop, childRight, childBottom);
 
@@ -213,8 +240,8 @@ public class SwipeItemLayout
 
         mMaxScrollOffset = mSideView.getWidth() + sideParams.leftMargin + sideParams.rightMargin;
         mScrollOffset = mScrollOffset < -mMaxScrollOffset / 2
-                        ? -mMaxScrollOffset
-                        : 0;
+                ? -mMaxScrollOffset
+                : 0;
 
         offsetChildrenLeftAndRight(mScrollOffset);
         mInLayout = false;
@@ -241,8 +268,8 @@ public class SwipeItemLayout
     @Override
     protected LayoutParams generateLayoutParams(LayoutParams p) {
         return p instanceof MarginLayoutParams
-               ? p
-               : new MarginLayoutParams(p);
+                ? p
+                : new MarginLayoutParams(p);
     }
 
     @Override
@@ -262,7 +289,9 @@ public class SwipeItemLayout
         if (mScrollOffset != 0 && mIsLaidOut) {
             offsetChildrenLeftAndRight(-mScrollOffset);
             mScrollOffset = 0;
-        } else { mScrollOffset = 0; }
+        } else {
+            mScrollOffset = 0;
+        }
     }
 
     @Override
@@ -272,7 +301,9 @@ public class SwipeItemLayout
         if (mScrollOffset != 0 && mIsLaidOut) {
             offsetChildrenLeftAndRight(-mScrollOffset);
             mScrollOffset = 0;
-        } else { mScrollOffset = 0; }
+        } else {
+            mScrollOffset = 0;
+        }
         removeCallbacks(mScrollRunnable);
     }
 
@@ -282,9 +313,9 @@ public class SwipeItemLayout
         //click main view，但是它处于open状态，所以，不需要点击效果，直接拦截不调用click listener
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
-                final int x         = (int) ev.getX();
-                final int y         = (int) ev.getY();
-                View      pointView = findTopChildUnder(this, x, y);
+                final int x = (int) ev.getX();
+                final int y = (int) ev.getY();
+                View pointView = findTopChildUnder(this, x, y);
                 if (pointView != null && pointView == mMainView && mScrollOffset != 0) {
                     return true;
                 }
@@ -296,13 +327,15 @@ public class SwipeItemLayout
                 break;
 
             case MotionEvent.ACTION_UP: {
-                final int x         = (int) ev.getX();
-                final int y         = (int) ev.getY();
-                View      pointView = findTopChildUnder(this, x, y);
+                final int x = (int) ev.getX();
+                final int y = (int) ev.getY();
+                View pointView = findTopChildUnder(this, x, y);
                 if (pointView != null && pointView == mMainView && mTouchMode == Mode.TAP && mScrollOffset != 0) {
                     return true;
                 }
             }
+            default:
+                break;
         }
 
         return false;
@@ -314,9 +347,9 @@ public class SwipeItemLayout
         //click main view，但是它处于open状态，所以，不需要点击效果，直接拦截不调用click listener
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
-                final int x         = (int) ev.getX();
-                final int y         = (int) ev.getY();
-                View      pointView = findTopChildUnder(this, x, y);
+                final int x = (int) ev.getX();
+                final int y = (int) ev.getY();
+                View pointView = findTopChildUnder(this, x, y);
                 if (pointView != null && pointView == mMainView && mScrollOffset != 0) {
                     return true;
                 }
@@ -328,14 +361,16 @@ public class SwipeItemLayout
                 break;
 
             case MotionEvent.ACTION_UP: {
-                final int x         = (int) ev.getX();
-                final int y         = (int) ev.getY();
-                View      pointView = findTopChildUnder(this, x, y);
+                final int x = (int) ev.getX();
+                final int y = (int) ev.getY();
+                View pointView = findTopChildUnder(this, x, y);
                 if (pointView != null && pointView == mMainView && mTouchMode == Mode.TAP && mScrollOffset != 0) {
                     close();
                     return true;
                 }
             }
+            default:
+                break;
         }
 
         return false;
@@ -350,22 +385,21 @@ public class SwipeItemLayout
         }
     }
 
-    private static final Interpolator sInterpolator = t -> {
+    private static final Interpolator INTERPOLATOR = t -> {
         t -= 1.0f;
         return t * t * t * t * t + 1.0f;
     };
 
     private class ScrollRunnable
-            implements Runnable
-    {
+            implements Runnable {
         private static final int FLING_DURATION = 200;
         private Scroller mScroller;
-        private boolean  mAbort;
-        private int      mMinVelocity;
-        private boolean  mScrollToLeft;
+        private boolean mAbort;
+        private int mMinVelocity;
+        private boolean mScrollToLeft;
 
         ScrollRunnable(Context context) {
-            mScroller = new Scroller(context, sInterpolator);
+            mScroller = new Scroller(context, INTERPOLATOR);
             mAbort = false;
             mScrollToLeft = false;
 
@@ -398,9 +432,9 @@ public class SwipeItemLayout
             }
 
             startScroll(startX,
-                        startX > -mMaxScrollOffset / 2
-                        ? 0
-                        : -mMaxScrollOffset);
+                    startX > -mMaxScrollOffset / 2
+                            ? 0
+                            : -mMaxScrollOffset);
         }
 
         void abort() {
@@ -423,7 +457,7 @@ public class SwipeItemLayout
             Log.e("abort", Boolean.toString(mAbort));
             if (!mAbort) {
                 boolean more = mScroller.computeScrollOffset();
-                int     curX = mScroller.getCurrX();
+                int curX = mScroller.getCurrX();
                 Log.e("curX", "" + curX);
 
                 boolean atEdge = trackMotionScroll(curX - mScrollOffset);
@@ -434,7 +468,9 @@ public class SwipeItemLayout
 
                 if (atEdge) {
                     removeCallbacks(this);
-                    if (!mScroller.isFinished()) { mScroller.abortAnimation(); }
+                    if (!mScroller.isFinished()) {
+                        mScroller.abortAnimation();
+                    }
                     setTouchMode(Mode.RESET);
                 }
 
@@ -444,7 +480,9 @@ public class SwipeItemLayout
                     if (mScrollOffset != 0) {
                         if (Math.abs(mScrollOffset) > mMaxScrollOffset / 2) {
                             mScrollOffset = -mMaxScrollOffset;
-                        } else { mScrollOffset = 0; }
+                        } else {
+                            mScrollOffset = 0;
+                        }
                         ViewCompat.postOnAnimation(SwipeItemLayout.this, this);
                     }
                 }
@@ -454,11 +492,10 @@ public class SwipeItemLayout
 
     //RecyclerView必须实现这的监听器，否则拉不出侧滑菜单
     public static class OnSwipeItemTouchListener
-            implements RecyclerView.OnItemTouchListener
-    {
+            implements RecyclerView.OnItemTouchListener {
         private SwipeItemLayout mCaptureItem;
-        private float           mLastMotionX;
-        private float           mLastMotionY;
+        private float mLastMotionX;
+        private float mLastMotionY;
         private VelocityTracker mVelocityTracker;
 
         private int mActivePointerId;
@@ -480,10 +517,12 @@ public class SwipeItemLayout
 
         @Override
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent ev) {
-            if (mIsProbeParent) { return false; }
+            if (mIsProbeParent) {
+                return false;
+            }
 
-            boolean   intercept = false;
-            final int action    = ev.getActionMasked();
+            boolean intercept = false;
+            final int action = ev.getActionMasked();
 
             if (mVelocityTracker == null) {
                 mVelocityTracker = VelocityTracker.obtain();
@@ -498,14 +537,16 @@ public class SwipeItemLayout
                     mLastMotionX = x;
                     mLastMotionY = y;
 
-                    boolean         pointOther = false;
-                    SwipeItemLayout pointItem  = null;
+                    boolean pointOther = false;
+                    SwipeItemLayout pointItem = null;
                     //首先知道ev针对的是哪个item
                     View pointView = findTopChildUnder(rv, (int) x, (int) y);
                     if (pointView == null || !(pointView instanceof SwipeItemLayout)) {
                         //可能是head view或bottom view
                         pointOther = true;
-                    } else { pointItem = (SwipeItemLayout) pointView; }
+                    } else {
+                        pointItem = (SwipeItemLayout) pointView;
+                    }
 
                     //此时的pointOther=true，意味着点击的view为空或者点击的不是item
                     //还没有把点击的是item但是不是capture item给过滤出来
@@ -526,12 +567,16 @@ public class SwipeItemLayout
                             intercept = true;
                         } else {//如果是expand的，就不允许parent拦截
                             mCaptureItem.setTouchMode(Mode.TAP);
-                            if (mCaptureItem.isOpen()) { disallowIntercept = true; }
+                            if (mCaptureItem.isOpen()) {
+                                disallowIntercept = true;
+                            }
                         }
 
                         if (disallowIntercept) {
                             final ViewParent parent = rv.getParent();
-                            if (parent != null) { parent.requestDisallowInterceptTouchEvent(true); }
+                            if (parent != null) {
+                                parent.requestDisallowInterceptTouchEvent(true);
+                            }
                         }
                     } else {//capture item为null或者与point item不一样
                         //直接将其close掉
@@ -544,14 +589,18 @@ public class SwipeItemLayout
                         if (pointItem != null) {
                             mCaptureItem = pointItem;
                             mCaptureItem.setTouchMode(Mode.TAP);
-                        } else { mCaptureItem = null; }
+                        } else {
+                            mCaptureItem = null;
+                        }
                     }
 
                     //如果parent处于fling状态，此时，parent就会转为drag。此时，应该将后续move都交给parent处理
                     mIsProbeParent = true;
                     mDealByParent = rv.onInterceptTouchEvent(ev);
                     mIsProbeParent = false;
-                    if (mDealByParent) { intercept = false; }
+                    if (mDealByParent) {
+                        intercept = false;
+                    }
                     break;
                 }
 
@@ -566,37 +615,42 @@ public class SwipeItemLayout
 
                 case MotionEvent.ACTION_POINTER_UP: {
                     final int actionIndex = ev.getActionIndex();
-                    final int pointerId   = ev.getPointerId(actionIndex);
+                    final int pointerId = ev.getPointerId(actionIndex);
                     if (pointerId == mActivePointerId) {
                         final int newIndex = actionIndex == 0
-                                             ? 1
-                                             : 0;
+                                ? 1
+                                : 0;
                         mActivePointerId = ev.getPointerId(newIndex);
 
                         mLastMotionX = ev.getX(newIndex);
                         mLastMotionY = ev.getY(newIndex);
                     }
                     break;
+
                 }
 
                 //down时，已经将capture item定下来了。所以，后面可以安心考虑event处理
                 case MotionEvent.ACTION_MOVE: {
                     final int activePointerIndex = ev.findPointerIndex(mActivePointerId);
-                    if (activePointerIndex == -1) { break; }
+                    if (activePointerIndex == -1) {
+                        break;
+                    }
 
                     //在down时，就被认定为parent的drag，所以，直接交给parent处理即可
                     if (mDealByParent) {
-                        if (mCaptureItem != null && mCaptureItem.isOpen()) { mCaptureItem.close(); }
+                        if (mCaptureItem != null && mCaptureItem.isOpen()) {
+                            mCaptureItem.close();
+                        }
                         return false;
                     }
 
                     final int x = (int) (ev.getX(activePointerIndex) + .5f);
                     final int y = (int) ((int) ev.getY(activePointerIndex) + .5f);
 
-                    int       deltaX = (int) (x - mLastMotionX);
-                    int       deltaY = (int) (y - mLastMotionY);
-                    final int xDiff  = Math.abs(deltaX);
-                    final int yDiff  = Math.abs(deltaY);
+                    int deltaX = (int) (x - mLastMotionX);
+                    int deltaY = (int) (y - mLastMotionY);
+                    final int xDiff = Math.abs(deltaX);
+                    final int yDiff = Math.abs(deltaY);
 
                     if (mCaptureItem != null && !mDealByParent) {
                         Mode touchMode = mCaptureItem.getTouchMode();
@@ -613,8 +667,8 @@ public class SwipeItemLayout
                                 parent.requestDisallowInterceptTouchEvent(true);
 
                                 deltaX = deltaX > 0
-                                         ? deltaX - mTouchSlop
-                                         : deltaX + mTouchSlop;
+                                        ? deltaX - mTouchSlop
+                                        : deltaX + mTouchSlop;
                             } else {// if(yDiff>mTouchSlop){
                                 mIsProbeParent = true;
                                 boolean isParentConsume = rv.onInterceptTouchEvent(ev);
@@ -659,8 +713,12 @@ public class SwipeItemLayout
                     break;
 
                 case MotionEvent.ACTION_CANCEL:
-                    if (mCaptureItem != null) { mCaptureItem.revise(); }
+                    if (mCaptureItem != null) {
+                        mCaptureItem.revise();
+                    }
                     cancel();
+                    break;
+                default:
                     break;
             }
 
@@ -669,7 +727,7 @@ public class SwipeItemLayout
 
         @Override
         public void onTouchEvent(RecyclerView rv, MotionEvent ev) {
-            final int action      = ev.getActionMasked();
+            final int action = ev.getActionMasked();
             final int actionIndex = ev.getActionIndex();
 
             if (mVelocityTracker == null) {
@@ -689,8 +747,8 @@ public class SwipeItemLayout
                     final int pointerId = ev.getPointerId(actionIndex);
                     if (pointerId == mActivePointerId) {
                         final int newIndex = actionIndex == 0
-                                             ? 1
-                                             : 0;
+                                ? 1
+                                : 0;
                         mActivePointerId = ev.getPointerId(newIndex);
 
                         mLastMotionX = ev.getX(newIndex);
@@ -701,7 +759,9 @@ public class SwipeItemLayout
                 //down时，已经将capture item定下来了。所以，后面可以安心考虑event处理
                 case MotionEvent.ACTION_MOVE: {
                     final int activePointerIndex = ev.findPointerIndex(mActivePointerId);
-                    if (activePointerIndex == -1) { break; }
+                    if (activePointerIndex == -1) {
+                        break;
+                    }
 
                     final float x = ev.getX(activePointerIndex);
                     final float y = (int) ev.getY(activePointerIndex);
@@ -732,16 +792,20 @@ public class SwipeItemLayout
                     break;
 
                 case MotionEvent.ACTION_CANCEL:
-                    if (mCaptureItem != null) { mCaptureItem.revise(); }
+                    if (mCaptureItem != null) {
+                        mCaptureItem.revise();
+                    }
 
                     cancel();
                     break;
-
+                default:
+                    break;
             }
         }
 
         @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        }
 
         void cancel() {
             mDealByParent = false;
@@ -770,7 +834,9 @@ public class SwipeItemLayout
             View child = recyclerView.getChildAt(i);
             if (child instanceof SwipeItemLayout) {
                 SwipeItemLayout swipeItemLayout = (SwipeItemLayout) child;
-                if (swipeItemLayout.isOpen()) { swipeItemLayout.close(); }
+                if (swipeItemLayout.isOpen()) {
+                    swipeItemLayout.close();
+                }
             }
         }
     }

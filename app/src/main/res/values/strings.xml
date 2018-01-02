@@ -35,5 +35,14 @@
     <string name="clearAllFavorite">清空</string>
     <string name="playAll">播放全部</string>
     <string name="save_pic">保存</string>
+    <string name="title_activity_beijing">BeijingActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="share_me">这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。https://github.com/1900Star/BigGirl</string>
+    <string name="under_line">_</string>
+    <string name="childe_view_not">SwipeItemLayout的子视图不符合规定</string>
 
 </resources>

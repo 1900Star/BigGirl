@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
  * 作者：Stran on 2017/3/23 15:12
@@ -18,6 +17,7 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
  */
 
 public class FileUtil {
+    private static final String TAG = "FileUtil";
     public static final String ROOT_SDCARD = Environment.getExternalStorageDirectory()
                                                         .getAbsolutePath();
 

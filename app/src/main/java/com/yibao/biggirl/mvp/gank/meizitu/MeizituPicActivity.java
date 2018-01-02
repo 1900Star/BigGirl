@@ -110,8 +110,9 @@ public class MeizituPicActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    if (!data.getFrom().equals(mUrl))
+                    if (!data.getFrom().equals(mUrl)) {
                         return;
+                    }
                     mSwipeRefresh.setRefreshing(false);
                     if (mAdapter.getData() == null || mAdapter.getData().size() == 0) {
                         mAdapter.setNewData(data.getGirls());

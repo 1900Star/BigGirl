@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.util.Log;
 
+import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.music.MusicLyrBean;
 
 import java.io.BufferedReader;
@@ -42,8 +43,10 @@ public class StringUtil {
     }
 
     public static String getSongName(String songName) {
-        if (songName.contains("_")) {
-            songName = songName.substring(songName.indexOf("_") + 1, songName.length());
+        String underLine = String.valueOf(R.string.under_line);
+        if (songName.contains(underLine)) {
+
+            songName = songName.substring(songName.indexOf(underLine) + 1, songName.length());
         }
         return songName;
     }

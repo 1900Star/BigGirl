@@ -25,6 +25,7 @@ public class GirlActivity
 {
 
 
+    private static final int BUILD_VERSION = 21;
     private Bundle mBundle = null;
     private View      mDecorView;
     private ActionBar mActionBar;
@@ -61,7 +62,7 @@ public class GirlActivity
 
     @Override
     public void hideToolbar() {
-        if (Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= BUILD_VERSION) {
 
 
             getWindow().setNavigationBarColor(Color.TRANSPARENT);

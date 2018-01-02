@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
  * Author：Sid
  * Des：${适配Video列表数据}
  * Time:2017/4/23 07:08
+ * @author Stran
  */
 public class FavoriteAdapter
         extends BaseRvAdapter<FavoriteWebBean> {
@@ -33,13 +34,14 @@ public class FavoriteAdapter
 
     private Context mContext;
 
-    public FavoriteAdapter(Context context, List<FavoriteWebBean> list) {
+    FavoriteAdapter(Context context, List<FavoriteWebBean> list) {
         super(list);
         mContext = context;
         LogUtil.d("Size  " + list.size());
     }
 
     //    @Override
+    @Override
     protected void bindView(RecyclerView.ViewHolder holder, FavoriteWebBean bean) {
         if (holder instanceof ViewHolder) {
             ViewHolder viewHolder = (ViewHolder) holder;
@@ -61,7 +63,8 @@ public class FavoriteAdapter
             viewHolder.mTvFavoriteTime.setText(bean.getTime());
             viewHolder.mTvFavoriteType.setText(bean.getType());
             viewHolder.mTvFavoriteDes.setText(bean.getDes());
-            viewHolder.mDeleteItem.setOnClickListener(view -> { //侧滑删除的监听
+            //侧滑删除的监听
+            viewHolder.mDeleteItem.setOnClickListener(view -> {
                 int position = holder.getAdapterPosition();
                 if (mContext instanceof OnRvItemSlideListener) {
                     ((OnRvItemSlideListener) mContext).deleteFavorite(bean.getId());
@@ -69,7 +72,8 @@ public class FavoriteAdapter
                 mList.remove(position);
                 FavoriteAdapter.this.notifyItemRemoved(position);
             });
-            viewHolder.mFavoriteItem.setOnClickListener(view -> { //Item点击的监听
+            //Item点击的监听
+            viewHolder.mFavoriteItem.setOnClickListener(view -> {
 
                 if (mContext instanceof OnRvItemClickListener) {
                     ((OnRvItemClickListener) mContext).showDetail(bean, bean.getId());
@@ -80,17 +84,15 @@ public class FavoriteAdapter
         }
     }
 
-    public void refreshItem() {
+    void refreshItem() {
         notifyDataSetChanged();
     }
 
-    //对应的ViewHolder
     @Override
     protected RecyclerView.ViewHolder getViewHolder(View view) {
         return new ViewHolder(view);
     }
 
-    //item布局
     @Override
     protected int getLayoutId() {
         return R.layout.item_favorite_frag;

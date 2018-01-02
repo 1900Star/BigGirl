@@ -25,9 +25,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
- * Author：Sid
  * Des：${BaseRecyclerFag}
  * Time:2017/6/4 21:55
+ * @author Stran
  */
 public abstract class BaseRecyclerFag<T>
         extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener
@@ -42,8 +42,14 @@ public abstract class BaseRecyclerFag<T>
     public SwipeRefreshLayout mSwipeRefresh;
     public LinearLayout mFagContent;
 
+    /**
+     * 下拉刷新数据
+     */
     protected abstract void refreshData();
 
+    /**
+     * RecyclerView上拉加载更多数据
+     */
     protected abstract void loadMoreData();
 
     @Override
@@ -65,6 +71,13 @@ public abstract class BaseRecyclerFag<T>
         mSwipeRefresh.setRefreshing(true);
     }
 
+    /**
+     * 得到一个RecyclerView   实现了加载更多
+     * @param fab
+     * @param rvType
+     * @param adapter
+     * @return
+     */
     public RecyclerView getRecyclerView(ImageView fab, int rvType, RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(rvType, adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -146,7 +159,9 @@ public abstract class BaseRecyclerFag<T>
     }
 
 
-    //找到数组中的最大值
+    /**
+     * 找到数组中的最大值
+     */
     public int findMax(int[] lastPositions) {
         int max = lastPositions[0];
         for (int value : lastPositions) {

@@ -69,9 +69,9 @@ public class ZoomImageView
     private boolean isCheckTopAndBottom;
 
     //----双击放大与缩小
-    private GestureDetector   mGestureDetector;
-    private boolean           isScaleing;
-    private OnClickListener   onClickListener;
+    private GestureDetector mGestureDetector;
+    private boolean isScaleing;
+    private OnClickListener onClickListener;
 
 
     public ZoomImageView(Context context) {
@@ -91,8 +91,9 @@ public class ZoomImageView
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                if (isScaleing || getScale() >= mMaxScale)
+                if (isScaleing || getScale() >= mMaxScale) {
                     return true;
+                }
                 isScaleing = true;
                 float x = e.getX();
                 float y = e.getY();
@@ -184,13 +185,15 @@ public class ZoomImageView
 
     @Override
     public void onGlobalLayout() {
-        if(arae_img_id != -1){
+        if (arae_img_id != -1) {
             arae_img_id = -1;
             return;
         }
         setScaleType(ScaleType.MATRIX);
         log("执行了onGlobalLayout| NULL:" + (getDrawable() == null));
-        if (getDrawable() == null || getWidth() == 0 || getHeight() == 0) return;
+        if (getDrawable() == null || getWidth() == 0 || getHeight() == 0) {
+            return;
+        }
 
         if (!isInit) {
             log("初始化完毕");
@@ -225,9 +228,7 @@ public class ZoomImageView
                     log("min scale:" + scale);
                 }
 
-                /**
-                 * 设置缩放比率
-                 */
+                // 设置缩放比率
                 mMinScale = scale;
                 mMidScale = mMinScale * 2;
                 mMaxScale = mMinScale * 4;
@@ -265,18 +266,18 @@ public class ZoomImageView
 
 
     /**
-     * 是否是Debug模式
-     */
-    private static boolean IS_DEBUG = false;
-
-    /**
      * 打印日志
      *
      * @param value 要打印的日志
      */
     public static void log(String value) {
-        if (IS_DEBUG)
+        /*
+      是否是Debug模式
+     */
+        boolean IS_DEBUG = false;
+        if (IS_DEBUG) {
             Log.w(TAG, value);
+        }
     }
 
     /**
@@ -290,12 +291,14 @@ public class ZoomImageView
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (mGestureDetector.onTouchEvent(motionEvent))
+        if (mGestureDetector.onTouchEvent(motionEvent)) {
             return true;
+        }
 
         //将触摸事件传递给ScaleGestureDetector
-        if (motionEvent.getPointerCount() > 1)
+        if (motionEvent.getPointerCount() > 1) {
             mScaleGestureDetector.onTouchEvent(motionEvent);
+        }
 
 
         float x = 0;
@@ -383,6 +386,8 @@ public class ZoomImageView
                 mLastPointereCount = 0;
                 break;
             }
+            default:
+                break;
         }
         return true;
     }
@@ -440,7 +445,9 @@ public class ZoomImageView
         /**
          * 没有图片
          */
-        if (getDrawable() == null) return true;
+        if (getDrawable() == null) {
+            return true;
+        }
 
         //缩放范围控制
         if ((scale < mMaxScale && scaleFactor > 1.0f) || (scale > mMinScale && scaleFactor < 1.0f)) {
@@ -472,17 +479,21 @@ public class ZoomImageView
         int height = getHeight();
 
         if (rectF.width() >= width) {
-            if (rectF.left > 0)
+            if (rectF.left > 0) {
                 deltaX = -rectF.left;
-            if (rectF.right < width)
+            }
+            if (rectF.right < width) {
                 deltaX = width - rectF.right;
+            }
         }
 
         if (rectF.height() >= height) {
-            if (rectF.top > 0)
+            if (rectF.top > 0) {
                 deltaY = 0;
-            if (rectF.bottom < height)
+            }
+            if (rectF.bottom < height) {
                 deltaY = height - rectF.bottom;
+            }
         }
 
         if (rectF.width() < width) {
@@ -503,7 +514,7 @@ public class ZoomImageView
      * @return
      */
     private RectF getMatrixRectF() {
-        RectF    rectF    = new RectF();
+        RectF rectF = new RectF();
         Drawable drawable = getDrawable();
 
         if (drawable != null) {
@@ -564,6 +575,7 @@ public class ZoomImageView
      * @param resID
      */
     private int arae_img_id = -1;
+
     public void placeholder(int resID) {
         this.arae_img_id = resID;
         setScaleType(ScaleType.CENTER);

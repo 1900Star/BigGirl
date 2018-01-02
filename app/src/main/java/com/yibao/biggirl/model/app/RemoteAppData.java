@@ -19,7 +19,7 @@ public class RemoteAppData
 {
 
     @Override
-    public void getApp(int size, int page, String type, LoadADataCallback callback) {
+    public void getApp(int size, int page, String type, LoadDataCallback callback) {
         RetrofitHelper.getGankApi(Constants.GANK_API)
                       .getConmmetApi(type, size, page)
                       .subscribeOn(Schedulers.io())

@@ -41,7 +41,6 @@ import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
-import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 
 import java.util.ArrayList;
@@ -66,6 +65,7 @@ public class MainActivity
         OnRvItemLongClickListener
 
 {
+    private static final long KEY_EVENT_BACK_TIME = 2000;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
@@ -145,7 +145,6 @@ public class MainActivity
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        LogUtil.d("ViewPager布局完成");
                         //手动选中第一页
                         mMyOnpageChangeListener.onPageSelected(0);
                         mViewPager.getViewTreeObserver()
@@ -321,11 +320,11 @@ public class MainActivity
         }
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             //两秒之内按返回键多次就会退出
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
+            if ((System.currentTimeMillis() - exitTime) > KEY_EVENT_BACK_TIME) {
                 SnakbarUtil.finishActivity(mDrawerLayout);
                 exitTime = System.currentTimeMillis();
             } else {
-                FileUtil.delDir(Constants.dir, true);
+                FileUtil.delDir(Constants.DIR, true);
                 finish();
                 System.exit(0);
             }

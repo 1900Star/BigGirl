@@ -43,7 +43,7 @@ public class GirlsPresenter
     @Override
     public void loadData(int size, int page, int codeId, int loadType, String dataType) {
         if (dataType.equals(Constants.FRAGMENT_GIRLS)) {
-            mRemoteGirlsData.getGirls(dataType, size, page, new GrilsDataSource.LoadGDataCallback() {
+            mRemoteGirlsData.getGirls(dataType, size, page, new GrilsDataSource.LoadDataCallback() {
                 @Override
                 public void onLoadDatas(List<String> girlBean) {
 
@@ -63,7 +63,7 @@ public class GirlsPresenter
                 }
             });
         } else if (codeId == Constants.MEIZITU) {
-            mRemoteGirlsData.getMeizitu(dataType, page, new GrilsDataSource.LoadGMeizituCallback() {
+            mRemoteGirlsData.getMeizitu(dataType, page, new GrilsDataSource.LoadMeizituCallback() {
                 @Override
                 public void onLoadDatas(List<Girl> girlList) {
                     if (loadType == Constants.REFRESH_DATA) {

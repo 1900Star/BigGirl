@@ -401,6 +401,8 @@ public class MusicPlayDialogFag
             case R.id.iv_favorite_music:   //收藏
                 favoritMusic();
                 break;
+                default:
+                    break;
         }
 
     }

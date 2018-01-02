@@ -18,6 +18,7 @@ import com.yibao.biggirl.R;
  * 作者：Stran on 2017/3/27 16:55
  * 描述：${自定义ProgressBar}
  * 邮箱：strangermy@outlook.com
+ * @author Stran
  */
 public class ProgressView
         extends LinearLayout
@@ -99,7 +100,6 @@ public class ProgressView
         int top    = mIvIcon.getTop();
         int left   = mIvIcon.getLeft();
         int right  = mIvIcon.getRight();
-        //        LogUtil.d("BOTTOM===============BOTTOM  ",left+"========"+top+   "  =="+right+"    =="+bottom);
         if (isProgressEnable) {
             if (mOval == null) {
 

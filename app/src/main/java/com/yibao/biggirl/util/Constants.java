@@ -8,30 +8,48 @@ import com.yibao.biggirl.MyApplication;
  * 作者：Stran on 2017/3/23 15:26
  * 描述：${常量类}
  * 邮箱：strangermy@outlook.com
+ * @author Stran
  */
 public class Constants {
     /**
-     * 多图API
+     * 多图   MFStar模范学院
      */
-    //    多图   MFStar模范学院
     private static String DUOTU_MOFAN_API = "http://www.duotu555.com/mm/51/list_51_";
-    //    多图  Pans写真
+    /**
+     * 多图   Pans写真
+     */
     private static String DUOTU_PANS_API = "http://www.duotu555.com/mm/46/list_46_";
-    //    多图 尤果网
+    /**
+     * 多图  尤果网
+     */
     private static String DUOTU_UGIRLS_API = "http://www.duotu555.com/mm/5/list_5_";
-    //    多图 ROSI写真
+    /**
+     * 多图   ROSI写真
+     */
     private static String DUOTU_ROSI_API = "http://www.duotu555.com/mm/6/list_6_";
-    //   多图 魅妍社
+    /**
+     * 多图   魅妍社
+     */
     private static String DUOTU_MEIYAN_API = "http://www.duotu555.com/mm/11/list_11_";
-    //    多图 推女郎
+    /**
+     * 多图   推女郎
+     */
     private static String DUOTU_TUGIRL_API = "http://www.duotu555.com/mm/14/list_14_";
-    //    多图 波波社
+    /**
+     * 多图   波波社
+     */
     private static String DUOTU_BOBOSHE_API = "http://www.duotu555.com/mm/9/list_9_";
-    //    多图 第四印象
+    /**
+     * 多图   第四印象
+     */
     private static String DUOTU_DISIYINGXIANG_API = "http://www.duotu555.com/mm/49/list_49_";
-    //    Yunvlang
+    /**
+     * 多图   Yunvlang
+     */
     private static String DUOTU_YUNVLANG_API = "http://www.duotu555.com/mm/32/list_32_";
-    //    XieRen
+    /**
+     * 多图   XieRen
+     */
     private static String DUOTU_XIUREN_API = "http://www.duotu555.com/mm/8/list_8_";
 
     /**
@@ -46,59 +64,74 @@ public class Constants {
      */
     public static final int GIRLS = 0;
     public static String GANK_API = "http://gank.io/";
-    //    Unsplsh
     public static String UNSPLASH_API = "https://unsplash.it/3896/1920/?random";
-    //    https://picsum.photos/3896/1920/?image=22
-    public static String UNSPLASH_RANDOM_URL = "https://picsum.photos/3896/1920/?image=";
     public static String UNSPLASH_URL = "https://picsum.photos/1920/1080/?image=";
-    //    public static String UNSPLASH_API = "https://unsplash.it/1920/1080/?random";
     public static String UNSPLASH = "https://api.unsplash.com/photos/?client_id=6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
 //    public static String UNSPLASH_ID = "6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
 
 
-    public static final String dir = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
-    public static final String deleteDir = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
-    //崩溃日志
+    public static final String DIR = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
+    public static final String DELETE_DIR = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
+    /**
+     * 崩溃日志本地保存地址
+     */
     public static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory()
             .getPath() + "/CrashLog/log/";
     //保存图片状态码
+
     public static int FIRST_DWON = 0;
     public static int EXISTS = 1;
     public static int DWON_PIC_EROOR = 2;
     //fragment 加载状态码
+
     public static int LOAD_DATA = 0;
     public static int REFRESH_DATA = 1;
     public static int LOAD_MORE_DATA = 2;
     //    public static int NO_MORE_DATA = 3;
 //    public static int LOADING_DATA = 4;
-    public static String arrTitle[] = {"Girl",
+
+    public static String[] arrTitle = {"Girl",
             "App",
             "iOS",
             "Video",
             "前端",
             "拓展资源",
             "Japan", "Hot", "Sex", "Cute", "MFStar", "Pans", "Ugirls", "Rosi", "Meiyan", "TuiGirl", "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren"};
-    public static final int TYPE_GIRLS = 0;//妹子
-    private static final int TYPE_APP = 1;//App
-    private static final int TYPE_IOS = 2;//iOS
-    private static final int TYPE_VEDIO = 3;//视频
-    private static final int TYPE_FRONT = 4;//前端
-    private static final int TYPE_EXTEND = 5;//拓展资源
-    private static final int TYPE_JAPAN = 6;//Japan
-    private static final int TYPE_HOT = 7;//Hot
-    private static final int TYPE_SEX = 8;//Sex
-    private static final int TYPE_CUTE = 9;//Cute
 
-    private static final int TYPE_MFSTAR = 10;//MFStar
-    private static final int TYPE_PANS = 11;//Pans
-    private static final int TYPE_UGIRLS = 12;//Ugirls
-    private static final int TYPE_ROSI = 13;//Rosi
-    private static final int TYPE_MEIYAN = 14;//Meiyan
-    private static final int TYPE_TUIGIRL = 15;//TuiGirl
-    private static final int TYPE_TUIBOBO = 16;//Boboshe
-    private static final int TYPE_DISIYINGXIANG = 17;//Disiyingxinag
-    private static final int TYPE_YUNVLANG = 18;//Disiyingxinag
-    private static final int TYPE_XIUREN = 19;//Xiuren
+    public static final int TYPE_GIRLS = 0;
+
+
+    private static final int TYPE_APP = 1;
+    private static final int TYPE_IOS = 2;
+
+    private static final int TYPE_VEDIO = 3;
+
+    private static final int TYPE_FRONT = 4;
+
+    private static final int TYPE_EXTEND = 5;
+
+    private static final int TYPE_JAPAN = 6;
+
+    private static final int TYPE_HOT = 7;
+
+    private static final int TYPE_SEX = 8;
+
+    private static final int TYPE_CUTE = 9;
+
+
+    private static final int TYPE_MFSTAR = 10;
+
+    private static final int TYPE_PANS = 11;
+
+    private static final int TYPE_UGIRLS = 12;
+    private static final int TYPE_ROSI = 13;
+
+    private static final int TYPE_MEIYAN = 14;
+    private static final int TYPE_TUIGIRL = 15;
+    private static final int TYPE_TUIBOBO = 16;
+    private static final int TYPE_DISIYINGXIANG = 17;
+    private static final int TYPE_YUNVLANG = 18;
+    private static final int TYPE_XIUREN = 19;
 
     public static final String FRAGMENT_GIRLS = "福利";
     private static final String FRAGMENT_VIDEO = "休息视频";
@@ -112,8 +145,7 @@ public class Constants {
     private static final String FRAGMENT_CUTE = "mm";
 
     public static final String FRAGMENT_ANDROID = "安卓";
-    //    public static final String FRAGMENT_ALL = "all";
-    public static final String SHARE_ME = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。" + "https://github.com/1900Star/BigGirl";
+    public static final String SHARE_ME = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。https://github.com/1900Star/BigGirl";
 
     private static String mLoadType;
 

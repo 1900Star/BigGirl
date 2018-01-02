@@ -30,6 +30,7 @@ public abstract class BaseRvAdapter<T>
     public List<T> mList = null;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
+    private int MIN_ITME_NUM=10;
 
     public BaseRvAdapter(List<T> list) {
         mList = list;
@@ -74,7 +75,7 @@ public abstract class BaseRvAdapter<T>
 
     @Override
     public int getItemViewType(int position) {
-        if (position > 10 && position == getItemCount() - 1) {
+        if (position > MIN_ITME_NUM && position == getItemCount() - 1) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;

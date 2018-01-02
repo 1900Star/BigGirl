@@ -44,8 +44,8 @@ public class DuotuRecyclerFag extends BaseRecyclerFag<Girl> implements
     }
 
     @Override
-    protected void onLazyLoadOnce() {
-        super.onLazyLoadOnce();
+    protected void onLazyLoadData() {
+        super.onLazyLoadData();
 
         mLoadType = Constants.getLoadType(mType);
         mPresenter.start(mLoadType, page);

@@ -325,6 +325,7 @@ public class HanziToPinyin {
     private static final String LAST_PINYIN_UNIHAN = "\u9FFF";
 
     private static final Collator COLLATOR = Collator.getInstance(Locale.CHINA);
+    private static final char STR_MAX_LENG = 256;
 
     private static HanziToPinyin sInstance;
     private final boolean mHasChinaCollator;
@@ -429,7 +430,7 @@ public class HanziToPinyin {
         token.source = letter;
         int offset = -1;
         int cmp;
-        if (character < 256) {
+        if (character < STR_MAX_LENG) {
             token.type = Token.LATIN;
             token.target = letter;
             return token;

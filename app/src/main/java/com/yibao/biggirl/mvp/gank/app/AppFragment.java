@@ -14,6 +14,7 @@ import java.util.List;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/4/23 06:33
+ * @author Stran
  */
 public class AppFragment
         extends BaseRecyclerFag<ResultsBeanX>
@@ -24,6 +25,8 @@ public class AppFragment
 
     private AppContract.Presenter mPresenter;
     private String mLoadType;
+
+
 
     public static AppFragment newInstance(int loadType) {
         AppFragment fragment = new AppFragment();
@@ -43,8 +46,8 @@ public class AppFragment
     }
 
     @Override
-    protected void onLazyLoadOnce() {
-        super.onLazyLoadOnce();
+    protected void onLazyLoadData() {
+        super.onLazyLoadData();
         mPresenter.start(mLoadType, Constants.LOAD_DATA);
     }
 

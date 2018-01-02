@@ -34,7 +34,7 @@ public class AppPresenter
     @Override
     public void loadData(int size, int page, String type, final int status) {
 
-        mRemoteAppData.getApp(size, page, type, new AppDataSource.LoadADataCallback() {
+        mRemoteAppData.getApp(size, page, type, new AppDataSource.LoadDataCallback() {
             @Override
             public void onLoadData(List<ResultsBeanX> list) {
                 if (status == Constants.LOAD_DATA) {

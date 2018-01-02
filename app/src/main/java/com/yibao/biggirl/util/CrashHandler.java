@@ -120,7 +120,7 @@ public static CrashHandler getInstance() {
         pw.println(Build.MODEL);
         //CPU架构
         pw.print("CPU ABI: ");
-        pw.print(Build.CPU_ABI);
+//        pw.print(Build.CPU_ABI);
 
 
     }

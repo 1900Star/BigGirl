@@ -40,6 +40,7 @@ import okhttp3.Response;
 public class ImageUitl {
 
 
+    private static final int UNSPLASH_URL_SIZE = 1000;
     private static String name;
     private static File file;
 
@@ -106,7 +107,7 @@ public class ImageUitl {
             name = randomUUID() + ".jpg";
         }
 
-        File path = new File(Constants.dir);
+        File path = new File(Constants.DIR);
         if (!path.exists()) {
             path.mkdir();
         }
@@ -222,7 +223,7 @@ public class ImageUitl {
 
     //初始化Unsplash数据
     public static List<String> getUnsplashUrl(List<String> list) {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < UNSPLASH_URL_SIZE; i++) {
             list.add(Constants.UNSPLASH_API);
         }
         return list;

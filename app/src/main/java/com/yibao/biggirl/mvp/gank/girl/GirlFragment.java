@@ -281,13 +281,13 @@ public class GirlFragment
     }
 
     private void shareGirl() {
-        FileUtil.delFile(Constants.deleteDir);
+        FileUtil.delFile(Constants.DELETE_DIR);
         Observable.just(ImageUitl.downloadPic(mUrl, Constants.EXISTS))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(integer -> {
                     if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
-                        Uri url = Uri.fromFile(new File(Constants.deleteDir));
+                        Uri url = Uri.fromFile(new File(Constants.DELETE_DIR));
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_SEND);
                         intent.putExtra(Intent.EXTRA_STREAM, url);

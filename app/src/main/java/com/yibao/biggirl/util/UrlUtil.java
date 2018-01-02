@@ -11,6 +11,9 @@ package com.yibao.biggirl.util;
 
 import java.util.List;
 
+/**
+ * @author Stran
+ */
 public class UrlUtil {
     public static List<String> getUnsplashUrl(List<String> list) {
 

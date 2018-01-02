@@ -17,15 +17,32 @@ import com.yibao.biggirl.util.LogUtil;
  * 描述	      2.接收/加载数据
  * 描述	      3.数据和视图的绑定
  * Time:2017/5/7 21:37
+ *
+ * @author Stran
  */
 public abstract class LoadingPager
-        extends FrameLayout
-{
-    public static final int STATE_LOADING = 0;//加载中
-    public static final int STATE_SUCCESS = 1;//成功
-    public static final int STATE_ERROR   = 2;//失败
-    public static final int STATE_EMPTY   = 3;//空视图
-    public              int mCurState     = STATE_LOADING;//默认是加载中
+        extends FrameLayout {
+
+    /**
+     * 加载中
+     */
+    public static final int STATE_LOADING = 0;
+    /**
+     * 成功
+     */
+    public static final int STATE_SUCCESS = 1;
+    /**
+     * 失败
+     */
+    public static final int STATE_ERROR = 2;
+    /**
+     * 空视图
+     */
+    public static final int STATE_EMPTY = 3;
+    /**
+     * 默认是加载中
+     */
+    public int mCurState = STATE_LOADING;
     private View mLoadingView;
     private View mErrorView;
     private View mEmptyView;
@@ -45,10 +62,10 @@ public abstract class LoadingPager
         mErrorView = View.inflate(MyApplication.getIntstance(), R.layout.pager_error, null);
         this.addView(mErrorView);
         mErrorView.findViewById(R.id.error_btn_retry)
-                  .setOnClickListener(v -> {
-                      //希望重新触发加载数据
-                      triggerLoadData();
-                  });
+                .setOnClickListener(v -> {
+                    //希望重新触发加载数据
+                    triggerLoadData();
+                });
 
         //        空视图
         mEmptyView = View.inflate(MyApplication.getIntstance(), R.layout.pager_empty, null);
@@ -75,16 +92,20 @@ public abstract class LoadingPager
         }
 
         switch (mCurState) {
-            case STATE_LOADING://应该显示  加载中视图
+            case STATE_LOADING:
+                //应该显示  加载中视图
                 mLoadingView.setVisibility(View.VISIBLE);
                 break;
-            case STATE_EMPTY://应该显示  空视图
+            case STATE_EMPTY:
+                //应该显示  空视图
                 mEmptyView.setVisibility(View.VISIBLE);
                 break;
-            case STATE_ERROR://应该显示  错误视图
+            case STATE_ERROR:
+                //应该显示  错误视图
                 mErrorView.setVisibility(View.VISIBLE);
                 break;
-            case STATE_SUCCESS://应该显示  成功中视图
+            case STATE_SUCCESS:
+                //应该显示  成功中视图
                 //考虑是否创建成功视图
                 if (mSuccessView == null) {
                     mSuccessView = initSuccessView();
@@ -105,7 +126,7 @@ public abstract class LoadingPager
      * @call 外界需要加载数据的时候调用
      */
     public void triggerLoadData() {
-        if (mCurState != STATE_SUCCESS /*&& mLoadDataTask == null*/) {
+        if (mCurState != STATE_SUCCESS ) {
             LogUtil.d("triggerLoadData  ==" + mCurState);
             //重置当前的状态,然后刷新ui
             mCurState = STATE_LOADING;
@@ -135,8 +156,11 @@ public abstract class LoadingPager
      */
     public abstract View initSuccessView();
 
-
+    /**
+     * 加载状态
+     */
     public enum LoadedResult {
+
         SUCCESS(STATE_SUCCESS),
         ERROR(STATE_ERROR),
         EMPTY(STATE_EMPTY);

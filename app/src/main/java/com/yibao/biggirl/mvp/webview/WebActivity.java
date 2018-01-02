@@ -107,13 +107,16 @@ public class WebActivity
                     shareIntent.setType("text/plain");
                     startActivity(shareIntent);
                     break;
-                case R.id.web_browser:      //浏览器打开
+                case R.id.web_browser:
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(mUrl));
                     startActivity(intent);
 
                     break;
+                    default:
+                        break;
             }
+
             return false;
         });
     }

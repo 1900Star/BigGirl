@@ -34,7 +34,7 @@ public class RemoteGirlsData
     private int totalPages = 1;
 
     @Override
-    public void getGirls(String dataType, int size, int page, LoadGDataCallback callback) {
+    public void getGirls(String dataType, int size, int page, LoadDataCallback callback) {
         List<String> urlList = new ArrayList<>();
         RetrofitHelper.getGankApi(Constants.GANK_API)
                 .getGril(dataType, size, page)
@@ -69,7 +69,7 @@ public class RemoteGirlsData
     }
 
     @Override
-    public void getMeizitu(String type, int page, LoadGMeizituCallback callback) {
+    public void getMeizitu(String type, int page, LoadMeizituCallback callback) {
 //        4399网站
 //        String url = "https://www.4493.com/xingganmote/index-2.htm";
         String url = Constants.MEIZITU_API + type + "/page/" + page;
@@ -120,8 +120,9 @@ public class RemoteGirlsData
                     int page;
                     try {
                         page = Integer.parseInt(str.text());
-                        if (page >= totalPages)
+                        if (page >= totalPages) {
                             totalPages = page;
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
