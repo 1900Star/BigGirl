@@ -11,6 +11,8 @@
 
 ![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/main.png)
 
+![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/app_list.png)
+
 ![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music_favortie.png)
 
 ![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music_list.png)
