@@ -70,7 +70,6 @@ public class MainActivity
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-
     @BindView(R.id.tablayout)
     TabLayout mTablayout;
     @BindView(R.id.view_pager)
@@ -102,10 +101,11 @@ public class MainActivity
         }
     }
 
-    //加载动态布局
     private void initView() {
         setSupportActionBar(mToolbar);
         mToolbarLayout.setTitleEnabled(false);
+
+        // 加载HeaderView布局
         View headerView = mNavView.inflateHeaderView(R.layout.nav_header_main);
 
         mIvHeader = headerView.findViewById(R.id.iv_nav_header);
@@ -179,7 +179,8 @@ public class MainActivity
                 }
 
                 break;
-            case R.id.action_music: // ***************** 我的音乐
+            // ***************** 我的音乐
+            case R.id.action_music:
                 startActivity(new Intent(this, MusicListActivity.class));
                 break;
             case R.id.action_beautiful:
@@ -284,6 +285,7 @@ public class MainActivity
     //打开ViewPager浏览大图
     @Override
     public void showBigGirl(int position, List<String> list, int type, String link) {
+        
         switch (type) {
             case 1:
                 //设置navHeader头像,待定

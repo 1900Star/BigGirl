@@ -1,6 +1,6 @@
 package com.yibao.biggirl.base;
 
-/*
+/**
  *  @项目名：  BigGirl 
  *  @包名：    com.yibao.biggirl.base
  *  @文件名:   BaseActivity
