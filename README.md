@@ -1,25 +1,15 @@
 ﻿
+![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/main.jpg)
+
+
+![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music.jpg)
+
+
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/c.gif)
 
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/b.png)
 
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/biggirl.png)
 
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/girl.png)
-
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/girl2.png)
-
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/main.png)
-
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/app_list.png)
-
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music_favortie.png)
-
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music_list.png)
-
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music_play.png)
-
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/pic_progress.png)
 
 BigGirl
 
