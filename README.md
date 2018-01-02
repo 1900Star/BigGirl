@@ -5,7 +5,7 @@
 ![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music.jpg)
 
 
-![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/c.gif)
+![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/biggirls.gif)
 
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/b.png)
 
