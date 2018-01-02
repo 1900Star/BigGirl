@@ -285,7 +285,7 @@ public class MainActivity
     //打开ViewPager浏览大图
     @Override
     public void showBigGirl(int position, List<String> list, int type, String link) {
-        
+
         switch (type) {
             case 1:
                 //设置navHeader头像,待定
