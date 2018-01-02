@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    >
+        android:layout_height="match_parent">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/listBg"
-        >
-        </android.support.v7.widget.RecyclerView>
+            android:background="@color/listBg" />
+
+
         <TextView
             android:id="@+id/contac_toast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
             android:background="@color/colorAccent"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="10dp"
             android:paddingTop="10dp"
             android:textColor="@color/colorWhite"
             android:textSize="40sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
-        <include layout="@layout/music_sticky_header_view"/>
+        <include layout="@layout/music_sticky_header_view" />
+
         <com.yibao.biggirl.view.music.MusicSlidBar
             android:id="@+id/contact_slidbar"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
-        />
+            android:layout_gravity="right" />
     </FrameLayout>
 </RelativeLayout>
