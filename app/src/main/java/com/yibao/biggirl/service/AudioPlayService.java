@@ -78,7 +78,6 @@ public class AudioPlayService
         registerReceiver(mReceiver, filter);
 
     }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mMusicItem = intent.getParcelableArrayListExtra("musicItem");
@@ -289,7 +288,7 @@ public class AudioPlayService
     }
 
     //控制通知栏的广播
-    class MusicBroacastReceiver
+   private class MusicBroacastReceiver
             extends BroadcastReceiver
 
     {

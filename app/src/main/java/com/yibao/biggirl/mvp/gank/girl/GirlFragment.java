@@ -124,6 +124,7 @@ public class GirlFragment
         if (mList.size() != 0) {
             mAdapter = new GirlAdapter(getActivity(), mList);
         }
+        mVp.setPageTransformer(true, new GirlPageTransformer());
         mVp.setAdapter(mAdapter);
         mVp.setCurrentItem(mPosition);
         mVp.addOnPageChangeListener(this);
@@ -181,7 +182,6 @@ public class GirlFragment
     //toolbar菜单
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //        menu.clear();
         inflater.inflate(R.menu.girl_main, menu);
         mMenuItem = menu.findItem(R.id.action_auto_play);
 
@@ -197,19 +197,18 @@ public class GirlFragment
                 WallPaperUtil.setWallPaper(getActivity(), mAdapter);
                 SnakbarUtil.setWallpaer(mPbDown);
                 break;
-            case R.id.action_auto_play: //自动播放图册
+            //自动播放图册
+            case R.id.action_auto_play:
                 autoPreview();
                 break;
-
-            case R.id.action_share_mz:  //分享美女
+            //分享美女
+            case R.id.action_share_mz:
                 shareGirl();
                 break;
             default:
                 break;
 
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -218,14 +217,16 @@ public class GirlFragment
         if (isPlay) {
             mMenuItem.setIcon(R.drawable.btn_playing_play);
             mPbDown.setVisibility(View.VISIBLE);
-            stopLoop();          //停止自动播放
+            //停止自动播放
+            stopLoop();
             isPlay = false;
         } else {
 
             mMenuItem.setIcon(R.drawable.btn_playing_pause);
             ((HideToolbarListener) getActivity()).hideToolbar();
             mPbDown.setVisibility(View.INVISIBLE);
-            startLoop();        //开始自动播放
+            //开始自动播放
+            startLoop();
             isPlay = true;
         }
     }
@@ -240,12 +241,10 @@ public class GirlFragment
                     int item = mVp.getCurrentItem();
                     if (item == mAdapter.getCount()) {
                         mVp.setCurrentItem(0);
-
                     }
                     mVp.setCurrentItem(++item, true);
 
                 });
-
 
     }
 

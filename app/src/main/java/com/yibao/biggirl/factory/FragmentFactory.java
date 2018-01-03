@@ -18,26 +18,27 @@ import java.util.Map;
  */
 public class FragmentFactory {
     private static final int FRAGMENT_GIRLS = 0;//妹子
-    private static final int FRAGMENT_APP = 1;//App
-    private static final int FRAGMENT_IOS = 2;//iOS
-    private static final int FRAGMENT_VEDIO = 3;//视频
-    private static final int FRAGMENT_FRONT = 4;//前端
-    private static final int FRAGMENT_EXTEND = 5;//拓展资源
-    private static final int FRAGMENT_JAPAN = 6;//Japan
-    private static final int FRAGMENT_HOT = 7;//Hot
-    private static final int FRAGMENT_SEX = 8;//Sex
-    private static final int FRAGMENT_CUTE = 9;//Cute
+    private static final int FRAGMENT_ANDRID = 1;//Android
+    private static final int FRAGMENT_APP = 2;//App
+    private static final int FRAGMENT_IOS = 3;//iOS
+    private static final int FRAGMENT_VEDIO = 4;//视频
+    private static final int FRAGMENT_FRONT = 5;//前端
+    private static final int FRAGMENT_EXTEND = 6;//拓展资源
+    private static final int FRAGMENT_JAPAN = 7;//Japan
+    private static final int FRAGMENT_HOT = 8;//Hot
+    private static final int FRAGMENT_SEX = 9;//Sex
+    private static final int FRAGMENT_CUTE = 10;//Cute
 
-    private static final int FRAGMENT_MFSTAR = 10;//MFStar
-    private static final int FRAGMENT_PANS = 11;//Pans
-    private static final int FRAGMENT_UGIRLS = 12;//Ugirls
-    private static final int FRAGMENT_ROSI = 13;//Rosi
-    private static final int FRAGMENT_MEIYAN = 14;//Meiyan
-    private static final int FRAGMENT_TUIGIRL = 15;//TuiGirl
-    private static final int FRAGMENT_BOBOSHE = 16;//Boboshe
-    private static final int FRAGMENT_DISIYINGXIANG = 17;//第四印象
-    private static final int FRAGMENT_YUNVLANG = 18;//Yunvlang
-    private static final int FRAGMENT_XIUREN = 19;//秀人
+    private static final int FRAGMENT_MFSTAR = 11;//MFStar
+    private static final int FRAGMENT_PANS = 12;//Pans
+    private static final int FRAGMENT_UGIRLS = 13;//Ugirls
+    private static final int FRAGMENT_ROSI = 14;//Rosi
+    private static final int FRAGMENT_MEIYAN = 15;//Meiyan
+    private static final int FRAGMENT_TUIGIRL = 16;//TuiGirl
+    private static final int FRAGMENT_BOBOSHE = 17;//Boboshe
+    private static final int FRAGMENT_DISIYINGXIANG = 18;//第四印象
+    private static final int FRAGMENT_YUNVLANG = 19;//Yunvlang
+    private static final int FRAGMENT_XIUREN = 20;//秀人
 
     private static Map<Integer, BaseRecyclerFag> mCacheFragmentMap = new HashMap<>();
 
@@ -55,6 +56,9 @@ public class FragmentFactory {
         switch (position) {
             case FRAGMENT_GIRLS:
                 fragment = new GirlsFragment();
+                break;
+            case FRAGMENT_ANDRID:
+                fragment = AppFragment.newInstance(FRAGMENT_ANDRID);
                 break;
             case FRAGMENT_APP:
                 fragment = AppFragment.newInstance(FRAGMENT_APP);

@@ -1,7 +1,5 @@
 package com.yibao.biggirl.util;
 
-import android.os.Environment;
-
 import com.yibao.biggirl.MyApplication;
 
 /**
@@ -62,8 +60,10 @@ public class Constants {
     /**
      * GANK.IO  API
      */
-    public static final int GIRLS = 0;
     public static String GANK_API = "http://gank.io/";
+    /**
+     * UNSPLASH  API
+     */
     public static String UNSPLASH_API = "https://unsplash.it/3896/1920/?random";
     public static String UNSPLASH_URL = "https://picsum.photos/1920/1080/?image=";
     public static String UNSPLASH = "https://api.unsplash.com/photos/?client_id=6ae42136bb4db6a882e779601db1df9b38dfecb25643be258a2fb2ea8bc50ba4";
@@ -72,11 +72,7 @@ public class Constants {
 
     public static final String DIR = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls";
     public static final String DELETE_DIR = FileUtil.getDiskCacheDir(MyApplication.getIntstance()) + "/girls/share_y.jpg";
-    /**
-     * 崩溃日志本地保存地址
-     */
-    public static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory()
-            .getPath() + "/CrashLog/log/";
+
     //保存图片状态码
 
     public static int FIRST_DWON = 0;
@@ -91,6 +87,7 @@ public class Constants {
 //    public static int LOADING_DATA = 4;
 
     public static String[] arrTitle = {"Girl",
+            "Android",
             "App",
             "iOS",
             "Video",
@@ -98,41 +95,42 @@ public class Constants {
             "拓展资源",
             "Japan", "Hot", "Sex", "Cute", "MFStar", "Pans", "Ugirls", "Rosi", "Meiyan", "TuiGirl", "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren"};
 
+
     public static final int TYPE_GIRLS = 0;
+    private static final int TYPE_ANDROID = 1;
+    private static final int TYPE_APP = 2;
+    private static final int TYPE_IOS = 3;
+
+    private static final int TYPE_VEDIO = 4;
+
+    private static final int TYPE_FRONT = 5;
+
+    private static final int TYPE_EXTEND = 6;
+
+    private static final int TYPE_JAPAN = 7;
+
+    private static final int TYPE_HOT = 8;
+
+    private static final int TYPE_SEX = 9;
+
+    private static final int TYPE_CUTE = 10;
 
 
-    private static final int TYPE_APP = 1;
-    private static final int TYPE_IOS = 2;
+    private static final int TYPE_MFSTAR = 11;
 
-    private static final int TYPE_VEDIO = 3;
+    private static final int TYPE_PANS = 12;
 
-    private static final int TYPE_FRONT = 4;
+    private static final int TYPE_UGIRLS = 13;
+    private static final int TYPE_ROSI = 14;
 
-    private static final int TYPE_EXTEND = 5;
+    private static final int TYPE_MEIYAN = 15;
+    private static final int TYPE_TUIGIRL = 16;
+    private static final int TYPE_TUIBOBO = 17;
+    private static final int TYPE_DISIYINGXIANG = 18;
+    private static final int TYPE_YUNVLANG = 19;
+    private static final int TYPE_XIUREN = 20;
 
-    private static final int TYPE_JAPAN = 6;
-
-    private static final int TYPE_HOT = 7;
-
-    private static final int TYPE_SEX = 8;
-
-    private static final int TYPE_CUTE = 9;
-
-
-    private static final int TYPE_MFSTAR = 10;
-
-    private static final int TYPE_PANS = 11;
-
-    private static final int TYPE_UGIRLS = 12;
-    private static final int TYPE_ROSI = 13;
-
-    private static final int TYPE_MEIYAN = 14;
-    private static final int TYPE_TUIGIRL = 15;
-    private static final int TYPE_TUIBOBO = 16;
-    private static final int TYPE_DISIYINGXIANG = 17;
-    private static final int TYPE_YUNVLANG = 18;
-    private static final int TYPE_XIUREN = 19;
-
+    private static final String FRAGMENT_ANDROID = "Android";
     public static final String FRAGMENT_GIRLS = "福利";
     private static final String FRAGMENT_VIDEO = "休息视频";
     private static final String FRAGMENT_IOS = "iOS";
@@ -144,13 +142,15 @@ public class Constants {
     private static final String FRAGMENT_SEX = "xinggan";
     private static final String FRAGMENT_CUTE = "mm";
 
-    public static final String FRAGMENT_ANDROID = "安卓";
     public static final String SHARE_ME = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。https://github.com/1900Star/BigGirl";
 
     private static String mLoadType;
 
     public static String getLoadType(int type) {
         switch (type) {
+            case TYPE_ANDROID:
+                mLoadType = Constants.FRAGMENT_ANDROID;
+                break;
             case TYPE_APP:
                 mLoadType = Constants.FRAGMENT_APP;
                 break;

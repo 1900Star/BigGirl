@@ -16,6 +16,7 @@
         android:title="@string/action_share"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/main_action_all"
         android:icon="@drawable/ic_star_green_24dp"
         android:orderInCategory="100"
         android:title="@string/action_share"
