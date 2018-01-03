@@ -23,26 +23,30 @@ import java.util.Date;
  * Time:2017/9/2 19:58
  */
 public class CrashHandler
-        implements Thread.UncaughtExceptionHandler
-{
-    private static final String TAG              = "CrashHandler";
-    private static final String FILE_NAME        = "crash";
+        implements Thread.UncaughtExceptionHandler {
+
+    // 崩溃日志本地保存地址
+    private static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory()
+            .getPath() + "/CrashLog/log/";
+    private static final String TAG = "CrashHandler";
+    private static final String FILE_NAME = "crash";
     private static final String FILE_NAME_SUFFIX = ".txt";
-    private static CrashHandler sInstane=new CrashHandler();
+    private static CrashHandler sInstane = new CrashHandler();
     private Context mContext;
     private Thread.UncaughtExceptionHandler mDefaultCrashHandler;
 
-    public CrashHandler() {
+
+
+    public static CrashHandler getInstance() {
+        return sInstane;
     }
-public static CrashHandler getInstance() {
-    return sInstane;
-}
 
     public void init(Context context) {
         mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
-        mContext=context.getApplicationContext();
+        mContext = context.getApplicationContext();
     }
+
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         try {
@@ -66,23 +70,21 @@ public static CrashHandler getInstance() {
     }
 
     private void dumpExceptionToSdCard(Throwable ex)
-            throws PackageManager.NameNotFoundException
-    {
+            throws PackageManager.NameNotFoundException {
         if (!Environment.getExternalStorageState()
-                        .equals(Environment.MEDIA_MOUNTED))
-        {
+                .equals(Environment.MEDIA_MOUNTED)) {
             if (MyApplication.isShowLog) {
                 LogUtil.d(TAG, "sdcard unmounted,skip dump exception");
                 return;
             }
         }
-        File dir = new File(Constants.CRASH_LOG_PATH);
+        File dir = new File(CRASH_LOG_PATH);
         if (!dir.exists()) {
             dir.mkdirs();
         }
         long current = System.currentTimeMillis();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss").format(new Date(current));
-        File file    = new File(Constants.CRASH_LOG_PATH + FILE_NAME + time + FILE_NAME_SUFFIX);
+        File file = new File(CRASH_LOG_PATH + FILE_NAME + time + FILE_NAME_SUFFIX);
         try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             pw.println(time);
@@ -98,11 +100,10 @@ public static CrashHandler getInstance() {
     }
 
     private void dumpPhoneInfo(PrintWriter pw)
-            throws PackageManager.NameNotFoundException
-    {
+            throws PackageManager.NameNotFoundException {
         PackageManager pm = mContext.getPackageManager();
         PackageInfo pi = pm.getPackageInfo(mContext.getPackageName(),
-                                                    PackageManager.GET_ACTIVITIES);
+                PackageManager.GET_ACTIVITIES);
         pw.print("App Version: ");
         pw.print(pi.versionName);
         pw.print('_');
@@ -124,8 +125,6 @@ public static CrashHandler getInstance() {
 
 
     }
-
-
 
 
 }

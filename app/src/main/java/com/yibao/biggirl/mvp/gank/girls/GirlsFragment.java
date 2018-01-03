@@ -51,7 +51,7 @@ public class GirlsFragment
                 .build()
                 .in(this);
 
-        mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, Constants.GIRLS);
+        mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, Constants.TYPE_GIRLS);
 
     }
 

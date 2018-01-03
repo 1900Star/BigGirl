@@ -123,6 +123,7 @@ public class MainActivity
     private void initData() {
         mTablayout.setupWithViewPager(mViewPager);
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+
 //        保存Fragment的数量过多容易导致OOM，根据实际情况确定需要保存Fragment的数量
 //        mViewPager.setOffscreenPageLimit(Constants.arrTitle.length);
         mViewPager.setOffscreenPageLimit(4);
@@ -165,7 +166,6 @@ public class MainActivity
                 AboutMeDialogFag.newInstance(mHeaderUrl)
                         .show(getSupportFragmentManager(), "about");
                 break;
-
 
             case R.id.action_my_favorite:
                 startActivity(new Intent(this, FavoriteActivity.class));
@@ -212,7 +212,8 @@ public class MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.main_action_search:
+            case R.id.main_action_all:
+
                 break;
             case R.id.main_action_star:
                 //TODO

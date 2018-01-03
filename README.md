@@ -1,4 +1,16 @@
 ﻿
+![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/main.jpg)
+
+
+![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music.jpg)
+
+
+![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/biggirls.gif)
+
+![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/b.png)
+
+
+
 BigGirl
 
 #项目介绍：
@@ -17,20 +29,11 @@ BigGirl
     *eventbus
     *kotlin
 
-
-![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/c.gif)
-![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/girls.png)
-![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/b.png)
-![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/android.png)
-![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/webview.png)
-![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/BigGirl.png)
-
-
 # 提示
 本项目还没写完，只要有空闲的就会更新代码
 
 ## 干货数据源
-应用中的部分数据均来自[干货集中营][**daimajia**](https://github.com/daimajia)的干货集中营 [http://gank.io/api]
+应用中的部分数据来自干货集中营 [http://gank.io/api]
 
 #### 项目介绍：
 「BigGirl-Gank.io」用[干货集中营]提供的Api开发一的个综合资讯客户端，每天提更新一张妹子纸图片，一个视频，还有若干精选的Android，ios，web等相关的技术干货。
