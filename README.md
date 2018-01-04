@@ -22,12 +22,14 @@
 
 
 ## 第三方库
-    * Rxjava 
-    * Rxandroid 
-    * Dagger2 
-    * butterknife
-   * retrofit
-    * kotlin 
+  * Rxjava 
+  * OkHttp
+  * Glide
+  * GreenDao
+  * Dagger2 
+  * butterknife
+  * retrofit
+  * kotlin 
 
 ### 干货数据源
 应用中的部分数据来自  [干货集中营](http://gank.io/ "干货集中营")
