@@ -27,16 +27,13 @@
     *Dagger2
     *buttbutterknife
     *retrofit
-    *fresco
-    *glide
-    *eventbus
     *kotlin
 
-## 干货数据源
+### 干货数据源
 应用中的部分数据来自干货集中营 [http://gank.io/api]
 
 # 提示
-本项目还没写完，只要有空闲的就会更新代码
+本项目还没写完，只要有空闲的就会更新代码。
 
 
 
