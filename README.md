@@ -12,9 +12,9 @@
 # BigGirl
 
 #### 项目介绍：
-[BigGirl](https://weibo.com/stranger98)  一个集图片浏览、开发技术干货和音乐播放的综合资讯客户端，部分数据来自于[干货集中营](http://gank.io/)和[Unsplash](https://unsplash.com/)，音乐播放器UI是模仿的锤子音乐播放器。
+[BigGirl](https://github.com/1900Star/BigGirl)  一个集图片浏览、开发技术干货和音乐播放的综合资讯客户端，部分数据来自于[干货集中营](http://gank.io/)和[Unsplash](https://unsplash.com/)，音乐播放器UI是模仿的锤子音乐播放器。
 
-项目代码完全开源，由@丨900完成，写这个项目主要是学习RxJava2，Retrofit2，Dagger2等开源框架,整个项目参照了谷歌官方RxMVP设计模式，
+项目代码完全开源，由[丨900](https://weibo.com/stranger98)完成，写这个项目主要是学习RxJava2，Retrofit2，Dagger2等开源框架,整个项目参照了谷歌官方RxMVP设计模式，
 
 整个过程中有收获很多，熟悉了RxJava2的一些操作符，用Rxbus替代了曾经常用的Eventbus，对MVP+RxJava+Retrofit这个黄金组合有了近一步的认识。
 
