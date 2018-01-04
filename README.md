@@ -22,12 +22,12 @@
 
 
 ## 第三方库
-    *Rxjava \<br>
-    *Rxandroid \<br>
-    *Dagger2 \<br>
-    *buttbutterknife \<br>
-    *retrofit \<br>
-    *kotlin \<br>
+    * Rxjava 
+    * Rxandroid 
+    * Dagger2 
+    * buttbutterknife 
+    * retrofit 
+    * kotlin 
 
 ### 干货数据源
 应用中的部分数据来自  [干货集中营](http://gank.io/ "干货集中营")
