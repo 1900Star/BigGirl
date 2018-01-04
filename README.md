@@ -12,7 +12,7 @@
 # BigGirl
 
 #### 项目介绍：
-「BigGirl」  一个集图片浏览、开发技术干货和音乐播放的综合资讯客户端，部分数据来自于   [干货集中营](http://gank.io/)提供的数据，音乐播放器UI是模仿的锤子音乐播放器。
+[BigGirl](https://github.com/1900Star/BigGirl)  一个集图片浏览、开发技术干货和音乐播放的综合资讯客户端，部分数据来自于[干货集中营](http://gank.io/)和[Unsplash](https://unsplash.com/)，音乐播放器UI是模仿的锤子音乐播放器。
 
 项目代码完全开源，由@丨900完成，写这个项目主要是学习RxJava2，Retrofit2，Dagger2等开源框架,整个项目参照了谷歌官方RxMVP设计模式，
 
@@ -22,18 +22,15 @@
 
 
 ## 第三方库
-  * Rxjava 
-  * OkHttp
-  * Glide
-  * GreenDao
-  * Dagger2 
-  * butterknife
-  * retrofit
-  * kotlin 
-
-### 干货数据源
-应用中的部分数据来自  [干货集中营](http://gank.io/ "干货集中营")
-
+  * [Rxjava](https://github.com/ReactiveX/RxJava)  
+  * [OkHttp](https://github.com/square/okhttp)
+  * [Glide](https://github.com/bumptech/glide)
+  * [GreenDao](https://github.com/greenrobot/greenDAO)
+  * [Dagger2](https://github.com/square/dagger)
+  * [butterknife](https://github.com/JakeWharton/butterknife)
+  * [retrofit](https://github.com/square/retrofit)
+  * [Jsoup](https://github.com/jhy/jsoup) 
+  * [BGASwipeBackLayout-Android](https://github.com/bingoogolapple/BGASwipeBackLayout-Android)
 
 
 # 提示
