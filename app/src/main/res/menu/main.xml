@@ -3,25 +3,25 @@
 
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/main_action_search"
-        android:icon="@drawable/ic_star_accent_24dp"
-        android:orderInCategory="100"
-        android:title="@string/action_share"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/main_action_star"
-        android:icon="@drawable/ic_star_yellow_24dp"
-        android:orderInCategory="100"
-        android:title="@string/action_share"
-        app:showAsAction="ifRoom"/>
+
+
     <item
         android:id="@+id/main_action_all"
         android:icon="@drawable/ic_star_green_24dp"
         android:orderInCategory="100"
+        android:title="@string/action_all"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/main_action_search"
+        android:icon="@drawable/ic_menu_search"
+        android:orderInCategory="100"
+        android:title="@string/action_search" />
+    <item
+        android:id="@+id/main_action_star"
+        android:icon="@drawable/ic_star_yellow_24dp"
+        android:orderInCategory="101"
         android:title="@string/action_share"
         app:showAsAction="ifRoom"/>
-
 
 
 </menu>

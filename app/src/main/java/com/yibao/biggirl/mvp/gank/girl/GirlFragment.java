@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
@@ -259,7 +260,7 @@ public class GirlFragment
     //图片保存
     @OnClick({R.id.iv_down})
     public void onViewClicked(View view) {
-
+        ImageView v = (ImageView) mAdapter.getPrimaryItem();
         // 网络检查
         boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
         if (isConnected) {

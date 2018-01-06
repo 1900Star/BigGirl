@@ -3,16 +3,14 @@ package com.yibao.biggirl.mvp.gank.all;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.util.ActivityUtils;
 import com.yibao.biggirl.util.SystemUiVisibilityUtil;
 
 /**
- * Author：Sid
+ * @author：Sid
  * Des：${TODO}
  * Time:2017/4/8 04:24
  */
@@ -22,9 +20,6 @@ public class AllActivity
 {
 
 
-    private static final int BUILD_VERSION = 21;
-    private View      mDecorView;
-    private ActionBar mActionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,8 +28,6 @@ public class AllActivity
         getSupportActionBar().setTitle("All");
         SystemUiVisibilityUtil.hideStatusBar(getWindow(), true);
         if (savedInstanceState == null) {
-            mDecorView = getWindow().getDecorView();
-            mActionBar = getSupportActionBar();
             initData();
 
         }

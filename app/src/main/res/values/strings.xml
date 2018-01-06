@@ -44,5 +44,7 @@
     <string name="share_me">这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。https://github.com/1900Star/BigGirl</string>
     <string name="under_line">_</string>
     <string name="childe_view_not">SwipeItemLayout的子视图不符合规定</string>
+    <string name="action_search">搜索</string>
+    <string name="action_all">all</string>
 
 </resources>

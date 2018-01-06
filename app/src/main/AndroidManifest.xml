@@ -33,6 +33,7 @@
         </activity>
         <activity
             android:name=".mvp.main.MainActivity"
+            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -76,17 +77,7 @@
         <activity
             android:name=".mvp.gank.duotu.DuotuPicActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.gank.app.BeijingActivity"
-            android:label="@string/title_activity_beijing" />
-        <activity
-            android:name=".mvp.gank.app.Main2Activity"
-            android:label="@string/title_activity_main2" />
-        <activity
-            android:name=".mvp.gank.app.FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/FullscreenTheme"></activity>
+
     </application>
 
 </manifest>

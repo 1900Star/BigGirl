@@ -42,6 +42,7 @@ import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.SnakbarUtil;
+import com.yibao.biggirl.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,8 +213,8 @@ public class MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.main_action_all:
-
+            case R.id.main_action_search:
+                ToastUtil.showShort(this,"搜索");
                 break;
             case R.id.main_action_star:
                 //TODO
