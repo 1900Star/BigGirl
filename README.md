@@ -34,8 +34,8 @@
   * [retrofit](https://github.com/square/retrofit)
   * [Jsoup](https://github.com/jhy/jsoup) 
   * [RxBinding](https://github.com/JakeWharton/RxBinding)
-  * [BGASwipeBackLayout-Android](https://github.com/bingoogolapple/BGASwipeBackLayout-Android)
-
+  * [BGASwipeBackLayout-Android](https://github.com/bingoogolapple/BGASwipeBackLayout-Android)
+# 感谢
 
 # 提示
    ##### 本项目还没写完，只要有空闲时间就会更新代码。
