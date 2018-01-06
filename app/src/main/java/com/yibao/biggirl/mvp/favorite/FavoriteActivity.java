@@ -45,7 +45,7 @@ public class FavoriteActivity
         SwipeRefreshLayout.OnRefreshListener {
 
 
-    @BindView(R.id.fag_content)
+    @BindView(R.id.favorite_content)
     LinearLayout mFagContent;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;

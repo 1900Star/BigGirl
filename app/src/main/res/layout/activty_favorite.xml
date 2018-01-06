@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
     >
         <LinearLayout
-            android:id="@+id/fag_content"
+            android:id="@+id/favorite_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/itemBg"
