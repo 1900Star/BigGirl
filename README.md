@@ -12,31 +12,35 @@
 # BigGirl
 
 #### 项目介绍：
-「BigGirl」  一个集图片浏览、开发技术干货和音乐播放的综合资讯客户端，部分数据来自于  - [干货集中营](http://gank.io/)提供的数据，音乐播放器UI是模仿的锤子音乐播放器。
+[BigGirl](https://github.com/1900Star/BigGirl)  一个集图片浏览、开发技术干货和音乐播放的综合资讯客户端。
 
-项目代码完全开源，由@丨900完成，写这个项目主要是学习RxJava2，Retrofit2，Dagger2等开源框架,整个项目参照了谷歌官方RxMVP设计模式，
+项目代码完全开源，由[丨900](https://weibo.com/stranger98)完成，写这个项目主要是学习RxJava2，Retrofit2，Dagger2等开源框架,整个项目参照了[谷歌官方RxMVP](https://github.com/googlesamples/android-architecture-components) Samples，
 
-整个过程中有收获很多，熟悉了RxJava2的一些操作符，用Rxbus替代了曾经常用的Eventbus，对MVP+RxJava+Retrofit这个黄金组合有了近一步的认识。
+整个过程中有收获很多，熟悉了RxJava2的一些操作符，用Rxbus替代了曾经常用的Eventbus，网页和音乐的收藏功能用GreenDao实现的，整个开发过程使我对MVP+RxJava+Retrofit这个黄金组合有了更近一步的认识。
 
-由于本人水平有限，项目中难免有所纰漏，如果有问题请与我联系 www.strangermy98@gmail.com
-
-
+## 数据来源
+   * [干货集中营](http://gank.io/)
+   * [多图网](http://www.duotu555.com/)
+   * [妹子图](http://www.mzitu.com/)
+   * [Unsplash](http://www.unsplash.com/)
+  
 ## 第三方库
-    * Rxjava 
-    * Rxandroid 
-    * Dagger2 
-    * butterknife
-   * retrofit
-    * kotlin 
-
-### 干货数据源
-应用中的部分数据来自  [干货集中营](http://gank.io/ "干货集中营")
-
+  * [Rxjava](https://github.com/ReactiveX/RxJava)  
+  * [OkHttp](https://github.com/square/okhttp)
+  * [Glide](https://github.com/bumptech/glide)
+  * [GreenDao](https://github.com/greenrobot/greenDAO)
+  * [Dagger2](https://github.com/square/dagger)
+  * [butterknife](https://github.com/JakeWharton/butterknife)
+  * [retrofit](https://github.com/square/retrofit)
+  * [Jsoup](https://github.com/jhy/jsoup) 
+  * [RxBinding](https://github.com/JakeWharton/RxBinding)
+  * [BGASwipeBackLayout-Android](https://github.com/bingoogolapple/BGASwipeBackLayout-Android)
 
 
 # 提示
-本项目还没写完，只要有空闲时间就会更新代码。
- 
+   ##### 本项目还没写完，只要有空闲时间就会更新代码。
+    
+   ##### 由于本人水平有限，项目中难免有所纰漏，如果有问题请与我联系 www.strangermy98@gmail.com
 
 
 
