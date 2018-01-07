@@ -5,7 +5,7 @@
 <ImageView
     android:layout_width="match_parent"
     android:scaleType="fitCenter"
-    android:src="@mipmap/splash"
     android:id="@+id/kot_iv"
+    android:src="@mipmap/splash"
     android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>

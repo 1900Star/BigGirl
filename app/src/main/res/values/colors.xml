@@ -11,7 +11,6 @@
     <color name="textDes">#4d4d4d</color>
     <color name="listBg">#e9e7e7</color>
     <color name="itemBg">#d9d5d5</color>
-    <color name="itemType">#ea1ee3</color>
     <color name="colorGreen">#5ab43f</color>
     <color name="musicFloatBg">#41f79ce1</color>
 
@@ -29,7 +28,6 @@
     <color name="seekBarP">#8e8e8f</color>
     <color name="seekBarN">#ccdcdbdb</color>
 
-    <color name="black_overlay">#66000000</color>
     <!-- 透明 -->
 
 </resources>

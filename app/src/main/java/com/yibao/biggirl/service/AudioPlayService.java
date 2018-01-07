@@ -11,7 +11,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 
 import com.yibao.biggirl.MyApplication;
@@ -52,7 +51,6 @@ public class AudioPlayService
     private NotificationManager manager;
     private RemoteViews mRemoteViews;
 
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return mAudioBinder;
@@ -64,9 +62,7 @@ public class AudioPlayService
         mAudioBinder = new AudioBinder();
         mRemoteViews = new RemoteViews(getPackageName(), R.layout.music_notify);
         initBroadcast();
-//        sp = getSharedPreferences("music_mode", MODE_PRIVATE);
         //初始化播放模式
-//        PLAY_MODE = sp.getMusicMode("play_mode", MODE_PRIVATE);
         PLAY_MODE = SharePrefrencesUtil.getMusicMode(this);
 
         LogUtil.d(getClass().getSimpleName() + "      oncreate");

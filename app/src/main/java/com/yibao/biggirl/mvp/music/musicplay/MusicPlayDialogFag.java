@@ -110,7 +110,8 @@ public class MusicPlayDialogFag
         mInfoDao = MyApplication.getIntstance()
                 .getDaoSession()
                 .getMusicInfoDao();
-        registerVolumeReceiver();     //注册音量监听广播
+        //注册音量监听广播
+        registerVolumeReceiver();
     }
 
     @Override
@@ -176,7 +177,6 @@ public class MusicPlayDialogFag
         }
         startUpdateProgress();
         //设置播放模式图片
-//        int mode = mPreferences.getMusicMode("play_mode", MODE_PRIVATE);
         int mode = SharePrefrencesUtil.getMusicMode(getActivity());
         updatePlayModeImage(mode);
         //音乐设置

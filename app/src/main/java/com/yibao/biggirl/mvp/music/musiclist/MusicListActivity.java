@@ -198,7 +198,7 @@ public class MusicListActivity
         mItem = musicItem;
         // 将MusicConfig设置为ture
         SharePrefrencesUtil.setMusicConfig(this);
-
+        mMusicConfig = true;
         //更新音乐标题
         String songName = StringUtil.getSongName(musicItem.getTitle());
         mMusicFloatSongName.setText(songName);
