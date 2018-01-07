@@ -6,6 +6,7 @@ import com.yibao.biggirl.MyApplication;
  * 作者：Stran on 2017/3/23 15:26
  * 描述：${常量类}
  * 邮箱：strangermy@outlook.com
+ *
  * @author Stran
  */
 public class Constants {
@@ -213,4 +214,15 @@ public class Constants {
         }
         return mLoadType;
     }
+
+    public static final int MODE_KEY = 0;
+    public static final String MUSIC_MODE = "music_mode";
+    public static final String PLAY_MODE_KEY = "play_mode";
+
+    public static final String MUSIC_POSITION = "music_position";
+    public static final String MUSIC_ITEM_POSITION = "music_position";
+
+    public static final String MUSIC_CONFIG = "music_config";
+    public static final String MUSIC_REMENBER_FLAG = "music_remenber_flag";
+
 }

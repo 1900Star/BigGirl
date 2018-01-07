@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
@@ -21,6 +20,7 @@ import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.music.musiclist.MusicNoification;
 import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.util.SharePrefrencesUtil;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -47,7 +47,7 @@ public class AudioPlayService
     public static final String ACTION_MUSIC = "MUSIC";
     private int position = -2;
     private ArrayList<MusicInfo> mMusicItem;
-    private SharedPreferences sp;
+    //    private SharedPreferences sp;
     private MusicBroacastReceiver mReceiver;
     private NotificationManager manager;
     private RemoteViews mRemoteViews;
@@ -64,11 +64,15 @@ public class AudioPlayService
         mAudioBinder = new AudioBinder();
         mRemoteViews = new RemoteViews(getPackageName(), R.layout.music_notify);
         initBroadcast();
-        sp = getSharedPreferences("music_mode", MODE_PRIVATE);
+//        sp = getSharedPreferences("music_mode", MODE_PRIVATE);
         //初始化播放模式
-        PLAY_MODE = sp.getInt("play_mode", 0);
+//        PLAY_MODE = sp.getMusicMode("play_mode", MODE_PRIVATE);
+        PLAY_MODE = SharePrefrencesUtil.getMusicMode(this);
+
+        LogUtil.d(getClass().getSimpleName() + "      oncreate");
 
     }
+
 
     private void initBroadcast() {
         mReceiver = new MusicBroacastReceiver();
@@ -78,11 +82,12 @@ public class AudioPlayService
         registerReceiver(mReceiver, filter);
 
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        LogUtil.d(getClass().getSimpleName() + "    first  oncreate");
         mMusicItem = intent.getParcelableArrayListExtra("musicItem");
         int enterPosition = intent.getIntExtra("position", -1);
-        LogUtil.d("Ser position  " + enterPosition);
         if (enterPosition != position && enterPosition != -1) {
             position = enterPosition;
             //执行播放
@@ -90,6 +95,7 @@ public class AudioPlayService
             LogUtil.d("onStartCommand   ");
         } else if (enterPosition != -1 && enterPosition == position) {
             //通知播放界面更新
+            LogUtil.d("Service position  " + position);
             MyApplication.getIntstance()
                     .bus()
                     .post(mMusicItem.get(position));
@@ -120,6 +126,8 @@ public class AudioPlayService
 
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnCompletionListener(this);
+            LogUtil.d("最初的Positon   " + position);
+            SharePrefrencesUtil.setMusicPosition(AudioPlayService.this, position);
         }
 
 
@@ -193,9 +201,8 @@ public class AudioPlayService
         public void setPalyMode(int playmode) {
             PLAY_MODE = playmode;
             //保存播放模式
-            sp.edit()
-                    .putInt("play_mode", PLAY_MODE)
-                    .commit();
+
+            SharePrefrencesUtil.setMusicMode(AudioPlayService.this, PLAY_MODE);
         }
 
         //手动播放上一曲
@@ -210,7 +217,6 @@ public class AudioPlayService
                     } else {
                         position--;
                     }
-
                     break;
             }
             play();
@@ -285,10 +291,15 @@ public class AudioPlayService
 
         }
 
+        public void closeNotificaction() {
+            if (manager != null) {
+                manager.cancelAll();
+            }
+        }
     }
 
     //控制通知栏的广播
-   private class MusicBroacastReceiver
+    private class MusicBroacastReceiver
             extends BroadcastReceiver
 
     {
@@ -305,7 +316,6 @@ public class AudioPlayService
                         break;
                     case CLOSE:
                         LogUtil.d("CLOSE");
-//                        mAudioBinder.pause();
                         mAudioBinder.playStatus
                                 (0);
                         manager.cancel(0);

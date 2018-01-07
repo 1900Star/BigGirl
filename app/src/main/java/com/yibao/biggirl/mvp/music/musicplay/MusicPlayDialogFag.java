@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -38,6 +37,7 @@ import com.yibao.biggirl.util.ColorUtil;
 import com.yibao.biggirl.util.DialogUtil;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.RxBus;
+import com.yibao.biggirl.util.SharePrefrencesUtil;
 import com.yibao.biggirl.util.StringUtil;
 import com.yibao.biggirl.view.CircleImageView;
 import com.yibao.biggirl.view.music.LyricsView;
@@ -54,9 +54,9 @@ import io.reactivex.schedulers.Schedulers;
 import static com.yibao.biggirl.util.StringUtil.getSongName;
 
 /**
- * Author：Sid
  * Des：${音乐播放界面}
  * Time:2017/5/30 13:27
+ * @author Stran
  */
 public class MusicPlayDialogFag
         extends DialogFragment
@@ -99,7 +99,6 @@ public class MusicPlayDialogFag
     private LyricsView mLyricsView;
     private Disposable mDisposableLyr;
     private VolumeReceiver mVolumeReceiver;
-    private SharedPreferences mPreferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,7 +125,7 @@ public class MusicPlayDialogFag
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPreferences = getActivity().getSharedPreferences("music_mode", 0);
+
     }
 
     private void checkCurrentIsFavorite() {
@@ -150,6 +149,7 @@ public class MusicPlayDialogFag
 
         mSongName.setText(StringUtil.getSongName(mMusicInfo.getTitle()));
         mArtistName.setText(mMusicInfo.getArtist());
+
         String url = StringUtil.getAlbulm(mMusicInfo.getAlbumId())
                 .toString();
         setAlbulm(url);
@@ -176,7 +176,8 @@ public class MusicPlayDialogFag
         }
         startUpdateProgress();
         //设置播放模式图片
-        int mode = mPreferences.getInt("play_mode", 0);
+//        int mode = mPreferences.getMusicMode("play_mode", MODE_PRIVATE);
+        int mode = SharePrefrencesUtil.getMusicMode(getActivity());
         updatePlayModeImage(mode);
         //音乐设置
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
@@ -194,7 +195,10 @@ public class MusicPlayDialogFag
 
     }
 
-    //不停的更新进度 和 时间
+
+    /**
+     * Rxbus接收歌曲时时的进度 和 时间，并更新UI
+     */
     private void startUpdateProgress() {
         setSongDuration();
         if (mSubscribe == null) {
@@ -220,9 +224,12 @@ public class MusicPlayDialogFag
     }
 
     private void updataProgress(int progress) {
-        mStartTime.setText(StringUtil.parseDuration(progress));    //时间进度
-        mSbProgress.setProgress(progress);  //时时播放进度
-        mEndTime.setText(StringUtil.parseDuration(mDuration - progress));       //歌曲总时长递减
+        //时间进度
+        mStartTime.setText(StringUtil.parseDuration(progress));
+        //时时播放进度
+        mSbProgress.setProgress(progress);
+        //歌曲总时长递减
+        mEndTime.setText(StringUtil.parseDuration(mDuration - progress));
     }
 
 
@@ -273,9 +280,7 @@ public class MusicPlayDialogFag
         mSongName.setText(getSongName(info.getTitle()));
         //更新歌手名称
         mArtistName.setText(info.getArtist());
-        //        歌曲Url
         //        设置专辑图片
-        //                mAlbumUrl = RandomUtil.getRandomUrl();
         mAlbumUrl = StringUtil.getAlbulm(info.getAlbumId())
                 .toString();
         setAlbulm(mAlbumUrl);
@@ -283,7 +288,6 @@ public class MusicPlayDialogFag
         setSongDuration();
         //        更新播放状态按钮
         updatePlayBtnStatus();
-
 
 
     }
@@ -333,7 +337,9 @@ public class MusicPlayDialogFag
     }
 
 
-    //切换当前播放模式 全部循环-单曲循环-随机播放
+    /**
+     * 音乐的播放模式 全部循环-单曲循环-随机播放
+     */
     private void switchPlayMode() {
         //获取当前的播放模式
         int playMode = audioBinder.getPalyMode();
@@ -355,7 +361,12 @@ public class MusicPlayDialogFag
         updatePlayModeImage(audioBinder.getPalyMode());
     }
 
-    //更新播放模式图片
+
+    /**
+     * 更新播放模式图片
+     *
+     * @param playMode
+     */
     private void updatePlayModeImage(int playMode) {
         switch (playMode) {
             case AudioPlayService.PLAY_MODE_ALL:
@@ -379,30 +390,37 @@ public class MusicPlayDialogFag
                 dismiss();
                 break;
 
-            case R.id.playing_song_album:      //显示专辑大图
+            //显示专辑大图
+            case R.id.playing_song_album:
                 break;
             //TODO
-            case R.id.iv_lyrics_switch:    //显示歌词
+            //显示歌词
+            case R.id.iv_lyrics_switch:
                 showLyrics();
                 break;
 
-            case R.id.music_player_mode:    //切换播放模式
+            //切换播放模式
+            case R.id.music_player_mode:
                 switchPlayMode();
                 break;
-            case R.id.music_player_pre:     //上一曲
+            //上一曲
+            case R.id.music_player_pre:
                 audioBinder.playPre();
                 break;
-            case R.id.music_play:      //播放
+            //播放
+            case R.id.music_play:
                 switchPlayState();
                 break;
-            case R.id.music_player_next:       //下一曲
+            //下一曲
+            case R.id.music_player_next:
                 audioBinder.playNext();
                 break;
-            case R.id.iv_favorite_music:   //收藏
+            //收藏
+            case R.id.iv_favorite_music:
                 favoritMusic();
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
 
     }
@@ -416,8 +434,8 @@ public class MusicPlayDialogFag
             mIvLyrSwitch.setBackgroundResource(R.drawable.music_lrc_close);
             AnimationDrawable animation = (AnimationDrawable) mIvLyrSwitch.getBackground();
             animation.start();
-            mDisposableLyr.dispose();
-            mLyricsView.setVisibility(View.INVISIBLE);
+//            mDisposableLyr.dispose();
+//            mLyricsView.setVisibility(View.INVISIBLE);
             isShowLyrics = false;
         } else {
             mIvLyrSwitch.setBackgroundResource(R.drawable.music_lrc_open);
@@ -425,11 +443,11 @@ public class MusicPlayDialogFag
             animation.start();
 
             //              初始化歌词
-            mLyricsView.setLrcFile(mMusicInfo.getSongUrl());
+//            mLyricsView.setLrcFile(mMusicInfo.getSongUrl());
             LogUtil.d("SongUrl : " + mMusicInfo.getSongUrl());
-            initLyrics();
+//            initLyrics();
 
-            mLyricsView.setVisibility(View.VISIBLE);
+//            mLyricsView.setVisibility(View.VISIBLE);
             isShowLyrics = true;
         }
 
@@ -540,7 +558,7 @@ public class MusicPlayDialogFag
         MusicPlayDialogFag fragment = new MusicPlayDialogFag();
         Bundle bundle = new Bundle();
         bundle.putParcelable("info", info);
-        fragment.setArguments(bundle);//把参数设置给自己
+        fragment.setArguments(bundle);
         return fragment;
     }
 

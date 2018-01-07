@@ -2,7 +2,6 @@ package com.yibao.biggirl.model.app;
 
 import com.yibao.biggirl.network.RetrofitHelper;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -36,13 +35,6 @@ public class RemoteAppData
                     public void onNext(@NonNull GankDesBean gankDesBean) {
                         List<ResultsBeanX> list = gankDesBean.getResults();
                         callback.onLoadData(gankDesBean.getResults());
-                        for (int i = 0; i < list.size(); i++) {
-                            ResultsBeanX beanX = list.get(i);
-                            LogUtil.d(" android type " + beanX.getType());
-                            LogUtil.d(" android  url " + beanX.getUrl());
-                        }
-
-
                     }
 
                     @Override

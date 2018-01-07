@@ -124,7 +124,8 @@ public class GirlFragment
         if (mList.size() != 0) {
             mAdapter = new GirlAdapter(getActivity(), mList);
         }
-        mVp.setPageTransformer(true, new GirlPageTransformer());
+        boolean animationSwitch = false;
+        mVp.setPageTransformer(animationSwitch, new GirlPageTransformer());
         mVp.setAdapter(mAdapter);
         mVp.setCurrentItem(mPosition);
         mVp.addOnPageChangeListener(this);
@@ -193,10 +194,12 @@ public class GirlFragment
             case android.R.id.home:
                 getActivity().finish();
                 break;
-            case R.id.action_setwallpaer: //设置壁纸
+            //设置壁纸
+            case R.id.action_setwallpaer:
                 WallPaperUtil.setWallPaper(getActivity(), mAdapter);
                 SnakbarUtil.setWallpaer(mPbDown);
                 break;
+
             //自动播放图册
             case R.id.action_auto_play:
                 autoPreview();
