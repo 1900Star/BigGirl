@@ -76,7 +76,7 @@ public class FavoriteAdapter
             viewHolder.mFavoriteItem.setOnClickListener(view -> {
 
                 if (mContext instanceof OnRvItemClickListener) {
-                    ((OnRvItemClickListener) mContext).showDetail(bean, bean.getId());
+                    ((OnRvItemClickListener) mContext).showWebDetail(bean, bean.getId());
                 }
             });
 

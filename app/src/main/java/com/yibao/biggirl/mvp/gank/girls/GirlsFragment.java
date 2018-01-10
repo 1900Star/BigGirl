@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.yibao.biggirl.base.BaseRecyclerFag;
+import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.model.dagger2.component.DaggerGirlsComponent;
 import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
 import com.yibao.biggirl.util.Constants;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * 邮箱：strangermy@outlook.com
  */
 public class GirlsFragment
-        extends BaseRecyclerFag<String>
+        extends BaseRecyclerFragment<String>
         implements
         View.OnLongClickListener,
         GirlsContract.View<String> {

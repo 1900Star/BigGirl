@@ -1,9 +1,7 @@
 package com.yibao.biggirl.base;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.yibao.biggirl.R;
+import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.factory.RecyclerFactory;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.util.LogUtil;
 
 import java.util.ArrayList;
@@ -23,52 +21,85 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+
+
 
 /**
- * Des：${BaseRecyclerFag}
- * Time:2017/6/4 21:55
- * @author Stran
+ * @项目名： BigGirl
+ * @包名： com.yibao.biggirl.base
+ * @文件名: BaseRecyclerActivity
+ * @author: Stran
+ * @email: strangermy@outlook.com
+ * @创建时间: 2017/3/29 15:25
+ * @描述： 凡是页面包含RecyclerView的,都要继承这个BaseRecyclerActivity
  */
-public abstract class BaseRecyclerFag<T>
-        extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener
+
+public abstract class BaseRecyclerActivity<T>
+        extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener
 
 {
 
-    public int page = 1;
+    public CompositeDisposable mDisposable;
+    public MyApplication mApplication;
+    public String TAG = getClass().getSimpleName() + "    ";
     public int size = 20;
+    public int page = 1;
     public List<T> mList;
 
-    public FloatingActionButton mFab;
-    public SwipeRefreshLayout mSwipeRefresh;
-    public LinearLayout mFagContent;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDisposable = new CompositeDisposable();
+        mApplication = MyApplication.getIntstance();
+        mList = new ArrayList<>();
+    }
 
-    /**
-     * 下拉刷新数据
-     */
-    protected abstract void refreshData();
-
-    /**
-     * RecyclerView上拉加载更多数据
-     */
-    protected abstract void loadMoreData();
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mList = new ArrayList<>();
+    public void onRefresh() {
+        Observable.timer(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    refreshData();
+                    page = 1;
+                });
+    }
+
+    protected abstract void refreshData();
+
+
+    /**
+     * 长按预览图片
+     *
+     * @param url
+     */
+    @Override
+    public void onLongTouchPreview(String url) {
 
     }
 
+    /**
+     * 打开Web页面
+     *
+     * @param bean
+     * @param id
+     */
     @Override
-    protected void initView(Bundle savedInstanceState) {
-        setContentView(R.layout.girls_frag);
-        mSwipeRefresh = getViewById(R.id.swipe_refresh);
-        mFagContent = getViewById(R.id.fag_content);
-        mFab = getViewById(R.id.fab_fag);
+    public void showWebDetail(FavoriteWebBean bean, Long id) {
 
-        mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
-        mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setRefreshing(true);
+    }
+
+    /**
+     * @param position 点击的位置  ，  只有GirlsFragment需要传入
+     * @param list     打开GirlActivity需要的数据 ，  只有GirlsFragment需要传入
+     * @param type     type  0:表示从GirlsFragment打开、1：表示从MeizituFag打开、
+     *                 2:表示从DuotuFag打开、 3:表示从SisanFag打开
+     * @param link     只有从MeizituFag和DuotuFag打开时需要传入
+     */
+    @Override
+    public void showBigGirl(int position, List<String> list, int type, String link) {
+
     }
 
     /**
@@ -147,20 +178,14 @@ public abstract class BaseRecyclerFag<T>
         return recyclerView;
     }
 
-    @Override
-    public void onRefresh() {
-
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    refreshData();
-                    page = 1;
-                });
-    }
+    protected abstract void loadMoreData();
 
 
     /**
      * 找到数组中的最大值
+     *
+     * @param lastPositions
+     * @return
      */
     public int findMax(int[] lastPositions) {
         int max = lastPositions[0];
@@ -172,5 +197,12 @@ public abstract class BaseRecyclerFag<T>
         return max;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDisposable != null) {
+            mDisposable.clear();
+        }
 
+    }
 }

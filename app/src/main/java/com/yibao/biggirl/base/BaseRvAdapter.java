@@ -30,7 +30,7 @@ public abstract class BaseRvAdapter<T>
     public List<T> mList = null;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
-    private int MIN_ITME_NUM=10;
+    private int MIN_ITME_NUM = 10;
 
     public BaseRvAdapter(List<T> list) {
         mList = list;
@@ -122,10 +122,9 @@ public abstract class BaseRvAdapter<T>
 
     public void AddFooter(List<T> list) {
         for (T t : list) {
-            if (mList.contains(t)) {
-                continue;
+            if (!mList.contains(t)) {
+                mList.add(t);
             }
-            mList.add(t);
 
         }
 

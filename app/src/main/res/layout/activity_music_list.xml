@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,11 +7,12 @@
     android:background="@color/musicFloatBg"
     android:orientation="vertical"
     tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorAccent"
-    >
+        android:background="@color/colorAccent">
+
         <ImageView
             android:id="@+id/music_toolbar_back"
             android:layout_width="wrap_content"
@@ -20,35 +20,77 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_arrow_back_black_24dp"/>
+            android:src="@drawable/ic_arrow_back_black_24dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/music"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/big_tv"/>
+            android:textSize="@dimen/big_tv" />
 
     </RelativeLayout>
 
     <com.yibao.biggirl.view.music.MusicView
         android:id="@+id/musci_view"
-        android:background="@color/listBg"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@color/listBg" />
 
-    </com.yibao.biggirl.view.music.MusicView>
+    <LinearLayout
+        android:id="@+id/music_pager_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/music_floating_vp"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+
+                android:id="@+id/music_floating_pager_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:src="@drawable/btn_playing_play" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="18dp"
+                android:contentDescription="@null"
+                android:src="@drawable/btn_playing_next" />
+        </LinearLayout>
+    </LinearLayout>
+
     <android.support.v7.widget.CardView
         android:id="@+id/music_floating_block"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:visibility="gone"
         app:cardBackgroundColor="#fff">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        >
+            android:layout_height="wrap_content">
+
             <com.yibao.biggirl.view.CircleImageView
                 android:id="@+id/music_float_block_albulm"
                 android:layout_width="50dp"
@@ -60,8 +102,8 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
-                android:src="@drawable/dropdown_menu_noalbumcover"
-            />
+                android:src="@drawable/dropdown_menu_noalbumcover" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,6 +120,7 @@
                     android:layout_weight="1"
 
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/music_float_song_name"
                         android:layout_width="wrap_content"
@@ -85,9 +128,9 @@
                         android:layout_marginTop="4dp"
                         android:ellipsize="marquee"
                         android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
                         android:textColor="@color/textDes"
-                        android:textSize="@dimen/music_loating_title"
-                        android:singleLine="true"/>
+                        android:textSize="@dimen/music_loating_title" />
 
                     <TextView
                         android:id="@+id/music_float_singer_name"
@@ -95,10 +138,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:textColor="@color/textName"
-                        android:textSize="@dimen/music_loating_name"
-                    />
+                        android:textSize="@dimen/music_loating_name" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -111,31 +154,34 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@null"
-                        android:src="@drawable/btn_playing_prev"/>
+                        android:src="@drawable/btn_playing_prev" />
+
                     <ImageView
                         android:id="@+id/music_floating_play"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@null"
-                        android:src="@drawable/btn_playing_play"/>
+                        android:src="@drawable/btn_playing_play" />
+
                     <ImageView
                         android:id="@+id/music_floating_next"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@null"
-                        android:src="@drawable/btn_playing_next"/>
+                        android:src="@drawable/btn_playing_next" />
 
 
                 </LinearLayout>
             </LinearLayout>
+
             <com.yibao.biggirl.view.ProgressBtn
                 android:id="@+id/music_float_pb"
                 android:layout_width="match_parent"
-                android:background="@color/colorWhite"
                 android:layout_height="2dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorWhite" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

@@ -33,7 +33,6 @@
         <include layout="@layout/music_sticky_header_view" />
 
         <com.yibao.biggirl.view.music.MusicSlidBar
-            android:id="@+id/contact_slidbar"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_gravity="right" />

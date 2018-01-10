@@ -2,11 +2,12 @@ package com.yibao.biggirl.factory;
 
 import android.support.v4.app.Fragment;
 
-import com.yibao.biggirl.base.BaseRecyclerFag;
+import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.mvp.gank.app.AppFragment;
-import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerFag;
+import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerFragment;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituRecyclerFag;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituRecyclerFragment;
+import com.yibao.biggirl.mvp.gank.sisan.SisanFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,12 +40,15 @@ public class FragmentFactory {
     private static final int FRAGMENT_DISIYINGXIANG = 18;//第四印象
     private static final int FRAGMENT_YUNVLANG = 19;//Yunvlang
     private static final int FRAGMENT_XIUREN = 20;//秀人
+    private static final int FRAGMENT_SXINGGAN = 21;//43 性感
+    private static final int FRAGMENT_SGAOQING = 22;//43 高清
+    private static final int FRAGMENT_SWEIMEI = 23;//43 唯美
 
-    private static Map<Integer, BaseRecyclerFag> mCacheFragmentMap = new HashMap<>();
+    private static Map<Integer, BaseRecyclerFragment> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
 
-        BaseRecyclerFag fragment = null;
+        BaseRecyclerFragment fragment = null;
 
 
         //优先从集合中取出来
@@ -77,47 +81,57 @@ public class FragmentFactory {
                 break;
 //                妹子图
             case FRAGMENT_JAPAN:
-                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_JAPAN);
+                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_JAPAN);
                 break;
             case FRAGMENT_HOT:
-                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_HOT);
+                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_HOT);
                 break;
             case FRAGMENT_SEX:
-                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_SEX);
+                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_SEX);
                 break;
             case FRAGMENT_CUTE:
-                fragment = MeizituRecyclerFag.newInstance(FRAGMENT_CUTE);
+                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_CUTE);
                 break;
 //                多图
             case FRAGMENT_MFSTAR:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_MFSTAR);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_MFSTAR);
                 break;
             case FRAGMENT_PANS:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_PANS);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_PANS);
                 break;
             case FRAGMENT_UGIRLS:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_UGIRLS);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_UGIRLS);
                 break;
             case FRAGMENT_ROSI:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_ROSI);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_ROSI);
                 break;
             case FRAGMENT_MEIYAN:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_MEIYAN);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_MEIYAN);
                 break;
             case FRAGMENT_TUIGIRL:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_TUIGIRL);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_TUIGIRL);
                 break;
             case FRAGMENT_BOBOSHE:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_BOBOSHE);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_BOBOSHE);
                 break;
             case FRAGMENT_DISIYINGXIANG:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_DISIYINGXIANG);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_DISIYINGXIANG);
                 break;
             case FRAGMENT_YUNVLANG:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_YUNVLANG);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_YUNVLANG);
                 break;
             case FRAGMENT_XIUREN:
-                fragment = DuotuRecyclerFag.newInstance(FRAGMENT_XIUREN);
+                fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_XIUREN);
+                break;
+//                4493
+            case FRAGMENT_SXINGGAN:
+                fragment = SisanFragment.newInstance(FRAGMENT_SXINGGAN);
+                break;
+            case FRAGMENT_SGAOQING:
+                fragment = SisanFragment.newInstance(FRAGMENT_SGAOQING);
+                break;
+            case FRAGMENT_SWEIMEI:
+                fragment = SisanFragment.newInstance(FRAGMENT_SWEIMEI);
                 break;
             default:
                 break;

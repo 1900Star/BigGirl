@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.base.BaseRecyclerActivity;
 import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
-import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.mvp.webview.WebActivity;
@@ -22,7 +21,6 @@ import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.view.SwipeItemLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -38,18 +36,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Time:2017/6/17 18:45
  */
 public class FavoriteActivity
-        extends AppCompatActivity
+        extends BaseRecyclerActivity<FavoriteWebBean>
         implements OnRvItemSlideListener,
-        FavoriteContract.View,
-        OnRvItemClickListener<FavoriteWebBean>,
-        SwipeRefreshLayout.OnRefreshListener {
+        FavoriteContract.View {
 
 
     @BindView(R.id.favorite_content)
     LinearLayout mFagContent;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
-    private List<FavoriteWebBean> mList;
     WebPresenter mWebPresenter;
     private FavoriteAdapter mAdapter;
     private String TAG = "FavoriteActivity";
@@ -72,14 +67,12 @@ public class FavoriteActivity
         ActionBar toolbar = getSupportActionBar();
         toolbar.setTitle("收藏");
         toolbar.setDisplayHomeAsUpEnabled(true);
-        mList = new ArrayList<>();
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
     }
 
     protected void initData() {
-        //        updateFavo();
         mWebPresenter.queryAllFavorite();
     }
 
@@ -98,13 +91,18 @@ public class FavoriteActivity
     }
 
     @Override
-    public void showDetail(FavoriteWebBean bean, Long id) {
+    public void showWebDetail(FavoriteWebBean bean, Long id) {
         isUpdateFavo = true;
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("id", id);
         LogUtil.d("跳转 ID :" + bean.getId());
         intent.putExtra("favoriteBean", bean);
         startActivity(intent);
+    }
+
+    @Override
+    protected void loadMoreData() {
+
     }
 
     @Override
@@ -149,8 +147,9 @@ public class FavoriteActivity
 
     }
 
+
     @Override
-    public void onRefresh() {
+    protected void refreshData() {
         Observable.timer(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
@@ -177,8 +176,4 @@ public class FavoriteActivity
     }
 
 
-    @Override
-    public void showBigGirl(int position, List<FavoriteWebBean> list,int type,String link) {
-
-    }
 }

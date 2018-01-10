@@ -7,4 +7,5 @@ package com.yibao.biggirl.base.listener;
  */
 public interface OnMusicListItemClickListener {
     void startMusicService(int position);
+    void onpenMusicPlayDialogFag();
 }

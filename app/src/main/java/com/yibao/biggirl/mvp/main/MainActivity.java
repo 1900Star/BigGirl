@@ -21,8 +21,6 @@ import android.widget.ImageView;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseActivity;
 import com.yibao.biggirl.base.listener.MyPageChangeListener;
-import com.yibao.biggirl.base.listener.OnRvItemClickListener;
-import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
@@ -30,9 +28,10 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.UnSplashDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
-import com.yibao.biggirl.mvp.gank.duotu.DuotuPicActivity;
+import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituPicActivity;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituRecyclerActivity;
+import com.yibao.biggirl.mvp.gank.sisan.SisanActivity;
 import com.yibao.biggirl.mvp.map.CheckGoogleService;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
@@ -60,10 +59,8 @@ import butterknife.Unbinder;
  */
 public class MainActivity
         extends BaseActivity
-        implements OnRvItemClickListener<String>,
-        NavigationView.OnNavigationItemSelectedListener,
-        OnRvItemLongClickListener
-
+        implements
+        NavigationView.OnNavigationItemSelectedListener
 {
     private static final long KEY_EVENT_BACK_TIME = 2000;
     @BindView(R.id.nav_view)
@@ -241,7 +238,7 @@ public class MainActivity
 
     //长按显示预览
     @Override
-    public void showPreview(String url) {
+    public void onLongTouchPreview(String url) {
         TopBigPicDialogFragment.newInstance(url)
                 .show(getSupportFragmentManager(), "dialog_big_girl");
         mHeaderUrl = url;
@@ -274,11 +271,11 @@ public class MainActivity
 
     //打开WebViewActivity
     @Override
-    public void showDetail(FavoriteWebBean bean, Long id) {
+    public void showWebDetail(FavoriteWebBean bean, Long id) {
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("favoriteBean", bean);
         intent.putExtra("id", id);
-        startActivity(intent);
+        mSwipeBackHelper.forward(intent);
     }
 
 
@@ -286,26 +283,29 @@ public class MainActivity
     @Override
     public void showBigGirl(int position, List<String> list, int type, String link) {
         switch (type) {
-            case 1:
+            case 0:
                 //设置navHeader头像,待定
                 mHeaderUrl = list.get(position);
                 ImageUitl.loadPic(this, mHeaderUrl, mIvHeader);
                 Intent intent = new Intent(this, GirlActivity.class);
                 intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
                 intent.putExtra("position", position);
-                startActivity(intent);
+                mSwipeBackHelper.forward(intent);
                 break;
-            case 2:
-                Intent meizituIntent = new Intent(this, MeizituPicActivity.class);
+            case 1:
+                Intent meizituIntent = new Intent(this, MeizituRecyclerActivity.class);
                 meizituIntent.putExtra("link", link);
                 mSwipeBackHelper.forward(meizituIntent);
                 break;
-            case 3:
-                Intent duotuIntent = new Intent(this, DuotuPicActivity.class);
+            case 2:
+                Intent duotuIntent = new Intent(this, DuotuRecyclerActivity.class);
                 duotuIntent.putExtra("link", link);
                 mSwipeBackHelper.forward(duotuIntent);
                 break;
-            case 4:
+            case 3:
+                Intent sisanIntent = new Intent(this, SisanActivity.class);
+                sisanIntent.putExtra("link", link);
+                mSwipeBackHelper.forward(sisanIntent);
                 break;
             default:
                 break;

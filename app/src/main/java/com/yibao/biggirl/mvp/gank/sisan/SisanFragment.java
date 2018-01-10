@@ -1,36 +1,37 @@
-package com.yibao.biggirl.mvp.gank.duotu;
-
-/*
- *  @项目名：  BigGirl 
- *  @包名：    com.yibao.biggirl.mvp.gank.meizitu
- *  @文件名:   MeizituRecyclerFag
- *  @创建者:   Stran
- *  @创建时间:  2017/12/5 1:54
- *  @描述：    多图
- */
+package com.yibao.biggirl.mvp.gank.sisan;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
-import com.yibao.biggirl.base.BaseRecyclerFag;
+import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
-public class DuotuRecyclerFag extends BaseRecyclerFag<Girl> implements
-        DuotuContract.View<Girl> {
-    private DuotuContract.Presenter mPresenter;
+
+/**
+ * @项目名： BigGirl
+ * @包名： com.yibao.biggirl.mvp.gank.sisan
+ * @文件名: SisanFragment
+ * @author: Stran
+ * @创建时间: 2018/1/10 16:20
+ * @描述： TODO
+ */
+
+public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanContract.View<Girl>{
+    private SisanContract.Presenter mPresenter;
     private MztuAdapter mAdapter;
 
 
-    private String mLoadType;
+    private String url;
     private int mType;
 
-    public static DuotuRecyclerFag newInstance(int loadType) {
-        DuotuRecyclerFag fragment = new DuotuRecyclerFag();
+    public static SisanFragment newInstance(int loadType) {
+        SisanFragment fragment = new SisanFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("type", loadType);
         fragment.setArguments(bundle);
@@ -39,16 +40,16 @@ public class DuotuRecyclerFag extends BaseRecyclerFag<Girl> implements
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        mPresenter = new DuotuPresenter(this);
+        mPresenter = new SisanPresenter(this);
         mType = getArguments().getInt("type");
     }
 
     @Override
     protected void onLazyLoadData() {
         super.onLazyLoadData();
-
-        mLoadType = Constants.getLoadType(mType);
-        mPresenter.start(mLoadType, page);
+LogUtil.d("  SisanFragment   开始加载 数据 ");
+        url = Constants.getLoadType(mType);
+        mPresenter.start(url, page);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class DuotuRecyclerFag extends BaseRecyclerFag<Girl> implements
 
     @Override
     protected void loadMoreData() {
-        mPresenter.loadData(mLoadType, page, Constants.LOAD_MORE_DATA);
+        mPresenter.loadData(url, page, Constants.LOAD_MORE_DATA);
     }
 
 
@@ -67,7 +68,7 @@ public class DuotuRecyclerFag extends BaseRecyclerFag<Girl> implements
     @Override
     protected void refreshData() {
         mPresenter.loadData(
-                mLoadType, page,
+                url, page,
                 Constants.REFRESH_DATA
         );
         mSwipeRefresh.setRefreshing(false);
@@ -77,7 +78,7 @@ public class DuotuRecyclerFag extends BaseRecyclerFag<Girl> implements
     @Override
     public void loadData(List<Girl> list) {
         mList.addAll(list);
-        mAdapter = new MztuAdapter(mActivity, mList, 1);
+        mAdapter = new MztuAdapter(mActivity, mList, 3);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
         mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
@@ -103,7 +104,7 @@ public class DuotuRecyclerFag extends BaseRecyclerFag<Girl> implements
     }
 
     @Override
-    public void setPrenter(DuotuContract.Presenter prenter) {
+    public void setPrenter(SisanContract.Presenter prenter) {
         this.mPresenter = prenter;
     }
 

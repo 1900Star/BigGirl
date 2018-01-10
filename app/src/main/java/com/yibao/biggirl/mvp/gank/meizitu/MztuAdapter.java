@@ -35,8 +35,12 @@ public class MztuAdapter
 {
     private Context mContext;
     private int mType;
-    private int mCode;
 
+    /**
+     * @param context
+     * @param list
+     * @param type    1表示 MeizituRecyclerActivity , 2表示 DuotuPicActivty , 3 表示 SisanActivity
+     */
     public MztuAdapter(Context context, List<Girl> list, int type) {
         super(list);
         mContext = context;
@@ -72,28 +76,9 @@ public class MztuAdapter
                     }
                 } else {
                     if (mContext instanceof OnRvItemClickListener) {
-                        if (mType == 0) {
-                            mCode = 2;
-                        } else if (mType == 1){
-                            mCode = 3;
-                        }
-                            ((OnRvItemClickListener) mContext).showBigGirl(0, null, mCode, girl.getLink());
+
+                        ((OnRvItemClickListener) mContext).showBigGirl(0, null, mType, girl.getLink());
                     }
-//                    if (mType == 0) {
-//                        if (mContext instanceof OnRvItemClickListener) {
-//                        }
-//
-//
-//                    } else if (mType == 1) {
-//                        if (mContext instanceof OnRvItemClickListener) {
-//                            ((OnRvItemClickListener) mContext).showBigGirl(0,null,3,girl.getLink());
-//                        }
-//
-//                        Intent intent = new Intent(mContext, DuotuPicActivity.class);
-//                        intent.putExtra("link", girl.getLink());
-//                        mContext.startActivity(intent);
-//
-//                    }
                 }
 
             });
@@ -102,7 +87,7 @@ public class MztuAdapter
             holder.itemView.setOnLongClickListener(view -> {
                 if (mContext instanceof OnRvItemLongClickListener) {
 
-                    ((OnRvItemLongClickListener) mContext).showPreview(url);
+                    ((OnRvItemLongClickListener) mContext).onLongTouchPreview(url);
                 }
                 return true;
             });
@@ -111,7 +96,6 @@ public class MztuAdapter
 
     public void setNewData(List<Girl> data) {
         this.mList = data;
-
         notifyDataSetChanged();
     }
 

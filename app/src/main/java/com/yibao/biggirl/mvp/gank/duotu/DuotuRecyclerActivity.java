@@ -7,20 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.BasePicActivity;
-import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
+import com.yibao.biggirl.base.BaseRecyclerActivity;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,13 +24,15 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * Author：Sid
- * Des：${解析网页中的Girl}
- * Time:2017/4/8 04:24
+ * @项目名： BigGirl
+ * @包名： com.yibao.biggirl.base
+ * @文件名: BaseRecyclerActivity
+ * @author: Stran
+ * @创建时间: 2017/4/8 04:24
+ * @描述： 凡是页面包含RecyclerView的,都要继承这个BaseRecyclerActivity
  */
-
-public class DuotuPicActivity
-        extends BasePicActivity implements DuotuContract.View<Girl>, OnRvItemLongClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class DuotuRecyclerActivity
+        extends BaseRecyclerActivity<Girl> implements DuotuContract.View<Girl>{
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -45,7 +43,6 @@ public class DuotuPicActivity
     FloatingActionButton mFab;
     private String mUrl;
     private MztuAdapter mAdapter;
-    private ArrayList<Girl> mList;
     private DuotuPresenter mPresenter;
 
     @Override
@@ -64,57 +61,16 @@ public class DuotuPicActivity
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
-        mList = new ArrayList<>();
 
     }
-
-    private void initRecyclerView(List<Girl> mList) {
-        mAdapter = new MztuAdapter(this, mList, 1);
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(2, mAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                int lastPosition = -1;
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        mFab.setVisibility(View.VISIBLE);
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        if (layoutManager instanceof StaggeredGridLayoutManager) {
-                            int[] lastPositions = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-                            ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(
-                                    lastPositions);
-                            lastPosition = findMax(lastPositions);
-                        }
-
-                        if (lastPosition == recyclerView.getLayoutManager()
-                                .getItemCount() - 1) {
-                            page++;
-                            mPresenter.loadDataList(mUrl,
-                                    page, Constants.LOAD_MORE_DATA);
-                        }
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-        });
-        mMeiziContent.addView(recyclerView);
-        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
-
-    }
-
 
     @Override
     public void loadData(List<Girl> list) {
         mList.addAll(list);
-        initRecyclerView(mList);
+        mAdapter = new MztuAdapter(this, mList, 2);
+        RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
+        mMeiziContent.addView(recyclerView);
+        mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
         mSwipeRefresh.setRefreshing(false);
 
     }
@@ -124,7 +80,7 @@ public class DuotuPicActivity
         mList.clear();
         mAdapter.clear();
         mList.addAll(list);
-        mAdapter.AddHeader(list);
+        mAdapter.AddHeader(mList);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -151,9 +107,15 @@ public class DuotuPicActivity
 
 
     @Override
-    public void showPreview(String url) {
+    public void onLongTouchPreview(String url) {
         TopBigPicDialogFragment.newInstance(url)
                 .show(getSupportFragmentManager(), "dialog_meizitu_girl");
+    }
+
+    @Override
+    protected void loadMoreData() {
+        mPresenter.loadDataList(mUrl,
+                page, Constants.LOAD_MORE_DATA);
     }
 
     @Override

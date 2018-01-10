@@ -3,7 +3,7 @@ package com.yibao.biggirl.mvp.gank.all;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
-import com.yibao.biggirl.base.BaseRecyclerFag;
+import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.mvp.gank.app.AppAdapter;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Stran
  */
 public class AllFragment
-        extends BaseRecyclerFag<ResultsBeanX>
+        extends BaseRecyclerFragment<ResultsBeanX>
         implements AppContract.View {
 
     private AppAdapter mAdapter;

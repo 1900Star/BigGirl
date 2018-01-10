@@ -51,7 +51,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".mvp.favorite.FavoriteActivity" />
         <activity
-            android:name=".mvp.gank.meizitu.MeizituPicActivity"
+            android:name=".mvp.gank.meizitu.MeizituRecyclerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".mvp.main.Kot" />
 
@@ -69,15 +69,16 @@
         <service
             android:name=".service.MeizituService"
             android:enabled="true" />
-        <service android:name=".service.TestService" />
 
         <activity
             android:name=".mvp.music.musiclist.MusicListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.gank.duotu.DuotuPicActivity"
+            android:name=".mvp.gank.duotu.DuotuRecyclerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".mvp.gank.sisan.SisanActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>

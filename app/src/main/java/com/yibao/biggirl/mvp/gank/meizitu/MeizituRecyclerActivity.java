@@ -7,12 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.base.BasePicActivity;
-import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
+import com.yibao.biggirl.base.BaseRecyclerActivity;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girl.MeizituData;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
@@ -32,8 +30,8 @@ import io.reactivex.schedulers.Schedulers;
  * Des：${解析网页中的Girl}
  * Time:2017/4/8 04:24
  */
-public class MeizituPicActivity
-        extends BasePicActivity implements OnRvItemLongClickListener {
+public class MeizituRecyclerActivity
+        extends BaseRecyclerActivity {
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -60,48 +58,26 @@ public class MeizituPicActivity
 
     @Override
     protected void refreshData() {
-        mPresenter.start(mUrl, Constants.MeiSingle);
+        mPresenter.loadData(size,page,Constants.MeiSingle,Constants.LOAD_MORE_DATA,mUrl);
     }
-
 
     private void initView() {
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
-        mAdapter = new MztuAdapter(this, null, 0);
+        mAdapter = new MztuAdapter(this, null, 1);
         if (mAdapter.getData() == null || mAdapter.getData().size() == 0) {
             mPresenter.start(mUrl, 0);
         } else {
             mAdapter.notifyDataSetChanged();
             mSwipeRefresh.setRefreshing(false);
         }
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(2, mAdapter);
-        rvScrollListener(recyclerView);
+        RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
+
         mMeiziContent.addView(recyclerView);
         mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
     }
 
-    private void rvScrollListener(RecyclerView recyclerView) {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        mFab.setVisibility(View.VISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        mFab.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-    }
 
     //    数据来自MeizituService页面的RxBus发送
     public void getMeizituData() {
@@ -127,14 +103,19 @@ public class MeizituPicActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MeizituService.stop(MeizituPicActivity.this);
+        MeizituService.stop(MeizituRecyclerActivity.this);
         unbinder.unbind();
     }
 
 
     @Override
-    public void showPreview(String url) {
+    public void onLongTouchPreview(String url) {
         TopBigPicDialogFragment.newInstance(url)
                 .show(getSupportFragmentManager(), "dialog_meizitu_girl");
+    }
+
+    @Override
+    protected void loadMoreData() {
+
     }
 }

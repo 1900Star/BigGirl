@@ -64,7 +64,7 @@ public class AllAdapter
 
             viewHolder.mImageAll.setOnLongClickListener(view -> {
                 if (mContext instanceof OnRvItemLongClickListener) {
-                    ((OnRvItemLongClickListener) mContext).showPreview(url);
+                    ((OnRvItemLongClickListener) mContext).onLongTouchPreview(url);
                 }
                 return true;
             });
@@ -72,7 +72,7 @@ public class AllAdapter
                 if (mContext instanceof OnRvItemClickListener) {
                     if (mContext instanceof OnRvItemClickListener) {
                         FavoriteWebBean data = PackagingDataUtil.objectToFavorite(bean);
-                        ((OnRvItemClickListener) mContext).showDetail(data, data.getId());
+                        ((OnRvItemClickListener) mContext).showWebDetail(data, data.getId());
                     }
                 }
             });

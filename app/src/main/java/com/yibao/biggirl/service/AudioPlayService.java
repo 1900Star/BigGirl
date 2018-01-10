@@ -65,7 +65,7 @@ public class AudioPlayService
         //初始化播放模式
         PLAY_MODE = SharePrefrencesUtil.getMusicMode(this);
 
-        LogUtil.d(getClass().getSimpleName() + "      oncreate");
+//        LogUtil.d(getClass().getSimpleName() + "      oncreate");
 
     }
 
@@ -81,14 +81,14 @@ public class AudioPlayService
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LogUtil.d(getClass().getSimpleName() + "    first  oncreate");
+//        LogUtil.d(getClass().getSimpleName() + "    first  onStartCommand");
         mMusicItem = intent.getParcelableArrayListExtra("musicItem");
         int enterPosition = intent.getIntExtra("position", -1);
         if (enterPosition != position && enterPosition != -1) {
             position = enterPosition;
             //执行播放
             mAudioBinder.play();
-            LogUtil.d("onStartCommand   ");
+//            LogUtil.d("onStartCommand   ");
         } else if (enterPosition != -1 && enterPosition == position) {
             //通知播放界面更新
             LogUtil.d("Service position  " + position);

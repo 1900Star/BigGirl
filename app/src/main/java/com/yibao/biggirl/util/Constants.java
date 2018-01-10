@@ -10,6 +10,31 @@ import com.yibao.biggirl.MyApplication;
  * @author Stran
  */
 public class Constants {
+
+
+    /**
+     * 43   XINGGAN
+     */
+    public static String SISAN_BASE_URL = "https://www.4493.com";
+
+    /**
+     * 43   XINGGAN
+     */
+
+    private static String SISAN_XINGGAN_API = "https://www.4493.com/xingganmote/index-";
+    /**
+     * 43   WEIMEI
+     */
+
+    private static String SISAN_WEIMEI_API = "https://www.4493.com/weimeixiezhen/index-";
+
+    /**
+     * 43   GAOQING模范学院
+     */
+
+    private static String SISAN_GAOQING_API = "https://www.4493.com/gaoqingmeinv/index-";
+
+
     /**
      * 多图   MFStar模范学院
      */
@@ -94,7 +119,10 @@ public class Constants {
             "Video",
             "前端",
             "拓展资源",
-            "Japan", "Hot", "Sex", "Cute", "MFStar", "Pans", "Ugirls", "Rosi", "Meiyan", "TuiGirl", "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren"};
+            "Japan",
+            "Hot", "Sex", "Cute", "MFStar", "Pans",
+            "Ugirls", "Rosi", "Meiyan", "TuiGirl",
+            "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren", "SXinggan", "SGaoqing", "SWeimei"};
 
 
     public static final int TYPE_GIRLS = 0;
@@ -130,6 +158,9 @@ public class Constants {
     private static final int TYPE_DISIYINGXIANG = 18;
     private static final int TYPE_YUNVLANG = 19;
     private static final int TYPE_XIUREN = 20;
+    private static final int TYPE_SXINGGAN = 21;
+    private static final int TYPE_SGAOQING = 22;
+    private static final int TYPE_SWEIMEI = 23;
 
     private static final String FRAGMENT_ANDROID = "Android";
     public static final String FRAGMENT_GIRLS = "福利";
@@ -201,13 +232,22 @@ public class Constants {
                 mLoadType = Constants.DUOTU_BOBOSHE_API;
                 break;
             case TYPE_DISIYINGXIANG:
-                mLoadType = Constants.DUOTU_DISIYINGXIANG_API;
+                mLoadType = DUOTU_DISIYINGXIANG_API;
                 break;
             case TYPE_YUNVLANG:
                 mLoadType = Constants.DUOTU_YUNVLANG_API;
                 break;
             case TYPE_XIUREN:
                 mLoadType = Constants.DUOTU_XIUREN_API;
+                break;
+            case TYPE_SXINGGAN:
+                mLoadType = Constants.SISAN_XINGGAN_API;
+                break;
+            case TYPE_SGAOQING:
+                mLoadType = Constants.SISAN_GAOQING_API;
+                break;
+            case TYPE_SWEIMEI:
+                mLoadType = Constants.SISAN_WEIMEI_API;
                 break;
             default:
                 break;
