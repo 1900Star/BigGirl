@@ -37,8 +37,12 @@
   * [BGASwipeBackLayout-Android](https://github.com/bingoogolapple/BGASwipeBackLayout-Android)
 
   
-# 感谢
-  * Stranger
+# 感谢 
+
+  * [干货集中营](http://gank.io/) <br>
+  * [代码家](https://github.com/daimajia) <br>
+  * [drakeet](https://github.com/drakeet) <br>
+  
 # 提示
    ##### 本项目还没写完，只要有空闲时间就会更新代码。
     
