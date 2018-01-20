@@ -38,9 +38,8 @@
 
   
 # 感谢 
-
-  * [干货集中营](http://gank.io/) <br>
-  * [代码家](https://github.com/daimajia) <br>
+  * [干货集中营](http://gank.io/) <br>
+  * [代码家](https://github.com/daimajia) <br>
   * [drakeet](https://github.com/drakeet) <br>
   
 # 提示
