@@ -153,8 +153,8 @@ public abstract class BaseRecyclerFragment<T>
         Observable.timer(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    refreshData();
                     page = 1;
+                    refreshData();
                 });
     }
 

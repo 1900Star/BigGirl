@@ -94,6 +94,8 @@ public abstract class BaseFragment extends Fragment {
 
     protected void setContentView(@LayoutRes int layoutResID) {
         mContentView = LayoutInflater.from(mActivity).inflate(layoutResID, null);
+
+
     }
 
     /**

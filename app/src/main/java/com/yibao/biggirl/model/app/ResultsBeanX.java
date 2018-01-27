@@ -20,7 +20,7 @@ public class ResultsBeanX implements Parcelable{
      * images : ["http://img.gank.io/07318b56-1902-4b4d-878e-c9bbcf9babbb"]
      * publishedAt : 2017-04-21T11:30:29.323Z
      * source : chrome
-     * type : Android
+     * position : Android
      * url : https://github.com/miteshpithadiya/SearchableSpinner
      * used : true
      * who : galois

@@ -3,7 +3,7 @@ package com.yibao.biggirl.mvp.gank.duotu;
 /*
  *  @项目名：  BigGirl 
  *  @包名：    com.yibao.biggirl.mvp.gank.meizitu
- *  @文件名:   MeizituRecyclerFragment
+ *  @文件名:   MeizituFragment
  *  @创建者:   Stran
  *  @创建时间:  2017/12/5 1:54
  *  @描述：    多图
@@ -32,7 +32,7 @@ public class DuotuRecyclerFragment extends BaseRecyclerFragment<Girl> implements
     public static DuotuRecyclerFragment newInstance(int loadType) {
         DuotuRecyclerFragment fragment = new DuotuRecyclerFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", loadType);
+        bundle.putInt("position", loadType);
         fragment.setArguments(bundle);
         return fragment;
     }

@@ -29,7 +29,7 @@ import com.yibao.biggirl.util.WallPaperUtil;
 import com.yibao.biggirl.view.ProgressView;
 
 import java.io.File;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -73,7 +73,7 @@ public class GirlFragment
     private GirlAdapter mAdapter;
     private View mView = null;
     private String mUrl = null;
-    private List<String> mList;
+    private ArrayList<String> mList;
     private CompositeDisposable disposables;
     private Disposable mDisposable;
     private MyApplication mApplication;
@@ -81,8 +81,6 @@ public class GirlFragment
     private PagerScroller mScroller;
     private boolean isPlay = false;
 
-    public GirlFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -218,14 +216,13 @@ public class GirlFragment
 
     private void autoPreview() {
         if (isPlay) {
-            mMenuItem.setIcon(R.drawable.btn_playing_play);
+            mMenuItem.setIcon(R.drawable.btn_playing_play_selector);
             mPbDown.setVisibility(View.VISIBLE);
             //停止自动播放
             stopLoop();
             isPlay = false;
         } else {
-
-            mMenuItem.setIcon(R.drawable.btn_playing_pause);
+            mMenuItem.setIcon(R.drawable.btn_playing_pause_selector);
             ((HideToolbarListener) getActivity()).hideToolbar();
             mPbDown.setVisibility(View.INVISIBLE);
             //开始自动播放

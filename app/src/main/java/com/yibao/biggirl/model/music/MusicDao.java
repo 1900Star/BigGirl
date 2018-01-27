@@ -1,6 +1,7 @@
 package com.yibao.biggirl.model.music;
 
 import com.yibao.biggirl.MyApplication;
+import com.yibao.biggirl.model.greendao.MusicBeanDao;
 import com.yibao.biggirl.model.greendao.MusicInfoDao;
 import com.yibao.biggirl.util.LogUtil;
 
@@ -17,16 +18,16 @@ public class MusicDao
         implements MusicDataSource
 {
 
-    private final MusicInfoDao dao;
+    private final MusicBeanDao dao;
 
     public MusicDao() {
         dao = MyApplication.getIntstance()
                            .getDaoSession()
-                           .getMusicInfoDao();
+                           .getMusicBeanDao();
     }
 
     @Override
-    public void insertFavMusic(MusicInfo info, InsertFavMusicCallBack callBack) {
+    public void insertFavMusic(MusicBean info, InsertFavMusicCallBack callBack) {
         Observable.just(dao.insert(info))
                   .subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())
@@ -38,7 +39,7 @@ public class MusicDao
     }
 
     @Override
-    public void cancelFavMusic(MusicInfo info) {
+    public void cancelFavMusic(MusicBean info) {
         dao.delete(info);
     }
 

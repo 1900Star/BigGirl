@@ -8,7 +8,6 @@ import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
  * @描述： TODO
  */
 
-public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanContract.View<Girl>{
+public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanContract.View<Girl> {
     private SisanContract.Presenter mPresenter;
     private MztuAdapter mAdapter;
 
@@ -33,7 +32,7 @@ public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanCo
     public static SisanFragment newInstance(int loadType) {
         SisanFragment fragment = new SisanFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", loadType);
+        bundle.putInt("position", loadType);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -41,13 +40,12 @@ public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanCo
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mPresenter = new SisanPresenter(this);
-        mType = getArguments().getInt("type");
+        mType = getArguments().getInt("position");
     }
 
     @Override
     protected void onLazyLoadData() {
         super.onLazyLoadData();
-LogUtil.d("  SisanFragment   开始加载 数据 ");
         url = Constants.getLoadType(mType);
         mPresenter.start(url, page);
     }

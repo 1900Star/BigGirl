@@ -200,7 +200,6 @@ public class MainActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -208,18 +207,11 @@ public class MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.main_action_all:
-
-                break;
             case R.id.main_action_star:
-                //TODO
-                startActivity(new Intent(this, Kot.class));
-
                 break;
             default:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

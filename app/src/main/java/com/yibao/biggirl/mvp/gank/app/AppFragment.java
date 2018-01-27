@@ -11,15 +11,16 @@ import com.yibao.biggirl.util.Constants;
 import java.util.List;
 
 /**
- * Author：Sid
- * Des：${TODO}
- * Time:2017/4/23 06:33
- * @author Stran
+ * @项目名： BigGirl
+ * @包名： com.yibao.biggirl.mvp.gank.app
+ * @文件名: AppFragment
+ * @author: Stran
+ * @Email: www.strangermy@outlook.com / www.stranger98@gmail.com
+ * @创建时间: 2018/1/13 11:06
+ * @描述： {TODO}
  */
-public class AppFragment
-        extends BaseRecyclerFragment<ResultsBeanX>
-        implements AppContract.View {
 
+public class AppFragment extends BaseRecyclerFragment<ResultsBeanX> implements AppContract.View {
     private AppAdapter mAdapter;
 
 
@@ -31,7 +32,7 @@ public class AppFragment
     public static AppFragment newInstance(int loadType) {
         AppFragment fragment = new AppFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", loadType);
+        bundle.putInt("position", loadType);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -41,7 +42,8 @@ public class AppFragment
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         new AppPresenter(this);
-        int type = getArguments().getInt("type");
+        int type = getArguments().getInt("position");
+
         mLoadType = Constants.getLoadType(type);
     }
 
@@ -54,7 +56,7 @@ public class AppFragment
 
     @Override
     protected void refreshData() {
-        mPresenter.loadData(size, 1, mLoadType, Constants.REFRESH_DATA);
+        mPresenter.loadData(size, page, mLoadType, Constants.REFRESH_DATA);
         mSwipeRefresh.setRefreshing(false);
     }
 
@@ -106,5 +108,5 @@ public class AppFragment
     public void setPrenter(AppContract.Presenter prenter) {
         mPresenter = prenter;
     }
-}
 
+}

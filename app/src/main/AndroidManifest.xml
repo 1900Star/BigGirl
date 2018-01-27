@@ -53,7 +53,6 @@
         <activity
             android:name=".mvp.gank.meizitu.MeizituRecyclerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".mvp.main.Kot" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

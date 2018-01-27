@@ -32,7 +32,6 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MeizituRecyclerActivity
         extends BaseRecyclerActivity {
-
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
@@ -58,7 +57,7 @@ public class MeizituRecyclerActivity
 
     @Override
     protected void refreshData() {
-        mPresenter.loadData(size,page,Constants.MeiSingle,Constants.LOAD_MORE_DATA,mUrl);
+        mPresenter.loadData(size, page, Constants.MeiSingle, Constants.LOAD_MORE_DATA, mUrl);
     }
 
     private void initView() {
@@ -96,15 +95,7 @@ public class MeizituRecyclerActivity
                     } else {
                         mAdapter.addData(mAdapter.getData().size(), data.getGirls());
                     }
-
                 }));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MeizituService.stop(MeizituRecyclerActivity.this);
-        unbinder.unbind();
     }
 
 
@@ -117,5 +108,14 @@ public class MeizituRecyclerActivity
     @Override
     protected void loadMoreData() {
 
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MeizituService.stop(MeizituRecyclerActivity.this);
+        unbinder.unbind();
     }
 }

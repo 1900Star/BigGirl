@@ -40,10 +40,6 @@ public class GirlsFragment
 
     private int mRandomNum;
 
-    public GirlsFragment() {
-    }
-
-
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         DaggerGirlsComponent.builder()
@@ -94,7 +90,7 @@ public class GirlsFragment
     @Override
     protected void refreshData() {
         mGirlsPresenter.loadData(size,
-                1, 3,
+                page, 3,
                 Constants.REFRESH_DATA,
                 Constants.FRAGMENT_GIRLS);
         mSwipeRefresh.setRefreshing(false);

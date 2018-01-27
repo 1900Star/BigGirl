@@ -1,7 +1,8 @@
 package com.yibao.biggirl.util;
 
-import com.yibao.biggirl.network.Api;
+import com.yibao.biggirl.model.music.MusicBean;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -10,11 +11,9 @@ import java.util.Random;
  * Time:2017/8/14 05:01
  */
 public class RandomUtil {
-    public static String getRandomUrl() {
-
+    public static int getRandomPostion(ArrayList<MusicBean> list) {
         Random random = new Random();
-
-        return Api.picUrlArr[random.nextInt(Api.picUrlArr.length) + 1];
+        return random.nextInt(list.size()) + 1;
 
     }
 }

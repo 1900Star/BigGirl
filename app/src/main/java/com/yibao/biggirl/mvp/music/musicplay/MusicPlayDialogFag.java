@@ -25,9 +25,9 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.MyAnimatorUpdateListener;
 import com.yibao.biggirl.base.listener.SeekBarChangeListtener;
-import com.yibao.biggirl.model.greendao.MusicInfoDao;
+import com.yibao.biggirl.model.greendao.MusicBeanDao;
+import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.model.music.MusicDialogInfo;
-import com.yibao.biggirl.model.music.MusicInfo;
 import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
@@ -56,6 +56,7 @@ import static com.yibao.biggirl.util.StringUtil.getSongName;
 /**
  * Des：${音乐播放界面}
  * Time:2017/5/30 13:27
+ *
  * @author Stran
  */
 public class MusicPlayDialogFag
@@ -92,8 +93,8 @@ public class MusicPlayDialogFag
     private int mDuration;
     private RxBus mBus;
     private String mAlbumUrl;
-    private MusicInfo mMusicInfo;
-    private MusicInfoDao mInfoDao;
+    private MusicBean mMusicInfo;
+    private MusicBeanDao mInfoDao;
     private ImageView mIvLyrSwitch;
     boolean isShowLyrics = false;
     private LyricsView mLyricsView;
@@ -109,7 +110,7 @@ public class MusicPlayDialogFag
         disposables = new CompositeDisposable();
         mInfoDao = MyApplication.getIntstance()
                 .getDaoSession()
-                .getMusicInfoDao();
+                .getMusicBeanDao();
         //注册音量监听广播
         registerVolumeReceiver();
     }
@@ -123,15 +124,9 @@ public class MusicPlayDialogFag
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
     private void checkCurrentIsFavorite() {
-        List<MusicInfo> list = mInfoDao.queryBuilder()
-                .where(MusicInfoDao.Properties.Title.eq(mMusicInfo.getTitle()))
+        List<MusicBean> list = mInfoDao.queryBuilder()
+                .where(MusicBeanDao.Properties.Title.eq(mMusicInfo.getTitle()))
                 .build()
                 .list();
         if (list.size() == 0) {
@@ -235,11 +230,11 @@ public class MusicPlayDialogFag
 
     //接收service中更新数据,
     private void initRxBusData() {
-        disposables.add(mBus.toObserverable(MusicInfo.class)
+        disposables.add(mBus.toObserverable(MusicBean.class)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::perpareMusic));
-        //   type 用来判断触发消息的源头，0 表示从 MusicPlayDialogFag发出，
+        //   position 用来判断触发消息的源头，0 表示从 MusicPlayDialogFag发出，
         // 1 表示从通知栏的音乐控制面板发出(Services中的广播)。
         disposables.add(mBus.toObserverable(MusicStatusBean.class)
                 .subscribeOn(Schedulers.io())
@@ -271,22 +266,16 @@ public class MusicPlayDialogFag
     }
 
     //设置歌曲名和歌手名
-    private void perpareMusic(MusicInfo info) {
-        LogUtil.d("Song Url " + info.getSongUrl());
+    private void perpareMusic(MusicBean info) {
         mMusicInfo = info;
         checkCurrentIsFavorite();
         initAnimation();
-        //更新音乐标题
         mSongName.setText(getSongName(info.getTitle()));
-        //更新歌手名称
         mArtistName.setText(info.getArtist());
-        //        设置专辑图片
         mAlbumUrl = StringUtil.getAlbulm(info.getAlbumId())
                 .toString();
         setAlbulm(mAlbumUrl);
-        //设置歌曲时长
         setSongDuration();
-        //        更新播放状态按钮
         updatePlayBtnStatus();
 
 
@@ -330,9 +319,9 @@ public class MusicPlayDialogFag
     private void updatePlayBtnStatus() {
         if (audioBinder.isPlaying()) {
             //正在播放    设置为暂停
-            mMusicPlay.setImageResource(R.drawable.btn_playing_pause);
+            mMusicPlay.setImageResource(R.drawable.btn_playing_pause_selector);
         } else {
-            mMusicPlay.setImageResource(R.drawable.btn_playing_play);
+            mMusicPlay.setImageResource(R.drawable.btn_playing_play_selector);
         }
     }
 
@@ -343,7 +332,7 @@ public class MusicPlayDialogFag
     private void switchPlayMode() {
         //获取当前的播放模式
         int playMode = audioBinder.getPalyMode();
-        //根据当前播放模式进行切换
+        //根据当前播放模式进行其它模式切换
         switch (playMode) {
             case AudioPlayService.PLAY_MODE_ALL:
                 audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_SINGLE);
@@ -518,7 +507,7 @@ public class MusicPlayDialogFag
         RxView.clicks(mTitlebarPlayList)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(o -> {
-                    List<MusicInfo> list = mInfoDao.queryBuilder()
+                    List<MusicBean> list = mInfoDao.queryBuilder()
                             .build()
                             .list();
                     MusicBottomSheetDialog.newInstance()
@@ -567,8 +556,8 @@ public class MusicPlayDialogFag
     public void onDestroyView() {
         super.onDestroyView();
         if (mAnimator != null && mAnimatorListener != null && disposables != null && mSubscribe != null) {
-            //            mAnimatorListener.pause();
-            //            mAnimator.cancel();
+            mAnimatorListener.pause();
+            mAnimator.cancel();
             mSubscribe.dispose();
             disposables.clear();
         }

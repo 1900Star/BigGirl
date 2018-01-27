@@ -36,7 +36,7 @@ public class AllFragment
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         new AppPresenter(this);
-        int type = getArguments().getInt("type");
+        int type = getArguments().getInt("position");
         mLoadType = Constants.getLoadType(type);
     }
 
@@ -93,7 +93,6 @@ public class AllFragment
 
     @Override
     public void showNormal() {
-
     }
 
 

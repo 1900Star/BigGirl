@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnMusicListItemClickListener;
-import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.util.StringUtil;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import static com.yibao.biggirl.util.StringUtil.getPinYin;
  */
 
 public class MusicListAdapter
-        extends BaseRvAdapter<MusicInfo>
+        extends BaseRvAdapter<MusicBean>
         implements SectionIndexer
 
 
@@ -43,7 +43,7 @@ public class MusicListAdapter
     private SparseIntArray intArrayB = new SparseIntArray();
 
 
-    public MusicListAdapter(Context context, List<MusicInfo> list) {
+    public MusicListAdapter(Context context, List<MusicBean> list) {
         super(list);
         this.mContext = context;
     }
@@ -52,19 +52,19 @@ public class MusicListAdapter
     @Override
     public MusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_music_list, parent, false);
+                .inflate(R.layout.item_music_list, parent, false);
         return new MusicViewHolder(view);
     }
 
     @Override
-    protected void bindView(RecyclerView.ViewHolder holder, MusicInfo info) {
+    protected void bindView(RecyclerView.ViewHolder holder, MusicBean info) {
         if (holder instanceof MusicViewHolder) {
             MusicViewHolder viewHolder = (MusicViewHolder) holder;
             viewHolder.mSongArtistName.setText(info.getArtist());
             Glide.with(mContext)
-                 .load(StringUtil.getAlbulm(info.getAlbumId()))
-                 .placeholder(R.mipmap.playing_cover_lp)
-                 .into(viewHolder.mSongAlbum);
+                    .load(StringUtil.getAlbulm(info.getAlbumId()))
+                    .placeholder(R.mipmap.playing_cover_lp)
+                    .into(viewHolder.mSongAlbum);
             String name = StringUtil.getSongName(info.getTitle());
             viewHolder.mSongName.setText(name);
             String firstTv = getPinYin(name);
@@ -73,8 +73,7 @@ public class MusicListAdapter
             if (position == 0) {
                 viewHolder.mTvStickyView.setVisibility(View.VISIBLE);
             } else if (position != 0 && firstTv.equals(getPinYin(mList.get(position - 1)
-                                                                      .getTitle())))
-            {
+                    .getTitle()))) {
                 viewHolder.mTvStickyView.setVisibility(View.GONE);
 
             } else {
@@ -115,7 +114,7 @@ public class MusicListAdapter
         for (int i = 0; i < mList.size(); i++) {
             //获取联系人首字母
             String firstC = getPinYin(mList.get(i)
-                                           .getTitle());
+                    .getTitle());
             if (!sections.contains(firstC)) {
                 sections.add(firstC);
                 //添加section和position对应的值
@@ -141,23 +140,24 @@ public class MusicListAdapter
 
 
     static class MusicViewHolder
-            extends RecyclerView.ViewHolder
-    {
+            extends RecyclerView.ViewHolder {
         @BindView(R.id.item_sticky_view)
-        TextView     mTvStickyView;
+        TextView mTvStickyView;
         @BindView(R.id.song_album)
-        ImageView    mSongAlbum;
+        ImageView mSongAlbum;
+        @BindView(R.id.music_play_flag)
+        ImageView mMusicPlayFlag;
         @BindView(R.id.song_name)
-        TextView     mSongName;
+        TextView mSongName;
         @BindView(R.id.song_artist_name)
-        TextView     mSongArtistName;
+        TextView mSongArtistName;
         @BindView(R.id.ll_music_item)
         LinearLayout mLlMusicItem;
 
         MusicViewHolder(View view) {
             super(view);
-
             ButterKnife.bind(this, view);
         }
+
     }
 }

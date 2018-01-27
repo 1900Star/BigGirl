@@ -41,7 +41,7 @@ public class MztuAdapter
      * @param list
      * @param type    1表示 MeizituRecyclerActivity , 2表示 DuotuPicActivty , 3 表示 SisanActivity
      */
-    public MztuAdapter(Context context, List<Girl> list, int type) {
+    public  MztuAdapter(Context context, List<Girl> list, int type) {
         super(list);
         mContext = context;
         mType = type;
@@ -80,28 +80,16 @@ public class MztuAdapter
                         ((OnRvItemClickListener) mContext).showBigGirl(0, null, mType, girl.getLink());
                     }
                 }
-
             });
 
 
             holder.itemView.setOnLongClickListener(view -> {
                 if (mContext instanceof OnRvItemLongClickListener) {
-
                     ((OnRvItemLongClickListener) mContext).onLongTouchPreview(url);
                 }
                 return true;
             });
         }
-    }
-
-    public void setNewData(List<Girl> data) {
-        this.mList = data;
-        notifyDataSetChanged();
-    }
-
-    public void addData(int position, List<Girl> data) {
-        this.mList.addAll(position, data);
-        this.notifyItemRangeInserted(position, data.size());
     }
 
     static class ViewHolder

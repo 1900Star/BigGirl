@@ -27,6 +27,21 @@ public class Constants {
      */
 
     private static String SISAN_WEIMEI_API = "https://www.4493.com/weimeixiezhen/index-";
+    /**
+     * 43   WANGLUO
+     */
+
+    private static String SISAN_WANGLUO_API = "https://www.4493.com/wangluomeinv/index-";
+    /**
+     * 43   DONGMAN
+     */
+
+    private static String SISAN_DONGMAN_API = "https://www.4493.com/dongmanmeinv/index-";
+    /**
+     * 43   TAG
+     */
+
+    private static String SISAN_TAGTEN_API = "https://www.4493.com/tag/10/3/";
 
     /**
      * 43   GAOQING模范学院
@@ -122,7 +137,7 @@ public class Constants {
             "Japan",
             "Hot", "Sex", "Cute", "MFStar", "Pans",
             "Ugirls", "Rosi", "Meiyan", "TuiGirl",
-            "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren", "SXinggan", "SGaoqing", "SWeimei"};
+            "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren", "SXinggan", "SGaoqing", "SWeimei","SWangluo","Dongman"};
 
 
     public static final int TYPE_GIRLS = 0;
@@ -161,9 +176,11 @@ public class Constants {
     private static final int TYPE_SXINGGAN = 21;
     private static final int TYPE_SGAOQING = 22;
     private static final int TYPE_SWEIMEI = 23;
+    private static final int TYPE_WANGLUO = 24;
+    private static final int TYPE_DONGMAN = 25;
 
-    private static final String FRAGMENT_ANDROID = "Android";
     public static final String FRAGMENT_GIRLS = "福利";
+    private static final String FRAGMENT_ANDROID = "Android";
     private static final String FRAGMENT_VIDEO = "休息视频";
     private static final String FRAGMENT_IOS = "iOS";
     private static final String FRAGMENT_FRONT = "前端";
@@ -232,7 +249,7 @@ public class Constants {
                 mLoadType = Constants.DUOTU_BOBOSHE_API;
                 break;
             case TYPE_DISIYINGXIANG:
-                mLoadType = DUOTU_DISIYINGXIANG_API;
+                mLoadType = Constants.DUOTU_DISIYINGXIANG_API;
                 break;
             case TYPE_YUNVLANG:
                 mLoadType = Constants.DUOTU_YUNVLANG_API;
@@ -249,20 +266,26 @@ public class Constants {
             case TYPE_SWEIMEI:
                 mLoadType = Constants.SISAN_WEIMEI_API;
                 break;
+            case TYPE_WANGLUO:
+                mLoadType = Constants.SISAN_WANGLUO_API;
+                break;
+            case TYPE_DONGMAN:
+                mLoadType = Constants.SISAN_DONGMAN_API;
+                break;
             default:
                 break;
         }
         return mLoadType;
     }
 
-    public static final int MODE_KEY = 0;
-    public static final String MUSIC_MODE = "music_mode";
-    public static final String PLAY_MODE_KEY = "play_mode";
+    static final int MODE_KEY = 0;
+    static final String MUSIC_MODE = "music_mode";
+    static final String PLAY_MODE_KEY = "play_mode";
 
-    public static final String MUSIC_POSITION = "music_position";
-    public static final String MUSIC_ITEM_POSITION = "music_position";
+    static final String MUSIC_POSITION = "music_position";
+    static final String MUSIC_ITEM_POSITION = "music_position";
 
-    public static final String MUSIC_CONFIG = "music_config";
-    public static final String MUSIC_REMENBER_FLAG = "music_remenber_flag";
+    static final String MUSIC_CONFIG = "music_config";
+    static final String MUSIC_REMENBER_FLAG = "music_remenber_flag";
 
 }

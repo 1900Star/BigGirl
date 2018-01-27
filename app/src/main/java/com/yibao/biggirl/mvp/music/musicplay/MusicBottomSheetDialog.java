@@ -19,7 +19,7 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.music.BottomSheetStatus;
-import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
@@ -44,7 +44,7 @@ public class MusicBottomSheetDialog
     private TextView mBottomListClear;
     private TextView mBottomListTitleSize;
     private Context mContext;
-    private List<MusicInfo> mList;
+    private List<MusicBean> mList;
     private RecyclerView mRecyclerView;
     private BottomSheetBehavior<View> mBehavior;
 
@@ -58,8 +58,9 @@ public class MusicBottomSheetDialog
         return new MusicBottomSheetDialog();
     }
 
-    void getBottomDialog(Context context, List<MusicInfo> list) {
+    public void getBottomDialog(Context context, List<MusicBean> list) {
         this.mContext = context;
+
         this.mList = list;
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context)
@@ -92,7 +93,7 @@ public class MusicBottomSheetDialog
         mDisposable.add(mBus.toObserverable(BottomSheetStatus.class)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bean -> MusicBottomSheetDialog.this.playMusic(bean.getType())));
+                .subscribe(bean -> MusicBottomSheetDialog.this.playMusic(bean.getPosition())));
     }
 
     private void initListener() {

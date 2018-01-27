@@ -6,12 +6,11 @@
 
     <com.yibao.biggirl.view.CircleImageView
         android:id="@+id/iv_pager_albulm"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
-        android:contentDescription="@null"
-        android:src="@drawable/dropdown_menu_noalbumcover" />
+        android:contentDescription="@null" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -26,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="marquee"
+            android:maxLength="18"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
             android:textColor="@color/textDes"

@@ -15,7 +15,7 @@ import android.widget.RemoteViews;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.music.musiclist.MusicNoification;
 import com.yibao.biggirl.util.LogUtil;
@@ -44,9 +44,9 @@ public class AudioPlayService
     //广播匹配
     public final static String BUTTON_ID = "ButtonId";
     public static final String ACTION_MUSIC = "MUSIC";
+
     private int position = -2;
-    private ArrayList<MusicInfo> mMusicItem;
-    //    private SharedPreferences sp;
+    private ArrayList<MusicBean> mMusicItem;
     private MusicBroacastReceiver mReceiver;
     private NotificationManager manager;
     private RemoteViews mRemoteViews;
@@ -64,9 +64,6 @@ public class AudioPlayService
         initBroadcast();
         //初始化播放模式
         PLAY_MODE = SharePrefrencesUtil.getMusicMode(this);
-
-//        LogUtil.d(getClass().getSimpleName() + "      oncreate");
-
     }
 
 
@@ -92,22 +89,27 @@ public class AudioPlayService
         } else if (enterPosition != -1 && enterPosition == position) {
             //通知播放界面更新
             LogUtil.d("Service position  " + position);
-            MyApplication.getIntstance()
-                    .bus()
-                    .post(mMusicItem.get(position));
+            sendCureentMusicInfo();
         }
         return START_NOT_STICKY;
+    }
+
+    /**
+     * 通知播放界面更新
+     */
+    private void sendCureentMusicInfo() {
+        MusicBean musicBean = mMusicItem.get(position);
+        musicBean.setCureetPosition(position);
+        MyApplication.getIntstance()
+                .bus()
+                .post(musicBean);
     }
 
 
     public class AudioBinder
             extends Binder
-            implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener
-
-    {
-
-        private MusicInfo mMusicInfo;
-
+            implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
+        private MusicBean mMusicInfo;
 
         private void play() {
 
@@ -122,7 +124,6 @@ public class AudioPlayService
 
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.setOnCompletionListener(this);
-            LogUtil.d("最初的Positon   " + position);
             SharePrefrencesUtil.setMusicPosition(AudioPlayService.this, position);
         }
 
@@ -133,14 +134,10 @@ public class AudioPlayService
             //开启播放
             mediaPlayer.start();
             //通知播放界面更新
-            MyApplication.getIntstance()
-                    .bus()
-                    .post(mMusicItem.get(position));
+            sendCureentMusicInfo();
             LogUtil.d("********     onPrepared");
             //显示音乐通知栏
             showNotification();
-
-
         }
 
         private void showNotification() {
@@ -243,7 +240,6 @@ public class AudioPlayService
         //暂停播放
         public void pause() {
             mediaPlayer.pause();
-
         }
 
         //跳转到指定位置进行播放
@@ -251,7 +247,7 @@ public class AudioPlayService
             mediaPlayer.seekTo(progress);
         }
 
-        //type : 1 表示点击通知栏进入播放界面，0 表示在通知栏进行播放和暂停的控制，并不进入播放的界面。
+        //position : 1 表示点击通知栏进入播放界面，0 表示在通知栏进行播放和暂停的控制，并不进入播放的界面。
         private void playStatus(int type) {
             switch (type) {
                 case 0:

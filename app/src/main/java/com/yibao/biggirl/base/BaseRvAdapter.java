@@ -28,6 +28,7 @@ public abstract class BaseRvAdapter<T>
 
 {
     public List<T> mList = null;
+
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
     private int MIN_ITME_NUM = 10;
@@ -130,6 +131,15 @@ public abstract class BaseRvAdapter<T>
 
     }
 
+    public void setNewData(List<T> data) {
+        this.mList = data;
+        notifyDataSetChanged();
+    }
+
+    public void addData(int position, List<T> data) {
+        this.mList.addAll(position, data);
+        this.notifyItemRangeInserted(position, data.size());
+    }
     @Override
     public Object[] getSections() {
         return new Object[0];

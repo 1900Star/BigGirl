@@ -16,7 +16,7 @@ public interface OnRvItemClickListener {
     /**
      * @param position 点击的位置  ，  只有GirlsFragment需要传入
      * @param list     打开GirlActivity需要的数据 ，  只有GirlsFragment需要传入
-     * @param type     type  0:表示从GirlsFragment打开、1：表示从MeizituFag打开、
+     * @param type     position  0:表示从GirlsFragment打开、1：表示从MeizituFag打开、
      *                 2:表示从DuotuFag打开、 3:表示从SisanFag打开
      * @param link     只有从MeizituFag和DuotuFag打开时需要传入
      */

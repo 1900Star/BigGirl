@@ -11,6 +11,7 @@
     <color name="textDes">#4d4d4d</color>
     <color name="listBg">#e9e7e7</color>
     <color name="itemBg">#d9d5d5</color>
+    <color name="listItemBg">#bfbebe</color>
     <color name="colorGreen">#5ab43f</color>
     <color name="musicFloatBg">#41f79ce1</color>
 
@@ -26,6 +27,7 @@
     <color name="bottomSheetList">#303030</color>
     <!--SeekBar-->
     <color name="seekBarP">#8e8e8f</color>
+    <color name="seekBarS">#a1a1a3</color>
     <color name="seekBarN">#ccdcdbdb</color>
 
     <!-- 透明 -->

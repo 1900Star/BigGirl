@@ -50,7 +50,6 @@ public class GirlActivity
 
 
         if (girlFragment == null) {
-
             girlFragment = new GirlFragment().newInstance();
             girlFragment.setArguments(mBundle);
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
@@ -79,13 +78,4 @@ public class GirlActivity
         mDecorView.setSystemUiVisibility(option);
         mActionBar.show();
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-
-    }
-
-
 }

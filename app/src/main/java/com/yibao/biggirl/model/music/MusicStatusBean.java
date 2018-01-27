@@ -7,7 +7,7 @@ package com.yibao.biggirl.model.music;
  */
 public class MusicStatusBean {
     /**
-     * type 用来判断触发 MusicPlayDialogFag弹出的源头，0 表示正常弹出，
+     * position 用来判断触发 MusicPlayDialogFag弹出的源头，0 表示正常弹出，
      * 1 表示从通知栏的音乐控制面板触发弹出。
      * 2 表示终止播放音乐
      */

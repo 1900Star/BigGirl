@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_auto_play"
-        android:icon="@drawable/btn_playing_play"
+        android:icon="@drawable/btn_playing_play_selector"
         android:orderInCategory="100"
         android:title="@string/action_auto_play"
         app:showAsAction="ifRoom"/>

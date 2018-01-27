@@ -504,7 +504,7 @@ public class HanziToPinyin {
         final StringBuilder sb = new StringBuilder();
         int tokenType = Token.LATIN;
         // Go through the input, create a new token when
-        // a. Token type changed
+        // a. Token position changed
         // b. Get the Pinyin of current charater.
         // c. current character is space.
         for (int i = 0; i < inputLength; i++) {

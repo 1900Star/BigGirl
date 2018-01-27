@@ -10,34 +10,18 @@ import java.util.ArrayList;
  * Des：${TODO}
  * Time:2017/9/4 03:04
  */
-public class MusicDialogInfo implements Parcelable{
-    private ArrayList<MusicInfo> mList;
-    private MusicInfo mInfo;
+public class MusicDialogInfo implements Parcelable {
+    private ArrayList<MusicBean> mList;
+    private MusicBean mInfo;
 
-    public MusicDialogInfo(ArrayList<MusicInfo> list, MusicInfo info) {
+    public MusicDialogInfo(ArrayList<MusicBean> list, MusicBean info) {
         mList = list;
         mInfo = info;
     }
 
-    public ArrayList<MusicInfo> getList() {
-        return mList;
-    }
-
-    public void setList(ArrayList<MusicInfo> list) {
-        mList = list;
-    }
-
-    public MusicInfo getInfo() {
-        return mInfo;
-    }
-
-    public void setInfo(MusicInfo info) {
-        mInfo = info;
-    }
-
-    protected MusicDialogInfo(Parcel in) {
-        mList = in.createTypedArrayList(MusicInfo.CREATOR);
-        mInfo = in.readParcelable(MusicInfo.class.getClassLoader());
+    public MusicDialogInfo(Parcel in) {
+        mList = in.createTypedArrayList(MusicBean.CREATOR);
+        mInfo = in.readParcelable(MusicBean.class.getClassLoader());
     }
 
     public static final Creator<MusicDialogInfo> CREATOR = new Creator<MusicDialogInfo>() {
@@ -51,6 +35,22 @@ public class MusicDialogInfo implements Parcelable{
             return new MusicDialogInfo[size];
         }
     };
+
+    public ArrayList<MusicBean> getList() {
+        return mList;
+    }
+
+    public void setList(ArrayList<MusicBean> list) {
+        mList = list;
+    }
+
+    public MusicBean getInfo() {
+        return mInfo;
+    }
+
+    public void setInfo(MusicBean info) {
+        mInfo = info;
+    }
 
     @Override
     public int describeContents() {

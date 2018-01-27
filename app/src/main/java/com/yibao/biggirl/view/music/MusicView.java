@@ -19,12 +19,11 @@ import com.yibao.biggirl.mvp.music.musiclist.MusicListAdapter;
 
 
 public class MusicView
-        extends RelativeLayout
-{
+        extends RelativeLayout {
 
     private RecyclerView mRecyclerView;
-    private TextView     mStickyheader;
-    private int          defultHeight;
+    private TextView mStickyheader;
+    private int defultHeight;
     private int mCurrentPosition = 0;
 
     public MusicView(Context context) {
@@ -46,7 +45,7 @@ public class MusicView
     private void initView() {
         //第三个参数设置为true  直接解析之后添加到当前view中
         LayoutInflater.from(getContext())
-                      .inflate(R.layout.music_view, this, true);
+                .inflate(R.layout.music_view, this, true);
         mRecyclerView = findViewById(R.id.rv);
         mStickyheader = findViewById(R.id.music_rv_sticky_view);
 
@@ -54,7 +53,10 @@ public class MusicView
     }
 
     //设置列表的适配器
-    public void setAdapter(Context context, LinearLayoutManager manager, MusicListAdapter adapter) {
+    public void setAdapter(Context context, MusicListAdapter adapter) {
+        LinearLayoutManager manager = new LinearLayoutManager(context);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);

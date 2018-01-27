@@ -86,9 +86,6 @@ public class SisanActivity extends BaseRecyclerActivity<Girl> implements SisanCo
 
     @Override
     public void loadMore(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter.AddFooter(mList);
-        mAdapter.notifyDataSetChanged();
     }
 
 
@@ -114,8 +111,6 @@ public class SisanActivity extends BaseRecyclerActivity<Girl> implements SisanCo
 
     @Override
     protected void loadMoreData() {
-        mPresenter.loadDataList(mUrl,
-                Constants.LOAD_MORE_DATA);
     }
 
     @Override

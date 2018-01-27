@@ -5,8 +5,7 @@ import android.support.v4.app.Fragment;
 import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.mvp.gank.app.AppFragment;
 import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerFragment;
-import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituRecyclerFragment;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituFragment;
 import com.yibao.biggirl.mvp.gank.sisan.SisanFragment;
 
 import java.util.HashMap;
@@ -43,6 +42,8 @@ public class FragmentFactory {
     private static final int FRAGMENT_SXINGGAN = 21;//43 性感
     private static final int FRAGMENT_SGAOQING = 22;//43 高清
     private static final int FRAGMENT_SWEIMEI = 23;//43 唯美
+    private static final int FRAGMENT_WANGLUO = 24;//43 网络
+    private static final int FRAGMENT_DONGMAN = 25;//43 动漫
 
     private static Map<Integer, BaseRecyclerFragment> mCacheFragmentMap = new HashMap<>();
 
@@ -59,13 +60,14 @@ public class FragmentFactory {
 
         switch (position) {
             case FRAGMENT_GIRLS:
-                fragment = new GirlsFragment();
+                fragment = AppFragment.newInstance(FRAGMENT_ANDRID);
+//                fragment = new GirlsFragment();
                 break;
             case FRAGMENT_ANDRID:
                 fragment = AppFragment.newInstance(FRAGMENT_ANDRID);
                 break;
             case FRAGMENT_APP:
-                fragment = AppFragment.newInstance(FRAGMENT_APP);
+                fragment = AppFragment .newInstance(FRAGMENT_APP);
                 break;
             case FRAGMENT_IOS:
                 fragment = AppFragment.newInstance(FRAGMENT_IOS);
@@ -81,16 +83,16 @@ public class FragmentFactory {
                 break;
 //                妹子图
             case FRAGMENT_JAPAN:
-                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_JAPAN);
+                fragment = MeizituFragment.newInstance(FRAGMENT_JAPAN);
                 break;
             case FRAGMENT_HOT:
-                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_HOT);
+                fragment = MeizituFragment.newInstance(FRAGMENT_HOT);
                 break;
             case FRAGMENT_SEX:
-                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_SEX);
+                fragment = MeizituFragment.newInstance(FRAGMENT_SEX);
                 break;
             case FRAGMENT_CUTE:
-                fragment = MeizituRecyclerFragment.newInstance(FRAGMENT_CUTE);
+                fragment = MeizituFragment.newInstance(FRAGMENT_CUTE);
                 break;
 //                多图
             case FRAGMENT_MFSTAR:
@@ -132,6 +134,12 @@ public class FragmentFactory {
                 break;
             case FRAGMENT_SWEIMEI:
                 fragment = SisanFragment.newInstance(FRAGMENT_SWEIMEI);
+                break;
+            case FRAGMENT_WANGLUO:
+                fragment = SisanFragment.newInstance(FRAGMENT_WANGLUO);
+                break;
+            case FRAGMENT_DONGMAN:
+                fragment = SisanFragment.newInstance(FRAGMENT_DONGMAN);
                 break;
             default:
                 break;

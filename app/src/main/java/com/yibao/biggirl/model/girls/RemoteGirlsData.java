@@ -1,6 +1,7 @@
 package com.yibao.biggirl.model.girls;
 
 import com.yibao.biggirl.MyApplication;
+import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.network.RetrofitHelper;
 import com.yibao.biggirl.service.MeizituService;
@@ -37,24 +38,20 @@ public class RemoteGirlsData
     public void getGirls(String dataType, int size, int page, LoadDataCallback callback) {
         List<String> urlList = new ArrayList<>();
         RetrofitHelper.getGankApi(Constants.GANK_API)
-                .getGril(dataType, size, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<GirlsBean>() {
+                .getConmmetApi(dataType, size, page)
+                .subscribeOn(Schedulers.io()).map(girlsBean -> {
+            for (ResultsBeanX data : girlsBean.getResults()) {
+                urlList.add(data.getUrl());
+            }
+            return urlList;
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<String>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
 
                     @Override
-                    public void onNext(GirlsBean girlsBean) {
-                        List<ResultsBean> results = girlsBean.getResults();
-
-
-                        for (int i = 0; i < results.size(); i++) {
-                            urlList.add(results.get(i)
-                                    .getUrl());
-                        }
-                        callback.onLoadDatas(urlList);
+                    public void onNext(List<String> list) {
+                        callback.onLoadDatas(list);
                     }
 
                     @Override
@@ -64,8 +61,35 @@ public class RemoteGirlsData
 
                     @Override
                     public void onComplete() {
+
                     }
                 });
+//                .subscribe(new Observer<GirlsBean>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                    }
+//
+//                    @Override
+//                    public void onNext(GirlsBean girlsBean) {
+//                        List<ResultsBean> results = girlsBean.getResults();
+//
+//
+//                        for (int i = 0; i < results.size(); i++) {
+//                            urlList.add(results.get(i)
+//                                    .getUrl());
+//                        }
+//                        callback.onLoadDatas(urlList);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        callback.onDataNotAvailable();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                    }
+//                });
     }
 
     @Override
@@ -138,6 +162,7 @@ public class RemoteGirlsData
                 Element total = doc.select("div.main-image").first();
                 String attr = total.select("img").first().attr("src");
                 girls.add(new Girl(String.format(realUrl, attr, fakeRefer)));
+//                    girls.add(new Girl(attr));
             } catch (IOException e) {
                 e.printStackTrace();
             }

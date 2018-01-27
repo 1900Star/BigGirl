@@ -16,6 +16,7 @@ import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -26,13 +27,13 @@ import butterknife.Unbinder;
 /**
  * @项目名： BigGirl
  * @包名： com.yibao.biggirl.base
- * @文件名: BaseRecyclerActivity
+ * @文件名: DuotuRecyclerActivity
  * @author: Stran
  * @创建时间: 2017/4/8 04:24
- * @描述： 凡是页面包含RecyclerView的,都要继承这个BaseRecyclerActivity
+ * @描述：
  */
 public class DuotuRecyclerActivity
-        extends BaseRecyclerActivity<Girl> implements DuotuContract.View<Girl>{
+        extends BaseRecyclerActivity<Girl> implements DuotuContract.View<Girl> {
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -86,6 +87,10 @@ public class DuotuRecyclerActivity
 
     @Override
     public void loadMore(List<Girl> list) {
+        if (list == null | list.size() == 0) {
+            LogUtil.d(" 没有更多了 ============");
+            return;
+        }
         mList.addAll(list);
         mAdapter.AddFooter(mList);
         mAdapter.notifyDataSetChanged();

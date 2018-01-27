@@ -3,8 +3,6 @@ package com.yibao.biggirl.model.app;
 import com.yibao.biggirl.network.RetrofitHelper;
 import com.yibao.biggirl.util.Constants;
 
-import java.util.List;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -21,6 +19,7 @@ public class RemoteAppData
 
     @Override
     public void getApp(int size, int page, String type, LoadDataCallback callback) {
+
         RetrofitHelper.getGankApi(Constants.GANK_API)
                 .getConmmetApi(type, size, page)
                 .subscribeOn(Schedulers.io())
@@ -33,7 +32,6 @@ public class RemoteAppData
 
                     @Override
                     public void onNext(@NonNull GankDesBean gankDesBean) {
-                        List<ResultsBeanX> list = gankDesBean.getResults();
                         callback.onLoadData(gankDesBean.getResults());
                     }
 
@@ -48,5 +46,6 @@ public class RemoteAppData
                     }
                 });
     }
+
 
 }

@@ -2,22 +2,22 @@ package com.yibao.biggirl.model.music;
 
 /**
  * Author：Sid
- * Des：${用于BottomSheetAdapter中,item点击播放音乐}
+ * Des：${用于BottomSheetAdapter中,点击item播放音乐}
  * Time:2017/8/13 06:53
  */
 public class BottomSheetStatus {
     /**
-     * type 用来表示播放音乐的标记
+     * position 用来表示播放音乐的Position
      */
 
-    public int type;
+    public int position;
 
-    public BottomSheetStatus(int type) {
-        this.type = type;
+    public BottomSheetStatus(int position) {
+        this.position = position;
     }
 
-    public int getType() {
-        return type;
+    public int getPosition() {
+        return position;
     }
 
 }
