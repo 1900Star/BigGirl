@@ -22,8 +22,7 @@ public class PackagingDataUtil {
     private static String imageUrl;
 
     public static List<String> objectToList(List<Girl> list) {
-
-        List<String> data = new ArrayList();
+        ArrayList<String> data = new ArrayList();
         Flowable.fromIterable(list)
                 .subscribeOn(Schedulers.io())
                 .subscribe(girl -> {

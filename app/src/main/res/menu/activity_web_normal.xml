@@ -9,7 +9,6 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/web_normal_browser"
-        android:icon="@drawable/ic_menu_search"
         android:title="@string/open_broswer"
         app:showAsAction="never"/>
 </menu>

@@ -31,6 +31,7 @@ public class MusicInfoDao extends AbstractDao<MusicInfo, Long> {
         public final static Property AlbumId = new Property(4, long.class, "albumId", false, "ALBUM_ID");
         public final static Property Time = new Property(5, String.class, "time", false, "TIME");
         public final static Property SongUrl = new Property(6, String.class, "songUrl", false, "SONG_URL");
+        public final static Property PlayStatus = new Property(7, int.class, "playStatus", false, "PLAY_STATUS");
     }
 
 
@@ -52,7 +53,8 @@ public class MusicInfoDao extends AbstractDao<MusicInfo, Long> {
                 "\"ALBUM\" TEXT," + // 3: album
                 "\"ALBUM_ID\" INTEGER NOT NULL ," + // 4: albumId
                 "\"TIME\" TEXT," + // 5: time
-                "\"SONG_URL\" TEXT);"); // 6: songUrl
+                "\"SONG_URL\" TEXT," + // 6: songUrl
+                "\"PLAY_STATUS\" INTEGER NOT NULL );"); // 7: playStatus
     }
 
     /** Drops the underlying database table. */
@@ -95,6 +97,7 @@ public class MusicInfoDao extends AbstractDao<MusicInfo, Long> {
         if (songUrl != null) {
             stmt.bindString(7, songUrl);
         }
+        stmt.bindLong(8, entity.getPlayStatus());
     }
 
     @Override
@@ -131,6 +134,7 @@ public class MusicInfoDao extends AbstractDao<MusicInfo, Long> {
         if (songUrl != null) {
             stmt.bindString(7, songUrl);
         }
+        stmt.bindLong(8, entity.getPlayStatus());
     }
 
     @Override
@@ -147,7 +151,8 @@ public class MusicInfoDao extends AbstractDao<MusicInfo, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // album
             cursor.getLong(offset + 4), // albumId
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // time
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // songUrl
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // songUrl
+            cursor.getInt(offset + 7) // playStatus
         );
         return entity;
     }
@@ -161,6 +166,7 @@ public class MusicInfoDao extends AbstractDao<MusicInfo, Long> {
         entity.setAlbumId(cursor.getLong(offset + 4));
         entity.setTime(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setSongUrl(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setPlayStatus(cursor.getInt(offset + 7));
      }
     
     @Override

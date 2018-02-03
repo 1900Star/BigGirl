@@ -9,10 +9,15 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.base.BaseRvAdapter;
 
 /**
- * Author：Sid
- * Des：${TODO}
- * Time:2017/5/9 15:02
+ * @项目名： BigGirl
+ * @包名： com.yibao.biggirl.factory
+ * @文件名: RecyclerFactory
+ * @author: Stran
+ * @Email: www.strangermy@outlook.com / www.stranger98@gmail.com
+ * @创建时间: 2017/5/9 15:02
+ * @描述： {TODO}
  */
+
 public class RecyclerFactory {
     private static final int RECYCLERVIEW_NORMAL = 1;
     private static final int RECYCLERVIEW_STAGGERED = 2;

@@ -18,7 +18,7 @@ public class GankDesBean
 
     /**
      * error : false
-     * results : [{"_id":"58f8b3b7421aa9544ed889a6","createdAt":"2017-04-20T21:12:23.526Z","desc":"支持搜索的spinner","images":["http://img.gank.io/07318b56-1902-4b4d-878e-c9bbcf9babbb"],"publishedAt":"2017-04-21T11:30:29.323Z","source":"chrome","type":"Android","url":"https://github.com/miteshpithadiya/SearchableSpinner","used":true,"who":"galois"}]
+     * results : [{"_id":"58f8b3b7421aa9544ed889a6","createdAt":"2017-04-20T21:12:23.526Z","desc":"支持搜索的spinner","images":["http://img.gank.io/07318b56-1902-4b4d-878e-c9bbcf9babbb"],"publishedAt":"2017-04-21T11:30:29.323Z","source":"chrome","position":"Android","url":"https://github.com/miteshpithadiya/SearchableSpinner","used":true,"who":"galois"}]
      * 数据来源于 干货集中营  www.gank.io
      */
 

@@ -9,27 +9,31 @@
     <color name="textName">#939396</color>
     <color name="textTime">#C8C8CE</color>
     <color name="textDes">#4d4d4d</color>
+    <color name="musicToastTv">#935400</color>
     <color name="listBg">#e9e7e7</color>
     <color name="itemBg">#d9d5d5</color>
-    <color name="itemType">#ea1ee3</color>
+    <color name="listItemBg">#bfbebe</color>
     <color name="colorGreen">#5ab43f</color>
     <color name="musicFloatBg">#41f79ce1</color>
 
     //about
     <color name="aboutTitle">#ff000000</color>
     <color name="aboutSign">#5b5b5b</color>
+    <color name="lyricsNormal">#5b5b5b</color>
+    <color name="lyricsSelected">#325ab1</color>
     <color name="aboutContent">#ff414141</color>
     <color name="about">#f7f1f1</color>
-    //GuideView
+    <color name="musicToast">#FFE867</color>
+
 
     <color name="rvBg">#ccffffff</color>
     <!--BottomSheetDialogList-->
     <color name="bottomSheetList">#303030</color>
     <!--SeekBar-->
     <color name="seekBarP">#8e8e8f</color>
+    <color name="seekBarS">#a1a1a3</color>
     <color name="seekBarN">#ccdcdbdb</color>
 
-    <color name="black_overlay">#66000000</color>
     <!-- 透明 -->
 
 </resources>

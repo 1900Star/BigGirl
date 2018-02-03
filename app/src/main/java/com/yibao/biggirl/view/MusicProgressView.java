@@ -84,7 +84,7 @@ public class MusicProgressView
         //挂载布局
 
         View view = View.inflate(context, R.layout.music_progress_bar, this);
-        mIvIcon = (ImageView) view.findViewById(R.id.music_progress_bar);
+        mIvIcon = view.findViewById(R.id.music_progress_bar);
     }
 
     @Override
@@ -113,10 +113,9 @@ public class MusicProgressView
             if (mPaint == null) {
                 mPaint = new Paint();
                 mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setStrokeWidth(8);
+                mPaint.setStrokeWidth(10);
                 mPaint.setAntiAlias(true);
-                //                mPaint.setColor(Color.argb(255,212, 200, 55));
-                mPaint.setColor(Color.argb(255, 90, 180, 63));
+                mPaint.setColor(Color.argb(255, 97, 97, 97));
             }
             canvas.drawArc(mOval, startAngle, sweepAngle, useCenter, mPaint);
         }

@@ -9,6 +9,7 @@ package com.yibao.biggirl.base;
  *  @描述：    TODO
  */
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +17,13 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.yibao.biggirl.R;
+import com.yibao.biggirl.base.listener.OnRvItemClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
-public class BaseActivity extends AppCompatActivity implements BGASwipeBackHelper.Delegate{
+@SuppressLint("Registered")
+public abstract class BaseActivity extends AppCompatActivity implements OnRvItemClickListener, OnRvItemLongClickListener, BGASwipeBackHelper.Delegate {
     protected BGASwipeBackHelper mSwipeBackHelper;
 
     @Override
@@ -28,8 +32,6 @@ public class BaseActivity extends AppCompatActivity implements BGASwipeBackHelpe
         // 在 super.onCreate(savedInstanceState) 之前调用该方法
         initSwipeBackFinish();
         super.onCreate(savedInstanceState);
-        Log.d(this.getClass().getSimpleName(), "onCreate");
-
 
 
     }

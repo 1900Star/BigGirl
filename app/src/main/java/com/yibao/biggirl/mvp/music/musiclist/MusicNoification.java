@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.yibao.biggirl.R;
-import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.service.AudioPlayService;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.StringUtil;
@@ -21,7 +21,7 @@ public class MusicNoification {
 
     private static boolean p;
 
-    public static Notification getNotification(Context context, RemoteViews remoteView, MusicInfo info) {
+    public static Notification getNotification(Context context, RemoteViews remoteView, MusicBean info) {
         initRemotViews(context, remoteView,info);
 
 
@@ -38,7 +38,7 @@ public class MusicNoification {
 
     private static void initRemotViews(Context context,
                                               RemoteViews remoteView,
-                                             MusicInfo info) {
+                                       MusicBean info) {
 //        remoteView = new RemoteViews(context.getPackageName(), R.layout.music_notify);
         remoteView.setTextViewText(R.id.widget_title, info.getTitle());
         remoteView.setTextViewText(R.id.widget_artist, info.getArtist());

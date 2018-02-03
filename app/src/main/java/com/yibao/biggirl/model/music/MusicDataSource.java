@@ -16,20 +16,20 @@ public interface MusicDataSource {
 
 
     interface QueryAllFavMusicCallBack {
-        void queryAllFavMusic(List<MusicInfo> list);
+        void queryAllFavMusic(List<MusicBean> list);
 
     }
 
     interface QueryConditionalMusicCallBack {
-        void quetyConditional(List<MusicInfo> list);
+        void quetyConditional(List<MusicBean> list);
 
     }
 
 
 
-    void insertFavMusic(MusicInfo info, InsertFavMusicCallBack callBack);
+    void insertFavMusic(MusicBean info, InsertFavMusicCallBack callBack);
 
-    void cancelFavMusic(MusicInfo info);
+    void cancelFavMusic(MusicBean info);
 
     void queryAllFavMusic(QueryAllFavMusicCallBack callBack);
 

@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * @author Stran
+ * 获取Unsplash图片地址
  */
 public class UrlUtil {
     public static List<String> getUnsplashUrl(List<String> list) {

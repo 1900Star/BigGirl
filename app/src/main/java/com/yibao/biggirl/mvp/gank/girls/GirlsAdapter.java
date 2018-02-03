@@ -54,7 +54,7 @@ public class GirlsAdapter
 
             holder.itemView.setOnClickListener(view -> {
                 if (mContext instanceof OnRvItemClickListener) {
-                    ((OnRvItemClickListener) mContext).showBigGirl(holder.getAdapterPosition(), mList, 1, null);
+                    ((OnRvItemClickListener) mContext).showBigGirl(holder.getAdapterPosition(), mList, 0, null);
 
                 }
             });
@@ -62,7 +62,7 @@ public class GirlsAdapter
             holder.itemView.setOnLongClickListener(view -> {
                 if (mContext instanceof OnRvItemLongClickListener) {
 
-                    ((OnRvItemLongClickListener) mContext).showPreview(url);
+                    ((OnRvItemLongClickListener) mContext).onLongTouchPreview(url);
                 }
 
 

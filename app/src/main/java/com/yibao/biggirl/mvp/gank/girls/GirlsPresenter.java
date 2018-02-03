@@ -11,6 +11,7 @@ import java.util.List;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/4/22 10:03
+ * @author Stran
  */
 public class GirlsPresenter
         implements GirlsContract.Presenter {

@@ -9,11 +9,11 @@
 
         <item
             android:id="@+id/action_beautiful"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_star_accent_24dp"
             android:title="@string/video"/>
         <item
             android:id="@+id/action_share_me"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/ic_star_green_24dp"
             android:title="@string/action_share"/>
         <item
             android:id="@+id/action_map"
@@ -31,12 +31,12 @@
 
             <item
                 android:id="@+id/action_setting"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_star_accent_24dp"
                 android:title="@string/option"/>
 
             <item
                 android:id="@+id/action_about_me"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_star_green_24dp"
                 android:title="@string/about"/>
         </menu>
     </item>

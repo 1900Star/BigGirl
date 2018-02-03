@@ -3,7 +3,7 @@ package com.yibao.biggirl.mvp.gank.all;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
-import com.yibao.biggirl.base.BaseRecyclerFag;
+import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.mvp.gank.app.AppAdapter;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Stran
  */
 public class AllFragment
-        extends BaseRecyclerFag<ResultsBeanX>
+        extends BaseRecyclerFragment
         implements AppContract.View {
 
     private AppAdapter mAdapter;
@@ -36,7 +36,7 @@ public class AllFragment
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         new AppPresenter(this);
-        int type = getArguments().getInt("type");
+        int type = getArguments().getInt("position");
         mLoadType = Constants.getLoadType(type);
     }
 
@@ -55,18 +55,14 @@ public class AllFragment
 
     @Override
     public void refresh(List<ResultsBeanX> list) {
-        mList.clear();
         mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(list);
+        mAdapter.addHeader(list);
         mAdapter.notifyDataSetChanged();
 
     }
 
     @Override
     public void loadData(List<ResultsBeanX> list) {
-        mList.clear();
-        mList.addAll(list);
         mAdapter = new AppAdapter(mActivity, list);
         RecyclerView recyclerView = getRecyclerView(mFab, 1, mAdapter);
         mFagContent.addView(recyclerView);
@@ -81,7 +77,7 @@ public class AllFragment
 
     @Override
     public void onLoadMore(List<ResultsBeanX> list) {
-        mAdapter.AddFooter(list);
+        mAdapter.addFooter(list);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -93,7 +89,6 @@ public class AllFragment
 
     @Override
     public void showNormal() {
-
     }
 
 

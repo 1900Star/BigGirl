@@ -30,7 +30,7 @@ import com.yibao.biggirl.util.WallPaperUtil;
 import com.yibao.biggirl.view.ProgressView;
 
 import java.io.File;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -50,6 +50,7 @@ import static com.yibao.biggirl.R.id.vp;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/4/1 05:29
+ * @author Stran
  */
 public class GirlFragment
         extends Fragment
@@ -74,7 +75,7 @@ public class GirlFragment
     private GirlAdapter mAdapter;
     private View mView = null;
     private String mUrl = null;
-    private List<String> mList;
+    private ArrayList<String> mList;
     private CompositeDisposable disposables;
     private Disposable mDisposable;
     private MyApplication mApplication;
@@ -82,8 +83,6 @@ public class GirlFragment
     private PagerScroller mScroller;
     private boolean isPlay = false;
 
-    public GirlFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,13 +118,13 @@ public class GirlFragment
                 .setDisplayHomeAsUpEnabled(true);
 
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-
         setHasOptionsMenu(true);
         mScroller = new PagerScroller(getActivity());
         if (mList.size() != 0) {
             mAdapter = new GirlAdapter(getActivity(), mList);
         }
-        mVp.setPageTransformer(true, new GirlPageTransformer());
+        boolean animationSwitch = true;
+        mVp.setPageTransformer(animationSwitch, new GirlPageTransformer());
         mVp.setAdapter(mAdapter);
         mVp.setCurrentItem(mPosition);
         mVp.addOnPageChangeListener(this);
@@ -194,10 +193,12 @@ public class GirlFragment
             case android.R.id.home:
                 getActivity().finish();
                 break;
-            case R.id.action_setwallpaer: //设置壁纸
+            //设置壁纸
+            case R.id.action_setwallpaer:
                 WallPaperUtil.setWallPaper(getActivity(), mAdapter);
                 SnakbarUtil.setWallpaer(mPbDown);
                 break;
+
             //自动播放图册
             case R.id.action_auto_play:
                 autoPreview();
@@ -216,14 +217,13 @@ public class GirlFragment
 
     private void autoPreview() {
         if (isPlay) {
-            mMenuItem.setIcon(R.drawable.btn_playing_play);
+            mMenuItem.setIcon(R.drawable.btn_playing_play_selector);
             mPbDown.setVisibility(View.VISIBLE);
             //停止自动播放
             stopLoop();
             isPlay = false;
         } else {
-
-            mMenuItem.setIcon(R.drawable.btn_playing_pause);
+            mMenuItem.setIcon(R.drawable.btn_playing_pause_selector);
             ((HideToolbarListener) getActivity()).hideToolbar();
             mPbDown.setVisibility(View.INVISIBLE);
             //开始自动播放

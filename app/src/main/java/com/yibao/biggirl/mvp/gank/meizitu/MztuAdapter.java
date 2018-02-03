@@ -35,9 +35,13 @@ public class MztuAdapter
 {
     private Context mContext;
     private int mType;
-    private int mCode;
 
-    public MztuAdapter(Context context, List<Girl> list, int type) {
+    /**
+     * @param context
+     * @param list
+     * @param type    1表示 MeizituRecyclerActivity , 2表示 DuotuPicActivty , 3 表示 SisanActivity
+     */
+    public  MztuAdapter(Context context, List<Girl> list, int type) {
         super(list);
         mContext = context;
         mType = type;
@@ -57,6 +61,7 @@ public class MztuAdapter
     @Override
     protected void bindView(RecyclerView.ViewHolder holder, Girl girl) {
         List<String> list = PackagingDataUtil.objectToList(mList);
+
         if (holder instanceof ViewHolder) {
             String url = girl.getUrl();
             ViewHolder viewHolder = (ViewHolder) holder;
@@ -72,57 +77,24 @@ public class MztuAdapter
                     }
                 } else {
                     if (mContext instanceof OnRvItemClickListener) {
-                        if (mType == 0) {
-                            mCode = 2;
-                        } else if (mType == 1){
-                            mCode = 3;
-                        }
-                            ((OnRvItemClickListener) mContext).showBigGirl(0, null, mCode, girl.getLink());
-                    }
-//                    if (mType == 0) {
-//                        if (mContext instanceof OnRvItemClickListener) {
-//                        }
-//
-//
-//                    } else if (mType == 1) {
-//                        if (mContext instanceof OnRvItemClickListener) {
-//                            ((OnRvItemClickListener) mContext).showBigGirl(0,null,3,girl.getLink());
-//                        }
-//
-//                        Intent intent = new Intent(mContext, DuotuPicActivity.class);
-//                        intent.putExtra("link", girl.getLink());
-//                        mContext.startActivity(intent);
-//
-//                    }
-                }
 
+                        ((OnRvItemClickListener) mContext).showBigGirl(0, null, mType, girl.getLink());
+                    }
+                }
             });
 
 
             holder.itemView.setOnLongClickListener(view -> {
                 if (mContext instanceof OnRvItemLongClickListener) {
-
-                    ((OnRvItemLongClickListener) mContext).showPreview(url);
+                    ((OnRvItemLongClickListener) mContext).onLongTouchPreview(url);
                 }
                 return true;
             });
         }
     }
 
-    public void setNewData(List<Girl> data) {
-        this.mList = data;
-
-        notifyDataSetChanged();
-    }
-
-    public void addData(int position, List<Girl> data) {
-        this.mList.addAll(position, data);
-        this.notifyItemRangeInserted(position, data.size());
-    }
-
     static class ViewHolder
             extends RecyclerView.ViewHolder
-
     {
         @BindView(R.id.gril_image_view)
         ImageView mGrilImageView;

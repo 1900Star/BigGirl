@@ -21,8 +21,6 @@ import android.widget.ImageView;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseActivity;
 import com.yibao.biggirl.base.listener.MyPageChangeListener;
-import com.yibao.biggirl.base.listener.OnRvItemClickListener;
-import com.yibao.biggirl.base.listener.OnRvItemLongClickListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
@@ -30,9 +28,10 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.UnSplashDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
-import com.yibao.biggirl.mvp.gank.duotu.DuotuPicActivity;
+import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituPicActivity;
+import com.yibao.biggirl.mvp.gank.meizitu.MeizituRecyclerActivity;
+import com.yibao.biggirl.mvp.gank.sisan.SisanActivity;
 import com.yibao.biggirl.mvp.map.CheckGoogleService;
 import com.yibao.biggirl.mvp.map.MapsActivity;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListActivity;
@@ -41,6 +40,7 @@ import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
+import com.yibao.biggirl.util.SharePrefrencesUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.ToastUtil;
 
@@ -52,6 +52,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.http.HEAD;
 
 
 /**
@@ -61,11 +62,8 @@ import butterknife.Unbinder;
  */
 public class MainActivity
         extends BaseActivity
-        implements OnRvItemClickListener<String>,
-        NavigationView.OnNavigationItemSelectedListener,
-        OnRvItemLongClickListener
-
-{
+        implements
+        NavigationView.OnNavigationItemSelectedListener {
     private static final long KEY_EVENT_BACK_TIME = 2000;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
@@ -167,7 +165,6 @@ public class MainActivity
                 AboutMeDialogFag.newInstance(mHeaderUrl)
                         .show(getSupportFragmentManager(), "about");
                 break;
-
             case R.id.action_my_favorite:
                 startActivity(new Intent(this, FavoriteActivity.class));
                 break;
@@ -178,14 +175,12 @@ public class MainActivity
                 } else {
                     SnakbarUtil.mapPoint(mIvCollapsing);
                 }
-
                 break;
-            // ***************** 我的音乐
+
             case R.id.action_music:
                 startActivity(new Intent(this, MusicListActivity.class));
                 break;
             case R.id.action_beautiful:
-//                                                                RetrofitHelper.getUnsplashApi();
                 BeautifulDialogFag.newInstance()
                         .show(getSupportFragmentManager(), "beautiful");
                 break;
@@ -205,7 +200,6 @@ public class MainActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -213,18 +207,12 @@ public class MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.main_action_search:
-                ToastUtil.showShort(this,"搜索");
-                break;
-            case R.id.main_action_star:
-                //TODO
-                startActivity(new Intent(this, Kot.class));
 
+            case R.id.main_action_star:
                 break;
             default:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -232,18 +220,17 @@ public class MainActivity
     //打开Toolbar的背景大图
     @OnClick(R.id.iv_collapsing)
     public void onViewClicked() {
-
-        TopBigPicDialogFragment diaLog = TopBigPicDialogFragment.newInstance(mUrl);
-        if (diaLog.isResumed()) {
-            diaLog.dismiss();
+        TopBigPicDialogFragment dialog = TopBigPicDialogFragment.newInstance(mUrl);
+        if (dialog.isResumed()) {
+            dialog.dismiss();
         }
-        diaLog.show(getSupportFragmentManager(), "dialog_big_girl");
+        dialog.show(getSupportFragmentManager(), "dialog_big_girl");
 
     }
 
     //长按显示预览
     @Override
-    public void showPreview(String url) {
+    public void onLongTouchPreview(String url) {
         TopBigPicDialogFragment.newInstance(url)
                 .show(getSupportFragmentManager(), "dialog_big_girl");
         mHeaderUrl = url;
@@ -276,11 +263,11 @@ public class MainActivity
 
     //打开WebViewActivity
     @Override
-    public void showDetail(FavoriteWebBean bean, Long id) {
+    public void showWebDetail(FavoriteWebBean bean, Long id) {
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("favoriteBean", bean);
         intent.putExtra("id", id);
-        startActivity(intent);
+        mSwipeBackHelper.forward(intent);
     }
 
 
@@ -289,26 +276,29 @@ public class MainActivity
     public void showBigGirl(int position, List<String> list, int type, String link) {
 
         switch (type) {
-            case 1:
+            case 0:
                 //设置navHeader头像,待定
                 mHeaderUrl = list.get(position);
                 ImageUitl.loadPic(this, mHeaderUrl, mIvHeader);
                 Intent intent = new Intent(this, GirlActivity.class);
                 intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
                 intent.putExtra("position", position);
-                startActivity(intent);
+                mSwipeBackHelper.forward(intent);
                 break;
-            case 2:
-                Intent meizituIntent = new Intent(this, MeizituPicActivity.class);
+            case 1:
+                Intent meizituIntent = new Intent(this, MeizituRecyclerActivity.class);
                 meizituIntent.putExtra("link", link);
                 mSwipeBackHelper.forward(meizituIntent);
                 break;
-            case 3:
-                Intent duotuIntent = new Intent(this, DuotuPicActivity.class);
+            case 2:
+                Intent duotuIntent = new Intent(this, DuotuRecyclerActivity.class);
                 duotuIntent.putExtra("link", link);
                 mSwipeBackHelper.forward(duotuIntent);
                 break;
-            case 4:
+            case 3:
+                Intent sisanIntent = new Intent(this, SisanActivity.class);
+                sisanIntent.putExtra("link", link);
+                mSwipeBackHelper.forward(sisanIntent);
                 break;
             default:
                 break;
@@ -329,6 +319,7 @@ public class MainActivity
                 exitTime = System.currentTimeMillis();
             } else {
                 FileUtil.delDir(Constants.DIR, true);
+                SharePrefrencesUtil.setMusicPlayState(this, 1);
                 finish();
                 System.exit(0);
             }

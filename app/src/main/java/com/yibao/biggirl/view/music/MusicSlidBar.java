@@ -18,47 +18,47 @@ import com.yibao.biggirl.util.LogUtil;
 
 
 /**
- * Created by ThinkPad on 2016/8/12.
+ * @author ThinkPad
+ * @date 2016/8/12
  */
 public class MusicSlidBar
-        extends View
-{
+        extends View {
     private String[] names = new String[]{"A",
-                                          "B",
-                                          "C",
-                                          "D",
-                                          "E",
-                                          "F",
-                                          "G",
-                                          "H",
-                                          "I",
-                                          "J",
-                                          "K",
-                                          "L",
-                                          "M",
-                                          "N",
-                                          "O",
-                                          "P",
-                                          "Q",
-                                          "R",
-                                          "S",
-                                          "T",
-                                          "U",
-                                          "V",
-                                          "W",
-                                          "X",
-                                          "Y",
-                                          "Z",
-                                          "#"};
-    private Paint        mTvPaint;
-    private int          viewW;
-    private int          singleHeight;
-    private TextView     contact_toast;
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z",
+            "#"};
+    private Paint mTvPaint;
+    private int viewW;
+    private int singleHeight;
+    private TextView mContactToast;
     private RecyclerView mRecyclerView;
-    private int          mIndex;
-    private Paint        mCirclePaint;
-    private Context      mContext;
-    private TextView     mStickyViwe;
+    private int mIndex;
+    private Paint mCirclePaint;
+    private Context mContext;
+    private TextView mStickyViwe;
 
     public MusicSlidBar(Context context) {
         super(context);
@@ -78,7 +78,8 @@ public class MusicSlidBar
     private void initView(Context context) {
         mContext = context;
         mTvPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTvPaint.setTextAlign(Paint.Align.CENTER);     //x以字体的x方向中点为坐标点
+        // x以字体的x方向中点为坐标点
+        mTvPaint.setTextAlign(Paint.Align.CENTER);
         mTvPaint.setTextSize(30);
         mTvPaint.setAntiAlias(true);
         mTvPaint.setStyle(Paint.Style.FILL);
@@ -107,11 +108,10 @@ public class MusicSlidBar
                 mTvPaint.setColor(Color.GRAY);
             } else if (i == mIndex) {
                 mTvPaint.setColor(Color.parseColor("#FF4081"));
-                //                mTvPaint.setColor(Color.BLUE);
                 canvas.drawCircle(viewW / 2,
-                                  i * singleHeight + singleHeight / 2 - dip2px(1),
-                                  dip2px(12),
-                                  mCirclePaint);
+                        i * singleHeight + singleHeight / 2 - dip2px(1),
+                        dip2px(12),
+                        mCirclePaint);
             } else {
                 mTvPaint.setColor(Color.GRAY);
 
@@ -121,9 +121,9 @@ public class MusicSlidBar
             //singleHeight * (i + 1) 加1是为了导航栏能够完整显示 ，
             // 比如最下面的(Z 和 #)，不同尺寸的设备可能会有不同，可能 会加2 或者加3，根据情况调整
             canvas.drawText(names[i],
-                            viewW / 2,
-                            i * singleHeight + singleHeight / 2 + metrics.bottom,
-                            mTvPaint);
+                    viewW / 2,
+                    i * singleHeight + singleHeight / 2 + metrics.bottom,
+                    mTvPaint);
             //                canvas.drawText(names[i], viewW / 2, singleHeight * (i + 1), mTvPaint);
 
         }
@@ -148,9 +148,9 @@ public class MusicSlidBar
                 setBackgroundColor(Color.TRANSPARENT);
                 mTvPaint.setColor(Color.GRAY);
                 //隐藏toast
-                if (contact_toast != null) {
-                    contact_toast.setVisibility(GONE);
-                }
+//                if (mContactToast != null) {
+//                    mContactToast.setVisibility(GONE);
+//                }
                 break;
             default:
                 break;
@@ -158,7 +158,12 @@ public class MusicSlidBar
         return true;
     }
 
-    //处理触摸事件
+
+    /**
+     * 处理触摸事件
+     *
+     * @param event
+     */
     private void performTouch(MotionEvent event) {
         //确定触摸的是哪个字母
         float eventY = event.getY();
@@ -174,15 +179,15 @@ public class MusicSlidBar
         String name = names[mIndex];
         //显示toast字母
         initView();
-        contact_toast.setText(name);
+//        mContactToast.setText(name);
         //设置导航字母
         mStickyViwe.setText(name);
         LogUtil.d("设置导航字母 *******   " + name);
         //显示toast
-        contact_toast.setVisibility(VISIBLE);
+//        mContactToast.setVisibility(VISIBLE);
         //处理列表section位置
         //        rvListener();
-        //获取listview的适配器
+        // 获取listview的适配器
         MusicListAdapter adapter = (MusicListAdapter) mRecyclerView.getAdapter();
         //获取sections的集合
         String[] sections = adapter.getSections();
@@ -200,21 +205,22 @@ public class MusicSlidBar
 
 
         //        //确定当前section首联系人的position
-        int                 positionForSection = adapter.getPositionForSection(sectionIndex);
-        LinearLayoutManager manager            = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        int positionForSection = adapter.getPositionForSection(sectionIndex);
+        LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
         manager.scrollToPositionWithOffset(positionForSection, 0);
 
 
     }
 
     private void initView() {
-        FrameLayout parent = (FrameLayout) getParent();//获取父容器
+        // 获取父容器
+        FrameLayout parent = (FrameLayout) getParent();
         if (mStickyViwe == null) {
             mStickyViwe = parent.findViewById(R.id.music_rv_sticky_view);
         }
-        if (contact_toast == null) {
-            contact_toast = parent.findViewById(R.id.contac_toast);
-        }
+//        if (mContactToast == null) {
+//            mContactToast = parent.findViewById(R.id.contac_toast);
+//        }
         //初始化listview
         if (mRecyclerView == null) {
             mRecyclerView = parent.findViewById(R.id.rv);
@@ -224,7 +230,7 @@ public class MusicSlidBar
 
     public int dip2px(float dpValue) {
         final float scale = mContext.getResources()
-                                    .getDisplayMetrics().density;
+                .getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 }

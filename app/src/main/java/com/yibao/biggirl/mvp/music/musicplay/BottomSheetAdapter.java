@@ -11,7 +11,7 @@ import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.model.music.BottomSheetStatus;
-import com.yibao.biggirl.model.music.MusicInfo;
+import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.util.RxBus;
 import com.yibao.biggirl.util.StringUtil;
 
@@ -26,17 +26,17 @@ import butterknife.ButterKnife;
  * Time:2017/8/22 14:31
  */
 public class BottomSheetAdapter
-        extends BaseRvAdapter<MusicInfo>
+        extends BaseRvAdapter<MusicBean>
         implements SectionIndexer {
 
 
-    public BottomSheetAdapter(List<MusicInfo> list) {
+    public BottomSheetAdapter(List<MusicBean> list) {
         super(list);
 
     }
 
     @Override
-    protected void bindView(RecyclerView.ViewHolder holder, MusicInfo musicItem) {
+    protected void bindView(RecyclerView.ViewHolder holder, MusicBean musicItem) {
         if (holder instanceof MusicHolder) {
             MusicHolder musicHolder = (MusicHolder) holder;
             musicHolder.mMusicName.setText(StringUtil.getSongName(musicItem.getTitle()));
@@ -45,7 +45,7 @@ public class BottomSheetAdapter
             int position = musicHolder.getAdapterPosition();
             RxBus bus = MyApplication.getIntstance()
                     .bus();
-//            MusicBottomSheetDialog页面接收
+//            MusicBottomSheetDialog页面接收,用于播放收藏列表中点击Position的音乐
             musicHolder.mRootBottomSheet.setOnClickListener(view -> bus.post(new BottomSheetStatus(
                     position)));
         }

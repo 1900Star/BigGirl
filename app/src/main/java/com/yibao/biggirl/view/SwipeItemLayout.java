@@ -194,7 +194,7 @@ public class SwipeItemLayout
         int childWidth = widthSize - getPaddingLeft() - getPaddingRight();
         int childHeight = heightSize - getPaddingTop() - getPaddingBottom();
 
-        //main layout占据真个layout frame
+        //MeiziTu layout占据真个layout frame
         lp = (MarginLayoutParams) mMainView.getLayoutParams();
         childWidthSpec = MeasureSpec.makeMeasureSpec(childWidth - lp.leftMargin - lp.rightMargin,
                 MeasureSpec.EXACTLY);
@@ -310,7 +310,7 @@ public class SwipeItemLayout
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = ev.getActionMasked();
-        //click main view，但是它处于open状态，所以，不需要点击效果，直接拦截不调用click listener
+        //click MeiziTu view，但是它处于open状态，所以，不需要点击效果，直接拦截不调用click listener
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 final int x = (int) ev.getX();
@@ -344,7 +344,7 @@ public class SwipeItemLayout
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         final int action = ev.getActionMasked();
-        //click main view，但是它处于open状态，所以，不需要点击效果，直接拦截不调用click listener
+        //click MeiziTu view，但是它处于open状态，所以，不需要点击效果，直接拦截不调用click listener
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 final int x = (int) ev.getX();

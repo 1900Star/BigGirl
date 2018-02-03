@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.yibao.biggirl.base.BaseRecyclerFag;
+import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.model.dagger2.component.DaggerGirlsComponent;
 import com.yibao.biggirl.model.dagger2.moduls.GirlsModuls;
 import com.yibao.biggirl.util.Constants;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * 邮箱：strangermy@outlook.com
  */
 public class GirlsFragment
-        extends BaseRecyclerFag<String>
+        extends BaseRecyclerFragment
         implements
         View.OnLongClickListener,
         GirlsContract.View<String> {
@@ -39,10 +39,7 @@ public class GirlsFragment
     GirlsPresenter mGirlsPresenter;
 
     private int mRandomNum;
-
-    public GirlsFragment() {
-    }
-
+    private List<String> mList;
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
@@ -51,8 +48,8 @@ public class GirlsFragment
                 .build()
                 .in(this);
 
+        mList = new ArrayList<>();
         mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, Constants.TYPE_GIRLS);
-
     }
 
 
@@ -94,7 +91,7 @@ public class GirlsFragment
     @Override
     protected void refreshData() {
         mGirlsPresenter.loadData(size,
-                1, 3,
+                page, 3,
                 Constants.REFRESH_DATA,
                 Constants.FRAGMENT_GIRLS);
         mSwipeRefresh.setRefreshing(false);
@@ -105,11 +102,9 @@ public class GirlsFragment
     //    刷新回调
     @Override
     public void refresh(List<String> list) {
-        mList.clear();
         mAdapter.clear();
         mList.addAll(list);
-        mAdapter.AddHeader(list);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addHeader(list);
     }
 
     //    RecyclerView上拉加载更多
@@ -124,16 +119,14 @@ public class GirlsFragment
     @Override
     public void loadData(List<String> list) {
         mList.addAll(list);
-        initRecyclerView(mList, 2);
+        initRecyclerView(list, 2);
         mSwipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void loadMore(List<String> list) {
         mList.addAll(list);
-        mAdapter.AddFooter(list);
-        mAdapter.notifyDataSetChanged();
-
+        mAdapter.addFooter(list);
     }
 
 

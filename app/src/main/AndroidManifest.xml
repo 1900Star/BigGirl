@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MyApplication"
@@ -50,11 +51,12 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".mvp.favorite.FavoriteActivity" />
         <activity
-            android:name=".mvp.gank.meizitu.MeizituPicActivity"
+            android:name=".mvp.favorite.FavoriteActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".mvp.main.Kot" />
+        <activity
+            android:name=".mvp.gank.meizitu.MeizituRecyclerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -65,19 +67,23 @@
             android:label="@string/title_activity_maps" />
 
         <service
-            android:name=".service.AudioPlayService"
-            android:enabled="true" />
+            android:name=".service.AudioPlayService" />
         <service
             android:name=".service.MeizituService"
             android:enabled="true" />
+        <service android:name=".service.BigServices" />
+        <service android:name=".service.MusicService" />
 
         <activity
             android:name=".mvp.music.musiclist.MusicListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.gank.duotu.DuotuPicActivity"
+            android:name=".mvp.gank.duotu.DuotuRecyclerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".mvp.gank.sisan.SisanActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>

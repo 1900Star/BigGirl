@@ -1,19 +1,23 @@
 package com.yibao.biggirl.mvp.gank.app;
 
-import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.model.app.AppDataSource;
 import com.yibao.biggirl.model.app.RemoteAppData;
+import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
 
 /**
- * Author：Sid
- * Des：${TODO}
- * Time:2017/4/22 10:03
+ * @项目名： BigGirl
+ * @包名： com.yibao.biggirl.mvp.gank.app
+ * @文件名: AppPresenter
+ * @author: Stran
+ * @Email: www.strangermy@outlook.com / www.stranger98@gmail.com
+ * @创建时间: 2018/1/13 11:06
+ * @描述： {TODO}
  */
-public class AppPresenter
-        implements AppContract.Presenter {
+
+public class AppPresenter implements AppContract.Presenter{
     private AppContract.View mView;
     private RemoteAppData mRemoteAppData;
 
@@ -65,5 +69,4 @@ public class AppPresenter
     public void unsubscribe() {
 
     }
-
 }

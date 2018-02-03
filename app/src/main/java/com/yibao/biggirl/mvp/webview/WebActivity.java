@@ -46,24 +46,23 @@ import static com.yibao.biggirl.R.id.toolbar;
  */
 public class WebActivity
         extends AppCompatActivity
-        implements FavoriteContract.View
-{
+        implements FavoriteContract.View {
     private static final String TAG = "WebActivity";
     @BindView(toolbar)
-    Toolbar     mToolbar;
+    Toolbar mToolbar;
     @BindView(R.id.progress_bar_web)
     ProgressBar mProgressBarWeb;
     @BindView(R.id.content_web)
     FrameLayout mContentWeb;
-    private WebView  mWebView;
+    private WebView mWebView;
     private Unbinder mBind;
     @Inject
     WebPresenter mPresenter;
 
-    private String          mUrl;
+    private String mUrl;
     private FavoriteWebBean mBean;
-    private boolean         isFavorite;
-    private long            mId;
+    private boolean isFavorite;
+    private long mId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +71,9 @@ public class WebActivity
         mBind = ButterKnife.bind(this);
         initView();
         DaggerWebComponent component = (DaggerWebComponent) DaggerWebComponent.builder()
-                                                                              .webModuls(new WebModuls(
-                                                                                      this))
-                                                                              .build();
+                .webModuls(new WebModuls(
+                        this))
+                .build();
         component.in(this);
         mId = getIntent().getLongExtra("id", 0);
         mBean = getIntent().getParcelableExtra("favoriteBean");
@@ -90,9 +89,6 @@ public class WebActivity
         mToolbar.setNavigationOnClickListener(view -> finish());
         mToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case android.R.id.home:
-                    finish();
-                    break;
                 case R.id.web_favorite:
                     if (isFavorite) {
                         mPresenter.cancelFavorite(mId, 1);// 取消收藏
@@ -113,8 +109,8 @@ public class WebActivity
                     startActivity(intent);
 
                     break;
-                    default:
-                        break;
+                default:
+                    break;
             }
 
             return false;
@@ -149,8 +145,8 @@ public class WebActivity
             LogUtil.d(TAG + "已取消收藏  ID :" + id);
             //      通知收藏列表更新
             MyApplication.getIntstance()
-                         .bus()
-                         .post(new UpdataFavorite(1));
+                    .bus()
+                    .post(new UpdataFavorite(1));
             SnakbarUtil.favoriteSuccessView(mWebView, "已取消收藏  -_-");
 
         }
@@ -158,7 +154,8 @@ public class WebActivity
 
     //这个方法不会使用
     @Override
-    public void queryAllFavorite(List<FavoriteWebBean> list) {}
+    public void queryAllFavorite(List<FavoriteWebBean> list) {
+    }
 
     @Override
     public void queryFavoriteIsCollect(List<FavoriteWebBean> list) {
@@ -251,8 +248,7 @@ public class WebActivity
             public boolean onCreateWindow(WebView view,
                                           boolean isDialog,
                                           boolean isUserGesture,
-                                          Message resultMsg)
-            {
+                                          Message resultMsg) {
                 WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
                 transport.setWebView(view);
                 resultMsg.sendToTarget();
@@ -264,7 +260,7 @@ public class WebActivity
 
         mWebView = new WebView(this.getApplicationContext());
         mWebView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT,
-                                                            ViewGroup.LayoutParams.MATCH_PARENT));
+                ViewGroup.LayoutParams.MATCH_PARENT));
         mContentWeb.addView(mWebView);
         WebSettings settings = mWebView.getSettings();
         // 基本设置
@@ -279,7 +275,7 @@ public class WebActivity
         settings.setDatabaseEnabled(true);
         settings.setAppCacheEnabled(true);
         String appCachePath = getApplicationContext().getCacheDir()
-                                                     .getAbsolutePath();
+                .getAbsolutePath();
         settings.setAppCachePath(appCachePath);
 
         //html中的_bank标签就是新建窗口打开，有时会打不开，需要加以下

@@ -12,10 +12,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
-import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
+import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class FavoriteAdapter
     FavoriteAdapter(Context context, List<FavoriteWebBean> list) {
         super(list);
         mContext = context;
-        LogUtil.d("Size  " + list.size());
     }
 
     //    @Override
@@ -76,7 +74,7 @@ public class FavoriteAdapter
             viewHolder.mFavoriteItem.setOnClickListener(view -> {
 
                 if (mContext instanceof OnRvItemClickListener) {
-                    ((OnRvItemClickListener) mContext).showDetail(bean, bean.getId());
+                    ((OnRvItemClickListener) mContext).showWebDetail(bean, bean.getId());
                 }
             });
 
