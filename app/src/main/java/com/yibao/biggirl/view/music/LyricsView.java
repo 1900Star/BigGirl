@@ -10,8 +10,7 @@ import android.widget.TextView;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.music.MusicLyrBean;
-import com.yibao.biggirl.util.LogUtil;
-import com.yibao.biggirl.util.StringUtil;
+import com.yibao.biggirl.util.LyricsUtil;
 
 import java.util.ArrayList;
 
@@ -30,12 +29,13 @@ public class LyricsView
     private static ArrayList<MusicLyrBean> mList;
     private static int centerLine;
     private float mBigText;
-    private int mGreen;
+    private int mLyricsSelected;
     private float smallText;
-    private int mWhite;
+    private int mLyricsNormal;
     private int lineHeight;
     private int duration;
     private int progress;
+    private float mFirstDown;
 
     public LyricsView(Context context) {
         super(context);
@@ -55,14 +55,16 @@ public class LyricsView
 
     private void initView() {
         mPaint = new Paint();
-        mGreen = getResources().getColor(R.color.colorGreen);
-        mWhite = getResources().getColor(R.color.colorWhite);
-        mBigText = getResources().getDimension(R.dimen.big_text);
-        smallText = getResources().getDimension(R.dimen.small_text);
+        mLyricsSelected = getResources().getColor(R.color.lyricsSelected);
+        mLyricsNormal = getResources().getColor(R.color.lyricsNormal);
+        mBigText = getResources().getDimension(R.dimen.bigLyrics);
+        smallText = getResources().getDimension(R.dimen.smallLyrics);
         lineHeight = getResources().getDimensionPixelSize(R.dimen.line_height);
-        mPaint.setColor(mGreen);
-        mPaint.setTextSize(mBigText);
+        setMaxLines(2);
 
+        mPaint.setAntiAlias(true);
+        mPaint.setColor(mLyricsSelected);
+        mPaint.setTextSize(mBigText);
         mList = new ArrayList<>();
 
     }
@@ -78,18 +80,21 @@ public class LyricsView
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mList == null) {
+        if (mList == null || mList.size() == 1 || mList.size() == 0) {
             drawSingLine(canvas);
         } else {
-
             drawMunitLine(canvas);
         }
 
     }
 
+    /**
+     * 核心代码逻辑，绘制多行歌词。
+     *
+     * @param canvas
+     */
     private void drawMunitLine(Canvas canvas) {
         //        中间行y=中间行开始位置-移的距离
-
         int lineTime;
         //        最后一行居中
         if (centerLine == mList.size() - 1) {
@@ -122,11 +127,11 @@ public class LyricsView
         for (int i = 0; i < mList.size(); i++) {
             if (i == centerLine) {
                 mPaint.setTextSize(mBigText);
-                mPaint.setColor(mGreen);
+                mPaint.setColor(mLyricsSelected);
             } else {
 
                 mPaint.setTextSize(smallText);
-                mPaint.setColor(mWhite);
+                mPaint.setColor(mLyricsNormal);
             }
             mCurrentLrc = mList.get(i)
                     .getContent();
@@ -140,12 +145,16 @@ public class LyricsView
 
     }
 
-
+    /**
+     * 根据播放时间，将已经播放的歌词滚动出屏幕。
+     *
+     * @param progress
+     * @param duration
+     */
     public void rollText(int progress, int duration) {
         if (mList == null || mList.size() == 0) {
             return;
         }
-
         this.progress = progress;
         this.duration = duration;
         int startTime = mList.get(mList.size() - 1)
@@ -163,20 +172,13 @@ public class LyricsView
                 }
             }
         }
+//        触发重新绘制
         invalidate();
     }
 
-    public void setLrcFile(String path) {
-        //    File lrcFile = StringUtil.getLrcFile(path);
-        LogUtil.d("Path  " + path);
-        mList = StringUtil.getLyrics(StringUtil.getLrcFile(path));
-        if (mList.size() == 0 || mList == null) {
-
-            LogUtil.d("检查歌词数据 ：***********" + "HHHHHHHH");
-        } else {
-            LogUtil.d("检查歌词数据 ：***********" + "Yes Is Ok");
-
-        }
+    //        根据歌曲名和歌手名设置歌词
+    public void setLrcFile(String songName, String artist) {
+        mList = LyricsUtil.getLyricList(songName, artist);
         //默认剧中行=0
         centerLine = 0;
     }
@@ -184,7 +186,8 @@ public class LyricsView
 
     private void drawSingLine(Canvas canvas) {
         Rect bounds = new Rect();
-        mCurrentLrc = "正在加载歌词...";
+        mCurrentLrc = "暂无歌词";
+        mPaint.setColor(mLyricsNormal);
         mPaint.getTextBounds(mCurrentLrc, 0, mCurrentLrc.length(), bounds);
         float x = mViewW / 2 - bounds.width() / 2;
         float y = mViewH / 2 + bounds.height() / 2;

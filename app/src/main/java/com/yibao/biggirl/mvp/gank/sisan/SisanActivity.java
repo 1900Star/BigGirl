@@ -32,7 +32,7 @@ import butterknife.Unbinder;
  * @描述： TODO
  */
 
-public class SisanActivity extends BaseRecyclerActivity<Girl> implements SisanContract.View<Girl> {
+public class SisanActivity extends BaseRecyclerActivity implements SisanContract.View<Girl> {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
     Unbinder unbinder;
@@ -66,8 +66,7 @@ public class SisanActivity extends BaseRecyclerActivity<Girl> implements SisanCo
 
     @Override
     public void loadData(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter = new MztuAdapter(this, mList, 3);
+        mAdapter = new MztuAdapter(this, list, 3);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
         mMeiziContent.addView(recyclerView);
         mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
@@ -77,15 +76,13 @@ public class SisanActivity extends BaseRecyclerActivity<Girl> implements SisanCo
 
     @Override
     public void refresh(List<Girl> list) {
-        mList.clear();
         mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(mList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addHeader(list);
     }
 
     @Override
     public void loadMore(List<Girl> list) {
+        mAdapter.addFooter(list);
     }
 
 

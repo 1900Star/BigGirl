@@ -40,6 +40,7 @@ import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
+import com.yibao.biggirl.util.SharePrefrencesUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 
 import java.util.ArrayList;
@@ -60,14 +61,12 @@ import butterknife.Unbinder;
 public class MainActivity
         extends BaseActivity
         implements
-        NavigationView.OnNavigationItemSelectedListener
-{
+        NavigationView.OnNavigationItemSelectedListener {
     private static final long KEY_EVENT_BACK_TIME = 2000;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-
     @BindView(R.id.tablayout)
     TabLayout mTablayout;
     @BindView(R.id.view_pager)
@@ -163,7 +162,6 @@ public class MainActivity
                 AboutMeDialogFag.newInstance(mHeaderUrl)
                         .show(getSupportFragmentManager(), "about");
                 break;
-
             case R.id.action_my_favorite:
                 startActivity(new Intent(this, FavoriteActivity.class));
                 break;
@@ -174,13 +172,11 @@ public class MainActivity
                 } else {
                     SnakbarUtil.mapPoint(mIvCollapsing);
                 }
-
                 break;
-            case R.id.action_music: // ***************** 我的音乐
+            case R.id.action_music:
                 startActivity(new Intent(this, MusicListActivity.class));
                 break;
             case R.id.action_beautiful:
-//                                                                RetrofitHelper.getUnsplashApi();
                 BeautifulDialogFag.newInstance()
                         .show(getSupportFragmentManager(), "beautiful");
                 break;
@@ -219,12 +215,11 @@ public class MainActivity
     //打开Toolbar的背景大图
     @OnClick(R.id.iv_collapsing)
     public void onViewClicked() {
-
-        TopBigPicDialogFragment diaLog = TopBigPicDialogFragment.newInstance(mUrl);
-        if (diaLog.isResumed()) {
-            diaLog.dismiss();
+        TopBigPicDialogFragment dialog = TopBigPicDialogFragment.newInstance(mUrl);
+        if (dialog.isResumed()) {
+            dialog.dismiss();
         }
-        diaLog.show(getSupportFragmentManager(), "dialog_big_girl");
+        dialog.show(getSupportFragmentManager(), "dialog_big_girl");
 
     }
 
@@ -318,6 +313,7 @@ public class MainActivity
                 exitTime = System.currentTimeMillis();
             } else {
                 FileUtil.delDir(Constants.DIR, true);
+                SharePrefrencesUtil.setMusicPlayState(this, 1);
                 finish();
                 System.exit(0);
             }

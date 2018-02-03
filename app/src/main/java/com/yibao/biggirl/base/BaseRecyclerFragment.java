@@ -13,12 +13,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.util.LogUtil;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -27,16 +26,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 /**
  * Des：${BaseRecyclerFragment}
  * Time:2017/6/4 21:55
+ *
  * @author Stran
  */
-public abstract class BaseRecyclerFragment<T>
+public abstract class BaseRecyclerFragment
         extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener
 
 {
 
     public int page = 1;
     public int size = 20;
-    public List<T> mList;
 
     public FloatingActionButton mFab;
     public SwipeRefreshLayout mSwipeRefresh;
@@ -55,7 +54,6 @@ public abstract class BaseRecyclerFragment<T>
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mList = new ArrayList<>();
 
     }
 
@@ -73,6 +71,7 @@ public abstract class BaseRecyclerFragment<T>
 
     /**
      * 得到一个RecyclerView   实现了加载更多
+     *
      * @param fab
      * @param rvType
      * @param adapter
@@ -86,6 +85,7 @@ public abstract class BaseRecyclerFragment<T>
                 int lastPosition = -1;
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
+                        Glide.with(mActivity).resumeRequests();
                         fab.setVisibility(android.view.View.VISIBLE);
                         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
                         if (layoutManager instanceof GridLayoutManager) {
@@ -107,9 +107,12 @@ public abstract class BaseRecyclerFragment<T>
                         }
                         break;
                     case RecyclerView.SCROLL_STATE_DRAGGING:
+                        //当列表滑动停止时可以调用resumeRequests()恢复请求
+                        Glide.with(mActivity).pauseRequests();
                         fab.setVisibility(android.view.View.INVISIBLE);
                         break;
                     case RecyclerView.SCROLL_STATE_SETTLING:
+                        Glide.with(mActivity).pauseRequests();
                         fab.setVisibility(android.view.View.INVISIBLE);
                         break;
                     default:
@@ -172,5 +175,15 @@ public abstract class BaseRecyclerFragment<T>
         return max;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Glide.with(mActivity).resumeRequests();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Glide.with(mActivity).pauseRequests();
+    }
 }

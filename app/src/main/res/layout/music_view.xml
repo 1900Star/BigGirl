@@ -19,12 +19,12 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
-            android:background="@color/colorAccent"
+            android:background="@color/colorWhite"
             android:paddingBottom="8dp"
             android:paddingLeft="26dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/aboutSign"
             android:textSize="40sp"
             android:visibility="gone" />
 

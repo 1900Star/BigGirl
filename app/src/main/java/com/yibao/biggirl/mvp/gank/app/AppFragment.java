@@ -20,7 +20,7 @@ import java.util.List;
  * @描述： {TODO}
  */
 
-public class AppFragment extends BaseRecyclerFragment<ResultsBeanX> implements AppContract.View {
+public class AppFragment extends BaseRecyclerFragment implements AppContract.View {
     private AppAdapter mAdapter;
 
 
@@ -62,18 +62,12 @@ public class AppFragment extends BaseRecyclerFragment<ResultsBeanX> implements A
 
     @Override
     public void refresh(List<ResultsBeanX> list) {
-        mList.clear();
         mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(list);
-        mAdapter.notifyDataSetChanged();
-
+        mAdapter.addHeader(list);
     }
 
     @Override
     public void loadData(List<ResultsBeanX> list) {
-        mList.clear();
-        mList.addAll(list);
         mAdapter = new AppAdapter(mActivity, list);
         RecyclerView recyclerView = getRecyclerView(mFab, 1, mAdapter);
         mFagContent.addView(recyclerView);
@@ -88,8 +82,7 @@ public class AppFragment extends BaseRecyclerFragment<ResultsBeanX> implements A
 
     @Override
     public void onLoadMore(List<ResultsBeanX> list) {
-        mAdapter.AddFooter(list);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addFooter(list);
     }
 
 

@@ -16,7 +16,6 @@ import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MztuAdapter;
 import com.yibao.biggirl.util.Constants;
-import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ import butterknife.Unbinder;
  * @描述：
  */
 public class DuotuRecyclerActivity
-        extends BaseRecyclerActivity<Girl> implements DuotuContract.View<Girl> {
+        extends BaseRecyclerActivity implements DuotuContract.View<Girl> {
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -67,8 +66,7 @@ public class DuotuRecyclerActivity
 
     @Override
     public void loadData(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter = new MztuAdapter(this, mList, 2);
+        mAdapter = new MztuAdapter(this, list, 2);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
         mMeiziContent.addView(recyclerView);
         mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
@@ -78,22 +76,13 @@ public class DuotuRecyclerActivity
 
     @Override
     public void refresh(List<Girl> list) {
-        mList.clear();
         mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(mList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addHeader(list);
     }
 
     @Override
     public void loadMore(List<Girl> list) {
-        if (list == null | list.size() == 0) {
-            LogUtil.d(" 没有更多了 ============");
-            return;
-        }
-        mList.addAll(list);
-        mAdapter.AddFooter(mList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addFooter(list);
     }
 
 

@@ -72,7 +72,6 @@ public class RemoteSisanjiujiu implements SisanDataSource {
     @Override
     public void getSisanSingle(String link, LoadSisanCallback callback) {
         String url = getUrl(link);
-        System.out.println("Sisan Single url    " + url);
         Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
             List<Girl> girls = new ArrayList<>();
             try {
@@ -88,13 +87,7 @@ public class RemoteSisanjiujiu implements SisanDataSource {
                 e.printStackTrace();
             }
             return girls;
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(girls -> {
-            callback.onLoadDatas(girls);
-            for (int i = 0; i < 3; i++) {
-                Girl girl = girls.get(i);
-                System.out.println(" link url    ==  " + girl.getUrl());
-            }
-        });
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(callback::onLoadDatas);
     }
 
     @NonNull

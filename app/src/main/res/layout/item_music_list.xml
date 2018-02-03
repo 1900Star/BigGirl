@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/listBg"
+        android:layout_marginLeft="10dp"
         android:textColor="@color/aboutSign"
         android:visibility="gone" />
 

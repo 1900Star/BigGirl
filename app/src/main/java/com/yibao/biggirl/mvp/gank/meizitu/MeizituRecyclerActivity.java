@@ -12,12 +12,16 @@ import android.widget.LinearLayout;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRecyclerActivity;
 import com.yibao.biggirl.factory.RecyclerFactory;
+import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.model.girl.MeizituData;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.service.MeizituService;
 import com.yibao.biggirl.util.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,12 +46,16 @@ public class MeizituRecyclerActivity
     private GirlsContract.Presenter mPresenter;
     private String mUrl;
     private MztuAdapter mAdapter;
+    private List<Girl> mMeizituData;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meizi);
         unbinder = ButterKnife.bind(this);
+        mMeizituData = new ArrayList<>();
+
         mUrl = getIntent().getStringExtra("link");
         mPresenter = new GirlsPresenter();
         mPresenter.start(mUrl, Constants.MeiSingle);
@@ -65,6 +73,7 @@ public class MeizituRecyclerActivity
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);
         mAdapter = new MztuAdapter(this, null, 1);
+        mAdapter.changeLoadMoreStatus(Constants.NOTHING_MORE_RV);
         if (mAdapter.getData() == null || mAdapter.getData().size() == 0) {
             mPresenter.start(mUrl, 0);
         } else {
@@ -77,8 +86,9 @@ public class MeizituRecyclerActivity
         mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
     }
 
-
-    //    数据来自MeizituService页面的RxBus发送
+    /**
+     * 数据来自MeizituService页面的RxBus发送
+     */
     public void getMeizituData() {
         mDisposable.add(mApplication.bus()
                 .toObserverable(MeizituData.class)
@@ -105,9 +115,12 @@ public class MeizituRecyclerActivity
                 .show(getSupportFragmentManager(), "dialog_meizitu_girl");
     }
 
+    /**
+     * 这个方法不会使用，因为数据是在后台Service中通过RxBus直接不停的发过来的，
+     * 因此不需要显示 加载更多的状态
+     */
     @Override
     protected void loadMoreData() {
-
 
 
     }

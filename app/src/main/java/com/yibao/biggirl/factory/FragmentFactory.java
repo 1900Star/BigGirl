@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.mvp.gank.app.AppFragment;
 import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerFragment;
+import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
 import com.yibao.biggirl.mvp.gank.meizitu.MeizituFragment;
 import com.yibao.biggirl.mvp.gank.sisan.SisanFragment;
 
@@ -15,36 +16,44 @@ import java.util.Map;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/5/7 14:55
+ * @author Stran
  */
 public class FragmentFactory {
-    private static final int FRAGMENT_GIRLS = 0;//妹子
-    private static final int FRAGMENT_ANDRID = 1;//Android
-    private static final int FRAGMENT_APP = 2;//App
-    private static final int FRAGMENT_IOS = 3;//iOS
-    private static final int FRAGMENT_VEDIO = 4;//视频
-    private static final int FRAGMENT_FRONT = 5;//前端
-    private static final int FRAGMENT_EXTEND = 6;//拓展资源
-    private static final int FRAGMENT_JAPAN = 7;//Japan
-    private static final int FRAGMENT_HOT = 8;//Hot
-    private static final int FRAGMENT_SEX = 9;//Sex
-    private static final int FRAGMENT_CUTE = 10;//Cute
+    private static final int FRAGMENT_GIRLS = 0;
+    private static final int FRAGMENT_ANDRID = 1;
+    private static final int FRAGMENT_APP = 2;
+    private static final int FRAGMENT_IOS = 3;
+    private static final int FRAGMENT_VEDIO = 4;
+    private static final int FRAGMENT_FRONT = 5;
+    private static final int FRAGMENT_EXTEND = 6;
+    private static final int FRAGMENT_JAPAN = 7;
+    private static final int FRAGMENT_HOT = 8;
+    private static final int FRAGMENT_SEX = 9;
+    private static final int FRAGMENT_CUTE = 10;
 
-    private static final int FRAGMENT_MFSTAR = 11;//MFStar
-    private static final int FRAGMENT_PANS = 12;//Pans
-    private static final int FRAGMENT_UGIRLS = 13;//Ugirls
-    private static final int FRAGMENT_ROSI = 14;//Rosi
-    private static final int FRAGMENT_MEIYAN = 15;//Meiyan
-    private static final int FRAGMENT_TUIGIRL = 16;//TuiGirl
-    private static final int FRAGMENT_BOBOSHE = 17;//Boboshe
-    private static final int FRAGMENT_DISIYINGXIANG = 18;//第四印象
-    private static final int FRAGMENT_YUNVLANG = 19;//Yunvlang
-    private static final int FRAGMENT_XIUREN = 20;//秀人
-    private static final int FRAGMENT_SXINGGAN = 21;//43 性感
-    private static final int FRAGMENT_SGAOQING = 22;//43 高清
-    private static final int FRAGMENT_SWEIMEI = 23;//43 唯美
-    private static final int FRAGMENT_WANGLUO = 24;//43 网络
-    private static final int FRAGMENT_DONGMAN = 25;//43 动漫
-
+    private static final int FRAGMENT_MFSTAR = 11;
+    private static final int FRAGMENT_PANS = 12;
+    private static final int FRAGMENT_UGIRLS = 13;
+    private static final int FRAGMENT_ROSI = 14;
+    private static final int FRAGMENT_MEIYAN = 15;
+    private static final int FRAGMENT_TUIGIRL = 16;
+    private static final int FRAGMENT_BOBOSHE = 17;
+    private static final int FRAGMENT_DISIYINGXIANG = 18;
+    private static final int FRAGMENT_YUNVLANG = 19;
+    private static final int FRAGMENT_XIUREN = 20;
+    private static final int FRAGMENT_SXINGGAN = 21;
+    private static final int FRAGMENT_SGAOQING = 22;
+    private static final int FRAGMENT_SWEIMEI = 23;
+    private static final int FRAGMENT_WANGLUO = 24;
+    private static final int FRAGMENT_DONGMAN = 25;
+    private static final int TYPE_SABAR = 26;
+    private static final int TYPE_TOPQUEEN = 27;
+    private static final int TYPE_IMAGETV = 28;
+    private static final int TYPE_WPB = 29;
+    private static final int TYPE_YS = 30;
+    private static final int TYPE_TOUTIAO = 31;
+    private static final int TYPE_BAORU = 32;
+    private static final int TYPE_DGC = 33;
     private static Map<Integer, BaseRecyclerFragment> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
@@ -60,8 +69,7 @@ public class FragmentFactory {
 
         switch (position) {
             case FRAGMENT_GIRLS:
-                fragment = AppFragment.newInstance(FRAGMENT_ANDRID);
-//                fragment = new GirlsFragment();
+                fragment = new GirlsFragment();
                 break;
             case FRAGMENT_ANDRID:
                 fragment = AppFragment.newInstance(FRAGMENT_ANDRID);
@@ -140,6 +148,32 @@ public class FragmentFactory {
                 break;
             case FRAGMENT_DONGMAN:
                 fragment = SisanFragment.newInstance(FRAGMENT_DONGMAN);
+                break;
+
+
+            case TYPE_SABAR:
+                fragment = DuotuRecyclerFragment.newInstance(TYPE_SABAR);
+                break;
+            case TYPE_TOPQUEEN:
+                fragment = DuotuRecyclerFragment.newInstance(TYPE_TOPQUEEN);
+                break;
+            case TYPE_IMAGETV:
+                fragment = DuotuRecyclerFragment.newInstance(TYPE_IMAGETV);
+                break;
+            case TYPE_WPB:
+                fragment = DuotuRecyclerFragment.newInstance(TYPE_WPB);
+                break;
+            case TYPE_YS:
+                fragment = DuotuRecyclerFragment.newInstance(TYPE_YS);
+                break;
+            case TYPE_TOUTIAO:
+                fragment = DuotuRecyclerFragment.newInstance(TYPE_TOUTIAO);
+                break;
+            case TYPE_BAORU:
+                fragment = MeizituFragment.newInstance(TYPE_BAORU);
+                break;
+            case TYPE_DGC:
+                fragment = DuotuRecyclerFragment.newInstance(TYPE_DGC);
                 break;
             default:
                 break;

@@ -21,7 +21,7 @@ import java.util.List;
  * @描述： TODO
  */
 
-public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanContract.View<Girl> {
+public class SisanFragment extends BaseRecyclerFragment implements SisanContract.View<Girl> {
     private SisanContract.Presenter mPresenter;
     private MztuAdapter mAdapter;
 
@@ -75,8 +75,7 @@ public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanCo
 
     @Override
     public void loadData(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter = new MztuAdapter(mActivity, mList, 3);
+        mAdapter = new MztuAdapter(mActivity, list, 3);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
         mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
@@ -86,19 +85,13 @@ public class SisanFragment extends BaseRecyclerFragment<Girl> implements SisanCo
 
     @Override
     public void refresh(List<Girl> list) {
-
-        mList.clear();
         mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(list);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addHeader(list);
     }
 
     @Override
     public void loadMore(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter.AddFooter(mList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addFooter(list);
     }
 
     @Override

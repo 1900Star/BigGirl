@@ -49,6 +49,7 @@ import static com.yibao.biggirl.R.id.vp;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/4/1 05:29
+ * @author Stran
  */
 public class GirlFragment
         extends Fragment
@@ -116,13 +117,12 @@ public class GirlFragment
                 .setDisplayHomeAsUpEnabled(true);
 
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-
         setHasOptionsMenu(true);
         mScroller = new PagerScroller(getActivity());
         if (mList.size() != 0) {
             mAdapter = new GirlAdapter(getActivity(), mList);
         }
-        boolean animationSwitch = false;
+        boolean animationSwitch = true;
         mVp.setPageTransformer(animationSwitch, new GirlPageTransformer());
         mVp.setAdapter(mAdapter);
         mVp.setCurrentItem(mPosition);

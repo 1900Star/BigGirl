@@ -21,7 +21,7 @@ import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
 
-public class MeizituFragment extends BaseRecyclerFragment<Girl> implements
+public class MeizituFragment extends BaseRecyclerFragment implements
 
         GirlsContract.ViewMeizi<Girl> {
 
@@ -29,12 +29,11 @@ public class MeizituFragment extends BaseRecyclerFragment<Girl> implements
     private MztuAdapter mAdapter;
 
     private String mLoadType;
-    private int mType;
 
     public static MeizituFragment newInstance(int loadType) {
         MeizituFragment fragment = new MeizituFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type", loadType);
+        bundle.putInt("position", loadType);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -42,13 +41,13 @@ public class MeizituFragment extends BaseRecyclerFragment<Girl> implements
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mPresenter = new GirlsPresenter(this);
-        mType = getArguments().getInt("position");
+        int position = getArguments().getInt("position");
+        mLoadType = Constants.getLoadType(position);
     }
 
     @Override
     protected void onLazyLoadData() {
         super.onLazyLoadData();
-        mLoadType = Constants.getLoadType(mType);
         mPresenter.start(mLoadType, Constants.MEIZITU);
     }
 
@@ -60,7 +59,6 @@ public class MeizituFragment extends BaseRecyclerFragment<Girl> implements
                 Constants.LOAD_MORE_DATA,
                 Constants.FRAGMENT_JAPAN);
     }
-
 
 
     //下拉刷新
@@ -82,8 +80,7 @@ public class MeizituFragment extends BaseRecyclerFragment<Girl> implements
 
     @Override
     public void loadData(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter = new MztuAdapter(mActivity, mList, 1);
+        mAdapter = new MztuAdapter(mActivity, list, 1);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
         mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 2));
         mFagContent.addView(recyclerView);
@@ -93,19 +90,13 @@ public class MeizituFragment extends BaseRecyclerFragment<Girl> implements
 
     @Override
     public void refresh(List<Girl> list) {
-
-        mList.clear();
         mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(list);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addHeader(list);
     }
 
     @Override
     public void loadMore(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter.AddFooter(mList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addFooter(list);
     }
 
     @Override

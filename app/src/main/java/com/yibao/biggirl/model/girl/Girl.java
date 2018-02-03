@@ -12,11 +12,15 @@ package com.yibao.biggirl.model.girl;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * @author Stran
+ */
 public class Girl implements Parcelable {
     private String url;
     private int width = 0;
     private int height = 0;
-    private String link;//仅妹子图网站需要
+    //仅妹子图网站需要
+    private String link;
 
     public Girl(String url) {
         this.url = url;

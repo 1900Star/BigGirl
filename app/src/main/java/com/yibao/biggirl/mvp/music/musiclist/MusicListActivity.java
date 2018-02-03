@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -123,6 +124,7 @@ public class MusicListActivity
     private int mCurrentPosition;
     private boolean mMusicConfig;
     private boolean isChangeFloatingBlock;
+    private int mPlayState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,11 +162,15 @@ public class MusicListActivity
         mMusicConfig = SharePrefrencesUtil.getMusicConfig(this, false);
         if (mMusicConfig) {
             mCurrentPosition = SharePrefrencesUtil.getMusicPosition(this);
-            // 读取用户的播放记录，设置UI显示，做好播放的准备。(暂停和播放两种状态)
-            startMusicService(mCurrentPosition);
-            initAnimation();
-            MusicBean musicInfo = mMusicItems.get(mCurrentPosition);
-            perpareItem(musicInfo);
+            mPlayState = SharePrefrencesUtil.getMusicPlayState(this);
+            LogUtil.d("======= mPlayStae  " + mPlayState);
+            if (mPlayState == 1) {
+                // 读取用户的播放记录，设置UI显示，做好播放的准备。(暂停和播放两种状态)
+                MusicBean musicInfo = mMusicItems.get(mCurrentPosition);
+                perpareItem(musicInfo);
+            } else if (mPlayState == 2) {
+                executStartServiceAndInitAnimation();
+            }
         } else {
             LogUtil.d("用户 ++++  nothing ");
         }
@@ -173,9 +179,16 @@ public class MusicListActivity
 
     }
 
-    private void initListener() {
+    private void executStartServiceAndInitAnimation() {
+        startMusicService(mCurrentPosition);
+        initAnimation();
+        mMusicFloatingPlay.setImageResource(R.drawable.btn_playing_pause_selector);
+        mMusicPagerPlay.setIcon(R.mipmap.notifycation_pause);
+        mPlayState = 3;
+    }
 
-        mMusicFloatBlock.setOnClickListener(view -> openMusicPlayDialogFag());
+    private void initListener() {
+        openMusicPlayDialogFag();
         mTvMusicToolbarTitle.setOnClickListener(view -> switchControlBlock());
         mMusicSlideViewPager.addOnPageChangeListener(new MusicPagerListener() {
             @Override
@@ -185,6 +198,9 @@ public class MusicListActivity
         });
     }
 
+    /**
+     * PagerAdapter回调
+     */
     @Override
     public void onOpenMusicPlayDialogFag() {
         if (mMusicConfig) {
@@ -196,13 +212,15 @@ public class MusicListActivity
     }
 
     private void openMusicPlayDialogFag() {
-        if (mMusicConfig) {
-            RxView.clicks(mMusicFloatBlock)
-                    .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(o -> readyMusic());
-        } else {
-            ToastUtil.showNoMusic(this);
-        }
+        RxView.clicks(mMusicFloatBlock)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(o -> {
+                    if (mMusicConfig) {
+                        MusicListActivity.this.readyMusic();
+                    } else {
+                        ToastUtil.showNoMusic(MusicListActivity.this);
+                    }
+                });
     }
 
     private void readyMusic() {
@@ -320,7 +338,7 @@ public class MusicListActivity
         Intent intent = new Intent();
         intent.setClass(this, AudioPlayService.class);
         intent.putParcelableArrayListExtra("musicItem", mMusicItems);
-        intent.putExtra("position", position);
+        intent.putExtra("position", mCurrentPosition);
         mConnection = new AudioServiceConnection();
         bindService(intent, mConnection, Service.BIND_AUTO_CREATE);
         startService(intent);
@@ -351,30 +369,48 @@ public class MusicListActivity
 //        MusicNoification.updatePlayBtn(audioBinder.isPlaying());
     }
 
+//****************************************************************************
+//****************************************************************************
+//****************************************************************************
+//****************************************************************************
 
     /**
      * 切换当前播放状态
+     * mPlayState 记录音乐的播放状态到本地，方便用户下次打开时进行UI初始化操作。
+     * <p>
+     * mPlayState = 1 ：表示用户点击暂停后，并且退出音乐播放器，下次打开播放器的界面时，
+     * 不会自动播放上一次记录的歌曲，需要点击播放按钮，才能播放上一次记录的歌曲。
+     * <p>
+     * mPlayState = 2 ：表示在播放时退出音乐播放器的界面，只是短暂的离开，但并没有退出程序，
+     * 下次打开播放器的界面时，继续自动播放当前的歌曲。
      */
     private void switchPlayState() {
-        if (audioBinder == null) {
-            ToastUtil.showNoMusic(this);
-        } else if (audioBinder.isPlaying()) {
-            // 当前播放  暂停
-            audioBinder.pause();
-            mAnimator.pause();
-            MyApplication.getIntstance()
-                    .bus()
-                    .post(new MusicStatusBean(0, true));
-        } else if (!audioBinder.isPlaying()) {
-            // 当前暂停  播放
-            audioBinder.start();
-            mAnimator.resume();
-            MyApplication.getIntstance()
-                    .bus()
-                    .post(new MusicStatusBean(0, false));
+        if (mPlayState == 1) {
+            LogUtil.d(" PlayState == 1 ==================");
+            executStartServiceAndInitAnimation();
+        } else if (mPlayState == 2) {
+            mPlayState = 3;
+        } else {
+            if (audioBinder == null) {
+                ToastUtil.showNoMusic(this);
+            } else if (audioBinder.isPlaying()) {
+                // 当前播放  暂停
+                audioBinder.pause();
+                mAnimator.pause();
+                MyApplication.getIntstance()
+                        .bus()
+                        .post(new MusicStatusBean(0, true));
+            } else if (!audioBinder.isPlaying()) {
+                // 当前暂停  播放
+                audioBinder.start();
+                mAnimator.resume();
+                MyApplication.getIntstance()
+                        .bus()
+                        .post(new MusicStatusBean(0, false));
+            }
+            //更新播放状态按钮
+            updatePlayBtnStatus();
         }
-        //更新播放状态按钮
-        updatePlayBtnStatus();
     }
 
 
@@ -390,11 +426,11 @@ public class MusicListActivity
             R.id.music_floating_pager_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-//                随机播放所有歌曲
             case R.id.iv_music_category_paly:
-                int postion = RandomUtil.getRandomPostion(mMusicItems);
-                startMusicService(postion);
-                audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_RANDOM);
+                int position = RandomUtil.getRandomPostion(mMusicItems);
+                startMusicService(position);
+//                audioBinder.setPalyMode(AudioPlayService.PLAY_MODE_RANDOM);
+
                 break;
             case R.id.tv_music_category_songname:
                 switchListCategory(1);
@@ -483,6 +519,8 @@ public class MusicListActivity
                 mMusicCategoryFrequency.setBackgroundResource(R.drawable.btn_category_score_selector);
 
                 break;
+            default:
+                break;
         }
 
 
@@ -567,23 +605,39 @@ public class MusicListActivity
     BroadcastReceiver headsetReciver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (audioBinder != null) {
+            if (audioBinder != null && audioBinder.isPlaying()) {
                 switchPlayState();
             }
         }
     };
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+                switchPlayState();
+                break;
+            case KeyEvent.KEYCODE_BACK:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        boolean b = mAnimator != null &&
-                mAnimatorListener != null && mConnection != null && mDisposable != null;
+        boolean b = mAnimator != null ||
+                mAnimatorListener != null || mDisposable != null || mConnection != null;
         if (b) {
             mAnimator.cancel();
             mAnimatorListener.pause();
             mDisposable.dispose();
             unbindService(mConnection);
+            mConnection = null;
         }
         disposables.clear();
         mBind.unbind();
@@ -591,6 +645,12 @@ public class MusicListActivity
             audioBinder.closeNotificaction();
         }
         unregisterReceiver(headsetReciver);
+        if (audioBinder != null) {
+            mPlayState = audioBinder.isPlaying() ? 2 : 1;
+            SharePrefrencesUtil.setMusicPlayState(this, mPlayState);
+
+        }
+
     }
 
 

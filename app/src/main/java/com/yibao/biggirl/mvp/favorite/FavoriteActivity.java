@@ -5,9 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 
 import com.yibao.biggirl.R;
@@ -17,10 +16,12 @@ import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.mvp.webview.WebPresenter;
+import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.view.SwipeItemLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,9 +35,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/6/17 18:45
+ *
+ * @author Stran
  */
 public class FavoriteActivity
-        extends BaseRecyclerActivity<FavoriteWebBean>
+        extends BaseRecyclerActivity
         implements OnRvItemSlideListener,
         FavoriteContract.View {
 
@@ -47,10 +50,10 @@ public class FavoriteActivity
     SwipeRefreshLayout mSwipeRefresh;
     WebPresenter mWebPresenter;
     private FavoriteAdapter mAdapter;
-    private String TAG = "FavoriteActivity";
     private boolean isUpdateFavo = false;
-    private Unbinder mBind;
 
+    private Unbinder mBind;
+    private List<FavoriteWebBean> mFavoriteList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,31 +66,20 @@ public class FavoriteActivity
     }
 
     protected void initView() {
+        Toolbar toolbar = findViewById(R.id.toolbar_favorite);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
-        ActionBar toolbar = getSupportActionBar();
-        toolbar.setTitle("收藏");
-        toolbar.setDisplayHomeAsUpEnabled(true);
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
+        mFavoriteList = new ArrayList<>();
     }
 
     protected void initData() {
         mWebPresenter.queryAllFavorite();
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            default:
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -111,14 +103,19 @@ public class FavoriteActivity
         mWebPresenter.cancelFavorite(id, 0);
     }
 
-    //收藏页面没有增加收藏功能，这个方法不会执行。
+
+    /**
+     * 收藏页面没有增加收藏功能，这个方法不会执行。
+     *
+     * @param status
+     */
     @Override
     public void insertStatus(Long status) {
     }
 
     @Override
     public void cancelStatus(Long id) {
-        LogUtil.d(TAG + "Adapter  取消收藏  :  " + id);
+        LogUtil.d(mTag + "Adapter  取消收藏  :  " + id);
         if (id > 0) {
             mAdapter.notifyDataSetChanged();
             SnakbarUtil.showSuccessView(mFagContent);
@@ -128,20 +125,24 @@ public class FavoriteActivity
 
     @Override
     public void queryAllFavorite(List<FavoriteWebBean> list) {
-        mList.clear();
-        mList.addAll(list);
         mSwipeRefresh.setRefreshing(false);
 
-        mAdapter = new FavoriteAdapter(this, mList);
+        mAdapter = new FavoriteAdapter(this, list);
         RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(1, mAdapter);
         recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
         mAdapter.notifyDataSetChanged();
+        mAdapter.changeLoadMoreStatus(Constants.NOT_MORE_DATA_RV);
         mFagContent.addView(recyclerView);
 
 
     }
 
-    //这个方法不需要，WebActivity需要
+
+    /**
+     * 这个方法不需要，WebActivity需要
+     *
+     * @param list
+     */
     @Override
     public void queryFavoriteIsCollect(List<FavoriteWebBean> list) {
 

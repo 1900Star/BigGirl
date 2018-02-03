@@ -6,9 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        //生成代码工具
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
-
+        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.11'
     }
 }
 
@@ -23,4 +22,3 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// Define versions in a single place

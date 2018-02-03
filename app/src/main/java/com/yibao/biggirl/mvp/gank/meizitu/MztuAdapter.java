@@ -61,6 +61,7 @@ public class MztuAdapter
     @Override
     protected void bindView(RecyclerView.ViewHolder holder, Girl girl) {
         List<String> list = PackagingDataUtil.objectToList(mList);
+
         if (holder instanceof ViewHolder) {
             String url = girl.getUrl();
             ViewHolder viewHolder = (ViewHolder) holder;
@@ -94,7 +95,6 @@ public class MztuAdapter
 
     static class ViewHolder
             extends RecyclerView.ViewHolder
-
     {
         @BindView(R.id.gril_image_view)
         ImageView mGrilImageView;

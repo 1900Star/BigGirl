@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/loadLayout"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/colorWhite"
-              android:gravity="center"
-              android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loadLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,27 +16,24 @@
 
         <ProgressBar
             android:id="@+id/pbLoad"
-            android:theme="@style/AppTheme"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:indeterminate="true"/>
+            android:indeterminate="true"
+            android:visibility="visible"
+            android:theme="@style/AppTheme" />
 
         <!--style="?android:attr/progressBarStyleSmall"-->
         <TextView
-            android:visibility="gone"
             android:id="@+id/tvLoadText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="4dip"
-            android:layout_toRightOf="@id/pbLoad"
-            android:clickable="true"
-            android:text="@string/load_more"
+            android:gravity="center"
+            android:text="@string/notMore"
+            android:alpha="0.6"
             android:textColor="@color/colorAccent"
-            android:textSize="16sp" android:focusable="true"/>
+            android:textSize="@dimen/about_sign"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>

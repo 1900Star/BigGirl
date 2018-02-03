@@ -15,7 +15,6 @@ import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.util.LogUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -35,24 +34,21 @@ import io.reactivex.disposables.CompositeDisposable;
  * @描述： 凡是页面包含RecyclerView的,都要继承这个BaseRecyclerActivity
  */
 
-public abstract class BaseRecyclerActivity<T>
+public abstract class BaseRecyclerActivity
         extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener
 
 {
-
     public CompositeDisposable mDisposable;
     public MyApplication mApplication;
-    public String TAG = getClass().getSimpleName() + "    ";
+    public String mTag = getClass().getSimpleName() + "    ";
     public int size = 20;
     public int page = 1;
-    public List<T> mList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDisposable = new CompositeDisposable();
         mApplication = MyApplication.getIntstance();
-        mList = new ArrayList<>();
     }
 
 

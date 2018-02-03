@@ -20,14 +20,14 @@ import com.yibao.biggirl.util.Constants;
 
 import java.util.List;
 
-public class DuotuRecyclerFragment extends BaseRecyclerFragment<Girl> implements
+public class DuotuRecyclerFragment extends BaseRecyclerFragment implements
         DuotuContract.View<Girl> {
     private DuotuContract.Presenter mPresenter;
     private MztuAdapter mAdapter;
 
 
     private String mLoadType;
-    private int mType;
+    private int mPosition;
 
     public static DuotuRecyclerFragment newInstance(int loadType) {
         DuotuRecyclerFragment fragment = new DuotuRecyclerFragment();
@@ -40,22 +40,18 @@ public class DuotuRecyclerFragment extends BaseRecyclerFragment<Girl> implements
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mPresenter = new DuotuPresenter(this);
-        mType = getArguments().getInt("type");
+        mPosition = getArguments().getInt("position");
+        mLoadType = Constants.getLoadType(mPosition);
     }
 
     @Override
     protected void onLazyLoadData() {
         super.onLazyLoadData();
 
-        mLoadType = Constants.getLoadType(mType);
         mPresenter.start(mLoadType, page);
     }
 
-    @Override
-    protected void onVisibleToUser() {
-        super.onVisibleToUser();
 
-    }
 
     @Override
     protected void loadMoreData() {
@@ -76,8 +72,7 @@ public class DuotuRecyclerFragment extends BaseRecyclerFragment<Girl> implements
 
     @Override
     public void loadData(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter = new MztuAdapter(mActivity, mList, 1);
+        mAdapter = new MztuAdapter(mActivity, list, 2);
         RecyclerView recyclerView = getRecyclerView(mFab, 2, mAdapter);
         mFagContent.addView(recyclerView);
         mSwipeRefresh.setRefreshing(false);
@@ -87,19 +82,13 @@ public class DuotuRecyclerFragment extends BaseRecyclerFragment<Girl> implements
 
     @Override
     public void refresh(List<Girl> list) {
-
-        mList.clear();
         mAdapter.clear();
-        mList.addAll(list);
-        mAdapter.AddHeader(list);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addHeader(list);
     }
 
     @Override
     public void loadMore(List<Girl> list) {
-        mList.addAll(list);
-        mAdapter.AddFooter(mList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addFooter(list);
     }
 
     @Override

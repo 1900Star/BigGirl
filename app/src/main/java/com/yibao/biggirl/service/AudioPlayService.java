@@ -78,18 +78,19 @@ public class AudioPlayService
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        LogUtil.d(getClass().getSimpleName() + "    first  onStartCommand");
         mMusicItem = intent.getParcelableArrayListExtra("musicItem");
-        int enterPosition = intent.getIntExtra("position", -1);
+        if (mMusicItem != null) {
+
+        int enterPosition = intent.getIntExtra("position", 0);
         if (enterPosition != position && enterPosition != -1) {
             position = enterPosition;
             //执行播放
             mAudioBinder.play();
-//            LogUtil.d("onStartCommand   ");
         } else if (enterPosition != -1 && enterPosition == position) {
             //通知播放界面更新
             LogUtil.d("Service position  " + position);
             sendCureentMusicInfo();
+        }
         }
         return START_NOT_STICKY;
     }
@@ -333,13 +334,8 @@ public class AudioPlayService
 
     //通知栏的播放按钮监听
     private void updatePlayBtn() {
-        if (mAudioBinder.isPlaying()) {
-            mRemoteViews.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_play);
-            LogUtil.d("===  play =");
-        } else {
-            LogUtil.d("===  pause =");
-            mRemoteViews.setImageViewResource(R.id.widget_play, R.mipmap.notifycation_pause);
-        }
+        int viewResource = mAudioBinder.isPlaying() ? R.mipmap.notifycation_play : R.mipmap.notifycation_pause;
+        mRemoteViews.setImageViewResource(R.id.widget_play, viewResource);
     }
 
     @Override

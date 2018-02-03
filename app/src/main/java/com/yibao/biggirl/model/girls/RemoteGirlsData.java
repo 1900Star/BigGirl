@@ -21,12 +21,15 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author：Sid
  * Des：${TODO}
  * Time:2017/4/26 00:52
+ *
+ * @author Stran
  */
 public class RemoteGirlsData
         implements GrilsDataSource {
@@ -45,56 +48,34 @@ public class RemoteGirlsData
             }
             return urlList;
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
 
-                    @Override
-                    public void onNext(List<String> list) {
-                        callback.onLoadDatas(list);
-                    }
+            @Override
+            public void onNext(List<String> list) {
+                callback.onLoadDatas(list);
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        callback.onDataNotAvailable();
-                    }
+            @Override
+            public void onError(Throwable e) {
+                callback.onDataNotAvailable();
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onComplete() {
 
-                    }
-                });
-//                .subscribe(new Observer<GirlsBean>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                    }
-//
-//                    @Override
-//                    public void onNext(GirlsBean girlsBean) {
-//                        List<ResultsBean> results = girlsBean.getResults();
-//
-//
-//                        for (int i = 0; i < results.size(); i++) {
-//                            urlList.add(results.get(i)
-//                                    .getUrl());
-//                        }
-//                        callback.onLoadDatas(urlList);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        callback.onDataNotAvailable();
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                    }
-//                });
+            }
+        });
     }
 
     @Override
     public void getMeizitu(String type, int page, LoadMeizituCallback callback) {
-        String url = Constants.MEIZITU_API + type + "/page/" + page;
+
+        String url = Constants.FRAGMENT_BAORU.equals(type)
+                ? Constants.MEIZITU_TAG_API + type + "/page/" + page
+                : Constants.MEIZITU_API + type + "/page/" + page;
+        LogUtil.d("======== BaoruUrl ====     ", url);
         final String fakeRefer = url + "/";
         final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
         Observable.just(Constants.MEIZITU_API).subscribeOn(Schedulers.io()).map(s -> {
@@ -119,33 +100,36 @@ public class RemoteGirlsData
 
     @Override
     public void getMeiziList(String url) {
-        Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
-            List<Girl> girls = new ArrayList<>();
-            try {
-                Document doc = Jsoup.connect(url).timeout(10000).get();
-                Element total = doc.select("div.pagenavi").first();
-                Elements spans = total.select("span");
-                for (Element str : spans) {
-                    int page;
-                    try {
-                        page = Integer.parseInt(str.text());
-                        if (page >= totalPages) {
-                            totalPages = page;
+        Observable.just(url).subscribeOn(Schedulers.io()).map(new Function<String, Integer>() {
+            @Override
+            public Integer apply(String s) throws Exception {
+//            List<Girl> girls = new ArrayList<>();
+                try {
+                    Document doc = Jsoup.connect(s).timeout(10000).get();
+                    Element total = doc.select("div.pagenavi").first();
+                    Elements spans = total.select("span");
+                    for (Element str : spans) {
+                        int page;
+                        try {
+                            page = Integer.parseInt(str.text());
+                            if (page >= totalPages) {
+                                totalPages = page;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
                     }
-
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-            return girls;
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(girlList -> {
-            LogUtil.d("totalPages ==== " + totalPages);
-            for (int i = 0; i < totalPages; i++) {
-                getMeizis(url, i);
+                return totalPages;
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(integer -> {
+
+            for (int i = 0; i < integer; i++) {
+                RemoteGirlsData.this.getMeizis(url, i);
             }
         });
     }
@@ -162,7 +146,6 @@ public class RemoteGirlsData
                 Element total = doc.select("div.main-image").first();
                 String attr = total.select("img").first().attr("src");
                 girls.add(new Girl(String.format(realUrl, attr, fakeRefer)));
-//                    girls.add(new Girl(attr));
             } catch (IOException e) {
                 e.printStackTrace();
             }

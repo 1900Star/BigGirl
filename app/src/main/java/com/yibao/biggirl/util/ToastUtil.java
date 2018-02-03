@@ -13,4 +13,16 @@ public class ToastUtil {
         Toast.makeText(context, "当前没有歌曲播放-_-", Toast.LENGTH_SHORT).show();
 
     }
+
+    public static void showScreenOn(Context context) {
+        Toast.makeText(context, "您开启了屏幕常亮", Toast.LENGTH_SHORT).show();
+
+    }
+
+    public static void showScreenOf(Context context) {
+        Toast.makeText(context, "您关闭了屏幕常亮", Toast.LENGTH_SHORT).show();
+
+    }
+
+
 }

@@ -27,6 +27,7 @@ public class RemoteDuotuGirls
     @Override
     public void getDuotu(String url, int page, LoadDuotuCallback callback) {
         String baseUrl = url + page + ".html";
+
         Observable.just(baseUrl).subscribeOn(Schedulers.io()).map(s -> {
 
             List<Girl> girls = new ArrayList<>();

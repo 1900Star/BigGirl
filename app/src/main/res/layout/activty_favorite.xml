@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp">
+
+            <TextView
+                android:id="@+id/tv_music_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/favorite"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/big_tv" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    >
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/favorite_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/listItemBg"
-            android:orientation="vertical"
-        />
+            android:orientation="vertical" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

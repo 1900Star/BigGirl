@@ -41,8 +41,9 @@
 
 
         <View
+            android:visibility="gone"
             android:layout_width="0.5dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/seekBarN" />
 
@@ -59,6 +60,7 @@
 
 
         <View
+            android:visibility="gone"
             android:layout_width="0.5dp"
             android:layout_height="32dp"
             android:layout_gravity="center"

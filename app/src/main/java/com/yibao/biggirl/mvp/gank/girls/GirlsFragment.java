@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * 邮箱：strangermy@outlook.com
  */
 public class GirlsFragment
-        extends BaseRecyclerFragment<String>
+        extends BaseRecyclerFragment
         implements
         View.OnLongClickListener,
         GirlsContract.View<String> {
@@ -39,6 +39,7 @@ public class GirlsFragment
     GirlsPresenter mGirlsPresenter;
 
     private int mRandomNum;
+    private List<String> mList;
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
@@ -47,8 +48,8 @@ public class GirlsFragment
                 .build()
                 .in(this);
 
+        mList = new ArrayList<>();
         mGirlsPresenter.start(Constants.FRAGMENT_GIRLS, Constants.TYPE_GIRLS);
-
     }
 
 
@@ -101,11 +102,9 @@ public class GirlsFragment
     //    刷新回调
     @Override
     public void refresh(List<String> list) {
-        mList.clear();
         mAdapter.clear();
         mList.addAll(list);
-        mAdapter.AddHeader(list);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addHeader(list);
     }
 
     //    RecyclerView上拉加载更多
@@ -120,16 +119,14 @@ public class GirlsFragment
     @Override
     public void loadData(List<String> list) {
         mList.addAll(list);
-        initRecyclerView(mList, 2);
+        initRecyclerView(list, 2);
         mSwipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void loadMore(List<String> list) {
         mList.addAll(list);
-        mAdapter.AddFooter(list);
-        mAdapter.notifyDataSetChanged();
-
+        mAdapter.addFooter(list);
     }
 
 

@@ -68,9 +68,6 @@ public class WebNormalActivity
         mToolbar.setNavigationOnClickListener(view -> finish());
         mToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case android.R.id.home:
-                    finish();
-                    break;
                 // 分享
                 case R.id.web_normal_share:
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);

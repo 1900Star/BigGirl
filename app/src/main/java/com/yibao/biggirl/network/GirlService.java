@@ -15,11 +15,9 @@ public interface GirlService {
 
     //代码集中营Api 《 www.Gank.io》 福利
     @GET("api/data/{type}/{count}/{page}")
-    Observable<GankDesBean> getConmmetApi(@Path("position") String type,
+    Observable<GankDesBean> getConmmetApi(@Path("type") String type,
                                           @Path("count") int count,
                                           @Path("page") int page);
-
-
 
 
 }

@@ -22,7 +22,6 @@ public class MusicView
         extends RelativeLayout {
 
     private RecyclerView mRecyclerView;
-    private TextView mStickyheader;
     private int defultHeight;
     private int mCurrentPosition = 0;
 
@@ -41,18 +40,24 @@ public class MusicView
         initView();
     }
 
-    //初始化view
+
     private void initView() {
         //第三个参数设置为true  直接解析之后添加到当前view中
         LayoutInflater.from(getContext())
                 .inflate(R.layout.music_view, this, true);
         mRecyclerView = findViewById(R.id.rv);
-        mStickyheader = findViewById(R.id.music_rv_sticky_view);
+        TextView stickyheader = findViewById(R.id.music_rv_sticky_view);
 
 
     }
 
-    //设置列表的适配器
+
+
+    /**
+     *  //设置列表的适配器
+     * @param context
+     * @param adapter
+     */
     public void setAdapter(Context context, MusicListAdapter adapter) {
         LinearLayoutManager manager = new LinearLayoutManager(context);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
