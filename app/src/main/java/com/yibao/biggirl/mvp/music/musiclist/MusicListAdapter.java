@@ -3,7 +3,6 @@ package com.yibao.biggirl.mvp.music.musiclist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.yibao.biggirl.base.listener.OnMusicListItemClickListener;
 import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,13 +26,13 @@ import butterknife.ButterKnife;
 import static com.yibao.biggirl.util.StringUtil.getPinYin;
 
 /**
- *  @项目名： BigGirl
- *  @包名： ${PACKAGE_NAME}
- *  @文件名: ${NAME}
- *  @author: Stran
- *  @Email: www.strangermy@outlook.com / www.stranger98@gmail.com
- *  @创建时间: 2016/11/5 15:53
- *  @描述：    {TODO}
+ * @项目名： BigGirl
+ * @包名： ${PACKAGE_NAME}
+ * @文件名: ${NAME}
+ * @author: Stran
+ * @Email: www.strangermy@outlook.com / www.stranger98@gmail.com
+ * @创建时间: 2016/11/5 15:53
+ * @描述： {TODO}
  */
 
 public class MusicListAdapter
@@ -44,14 +42,12 @@ public class MusicListAdapter
 
 {
     private String TAG = "MusicListAdapter";
-    private Context mContext;
-    private SparseIntArray intArrayA = new SparseIntArray();
-    private SparseIntArray intArrayB = new SparseIntArray();
+    private Context mcontext;
 
 
     public MusicListAdapter(Context context, List<MusicBean> list) {
         super(list);
-        this.mContext = context;
+        this.mcontext = context;
     }
 
 
@@ -67,7 +63,7 @@ public class MusicListAdapter
         if (holder instanceof MusicViewHolder) {
             MusicViewHolder viewHolder = (MusicViewHolder) holder;
             viewHolder.mSongArtistName.setText(info.getArtist());
-            Glide.with(mContext)
+            Glide.with(mcontext)
                     .load(StringUtil.getAlbulm(info.getAlbumId()))
                     .placeholder(R.mipmap.playing_cover_lp)
                     .into(viewHolder.mSongAlbum);
@@ -88,8 +84,8 @@ public class MusicListAdapter
 
             //            Item点击监听
             viewHolder.mLlMusicItem.setOnClickListener(view -> {
-                if (mContext instanceof OnMusicListItemClickListener) {
-                    ((OnMusicListItemClickListener) mContext).startMusicService(position);
+                if (mcontext instanceof OnMusicListItemClickListener) {
+                    ((OnMusicListItemClickListener) mcontext).startMusicService(position);
                 }
             });
 
@@ -110,38 +106,31 @@ public class MusicListAdapter
 
 
     @Override
-    public String[] getSections() {
-        //清空intArray
-        intArrayA.clear();
-        intArrayB.clear();
-        //定义集合存放sections
-        ArrayList<String> sections = new ArrayList<>();
-        //遍历联系人集合添加section
-        for (int i = 0; i < mList.size(); i++) {
-            //获取联系人首字母
-            String firstC = getPinYin(mList.get(i)
-                    .getTitle());
-            if (!sections.contains(firstC)) {
-                sections.add(firstC);
-                //添加section和position对应的值
-                intArrayA.put(sections.size() - 1, i);
+    public Object[] getSections() {
+        return new Object[0];
+    }
+
+
+    @Override
+    public int getPositionForSection(int section) {
+
+        for (int i = 0; i < getItemCount(); i++) {
+            char firstChar = StringUtil.getPinYin(mList.get(i).getTitle()).toUpperCase().charAt(0);
+            if (firstChar == section) {
+                return i;
             }
-            intArrayB.put(i, sections.size() - 1);
         }
-        return sections.toArray(new String[sections.size()]);
-
+        return -1;
     }
 
+    /**
+     * 根据ListView的当前位置获取分类的首字母的char ascii值
+     */
     @Override
-    public int getPositionForSection(int position) {
+    public int getSectionForPosition(int position) {
 
-        return intArrayA.get(position);
-    }
 
-    @Override
-    public int getSectionForPosition(int i) {
-
-        return intArrayB.get(i);
+        return StringUtil.getPinYin(mList.get(position).getTitle()).charAt(0);
     }
 
 

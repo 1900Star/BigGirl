@@ -130,16 +130,16 @@ public class MusicSlidBar
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 //改变背景颜色
                 setBackgroundResource(R.drawable.shape_slibar);
-                mCirclePaint.setColor(Color.parseColor("#6e6e6e"));
+                mCirclePaint.setColor(Color.parseColor("#8e8e8f"));
                 performTouch(event);
                 break;
             case MotionEvent.ACTION_MOVE:
-                mCirclePaint.setColor(Color.parseColor("#6e6e6e"));
+                mCirclePaint.setColor(Color.parseColor("#8e8e8f"));
                 performTouch(event);
                 break;
             case MotionEvent.ACTION_UP:
@@ -147,17 +147,14 @@ public class MusicSlidBar
                 mCirclePaint.setColor(Color.TRANSPARENT);
                 setBackgroundColor(Color.TRANSPARENT);
                 mTvPaint.setColor(Color.GRAY);
-                //隐藏toast
-//                if (mContactToast != null) {
-//                    mContactToast.setVisibility(GONE);
-//                }
                 break;
             default:
                 break;
         }
+
+
         return true;
     }
-
 
     /**
      * 处理触摸事件
@@ -183,31 +180,13 @@ public class MusicSlidBar
         //设置导航字母
         mStickyViwe.setText(name);
         LogUtil.d("设置导航字母 *******   " + name);
-        //显示toast
-//        mContactToast.setVisibility(VISIBLE);
-        //处理列表section位置
-        //        rvListener();
-        // 获取listview的适配器
         MusicListAdapter adapter = (MusicListAdapter) mRecyclerView.getAdapter();
         //获取sections的集合
-        String[] sections = adapter.getSections();
-
-        //当前是否要处理section
-        int sectionIndex = -1;
-        for (int i = 0; i < sections.length; i++) {
-            if (name.equals(sections[i])) {
-                sectionIndex = i;
-            }
+        int positionForSection = adapter.getPositionForSection(name.charAt(0));
+        if (positionForSection == -1) {
+            LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            manager.scrollToPositionWithOffset(positionForSection, 0);
         }
-        if (sectionIndex == -1) {
-            return;
-        }
-
-
-        //        //确定当前section首联系人的position
-        int positionForSection = adapter.getPositionForSection(sectionIndex);
-        LinearLayoutManager manager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-        manager.scrollToPositionWithOffset(positionForSection, 0);
 
 
     }
@@ -218,9 +197,6 @@ public class MusicSlidBar
         if (mStickyViwe == null) {
             mStickyViwe = parent.findViewById(R.id.music_rv_sticky_view);
         }
-//        if (mContactToast == null) {
-//            mContactToast = parent.findViewById(R.id.contac_toast);
-//        }
         //初始化listview
         if (mRecyclerView == null) {
             mRecyclerView = parent.findViewById(R.id.rv);

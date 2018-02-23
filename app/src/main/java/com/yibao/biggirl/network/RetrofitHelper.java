@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Author：Sid
  * Des：${Retrofit 帮助类}
  * Time:2017/4/10 17:22
+ * @author Stran
  */
 public class RetrofitHelper {
 

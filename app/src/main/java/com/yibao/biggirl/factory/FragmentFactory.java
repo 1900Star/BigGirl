@@ -66,7 +66,6 @@ public class FragmentFactory {
             fragment = mCacheFragmentMap.get(position);
             return fragment;
         }
-
         switch (position) {
             case FRAGMENT_GIRLS:
                 fragment = new GirlsFragment();

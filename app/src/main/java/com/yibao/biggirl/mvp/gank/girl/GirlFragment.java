@@ -258,6 +258,7 @@ public class GirlFragment
     }
 
     //图片保存
+
     @OnClick({R.id.iv_down})
     public void onViewClicked(View view) {
         ImageView v = (ImageView) mAdapter.getPrimaryItem();

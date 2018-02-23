@@ -12,16 +12,12 @@ import android.widget.LinearLayout;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRecyclerActivity;
 import com.yibao.biggirl.factory.RecyclerFactory;
-import com.yibao.biggirl.model.girl.Girl;
 import com.yibao.biggirl.model.girl.MeizituData;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.gank.girls.GirlsContract;
 import com.yibao.biggirl.mvp.gank.girls.GirlsPresenter;
 import com.yibao.biggirl.service.MeizituService;
 import com.yibao.biggirl.util.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +42,6 @@ public class MeizituRecyclerActivity
     private GirlsContract.Presenter mPresenter;
     private String mUrl;
     private MztuAdapter mAdapter;
-    private List<Girl> mMeizituData;
 
 
     @Override
@@ -54,7 +49,6 @@ public class MeizituRecyclerActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meizi);
         unbinder = ButterKnife.bind(this);
-        mMeizituData = new ArrayList<>();
 
         mUrl = getIntent().getStringExtra("link");
         mPresenter = new GirlsPresenter();

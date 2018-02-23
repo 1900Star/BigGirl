@@ -31,9 +31,7 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        android:id="@+id/music_category_layout"
-        layout="@layout/music_category" />
+    <include layout="@layout/music_category" />
 
     <View
         android:layout_width="match_parent"

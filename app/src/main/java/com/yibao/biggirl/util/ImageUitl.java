@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -100,83 +102,87 @@ public class ImageUitl {
     }
 
     public static Observable<Object> savePic(String url, int type) {
-        return Observable.create(observable -> {
-            if (type == 1) {
-                name = "share_y.jpg";
-            } else {
-                name = getNameFromUrl(url);
+        return Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> observable) throws Exception {
+                if (type == 1) {
+                    name = "share_y.jpg";
+                } else {
+                    name = getNameFromUrl(url);
 //            name = randomUUID() + ".jpg";
-            }
-            File path = new File(Constants.DIR);
-            if (!path.exists()) {
-                path.mkdir();
-            }
-            file = new File(path + "/", name);
+                }
+                File path = new File(Constants.DIR);
+                if (!path.exists()) {
+                    path.mkdir();
+                }
+                file = new File(path + "/", name);
 
-            if (!file.exists()) try {
-                file.createNewFile();
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                observable.onError(e);
-                observable.onError(new Throwable("图片下载失败！"));
-            }
-            else {
-                observable.onNext(Constants.EXISTS);
-                observable.onComplete();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        observable.onError(e);
+                        observable.onError(new Throwable("图片下载失败！"));
+                    }
+                } else {
+                    observable.onNext(Constants.EXISTS);
+                    observable.onComplete();
 //                    return Constants.EXISTS;
-            }
-            Request request = new Request.Builder().url(url).addHeader("Accept-Encoding", "identity")
-                    .build();
-            MyApplication.defaultOkHttpClient()
-                    .newCall(request)
-                    .enqueue(new Callback() {
-                        @Override
-                        public void onFailure(okhttp3.Call call, IOException e) {
-                            e.printStackTrace();
-                            observable.onError(e);
-                            observable.onError(new Throwable("图片无法下载！"));
-                            LogUtil.d("下载出错 " + e.toString());
-                        }
-
-                        @Override
-                        public void onResponse(@NonNull okhttp3.Call call, @NonNull Response response) {
-                            InputStream is;
-                            byte[] buf = new byte[1024 * 4];
-                            int len;
-                            int off=0;
-                            long sum = 0;
-                            FileOutputStream fos = null;
-                            is = response.body().byteStream();
-                            long total = response.body().contentLength();
-                            try {
-                                fos = new FileOutputStream(file);
-                                while ((len = is.read(buf)) != -1) {
-                                    fos.write(buf, off, len);
-                                    sum += len;
-                                    int progress = (int) (sum * 1.0f / total * 100);
-                                    //Rxbus发送下载进度
-                                    MyApplication.getIntstance().bus().post(new DownGrilProgressData(progress, type));
-                                }
-                                fos.flush();
-                                fos.close();
-                            } catch (IOException e) {
+                }
+                Request request = new Request.Builder().url(url).addHeader("Accept-Encoding", "identity")
+                        .build();
+                MyApplication.defaultOkHttpClient()
+                        .newCall(request)
+                        .enqueue(new Callback() {
+                            @Override
+                            public void onFailure(okhttp3.Call call, IOException e) {
                                 e.printStackTrace();
                                 observable.onError(e);
-                                observable.onError(new Throwable("图片下载失败！"));
-                            } finally {
+                                observable.onError(new Throwable("图片无法下载！"));
+                                LogUtil.d("下载出错 " + e.toString());
+                            }
+
+                            @Override
+                            public void onResponse(@NonNull okhttp3.Call call, @NonNull Response response) {
+                                InputStream is;
+                                byte[] buf = new byte[1024 * 4];
+                                int len;
+                                int off = 0;
+                                long sum = 0;
+                                FileOutputStream fos = null;
+                                is = response.body().byteStream();
+                                long total = response.body().contentLength();
                                 try {
+                                    fos = new FileOutputStream(file);
+                                    while ((len = is.read(buf)) != -1) {
+                                        fos.write(buf, off, len);
+                                        sum += len;
+                                        int progress = (int) (sum * 1.0f / total * 100);
+                                        //Rxbus发送下载进度
+                                        MyApplication.getIntstance().bus().post(new DownGrilProgressData(progress, type));
+                                    }
+                                    fos.flush();
                                     fos.close();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                     observable.onError(e);
                                     observable.onError(new Throwable("图片下载失败！"));
+                                } finally {
+                                    try {
+                                        fos.close();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        observable.onError(e);
+                                        observable.onError(new Throwable("图片下载失败！"));
+                                    }
                                 }
                             }
-                        }
-                    });
-            observable.onNext(Constants.FIRST_DWON);
-            observable.onComplete();
+                        });
+                observable.onNext(Constants.FIRST_DWON);
+                observable.onComplete();
+            }
         }).subscribeOn(Schedulers.io());
 
 
@@ -269,16 +275,18 @@ public class ImageUitl {
 
     //将下载的图片更新到图库
     public static boolean insertImageToPhoto() {
-
         try {
             MediaStore.Images.Media.insertImage(MyApplication.getIntstance()
                             .getContentResolver(),
                     file.getAbsolutePath(),
                     name,
                     null);
+
+
             MyApplication.getIntstance()
                     .sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                             Uri.parse("file://" + file)));
+
         } catch (Exception e) {
             LogUtil.d("图片保存出错 ！ " + e.toString());
             e.printStackTrace();

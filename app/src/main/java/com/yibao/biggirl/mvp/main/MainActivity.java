@@ -125,6 +125,7 @@ public class MainActivity
 
 //        保存Fragment的数量过多容易导致OOM，根据实际情况确定需要保存Fragment的数量
 //        mViewPager.setOffscreenPageLimit(Constants.arrTitle.length);
+
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(pagerAdapter);
 
