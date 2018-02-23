@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Author：Sid
  * Des：${Retrofit 帮助类}
  * Time:2017/4/10 17:22
+ *
  * @author Stran
  */
 public class RetrofitHelper {
@@ -20,11 +21,13 @@ public class RetrofitHelper {
     public static GirlService getGankApi(String baseUrl) {
         if (retrofit == null) {
             synchronized (RetrofitHelper.class) {
-                retrofit = new Retrofit.Builder().baseUrl(baseUrl)
-                                                 .addConverterFactory(GsonConverterFactory.create())
-                                                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                                                 .client(MyApplication.defaultOkHttpClient())
-                                                 .build();
+                if (retrofit == null) {
+                    retrofit = new Retrofit.Builder().baseUrl(baseUrl)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .client(MyApplication.defaultOkHttpClient())
+                            .build();
+                }
 
             }
 
@@ -34,7 +37,6 @@ public class RetrofitHelper {
 
 
     }
-
 
 
 }

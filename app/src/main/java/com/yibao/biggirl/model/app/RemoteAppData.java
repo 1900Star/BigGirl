@@ -21,7 +21,7 @@ public class RemoteAppData
     public void getApp(int size, int page, String type, LoadDataCallback callback) {
 
         RetrofitHelper.getGankApi(Constants.GANK_API)
-                .getConmmetApi(type, size, page)
+                .getConmmentApi(type, size, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GankDesBean>() {

@@ -10,14 +10,22 @@ import retrofit2.http.Path;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/4/5 20:57
+ * @author Stran
  */
 public interface GirlService {
 
-    //代码集中营Api 《 www.Gank.io》 福利
+
+    /**
+     *  /代码集中营Api 《 www.Gank.io》 福利
+     * @param type
+     * @param count
+     * @param page
+     * @return
+     */
     @GET("api/data/{type}/{count}/{page}")
-    Observable<GankDesBean> getConmmetApi(@Path("type") String type,
-                                          @Path("count") int count,
-                                          @Path("page") int page);
+    Observable<GankDesBean> getConmmentApi(@Path("type") String type,
+                                           @Path("count") int count,
+                                           @Path("page") int page);
 
 
 }

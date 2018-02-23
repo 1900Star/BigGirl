@@ -9,6 +9,7 @@ import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
  * Des：${  FavoritActivity和WeibActivity共用WebPresenter，FavoritActivity需要 查询所有和
  * 取消收藏操作，WeibActivit需要：新增收藏、取消收藏、查询是否已经收藏 操作}
  * Time:2017/6/17 03:05
+ * @author Stran
  */
 public class WebPresenter {
     private FavoriteWebDao   mDao;

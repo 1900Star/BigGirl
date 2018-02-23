@@ -41,7 +41,7 @@ public class RemoteGirlsData
     public void getGirls(String dataType, int size, int page, LoadDataCallback callback) {
         List<String> urlList = new ArrayList<>();
         RetrofitHelper.getGankApi(Constants.GANK_API)
-                .getConmmetApi(dataType, size, page)
+                .getConmmentApi(dataType, size, page)
                 .subscribeOn(Schedulers.io()).map(girlsBean -> {
             for (ResultsBeanX data : girlsBean.getResults()) {
                 urlList.add(data.getUrl());
