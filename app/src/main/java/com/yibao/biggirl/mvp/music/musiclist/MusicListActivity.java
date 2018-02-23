@@ -339,7 +339,7 @@ public class MusicListActivity
         //获取音乐列表
         Intent intent = new Intent();
         intent.setClass(this, AudioPlayService.class);
-        intent.putParcelableArrayListExtra("musicItem", mMusicItems);
+//        intent.putParcelableArrayListExtra("musicItem", mMusicItems);
         intent.putExtra("position", mCurrentPosition);
         mConnection = new AudioServiceConnection();
         bindService(intent, mConnection, Service.BIND_AUTO_CREATE);

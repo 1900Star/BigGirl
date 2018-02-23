@@ -85,7 +85,6 @@ public class MusicPlayDialogFag
     private MyAnimatorUpdateListener mAnimatorListener;
     private boolean isFavorite;
     private int mProgress = 0;
-    private Disposable mSubscribe;
     private SeekBar mSbProgress;
     private SeekBar mSbVolume;
     private AudioManager mAudioManager;
@@ -98,6 +97,7 @@ public class MusicPlayDialogFag
     boolean isShowLyrics = false;
     private LyricsView mLyricsView;
     private Disposable mDisposableLyrics;
+    private Disposable mDisposableUpdataMusicInfo;
     private VolumeReceiver mVolumeReceiver;
     private ImageView mIvScreenSunSwitch;
     private boolean isScreenAlwaysOn;
@@ -194,21 +194,25 @@ public class MusicPlayDialogFag
 
     }
 
-
     /**
      * Rxbus接收歌曲时时的进度 和 时间，并更新UI
      */
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDisposableUpdataMusicInfo = Observable.interval(0, 2800, TimeUnit.MICROSECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    mProgress = audioBinder.getProgress();
+                    updataMusicProgress(mProgress);
+                });
+
+    }
+
     private void startUpdateProgress() {
         setSongDuration();
-        if (mSubscribe == null) {
-            mSubscribe = Observable.interval(0, 2800, TimeUnit.MICROSECONDS)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(aLong -> {
-                        mProgress = audioBinder.getProgress();
-                        updataMusicProgress(mProgress);
-                    });
-        }
+
 
     }
 
@@ -282,7 +286,7 @@ public class MusicPlayDialogFag
         setSongDuration();
         updatePlayBtnStatus();
 //        初始化歌词
-        mLyricsView.setLrcFile(info.getTitle(), info.getArtist());
+//        mLyricsView.setLrcFile(info.getTitle(), info.getArtist());
 
     }
 
@@ -388,7 +392,7 @@ public class MusicPlayDialogFag
                 break;
             //TODO
             case R.id.iv_lyrics_switch:
-                showLyrics();
+//                showLyrics();
                 break;
             case R.id.iv_secreen_sun_switch:
                 screenAlwaysOnSwitch();
@@ -397,12 +401,14 @@ public class MusicPlayDialogFag
                 switchPlayMode();
                 break;
             case R.id.music_player_pre:
+                mAnimator.pause();
                 audioBinder.playPre();
                 break;
             case R.id.music_play:
                 switchPlayState();
                 break;
             case R.id.music_player_next:
+                mAnimator.pause();
                 audioBinder.playNext();
                 break;
             case R.id.iv_favorite_music:
@@ -452,7 +458,7 @@ public class MusicPlayDialogFag
             animation.start();
             mIvScreenSunSwitch.setVisibility(View.VISIBLE);
             // 开始滚动歌词
-            startPlayLyrics();
+//            startPlayLyrics();
             mLyricsView.setVisibility(View.VISIBLE);
             isShowLyrics = true;
         }
@@ -567,15 +573,22 @@ public class MusicPlayDialogFag
         return fragment;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mDisposableUpdataMusicInfo != null) {
+            mDisposableUpdataMusicInfo.dispose();
+        }
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        boolean allSwitch = mAnimator != null && mAnimatorListener != null && mDisposableLyrics != null && disposables != null && mSubscribe != null;
+        boolean allSwitch = mAnimator != null && mAnimatorListener != null && mDisposableLyrics != null && disposables != null && mDisposableUpdataMusicInfo != null;
         if (allSwitch) {
             mAnimatorListener.pause();
             mAnimator.cancel();
-            mSubscribe.dispose();
+            mDisposableUpdataMusicInfo.dispose();
             disposables.clear();
             mDisposableLyrics.dispose();
         }
