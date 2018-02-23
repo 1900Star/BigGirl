@@ -19,6 +19,7 @@ import com.yibao.biggirl.model.music.MusicBean;
 import com.yibao.biggirl.model.music.MusicStatusBean;
 import com.yibao.biggirl.mvp.music.musiclist.MusicNoification;
 import com.yibao.biggirl.util.LogUtil;
+import com.yibao.biggirl.util.MusicListUtil;
 import com.yibao.biggirl.util.SharePrefrencesUtil;
 
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public class AudioPlayService
         super.onCreate();
         mAudioBinder = new AudioBinder();
         mRemoteViews = new RemoteViews(getPackageName(), R.layout.music_notify);
+        if (mMusicItem == null) {
+            mMusicItem = MusicListUtil.getMusicList(this);
+        }
         initBroadcast();
         //初始化播放模式
         PLAY_MODE = SharePrefrencesUtil.getMusicMode(this);
@@ -78,19 +82,19 @@ public class AudioPlayService
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mMusicItem = intent.getParcelableArrayListExtra("musicItem");
+//        mMusicItem = intent.getParcelableArrayListExtra("musicItem");
         if (mMusicItem != null) {
 
-        int enterPosition = intent.getIntExtra("position", 0);
-        if (enterPosition != position && enterPosition != -1) {
-            position = enterPosition;
-            //执行播放
-            mAudioBinder.play();
-        } else if (enterPosition != -1 && enterPosition == position) {
-            //通知播放界面更新
-            LogUtil.d("Service position  " + position);
-            sendCureentMusicInfo();
-        }
+            int enterPosition = intent.getIntExtra("position", 0);
+            if (enterPosition != position && enterPosition != -1) {
+                position = enterPosition;
+                //执行播放
+                mAudioBinder.play();
+            } else if (enterPosition != -1 && enterPosition == position) {
+                //通知播放界面更新
+                LogUtil.d("Service position  " + position);
+                sendCureentMusicInfo();
+            }
         }
         return START_NOT_STICKY;
     }
