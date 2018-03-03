@@ -23,8 +23,6 @@
 
 ## 数据来源
    * [干货集中营](http://gank.io/)
-   * [多图网](http://www.duotu555.com/)
-   * [妹子图](http://www.mzitu.com/)
    * [Unsplash](http://www.unsplash.com/)
   
 ## 第三方库
