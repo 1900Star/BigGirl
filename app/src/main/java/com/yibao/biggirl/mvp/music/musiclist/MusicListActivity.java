@@ -17,7 +17,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -613,20 +612,6 @@ public class MusicListActivity
         }
     };
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_HEADSETHOOK:
-                switchPlayState();
-                break;
-            case KeyEvent.KEYCODE_BACK:
-                finish();
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
 
 
     @Override

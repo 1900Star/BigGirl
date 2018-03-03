@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
  * Author：Sid
  * Des：${适配Video列表数据}
  * Time:2017/4/23 07:08
+ *
  * @author Stran
  */
 public class FavoriteAdapter
@@ -38,7 +39,6 @@ public class FavoriteAdapter
         mContext = context;
     }
 
-    //    @Override
     @Override
     protected void bindView(RecyclerView.ViewHolder holder, FavoriteWebBean bean) {
         if (holder instanceof ViewHolder) {
@@ -72,19 +72,16 @@ public class FavoriteAdapter
             });
             //Item点击的监听
             viewHolder.mFavoriteItem.setOnClickListener(view -> {
-
-                if (mContext instanceof OnRvItemClickListener) {
-                    ((OnRvItemClickListener) mContext).showWebDetail(bean, bean.getId());
-                }
+                    if (mContext instanceof OnRvItemClickListener) {
+                        ((OnRvItemClickListener) mContext).showWebDetail(bean, bean.getId());
+                    }
             });
 
 
         }
     }
 
-    void refreshItem() {
-        notifyDataSetChanged();
-    }
+
 
     @Override
     protected RecyclerView.ViewHolder getViewHolder(View view) {
@@ -120,4 +117,6 @@ public class FavoriteAdapter
             ButterKnife.bind(this, view);
         }
     }
+
+
 }

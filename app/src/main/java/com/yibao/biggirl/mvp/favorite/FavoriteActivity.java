@@ -18,10 +18,8 @@ import com.yibao.biggirl.mvp.webview.WebActivity;
 import com.yibao.biggirl.mvp.webview.WebPresenter;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
-import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.view.SwipeItemLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -50,10 +48,8 @@ public class FavoriteActivity
     SwipeRefreshLayout mSwipeRefresh;
     WebPresenter mWebPresenter;
     private FavoriteAdapter mAdapter;
-    private boolean isUpdateFavo = false;
 
     private Unbinder mBind;
-    private List<FavoriteWebBean> mFavoriteList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +61,17 @@ public class FavoriteActivity
         initData();
     }
 
+    private void initData() {
+        mAdapter = new FavoriteAdapter(this, null);
+        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(1, mAdapter);
+        recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
+        mAdapter.notifyDataSetChanged();
+        mAdapter.changeLoadMoreStatus(Constants.NOT_MORE_DATA_RV);
+        mFagContent.addView(recyclerView);
+
+    }
+
+
     protected void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar_favorite);
         setSupportActionBar(toolbar);
@@ -75,16 +82,11 @@ public class FavoriteActivity
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setRefreshing(true);
         mSwipeRefresh.setOnRefreshListener(this);
-        mFavoriteList = new ArrayList<>();
     }
 
-    protected void initData() {
-        mWebPresenter.queryAllFavorite();
-    }
 
     @Override
     public void showWebDetail(FavoriteWebBean bean, Long id) {
-        isUpdateFavo = true;
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("id", id);
         LogUtil.d("跳转 ID :" + bean.getId());
@@ -115,24 +117,14 @@ public class FavoriteActivity
 
     @Override
     public void cancelStatus(Long id) {
-        LogUtil.d(mTag + "Adapter  取消收藏  :  " + id);
-        if (id > 0) {
-            mAdapter.notifyDataSetChanged();
-            SnakbarUtil.showSuccessView(mFagContent);
 
-        }
     }
+
 
     @Override
     public void queryAllFavorite(List<FavoriteWebBean> list) {
+        mAdapter.setNewData(list);
         mSwipeRefresh.setRefreshing(false);
-
-        mAdapter = new FavoriteAdapter(this, list);
-        RecyclerView recyclerView = RecyclerFactory.creatRecyclerView(1, mAdapter);
-        recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
-        mAdapter.notifyDataSetChanged();
-        mAdapter.changeLoadMoreStatus(Constants.NOT_MORE_DATA_RV);
-        mFagContent.addView(recyclerView);
 
 
     }
@@ -162,11 +154,8 @@ public class FavoriteActivity
     @Override
     public void onResume() {
         super.onResume();
-        if (isUpdateFavo) {
-            LogUtil.d("收藏页面刷新       ******************");
-            mAdapter.refreshItem();
+        mWebPresenter.queryAllFavorite();
 
-        }
     }
 
     @Override

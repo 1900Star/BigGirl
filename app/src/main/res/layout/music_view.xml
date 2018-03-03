@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,6 +33,7 @@
         <com.yibao.biggirl.view.music.MusicSlidBar
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:visibility="gone" />
     </FrameLayout>
 </RelativeLayout>

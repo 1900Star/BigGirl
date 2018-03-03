@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yibao.biggirl.view.SwipeItemLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.yibao.biggirl.view.SwipeItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_marginTop="0.5dp"
-    android:background="@color/colorWhite"
->
+    android:background="@color/colorWhite">
 
     <RelativeLayout
         android:id="@+id/favorite_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:gravity="center"
-    >
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/iv_favorite"
@@ -25,13 +21,14 @@
             android:layout_margin="6dp"
             android:adjustViewBounds="true"
             android:contentDescription="@null"
-            android:scaleType="centerCrop"
-        />
+            android:scaleType="centerCrop" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/iv_favorite"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,8 +42,8 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorGreen"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorWhite"
-                />
+                    android:textColor="@color/colorWhite" />
+
                 <TextView
                     android:id="@+id/tv_favorite_type"
                     android:layout_width="wrap_content"
@@ -55,8 +52,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/colorAccent"
                     android:gravity="center_vertical"
-                    android:textColor="@color/colorWhite"
-                />
+                    android:textColor="@color/colorWhite" />
 
             </LinearLayout>
 
@@ -70,8 +66,9 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="10dp"
                 android:maxLines="2"
-                android:textColor="@color/textDes"/>
+                android:textColor="@color/textDes" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/favorite_time"
             android:layout_width="wrap_content"
@@ -81,7 +78,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="3dp"
             android:background="@color/colorGreen"
-            android:textColor="@color/textTime"/>
+            android:textColor="@color/textTime" />
 
     </RelativeLayout>
 
@@ -93,12 +90,12 @@
         android:background="@color/listItemBg"
         android:gravity="center"
         android:orientation="horizontal">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="85dp"
             android:contentDescription="@null"
-            android:src="@drawable/playing_btn_delete_down"
-        />
+            android:src="@drawable/playing_btn_delete_down" />
 
     </LinearLayout>
 

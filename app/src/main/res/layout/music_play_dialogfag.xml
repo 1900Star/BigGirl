@@ -159,8 +159,8 @@
 
         <com.yibao.biggirl.view.music.LyricsView
             android:id="@+id/tv_lyrics"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/mask_playing_lyric"

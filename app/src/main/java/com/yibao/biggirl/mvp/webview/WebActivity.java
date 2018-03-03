@@ -19,12 +19,10 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.model.dagger2.component.DaggerWebComponent;
 import com.yibao.biggirl.model.dagger2.moduls.WebModuls;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
-import com.yibao.biggirl.model.favoriteweb.UpdataFavorite;
 import com.yibao.biggirl.mvp.favorite.FavoriteContract;
 import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
@@ -143,11 +141,6 @@ public class WebActivity
             isFavorite = false;
             refreshFavoriteBtn();
             LogUtil.d(TAG + "已取消收藏  ID :" + id);
-            //      通知收藏列表更新
-            MyApplication.getIntstance()
-                    .bus()
-                    .post(new UpdataFavorite(1));
-            SnakbarUtil.favoriteSuccessView(mWebView, "已取消收藏  -_-");
 
         }
     }

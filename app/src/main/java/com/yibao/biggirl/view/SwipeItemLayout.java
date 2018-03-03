@@ -21,6 +21,7 @@ import com.yibao.biggirl.R;
  * Author：Sid
  * Des：${TODO}
  * Time:2016/11/5 00:25
+ *
  * @author Stran
  */
 
@@ -490,7 +491,10 @@ public class SwipeItemLayout
         }
     }
 
-    //RecyclerView必须实现这的监听器，否则拉不出侧滑菜单
+
+    /**
+     * RecyclerView必须实现这的监听器，否则拉不出侧滑菜单
+     */
     public static class OnSwipeItemTouchListener
             implements RecyclerView.OnItemTouchListener {
         private SwipeItemLayout mCaptureItem;
@@ -550,7 +554,8 @@ public class SwipeItemLayout
 
                     //此时的pointOther=true，意味着点击的view为空或者点击的不是item
                     //还没有把点击的是item但是不是capture item给过滤出来
-                    if (!pointOther && (mCaptureItem == null || mCaptureItem != pointItem)) {
+                    boolean b = !pointOther && (mCaptureItem == null || mCaptureItem != pointItem);
+                    if (b) {
                         pointOther = true;
                     }
 

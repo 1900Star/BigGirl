@@ -10,6 +10,7 @@ import com.yibao.biggirl.base.BaseDialogFragment;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/5/30 13:27
+ * @author Stran
  */
 public class MeDialogFragment
         extends BaseDialogFragment

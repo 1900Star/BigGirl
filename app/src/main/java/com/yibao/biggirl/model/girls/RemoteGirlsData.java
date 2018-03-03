@@ -21,7 +21,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -100,32 +99,28 @@ public class RemoteGirlsData
 
     @Override
     public void getMeiziList(String url) {
-        Observable.just(url).subscribeOn(Schedulers.io()).map(new Function<String, Integer>() {
-            @Override
-            public Integer apply(String s) throws Exception {
-//            List<Girl> girls = new ArrayList<>();
-                try {
-                    Document doc = Jsoup.connect(s).timeout(10000).get();
-                    Element total = doc.select("div.pagenavi").first();
-                    Elements spans = total.select("span");
-                    for (Element str : spans) {
-                        int page;
-                        try {
-                            page = Integer.parseInt(str.text());
-                            if (page >= totalPages) {
-                                totalPages = page;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
+            try {
+                Document doc = Jsoup.connect(s).timeout(10000).get();
+                Element total = doc.select("div.pagenavi").first();
+                Elements spans = total.select("span");
+                for (Element str : spans) {
+                    int page;
+                    try {
+                        page = Integer.parseInt(str.text());
+                        if (page >= totalPages) {
+                            totalPages = page;
                         }
-
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                return totalPages;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
+            return totalPages;
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(integer -> {
 
             for (int i = 0; i < integer; i++) {

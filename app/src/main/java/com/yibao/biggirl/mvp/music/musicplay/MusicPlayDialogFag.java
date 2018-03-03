@@ -172,9 +172,9 @@ public class MusicPlayDialogFag
         if (audioBinder.isPlaying()) {
             initAnimation();
             updatePlayBtnStatus();
-            startUpdateProgress();
+            setSongDuration();
         }
-        startUpdateProgress();
+        setSongDuration();
         //设置播放模式图片
         int mode = SharePrefrencesUtil.getMusicMode(getActivity());
         updatePlayModeImage(mode);
@@ -190,28 +190,6 @@ public class MusicPlayDialogFag
         mSbVolume.setProgress(volume);
         //更新音量值  flag 0 默认不显示系统控制栏  1 显示系统音量控制
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-
-
-    }
-
-    /**
-     * Rxbus接收歌曲时时的进度 和 时间，并更新UI
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        mDisposableUpdataMusicInfo = Observable.interval(0, 2800, TimeUnit.MICROSECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mProgress = audioBinder.getProgress();
-                    updataMusicProgress(mProgress);
-                });
-
-    }
-
-    private void startUpdateProgress() {
-        setSongDuration();
 
 
     }
@@ -286,7 +264,7 @@ public class MusicPlayDialogFag
         setSongDuration();
         updatePlayBtnStatus();
 //        初始化歌词
-//        mLyricsView.setLrcFile(info.getTitle(), info.getArtist());
+        mLyricsView.setLrcFile(info.getTitle(), info.getArtist());
 
     }
 
@@ -308,6 +286,9 @@ public class MusicPlayDialogFag
             MyApplication.getIntstance()
                     .bus()
                     .post(new MusicStatusBean(0, true));
+            if (isShowLyrics) {
+                mDisposableLyrics.dispose();
+            }
         } else {
             //当前暂停  播放
             audioBinder.start();
@@ -315,6 +296,9 @@ public class MusicPlayDialogFag
             MyApplication.getIntstance()
                     .bus()
                     .post(new MusicStatusBean(0, false));
+            if (isShowLyrics) {
+                mDisposableLyrics.dispose();
+            }
         }
 
 
@@ -392,7 +376,7 @@ public class MusicPlayDialogFag
                 break;
             //TODO
             case R.id.iv_lyrics_switch:
-//                showLyrics();
+                showLyrics();
                 break;
             case R.id.iv_secreen_sun_switch:
                 screenAlwaysOnSwitch();
@@ -445,34 +429,33 @@ public class MusicPlayDialogFag
     private void showLyrics() {
 
         if (isShowLyrics) {
-//            mDisposableLyrics.dispose();
             mIvLyrSwitch.setBackgroundResource(R.drawable.music_lrc_close);
             AnimationDrawable animation = (AnimationDrawable) mIvLyrSwitch.getBackground();
             animation.start();
+            mDisposableLyrics.dispose();
             mIvScreenSunSwitch.setVisibility(View.INVISIBLE);
-            mLyricsView.setVisibility(View.INVISIBLE);
-            isShowLyrics = false;
+            mLyricsView.setVisibility(View.GONE);
         } else {
             mIvLyrSwitch.setBackgroundResource(R.drawable.music_lrc_open);
             AnimationDrawable animation = (AnimationDrawable) mIvLyrSwitch.getBackground();
             animation.start();
             mIvScreenSunSwitch.setVisibility(View.VISIBLE);
             // 开始滚动歌词
-//            startPlayLyrics();
-            mLyricsView.setVisibility(View.VISIBLE);
-            isShowLyrics = true;
-        }
+            if (audioBinder.isPlaying()) {
+                startPlayLyrics(mLyricsView);
+            }
 
+            mLyricsView.setVisibility(View.VISIBLE);
+
+        }
+        isShowLyrics = !isShowLyrics;
     }
 
-    private void startPlayLyrics() {
-        if (mDisposableLyrics == null) {
-
-            mDisposableLyrics = Observable.interval(100, TimeUnit.MILLISECONDS)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(aLong -> mLyricsView.rollText(audioBinder.getProgress(), audioBinder.getDuration()));
-        }
+    private void startPlayLyrics(LyricsView lyricsView) {
+        mDisposableLyrics = Observable.interval(100, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> lyricsView.rollText(audioBinder.getProgress(), audioBinder.getDuration()));
 
     }
 
@@ -573,11 +556,33 @@ public class MusicPlayDialogFag
         return fragment;
     }
 
+    /**
+     * Rxbus接收歌曲时时的进度 和 时间，并更新UI
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDisposableUpdataMusicInfo = Observable.interval(0, 2800, TimeUnit.MICROSECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    mProgress = audioBinder.getProgress();
+                    updataMusicProgress(mProgress);
+                });
+
+    }
+
     @Override
     public void onPause() {
         super.onPause();
         if (mDisposableUpdataMusicInfo != null) {
             mDisposableUpdataMusicInfo.dispose();
+        }
+        if (isShowLyrics) {
+            showLyrics();
+        }
+        if (mDisposableLyrics != null) {
+            mDisposableLyrics.dispose();
         }
     }
 
@@ -611,7 +616,8 @@ public class MusicPlayDialogFag
                     //更新音乐进度数值
                     updataMusicProgress(progress);
                     break;
-                case R.id.sb_volume:    //更新音乐  SeekBar
+                case R.id.sb_volume:
+                    //更新音乐  SeekBar
                     updateMusicVolume(progress);
                     break;
                 default:
@@ -633,10 +639,11 @@ public class MusicPlayDialogFag
         @Override
         public void onReceive(Context context, Intent intent) {
             //如果系统音量发生变化就更新Seekbar
-            if (intent.getAction()
-                    .equals("android.media.VOLUME_CHANGED_ACTION")) {
+            if (
+                    "android.media.VOLUME_CHANGED_ACTION".equals(intent.getAction())) {
                 AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                int currVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前的媒体音量
+                // 当前的媒体音量
+                int currVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
                 mSbVolume.setProgress(currVolume);
             }
         }

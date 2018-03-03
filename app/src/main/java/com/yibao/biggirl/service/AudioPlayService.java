@@ -82,7 +82,6 @@ public class AudioPlayService
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        mMusicItem = intent.getParcelableArrayListExtra("musicItem");
         if (mMusicItem != null) {
 
             int enterPosition = intent.getIntExtra("position", 0);
@@ -134,6 +133,7 @@ public class AudioPlayService
 
 
         //准备完成回调
+
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             //开启播放
@@ -153,18 +153,20 @@ public class AudioPlayService
             manager.notify(0, notification);
         }
 
-        //获取当前播放进度
+        // 获取当前播放进度
 
         public int getProgress() {
             return mediaPlayer.getCurrentPosition();
         }
 
-        //获取音乐总时长
+        // 获取音乐总时长
+
         public int getDuration() {
             return mediaPlayer.getDuration();
         }
 
-        //音乐播放完成监听
+        // 音乐播放完成监听
+
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
             //自动播放下一首歌曲
@@ -173,6 +175,7 @@ public class AudioPlayService
 
 
         //自动播放下一曲
+
         private void autoPlayNext() {
             switch (PLAY_MODE) {
                 case PLAY_MODE_ALL:
@@ -190,12 +193,12 @@ public class AudioPlayService
             play();
         }
 
-        //获取当前的播放模式
+        // 获取当前的播放模式
         public int getPalyMode() {
             return PLAY_MODE;
         }
 
-        //设置播放模式
+        // 设置播放模式
         public void setPalyMode(int playmode) {
             PLAY_MODE = playmode;
             //保存播放模式

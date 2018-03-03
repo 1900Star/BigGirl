@@ -42,7 +42,6 @@ import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.util.SharePrefrencesUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
-import com.yibao.biggirl.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +51,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import retrofit2.http.HEAD;
 
 
 /**
  * 作者：Stran on 2017/3/23 15:12
  * 描述：${主页面}
  * 邮箱：strangermy@outlook.com
+ * @author Stran
  */
 public class MainActivity
         extends BaseActivity
