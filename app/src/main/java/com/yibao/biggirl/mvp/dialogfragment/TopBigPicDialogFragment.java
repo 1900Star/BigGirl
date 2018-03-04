@@ -43,7 +43,7 @@ public class TopBigPicDialogFragment
         TopBigPicDialogFragment fragment = new TopBigPicDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("url", url);
-        fragment.setArguments(bundle);//把参数传递给该DialogFragment
+        fragment.setArguments(bundle);
         return fragment;
     }
 

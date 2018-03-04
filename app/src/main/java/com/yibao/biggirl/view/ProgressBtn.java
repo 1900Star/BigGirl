@@ -50,7 +50,7 @@ public class ProgressBtn
     public void setProgress(int progress) {
         this.progress = progress;
         //重绘进度
-        invalidate();
+        postInvalidate();
     }
 
     public int getProgress() {
