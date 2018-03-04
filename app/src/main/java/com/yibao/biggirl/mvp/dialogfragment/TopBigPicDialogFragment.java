@@ -24,6 +24,7 @@ import io.reactivex.schedulers.Schedulers;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/5/30 13:27
+ * @author Stran
  */
 public class TopBigPicDialogFragment
         extends BaseDialogFragment {
