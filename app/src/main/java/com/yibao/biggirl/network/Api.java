@@ -4,6 +4,7 @@ package com.yibao.biggirl.network;
  * 作者：Stran on 2017/3/28 07:37
  * 描述：${本地默认妹子地址}
  * 邮箱：strangermy@outlook.com
+ * @author Stran
  */
 public class Api {
     public static String myFeir = "http://v.youku.com/v_show/id_XMTYwMTMzODMwNA==.html?firsttime=145&spm=a2hww.20023042.uerCenter.5!2~5~5!2~5~DL~DD~A";
@@ -11,7 +12,7 @@ public class Api {
 
 
     public static String[] picUrlSex = {
-            //**************************胸
+            //**************************SexGirl
             "http://img1.ph.126.net/SW2LHtIzHI1cWjPworGfjw==/6598240746601039765.jpg",
             "http://picduotu.ke12345.net/up/2017/allimg/c170304/14X624220361Z-G447.jpg",
             "http://picduotu.ke12345.net/up/2017/allimg/c170304/14X62422436450-3A220.jpg",

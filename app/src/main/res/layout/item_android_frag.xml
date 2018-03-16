@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0.5dp"
-                android:background="@color/colorWhite"
-                android:gravity="center"
->
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0.5dp"
+    android:gravity="center">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-    >
+        android:background="@drawable/rv_item_selector">
+
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="120dp"
@@ -22,13 +21,13 @@
             android:layout_margin="6dp"
             android:adjustViewBounds="true"
             android:contentDescription="@null"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:id="@+id/ll"
-            android:layout_marginLeft="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
             android:layout_toRightOf="@+id/iv_icon"
 
             android:orientation="vertical">
@@ -39,19 +38,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:maxLines="2"
-                android:textColor="@color/textName"
-            />
+                android:textColor="@color/textName" />
+
             <TextView
                 android:id="@+id/tv_video_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:layout_marginRight="4dp"
+                android:layout_marginTop="2dp"
                 android:maxLines="2"
-                android:textColor="@color/textDes"
-            />
+                android:textColor="@color/textDes" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/tv_video_time"
             android:layout_width="wrap_content"
@@ -60,7 +59,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="3dp"
-            android:textColor="@color/textTime"/>
+            android:textColor="@color/textTime" />
     </RelativeLayout>
 
 </RelativeLayout>

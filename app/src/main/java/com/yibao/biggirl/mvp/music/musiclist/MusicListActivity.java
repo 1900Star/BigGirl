@@ -126,6 +126,7 @@ public class MusicListActivity
     private boolean mMusicConfig;
     private boolean isChangeFloatingBlock;
     private int mPlayState;
+    private AudioPlayService mAudioPlayService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -338,7 +339,6 @@ public class MusicListActivity
         //获取音乐列表
         Intent intent = new Intent();
         intent.setClass(this, AudioPlayService.class);
-//        intent.putParcelableArrayListExtra("musicItem", mMusicItems);
         intent.putExtra("position", mCurrentPosition);
         mConnection = new AudioServiceConnection();
         bindService(intent, mConnection, Service.BIND_AUTO_CREATE);
@@ -566,14 +566,15 @@ public class MusicListActivity
     private class AudioServiceConnection
             implements ServiceConnection {
         @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            audioBinder = (AudioPlayService.AudioBinder) service;
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            audioBinder = (AudioPlayService.AudioBinder) binder;
+            mAudioPlayService = audioBinder.getService();
 
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
+            mAudioPlayService = null;
         }
     }
 
@@ -613,18 +614,21 @@ public class MusicListActivity
     };
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         boolean b = mAnimator != null ||
-                mAnimatorListener != null || mDisposable != null || mConnection != null;
+                mAnimatorListener != null || mDisposable != null ;
         if (b) {
             mAnimator.cancel();
             mAnimatorListener.pause();
             mDisposable.dispose();
+
+        }
+        if (mAudioPlayService != null) {
+
+            mAudioPlayService = null;
             unbindService(mConnection);
-            mConnection = null;
         }
         disposables.clear();
         mBind.unbind();

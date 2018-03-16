@@ -75,7 +75,7 @@ public class RemoteGirlsData
                 ? Constants.MEIZITU_TAG_API + type + "/page/" + page
                 : Constants.MEIZITU_API + type + "/page/" + page;
         LogUtil.d("======== BaoruUrl ====     ", url);
-        final String fakeRefer = url + "/";
+        final String fakeRefer = "i.meizitu.net" + "/";
         final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
         Observable.just(Constants.MEIZITU_API).subscribeOn(Schedulers.io()).map(s -> {
 

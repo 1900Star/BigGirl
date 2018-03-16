@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+/**
+ * @author Stran
+ */
 public class AudioPlayService
         extends Service {
 
@@ -236,7 +239,8 @@ public class AudioPlayService
             play();
         }
 
-        //true 当前正在播放
+        // true 当前正在播放
+
         public boolean isPlaying() {
             return mediaPlayer.isPlaying();
         }
@@ -250,12 +254,14 @@ public class AudioPlayService
             mediaPlayer.pause();
         }
 
-        //跳转到指定位置进行播放
+        // 跳转到指定位置进行播放
+
         public void seekTo(int progress) {
             mediaPlayer.seekTo(progress);
         }
 
-        //position : 1 表示点击通知栏进入播放界面，0 表示在通知栏进行播放和暂停的控制，并不进入播放的界面。
+        // position : 1 表示点击通知栏进入播放界面，0 表示在通知栏进行播放和暂停的控制，并不进入播放的界面。
+
         private void playStatus(int type) {
             switch (type) {
                 case 0:
@@ -295,6 +301,11 @@ public class AudioPlayService
             if (manager != null) {
                 manager.cancelAll();
             }
+        }
+
+        public AudioPlayService getService() {
+
+            return AudioPlayService.this;
         }
     }
 

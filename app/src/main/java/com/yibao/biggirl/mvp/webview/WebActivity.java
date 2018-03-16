@@ -75,7 +75,6 @@ public class WebActivity
         component.in(this);
         mId = getIntent().getLongExtra("id", 0);
         mBean = getIntent().getParcelableExtra("favoriteBean");
-        LogUtil.d("验证 ID :" + mBean.getId() + " **  " + mId);
         mPresenter.queryFavoriteIsCollect(mBean.getGankId());
         mUrl = mBean.getUrl();
         initData();
@@ -141,7 +140,6 @@ public class WebActivity
             isFavorite = false;
             refreshFavoriteBtn();
             LogUtil.d(TAG + "已取消收藏  ID :" + id);
-
         }
     }
 
@@ -278,7 +276,6 @@ public class WebActivity
         mWebView.setWebChromeClient(chromeClient);
         mWebView.setWebViewClient(client);
         mWebView.loadUrl(mUrl);
-
     }
 
     // 防止内存泄漏

@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'AndResGuard'
+
+def keystoreFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystoreFile))
+
 android {
     compileSdkVersion 26
     buildToolsVersion '27.0.1'
@@ -11,12 +16,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
         signingConfigs {
             config {
-                storeFile file(KEY_PATH)
-                storePassword KEY_PASS
-                keyAlias ALIAS_NAME
-                keyPassword ALIAS_PASS
+                storeFile file(keystoreProperties['KEY_PATH'])
+                storePassword(keystoreProperties['KEY_PASS'])
+                keyAlias(keystoreProperties['ALIAS_NAME'])
+                keyPassword(keystoreProperties['ALIAS_PASS'])
             }
             debug {
                 v1SigningEnabled true
@@ -29,17 +36,6 @@ android {
 
         }
     }
-    greendao {
-        //数据库schema版本，也可以理解为数据库版本号
-        schemaVersion 1
-        //设置DaoMaster 、DaoSession、Dao包名
-        daoPackage 'com.yibao.biggirl.model.greendao'
-        //设置DaoMaster 、DaoSession、Dao目录
-        targetGenDir 'src/main/java/'
-
-
-    }
-
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -56,6 +52,17 @@ android {
             debuggable true
         }
     }
+    greendao {
+        //数据库schema版本，也可以理解为数据库版本号
+        schemaVersion 1
+        //设置DaoMaster 、DaoSession、Dao包名
+        daoPackage 'com.yibao.biggirl.model.greendao'
+        //设置DaoMaster 、DaoSession、Dao目录
+        targetGenDir 'src/main/java/'
+
+
+    }
+
 
     productFlavors {
 //        qihoo {
