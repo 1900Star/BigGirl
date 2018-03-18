@@ -57,6 +57,7 @@ import butterknife.Unbinder;
  * 作者：Stran on 2017/3/23 15:12
  * 描述：${主页面}
  * 邮箱：strangermy@outlook.com
+ *
  * @author Stran
  */
 public class MainActivity
@@ -251,7 +252,7 @@ public class MainActivity
 
     }
 
-    //分享
+    // 分享
     private void shareMe() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, getTitle());
@@ -267,7 +268,7 @@ public class MainActivity
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("favoriteBean", bean);
         intent.putExtra("id", id);
-        mSwipeBackHelper.forward(intent);
+        startActivity(intent);
     }
 
 
@@ -283,22 +284,22 @@ public class MainActivity
                 Intent intent = new Intent(this, GirlActivity.class);
                 intent.putStringArrayListExtra("girlList", (ArrayList<String>) list);
                 intent.putExtra("position", position);
-                mSwipeBackHelper.forward(intent);
+                startActivity(intent);
                 break;
             case 1:
                 Intent meizituIntent = new Intent(this, MeizituRecyclerActivity.class);
                 meizituIntent.putExtra("link", link);
-                mSwipeBackHelper.forward(meizituIntent);
+                startActivity(meizituIntent);
                 break;
             case 2:
                 Intent duotuIntent = new Intent(this, DuotuRecyclerActivity.class);
                 duotuIntent.putExtra("link", link);
-                mSwipeBackHelper.forward(duotuIntent);
+                startActivity(duotuIntent);
                 break;
             case 3:
                 Intent sisanIntent = new Intent(this, SisanActivity.class);
                 sisanIntent.putExtra("link", link);
-                mSwipeBackHelper.forward(sisanIntent);
+                startActivity(sisanIntent);
                 break;
             default:
                 break;

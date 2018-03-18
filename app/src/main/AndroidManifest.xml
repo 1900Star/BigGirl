@@ -40,7 +40,7 @@
         <activity
             android:name=".mvp.gank.girl.GirlActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/GirlTheme" />
+            android:theme="@style/AppTheme.GirlActionBar" />
         <activity
             android:name=".mvp.webview.WebActivity"
             android:configChanges="orientation|screenSize"
@@ -66,8 +66,7 @@
             android:name=".mvp.map.MapsActivity"
             android:label="@string/title_activity_maps" />
 
-        <service
-            android:name=".service.AudioPlayService" />
+        <service android:name=".service.AudioPlayService" />
         <service
             android:name=".service.MeizituService"
             android:enabled="true" />

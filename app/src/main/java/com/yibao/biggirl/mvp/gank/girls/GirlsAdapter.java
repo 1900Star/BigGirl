@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
  * 作者：Stran on 2017/3/29 06:11
  * 描述：${TODO}
  * 邮箱：strangermy@outlook.com
+ * @author Stran
  */
 public class GirlsAdapter
         extends BaseRvAdapter<String>

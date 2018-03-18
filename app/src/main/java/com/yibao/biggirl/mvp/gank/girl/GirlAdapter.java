@@ -16,12 +16,11 @@ import java.util.List;
  * 邮箱：strangermy@outlook.com
  */
 public class GirlAdapter
-        extends android.support.v4.view.PagerAdapter
-{
-    private Context      mContext;
-    private View         mCurrentView;
+        extends android.support.v4.view.PagerAdapter {
+    private Context mContext;
+    private View mCurrentView;
     private List<String> mList;
-    private boolean isShowBar=true;
+    private boolean isShowBar = true;
 
 
     public GirlAdapter(Context context, List<String> list) {
@@ -35,8 +34,8 @@ public class GirlAdapter
     public int getCount() {
 
         return mList == null
-               ? 0
-               : mList.size();
+                ? 0
+                : mList.size();
 
     }
 
@@ -59,16 +58,7 @@ public class GirlAdapter
         view.setOnClickListener(view1 -> {
 
             if (mContext instanceof HideToolbarListener) {
-                if (isShowBar) {
-
-                    ((HideToolbarListener) mContext).hideToolbar();
-                    isShowBar = false;
-
-                } else {
-                    ((HideToolbarListener) mContext).showToolbar();
-                    isShowBar = true;
-
-                }
+                ((HideToolbarListener) mContext).hideOrShowAppbar();
             }
         });
         container.addView(view);
@@ -85,5 +75,6 @@ public class GirlAdapter
 
         return mCurrentView;
     }
+
 
 }

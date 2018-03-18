@@ -16,7 +16,6 @@ import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.view.ProgressBtn;
 import com.yibao.biggirl.view.ZoomImageView;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -24,6 +23,7 @@ import io.reactivex.schedulers.Schedulers;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/5/30 13:27
+ *
  * @author Stran
  */
 public class TopBigPicDialogFragment
@@ -68,7 +68,7 @@ public class TopBigPicDialogFragment
         // 网络检查
         boolean isConnected = NetworkUtil.isNetworkConnected(getActivity());
         if (isConnected) {
-            Observable.just(ImageUitl.downloadPic(url, Constants.FIRST_DWON))
+            ImageUitl.savePic(url, Constants.FIRST_DWON)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> {
@@ -83,6 +83,7 @@ public class TopBigPicDialogFragment
 
 
     //Rxbus接收下载进度 ，设置progress进度
+
     public void getProgress() {
         mDisposable.add(mApplication.bus()
                 .toObserverable(DownGrilProgressData.class)
@@ -94,22 +95,15 @@ public class TopBigPicDialogFragment
 
     private void setProgress(int progress, int type) {
         mPb.setProgress(progress);
-        if (type == 1 && progress == MAX_DOWN_PREGRESS) {
-            SnakbarUtil.showSuccessView(mView);
-            return;
-        }
-        if (progress == MAX_DOWN_PREGRESS) {
+        if (type == Constants.FIRST_DWON && progress == MAX_DOWN_PREGRESS) {
             //将下载的图片插入到系统相册
-            Observable.just(ImageUitl.insertImageToPhoto())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(aBoolean -> {
-                        if (aBoolean) {
-                            SnakbarUtil.showSuccessView(mView);
-                        } else {
-                            SnakbarUtil.showDownPicFail(mView);
-                        }
-                    });
+            ImageUitl.insertImageToPhotos().subscribe(aBoolean -> {
+                if (aBoolean) {
+                    SnakbarUtil.showSuccessView(mView);
+                } else {
+                    SnakbarUtil.showDownPicFail(mView);
+                }
+            });
         }
     }
 }
