@@ -97,7 +97,7 @@ public class TopBigPicDialogFragment
         mPb.setProgress(progress);
         if (type == Constants.FIRST_DWON && progress == MAX_DOWN_PREGRESS) {
             //将下载的图片插入到系统相册
-            ImageUitl.insertImageToPhotos().subscribe(aBoolean -> {
+            ImageUitl.insertImageToPhotos().observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> {
                 if (aBoolean) {
                     SnakbarUtil.showSuccessView(mView);
                 } else {

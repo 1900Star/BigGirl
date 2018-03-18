@@ -189,7 +189,7 @@ public class GirlActivity
         } else if (downPicType == Constants.FIRST_DWON && progress == MAX_DOWN_PREGRESS) {
             isDownComplete = true;
             //将下载的图片插入到系统相册
-            ImageUitl.insertImageToPhotos().subscribe(aBoolean -> {
+            ImageUitl.insertImageToPhotos().observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> {
                 if (aBoolean) {
                     SnakbarUtil.showSuccessView(mPbDown);
                 } else {
@@ -208,7 +208,7 @@ public class GirlActivity
         // 网络检查
         if (mIsConnected) {
             isDownComplete = false;
-            ImageUitl.savePic(mUrl, Constants.FIRST_DWON)
+            ImageUitl.savePic(mUrl, Constants.FIRST_DWON).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> {
                         if (integer == Constants.EXISTS) {
                             SnakbarUtil.picAlreadyExists(mPbDown);
@@ -225,7 +225,7 @@ public class GirlActivity
     private void shareGirl() {
         if (mIsConnected) {
             FileUtil.delFile(Constants.DELETE_DIR);
-            ImageUitl.savePic(mUrl, Constants.EXISTS)
+            ImageUitl.savePic(mUrl, Constants.EXISTS).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> {
                         if (integer == Constants.FIRST_DWON || integer == Constants.EXISTS) {
                             Uri url = Uri.fromFile(new File(Constants.DELETE_DIR));
