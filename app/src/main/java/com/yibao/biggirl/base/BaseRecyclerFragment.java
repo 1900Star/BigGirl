@@ -63,7 +63,6 @@ public abstract class BaseRecyclerFragment
         mSwipeRefresh = getViewById(R.id.swipe_refresh);
         mFagContent = getViewById(R.id.fag_content);
         mFab = getViewById(R.id.fab_fag);
-
         mSwipeRefresh.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setRefreshing(true);

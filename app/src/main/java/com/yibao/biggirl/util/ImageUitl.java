@@ -190,10 +190,9 @@ public class ImageUitl {
                                     fos.write(buf, off, len);
                                     sum += len;
                                     int progress = (int) (sum * 1.0f / total * 100);
-                                    //Rxbus发送下载进度
+                                    //Rxbus发送下载进度,分享时不发送进度。
                                     if (downPicType == Constants.FIRST_DWON) {
                                         MyApplication.getIntstance().bus().post(new DownGrilProgressData(progress, downPicType));
-                                        LogUtil.d("down progress==  " + progress);
                                     }
                                 }
                                 fos.flush();
@@ -209,8 +208,7 @@ public class ImageUitl {
                                     is.close();
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    observable.onNext(Constants.DWON_PIC_EROOR);
-                                    observable.onComplete();
+
                                 }
                             }
                             observable.onNext(Constants.FIRST_DWON);
@@ -250,6 +248,7 @@ public class ImageUitl {
 
 
     //初始化默认妹子数据
+
     public static List<String> getNormalUrl(List<String> list) {
         Collections.addAll(list, Api.picUrlArr);
         return list;

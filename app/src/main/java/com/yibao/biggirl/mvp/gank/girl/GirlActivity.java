@@ -1,6 +1,7 @@
 package com.yibao.biggirl.mvp.gank.girl;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import io.reactivex.schedulers.Schedulers;
  *
  * @author Stran
  */
+@SuppressLint("CheckResult")
 public class GirlActivity
         extends AppCompatActivity implements ViewPager.OnPageChangeListener, HideToolbarListener {
 
@@ -108,11 +110,13 @@ public class GirlActivity
     }
 
     private void initData() {
+
         disposables = new CompositeDisposable();
         setSupportActionBar(mToolbar);
         mAppBarLayout.setAlpha(0.7f);
         mScroller = new PagerScroller(this);
         mIsConnected = NetworkUtil.isNetworkConnected(this);
+
         if (mList.size() != 0) {
             mAdapter = new GirlAdapter(this, mList);
         }
@@ -180,6 +184,15 @@ public class GirlActivity
             mDisposable.dispose();
         }
         mScroller.setDuration(600);
+    }
+
+    public void getProgress() {
+        disposables.add(MyApplication.getIntstance().bus()
+                .toObserverable(DownGrilProgressData.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> this.setProgress(data.getProgress(),
+                        data.getType())));
     }
 
     private void setProgress(int progress, int downPicType) {
@@ -278,15 +291,6 @@ public class GirlActivity
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void getProgress() {
-        disposables.add(MyApplication.getIntstance().bus()
-                .toObserverable(DownGrilProgressData.class)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> this.setProgress(data.getProgress(),
-                        data.getType())));
     }
 
 

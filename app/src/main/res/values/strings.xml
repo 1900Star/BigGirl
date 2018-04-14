@@ -15,15 +15,15 @@
     <string name="about_github">https://github.com/1900Star</string>
     <string name="about_sign">O ever youthful, O ever weeping.</string>
     <string name="about_project_introduce">
-        BigGirl妹子Gank.io客户端，整体架构参照Google官方的RxMvpDemo示例，写这个项目主要是为公司项目重构做准备。
-        MVP-Rxjava-Dagger2最目前非常流行且比较成熟的架构模式,Dagger2的引入进一步降低Presenter层和View层的耦合。
+        BigGirl妹子Gank.io客户端，整体架构参照Google官方的RxMvpDemo示例，MVP-Rxjava-Dagger2是
+        目前非常流行且比较成熟的架构模式,Dagger2的引入进一步降低Presenter层和View层的耦合。
         \n\tRxJava\n\tRxBus\n\tOkhttp\n\tRetrofit\n\tButterknife\n\tDagger2\n\tGreenDao3.0\n\tGlide\n\tLeakcanary
         \n\nBigGirl：https://github.com/1900Star/BigGirl\n\nApi接口提供：http://gank.io/api\n\n感谢开源社区，特别感谢：干货集中营
     </string>
     <string name="preject_introduce">关于项目</string>
     <string name="feir">李菲儿</string>
     <string name="fan_xiao_xuan">范晓萱</string>
-    <string name="video">漂亮</string>
+    <string name="video">Video</string>
     <string name="load_more">正在加载更多！！！！</string>
 
     <string name="favorite">收藏</string>

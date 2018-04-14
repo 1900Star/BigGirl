@@ -97,6 +97,9 @@ public class RemoteGirlsData
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(callback::onLoadDatas);
     }
 
+
+
+
     @Override
     public void getMeiziList(String url) {
         Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {

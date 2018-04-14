@@ -2,6 +2,7 @@ package com.yibao.biggirl;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.TextView;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.yibao.biggirl.model.greendao.DaoMaster;
@@ -9,9 +10,14 @@ import com.yibao.biggirl.model.greendao.DaoSession;
 import com.yibao.biggirl.util.CrashHandler;
 import com.yibao.biggirl.util.RxBus;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 作者：Stran on 2017/3/23 15:12
@@ -22,10 +28,11 @@ public class MyApplication
         extends Application {
     private static MyApplication appContext;
     public static boolean isShowLog = true;
-
+    private static OkHttpClient okHttpClient;
     private RxBus mRxBus;
 
     private DaoSession mDaoSession;
+    private TextView textView;
 
     public static MyApplication getIntstance() {
         if (appContext == null) {
@@ -38,6 +45,7 @@ public class MyApplication
     @Override
     public void onCreate() {
         super.onCreate();
+        TextView textView = new TextView(this);
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
@@ -70,13 +78,33 @@ public class MyApplication
     }
 
 
-
     public static OkHttpClient defaultOkHttpClient() {
-        return new OkHttpClient.Builder()
-                .connectTimeout(3, TimeUnit.SECONDS)
-                .writeTimeout(3, TimeUnit.SECONDS)
-                .readTimeout(3, TimeUnit.SECONDS)
-                .build();
+
+        if (okHttpClient == null) {
+            synchronized (MyApplication.class) {
+                if (okHttpClient == null) {
+                    okHttpClient = new OkHttpClient.Builder()
+                            .connectTimeout(3, TimeUnit.SECONDS)
+                            .writeTimeout(3, TimeUnit.SECONDS)
+                            .readTimeout(3, TimeUnit.SECONDS)
+                            .build();
+                }
+            }
+            Request build = new Request.Builder().url("").build();
+            okHttpClient.newCall(build).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+
+                }
+            });
+        }
+        return okHttpClient;
+
     }
 
 }
