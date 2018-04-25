@@ -90,18 +90,6 @@ public class MyApplication
                             .build();
                 }
             }
-            Request build = new Request.Builder().url("").build();
-            okHttpClient.newCall(build).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-
-                }
-            });
         }
         return okHttpClient;
 

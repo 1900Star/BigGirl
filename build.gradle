@@ -5,7 +5,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.1.1'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
         classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.11'
     }
@@ -22,3 +22,29 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+ext {
+
+    // SDK And Tools
+    minSdkVersion = 16
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.3'
+
+    //Dependencies
+    supportLibraryVersion = '27.1.1'
+    okHttp = '3.10.0'
+    glide = '3.7.0'
+    okHttpInterceptor = '3.9.0'
+    dagger = '2.11'
+    daggerCompiler = '2.11'
+    rxJava = '2.1.5'
+    rxAndroid = '2.0.1'
+    retrofit = '2.3.0'
+    retrofitAdapter = '2.3.0'
+    converterGson = '2.3.0'
+    greendao = '3.2.2'
+    butterknife = '8.8.1'
+    butterknifeCompiler = '8.8.1'
+
+
+}

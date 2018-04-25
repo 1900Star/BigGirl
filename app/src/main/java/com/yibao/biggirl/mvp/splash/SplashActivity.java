@@ -1,5 +1,6 @@
 package com.yibao.biggirl.mvp.splash;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class SplashActivity
     ImageView mIvSplash;
     private Unbinder mBind;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
