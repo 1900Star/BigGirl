@@ -42,7 +42,6 @@ public class SplashActivity
         setContentView(R.layout.activity_splash);
         mBind = ButterKnife.bind(this);
         SystemUiVisibilityUtil.hideStatusBar(getWindow(), true);
-        if (NetworkUtil.isNetworkConnected(this)) {
             Observable.timer(2, TimeUnit.SECONDS)
                       .subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread())
@@ -51,9 +50,10 @@ public class SplashActivity
                                                                        MainActivity.class));
                           finish();
                       });
+        if (NetworkUtil.isNetworkConnected(this)) {
 
         } else {
-            SnakbarUtil.netErrorsLong(mIvSplash);
+//            SnakbarUtil.netErrorsLong(mIvSplash);
         }
 
     }

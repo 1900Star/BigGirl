@@ -1,5 +1,6 @@
 package com.yibao.biggirl.base;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -30,34 +31,36 @@ public abstract class BaseRvAdapter<T>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SectionIndexer
 
 {
-    public List<T> mList = null;
+    public List<T> mList;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
     private static int mLoadMoreStatus = 0;
     private static final int mMinNum = 10;
+    private RecyclerView.ViewHolder mHolder;
 
     public BaseRvAdapter(List<T> list) {
         mList = list;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
 
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(getLayoutId(), parent, false);
-            return getViewHolder(view);
+            mHolder = getViewHolder(view);
         } else if (viewType == TYPE_FOOTER) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.load_more_footview, parent, false);
-            return new LoadMoreHolder(view);
+            mHolder = new LoadMoreHolder(view);
         }
 
-        return null;
+        return mHolder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         // 处理加载更多时的各种状态
         if (holder instanceof LoadMoreHolder) {
             LoadMoreHolder loadMoreHolder = (LoadMoreHolder) holder;
@@ -106,7 +109,7 @@ public abstract class BaseRvAdapter<T>
 
     @Override
     public int getItemViewType(int position) {
-        if (mList.size()>=mMinNum&&position == getItemCount() - 1) {
+        if (mList.size() >= mMinNum && position == getItemCount() - 1) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -209,7 +212,7 @@ public abstract class BaseRvAdapter<T>
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
 
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();

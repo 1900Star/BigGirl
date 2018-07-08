@@ -2,6 +2,7 @@ package com.yibao.biggirl.mvp.music.musiclist;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,7 @@ public class MusicListAdapter
     }
 
 
+    @NonNull
     @Override
     public MusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())

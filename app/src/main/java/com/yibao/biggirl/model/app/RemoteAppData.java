@@ -3,10 +3,14 @@ package com.yibao.biggirl.model.app;
 import com.yibao.biggirl.network.RetrofitHelper;
 import com.yibao.biggirl.util.Constants;
 
+import java.util.List;
+
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -16,35 +20,12 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class RemoteAppData
         implements AppDataSource {
-
     @Override
-    public void getApp(int size, int page, String type, LoadDataCallback callback) {
+    public Observable<List<ResultsBeanX>> getAppData(int size, int page, String type) {
 
-        RetrofitHelper.getGankApi(Constants.GANK_API)
+        return RetrofitHelper.getGankApi(Constants.GANK_API)
                 .getConmmentApi(type, size, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<GankDesBean>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull GankDesBean gankDesBean) {
-                        callback.onLoadData(gankDesBean.getResults());
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .map(GankDesBean::getResults).subscribeOn(Schedulers.io());
     }
 
 

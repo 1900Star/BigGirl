@@ -41,7 +41,7 @@ public class MeizituFragment extends BaseRecyclerFragment implements
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         mPresenter = new GirlsPresenter(this);
-        int position = getArguments().getInt("position");
+        int position = getArguments() != null ? getArguments().getInt("position") : 0;
         mLoadType = Constants.getLoadType(position);
     }
 

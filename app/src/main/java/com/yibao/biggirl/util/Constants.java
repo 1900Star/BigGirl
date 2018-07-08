@@ -167,12 +167,11 @@ public class Constants {
             "Video",
             "前端",
             "拓展资源",
-            "Japan",
-            "Hot", "Sex", "Cute", "MFStar", "Pans",
+            "MFStar", "Pans",
             "Ugirls", "Rosi", "Meiyan", "TuiGirl",
             "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren",
             "SXinggan", "SGaoqing", "SWeimei", "SWangluo",
-            "Dongman", "Sabar", "Topqueen", "Imagetv", "Wpb", "YS", "TOUTIAO", "Baorus", "DGC"};
+            "Dongman", "Sabar", "Topqueen", "Imagetv", "Wpb", "YS", "TOUTIAO", "DGC"};
 
 
     public static final int TYPE_GIRLS = 0;
@@ -186,41 +185,34 @@ public class Constants {
 
     private static final int TYPE_EXTEND = 6;
 
-    private static final int TYPE_JAPAN = 7;
-
-    private static final int TYPE_HOT = 8;
-
-    private static final int TYPE_SEX = 9;
-
-    private static final int TYPE_CUTE = 10;
 
     // 多图
-    private static final int TYPE_MFSTAR = 11;
+    private static final int TYPE_MFSTAR = 7;
 
-    private static final int TYPE_PANS = 12;
+    private static final int TYPE_PANS = 8;
 
-    private static final int TYPE_UGIRLS = 13;
-    private static final int TYPE_ROSI = 14;
+    private static final int TYPE_UGIRLS = 9;
+    private static final int TYPE_ROSI = 10;
 
-    private static final int TYPE_MEIYAN = 15;
-    private static final int TYPE_TUIGIRL = 16;
-    private static final int TYPE_TUIBOBO = 17;
-    private static final int TYPE_DISIYINGXIANG = 18;
-    private static final int TYPE_YUNVLANG = 19;
-    private static final int TYPE_XIUREN = 20;
-    private static final int TYPE_SXINGGAN = 21;
-    private static final int TYPE_SGAOQING = 22;
-    private static final int TYPE_SWEIMEI = 23;
-    private static final int TYPE_WANGLUO = 24;
-    private static final int TYPE_DONGMAN = 25;
-    private static final int TYPE_SABAR = 26;
-    private static final int TYPE_TOPQUEEN = 27;
-    private static final int TYPE_IMAGETV = 28;
-    private static final int TYPE_WPB = 29;
-    private static final int TYPE_YS = 30;
-    private static final int TYPE_TOUTIAO = 31;
-    private static final int TYPE_BAORU = 32;
-    private static final int TYPE_DGC = 33;
+    private static final int TYPE_MEIYAN = 11;
+    private static final int TYPE_TUIGIRL = 12;
+    private static final int TYPE_TUIBOBO = 13;
+    private static final int TYPE_DISIYINGXIANG = 14;
+    private static final int TYPE_YUNVLANG = 15;
+    private static final int TYPE_XIUREN = 16;
+    private static final int TYPE_SXINGGAN = 17;
+    private static final int TYPE_SGAOQING = 18;
+    private static final int TYPE_SWEIMEI = 19;
+    private static final int TYPE_WANGLUO = 20;
+    private static final int TYPE_DONGMAN = 21;
+    private static final int TYPE_SABAR = 22;
+    private static final int TYPE_TOPQUEEN = 23;
+    private static final int TYPE_IMAGETV = 24;
+    private static final int TYPE_WPB = 25;
+    private static final int TYPE_YS = 26;
+    private static final int TYPE_TOUTIAO = 27;
+    //    private static final int TYPE_BAORU = 32;
+    private static final int TYPE_DGC = 28;
 
     public static final String FRAGMENT_GIRLS = "福利";
     private static final String FRAGMENT_ANDROID = "Android";
@@ -229,10 +221,7 @@ public class Constants {
     private static final String FRAGMENT_FRONT = "前端";
     private static final String FRAGMENT_EXPAND = "拓展资源";
     private static final String FRAGMENT_APP = "App";
-    private static final String FRAGMENT_HOT = "hot";
     public static final String FRAGMENT_JAPAN = "japan";
-    private static final String FRAGMENT_SEX = "xinggan";
-    private static final String FRAGMENT_CUTE = "mm";
     public static final String FRAGMENT_BAORU = "baoru";
 
     public static final String SHARE_ME = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。https://github.com/1900Star/BigGirl";
@@ -258,18 +247,6 @@ public class Constants {
                 break;
             case TYPE_EXTEND:
                 mLoadType = Constants.FRAGMENT_EXPAND;
-                break;
-            case TYPE_JAPAN:
-                mLoadType = Constants.FRAGMENT_JAPAN;
-                break;
-            case TYPE_HOT:
-                mLoadType = Constants.FRAGMENT_HOT;
-                break;
-            case TYPE_SEX:
-                mLoadType = Constants.FRAGMENT_SEX;
-                break;
-            case TYPE_CUTE:
-                mLoadType = Constants.FRAGMENT_CUTE;
                 break;
             case TYPE_MFSTAR:
                 mLoadType = Constants.DUOTU_MOFAN_API;
@@ -333,9 +310,6 @@ public class Constants {
                 break;
             case TYPE_TOUTIAO:
                 mLoadType = Constants.DUOTU_TOUTIAO_API;
-                break;
-            case TYPE_BAORU:
-                mLoadType = Constants.FRAGMENT_BAORU;
                 break;
 
             case TYPE_DGC:

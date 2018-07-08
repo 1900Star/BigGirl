@@ -1,5 +1,6 @@
 package com.yibao.biggirl.base;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -149,10 +150,11 @@ public abstract class BaseRecyclerFragment
         return recyclerView;
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onRefresh() {
 
-        Observable.timer(1, TimeUnit.SECONDS)
+        Observable.timer(3, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     page = 1;

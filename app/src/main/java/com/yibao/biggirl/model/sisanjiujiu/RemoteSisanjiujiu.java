@@ -1,5 +1,6 @@
 package com.yibao.biggirl.model.sisanjiujiu;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import com.yibao.biggirl.model.girl.Girl;
@@ -31,6 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 public class RemoteSisanjiujiu implements SisanDataSource {
 
 
+    @SuppressLint("CheckResult")
     @Override
     public void getSisan(String url, int page, LoadSisanCallback callback) {
         String baseUrl = url + page + ".htm";

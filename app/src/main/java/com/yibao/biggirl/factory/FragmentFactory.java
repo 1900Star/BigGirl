@@ -16,6 +16,7 @@ import java.util.Map;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/5/7 14:55
+ *
  * @author Stran
  */
 public class FragmentFactory {
@@ -26,34 +27,29 @@ public class FragmentFactory {
     private static final int FRAGMENT_VEDIO = 4;
     private static final int FRAGMENT_FRONT = 5;
     private static final int FRAGMENT_EXTEND = 6;
-    private static final int FRAGMENT_JAPAN = 7;
-    private static final int FRAGMENT_HOT = 8;
-    private static final int FRAGMENT_SEX = 9;
-    private static final int FRAGMENT_CUTE = 10;
 
-    private static final int FRAGMENT_MFSTAR = 11;
-    private static final int FRAGMENT_PANS = 12;
-    private static final int FRAGMENT_UGIRLS = 13;
-    private static final int FRAGMENT_ROSI = 14;
-    private static final int FRAGMENT_MEIYAN = 15;
-    private static final int FRAGMENT_TUIGIRL = 16;
-    private static final int FRAGMENT_BOBOSHE = 17;
-    private static final int FRAGMENT_DISIYINGXIANG = 18;
-    private static final int FRAGMENT_YUNVLANG = 19;
-    private static final int FRAGMENT_XIUREN = 20;
-    private static final int FRAGMENT_SXINGGAN = 21;
-    private static final int FRAGMENT_SGAOQING = 22;
-    private static final int FRAGMENT_SWEIMEI = 23;
-    private static final int FRAGMENT_WANGLUO = 24;
-    private static final int FRAGMENT_DONGMAN = 25;
-    private static final int TYPE_SABAR = 26;
-    private static final int TYPE_TOPQUEEN = 27;
-    private static final int TYPE_IMAGETV = 28;
-    private static final int TYPE_WPB = 29;
-    private static final int TYPE_YS = 30;
-    private static final int TYPE_TOUTIAO = 31;
-    private static final int TYPE_BAORU = 32;
-    private static final int TYPE_DGC = 33;
+    private static final int FRAGMENT_MFSTAR = 7;
+    private static final int FRAGMENT_PANS = 8;
+    private static final int FRAGMENT_UGIRLS = 9;
+    private static final int FRAGMENT_ROSI = 10;
+    private static final int FRAGMENT_MEIYAN = 11;
+    private static final int FRAGMENT_TUIGIRL = 12;
+    private static final int FRAGMENT_BOBOSHE = 13;
+    private static final int FRAGMENT_DISIYINGXIANG = 14;
+    private static final int FRAGMENT_YUNVLANG = 15;
+    private static final int FRAGMENT_XIUREN = 16;
+    private static final int FRAGMENT_SXINGGAN = 17;
+    private static final int FRAGMENT_SGAOQING = 18;
+    private static final int FRAGMENT_SWEIMEI = 19;
+    private static final int FRAGMENT_WANGLUO = 20;
+    private static final int FRAGMENT_DONGMAN = 21;
+    private static final int TYPE_SABAR = 22;
+    private static final int TYPE_TOPQUEEN = 23;
+    private static final int TYPE_IMAGETV = 24;
+    private static final int TYPE_WPB = 25;
+    private static final int TYPE_YS = 26;
+    private static final int TYPE_TOUTIAO = 27;
+    private static final int TYPE_DGC = 28;
     private static Map<Integer, BaseRecyclerFragment> mCacheFragmentMap = new HashMap<>();
 
     public static Fragment createFragment(int position) {
@@ -74,7 +70,7 @@ public class FragmentFactory {
                 fragment = AppFragment.newInstance(FRAGMENT_ANDRID);
                 break;
             case FRAGMENT_APP:
-                fragment = AppFragment .newInstance(FRAGMENT_APP);
+                fragment = AppFragment.newInstance(FRAGMENT_APP);
                 break;
             case FRAGMENT_IOS:
                 fragment = AppFragment.newInstance(FRAGMENT_IOS);
@@ -87,19 +83,6 @@ public class FragmentFactory {
                 break;
             case FRAGMENT_EXTEND:
                 fragment = AppFragment.newInstance(FRAGMENT_EXTEND);
-                break;
-//                妹子图
-            case FRAGMENT_JAPAN:
-                fragment = MeizituFragment.newInstance(FRAGMENT_JAPAN);
-                break;
-            case FRAGMENT_HOT:
-                fragment = MeizituFragment.newInstance(FRAGMENT_HOT);
-                break;
-            case FRAGMENT_SEX:
-                fragment = MeizituFragment.newInstance(FRAGMENT_SEX);
-                break;
-            case FRAGMENT_CUTE:
-                fragment = MeizituFragment.newInstance(FRAGMENT_CUTE);
                 break;
 //                多图
             case FRAGMENT_MFSTAR:
@@ -167,9 +150,6 @@ public class FragmentFactory {
                 break;
             case TYPE_TOUTIAO:
                 fragment = DuotuRecyclerFragment.newInstance(TYPE_TOUTIAO);
-                break;
-            case TYPE_BAORU:
-                fragment = MeizituFragment.newInstance(TYPE_BAORU);
                 break;
             case TYPE_DGC:
                 fragment = DuotuRecyclerFragment.newInstance(TYPE_DGC);

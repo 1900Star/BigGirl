@@ -17,6 +17,7 @@ import java.util.List;
  * Author：Sid
  * Des：${AllData}
  * Time:2017/4/23 06:33
+ *
  * @author Stran
  */
 public class AllFragment
@@ -30,13 +31,13 @@ public class AllFragment
     private String mLoadType;
 
 
-
-
-
     @Override
     protected void processLogic(Bundle savedInstanceState) {
         new AppPresenter(this);
-        int type = getArguments().getInt("position");
+        int type = 0;
+        if (getArguments() != null) {
+            type = getArguments().getInt("position");
+        }
         mLoadType = Constants.getLoadType(type);
     }
 
@@ -95,6 +96,12 @@ public class AllFragment
     @Override
     public void setPrenter(AppContract.Presenter prenter) {
         mPresenter = prenter;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.unsubscribe();
     }
 }
 

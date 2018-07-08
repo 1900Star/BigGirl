@@ -210,10 +210,6 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.main_action_star:
                 TestRxjava.getMeiziLis();
-
-
-
-
                 break;
             default:
                 break;

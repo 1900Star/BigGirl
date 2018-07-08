@@ -54,7 +54,7 @@ public class TopBigPicDialogFragment
         mPb = mView.findViewById(R.id.pb_toppic);
         mPb.setMax(MAX_DOWN_PREGRESS);
         ZoomImageView view = ImageUitl.creatZoomView(getActivity());
-        String url = getArguments().getString("url");
+        String url = getArguments() != null ? getArguments().getString("url") : null;
         ImageUitl.loadPic(getActivity(), url, view);
         view.setOnClickListener(view1 -> TopBigPicDialogFragment.this.dismiss());
         save.setOnClickListener(view12 -> savePic(url));

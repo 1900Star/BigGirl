@@ -2,6 +2,8 @@ package com.yibao.biggirl.model.app;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 /**
  * Author：Sid
  * Des：${TODO}
@@ -10,13 +12,7 @@ import java.util.List;
 public interface AppDataSource {
     //这个接口用于将数据回调给对应Presenter层
 
-    interface LoadDataCallback {
-        void onLoadData(List<ResultsBeanX> list);
 
-        void onDataNotAvailable();
-
-    }
-
-    void getApp(int page, int size, String type, LoadDataCallback callback);
+    Observable<List<ResultsBeanX>> getAppData(int page, int size, String type);
 
 }
