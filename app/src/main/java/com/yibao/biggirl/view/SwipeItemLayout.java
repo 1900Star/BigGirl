@@ -18,7 +18,7 @@ import android.widget.Scroller;
 import com.yibao.biggirl.R;
 
 /**
- * Author：Sid
+ * Author：lsp
  * Des：${TODO}
  * Time:2016/11/5 00:25
  *

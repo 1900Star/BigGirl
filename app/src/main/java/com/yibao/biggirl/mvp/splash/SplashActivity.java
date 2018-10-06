@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -34,27 +35,29 @@ public class SplashActivity
     @BindView(R.id.iv_splash)
     ImageView mIvSplash;
     private Unbinder mBind;
+    private Disposable mDisposable;
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mBind = ButterKnife.bind(this);
         SystemUiVisibilityUtil.hideStatusBar(getWindow(), true);
-            Observable.timer(2, TimeUnit.SECONDS)
-                      .subscribeOn(Schedulers.io())
-                      .observeOn(AndroidSchedulers.mainThread())
-                      .subscribe(aLong -> {
-                          SplashActivity.this.startActivity(new Intent(SplashActivity.this,
-                                                                       MainActivity.class));
-                          finish();
-                      });
-        if (NetworkUtil.isNetworkConnected(this)) {
+        mDisposable = Observable.timer(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    SplashActivity.this.startActivity(new Intent(SplashActivity.this,
+                            MainActivity.class));
+                    finish();
 
-        } else {
+                });
+//        if (NetworkUtil.isNetworkConnected(this)) {
+//
+//        } else {
 //            SnakbarUtil.netErrorsLong(mIvSplash);
-        }
+//        }
+
 
     }
 
@@ -63,6 +66,10 @@ public class SplashActivity
     protected void onDestroy() {
         super.onDestroy();
         mBind.unbind();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+            mDisposable = null;
+        }
     }
 
 

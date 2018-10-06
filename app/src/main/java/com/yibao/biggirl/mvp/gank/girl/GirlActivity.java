@@ -17,10 +17,13 @@ import android.view.animation.DecelerateInterpolator;
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.listener.HideToolbarListener;
+import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.model.girl.DownGrilProgressData;
+import com.yibao.biggirl.mvp.webview.WebPresenter;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.NetworkUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 import com.yibao.biggirl.util.SystemUiVisibilityUtil;
@@ -83,9 +86,11 @@ public class GirlActivity
     private GirlAdapter mAdapter;
     private Disposable mDisposable;
     private boolean mIsHidden = false;
-    private boolean isDownComplete = false;
     private boolean mIsConnected;
     private boolean isPlay = false;
+    private MenuItem mMenuFavorite;
+    private boolean isFavorite = true;
+    private WebPresenter mWebPresenter;
 
 
     @Override
@@ -104,11 +109,12 @@ public class GirlActivity
         mList = getIntent().getStringArrayListExtra("girlList");
         mPosition = getIntent().getIntExtra("position", 0);
         mUrl = mList.get(mPosition);
+        mWebPresenter = new WebPresenter(this);
+
 
     }
 
     private void initData() {
-
         disposables = new CompositeDisposable();
         setSupportActionBar(mToolbar);
         mAppBarLayout.setAlpha(0.7f);
@@ -197,7 +203,6 @@ public class GirlActivity
         if (downPicType == Constants.EXISTS && progress == MAX_DOWN_PREGRESS) {
             SnakbarUtil.showSuccessView(mPbDown);
         } else if (downPicType == Constants.FIRST_DWON && progress == MAX_DOWN_PREGRESS) {
-            isDownComplete = true;
             //将下载的图片插入到系统相册
             disposables.add(ImageUitl.insertImageToPhotos().observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> {
                 if (aBoolean) {
@@ -217,7 +222,6 @@ public class GirlActivity
     public void onViewClicked(View view) {
         // 网络检查
         if (mIsConnected) {
-            isDownComplete = false;
             disposables.add(ImageUitl.savePic(mUrl, Constants.FIRST_DWON).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> {
                         if (integer == Constants.EXISTS) {
@@ -255,11 +259,17 @@ public class GirlActivity
 
     }
 
+    //设置收藏图标
+    public void refreshFavoriteBtn() {
+        mMenuFavorite.setIcon(isFavorite ? R.drawable.ic_star_green_24dp : R.drawable.ic_star_white_24dp);
+        isFavorite = !isFavorite;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.girl_main, menu);
         mMenuItemPlay = menu.findItem(R.id.action_auto_play);
+        mMenuFavorite = menu.findItem(R.id.action_favorite_mz);
         return true;
     }
 
@@ -268,6 +278,9 @@ public class GirlActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.action_favorite_mz:
+                favoriteGirl();
                 break;
             //设置壁纸
             case R.id.action_setwallpaer:
@@ -288,6 +301,21 @@ public class GirlActivity
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void favoriteGirl() {
+        if (isFavorite) {
+//            mWebPresenter.cancelFavorite((long) mPosition, 0);
+        } else {
+            FavoriteWebBean favoriteBean = new FavoriteWebBean();
+            favoriteBean.setImagUrl(mUrl);
+            favoriteBean.setType(Constants.SING_GIRL);
+            favoriteBean.setId((long) mPosition);
+//            mWebPresenter.insertFavorite(favoriteBean);
+
+        }
+        refreshFavoriteBtn();
+
     }
 
 
@@ -320,11 +348,14 @@ public class GirlActivity
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
-        if (state < STATUS_MAX_NUM && isDownComplete) {
+        if (state < STATUS_MAX_NUM) {
             mPbDown.setProgress(DEFULT_DOWN_PREGRESS);
         }
     }
 
 
+    public void insertStatus(Long insertStatus) {
+
+        LogUtil.d("" + insertStatus);
+    }
 }

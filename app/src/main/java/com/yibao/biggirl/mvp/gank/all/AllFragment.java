@@ -44,6 +44,7 @@ public class AllFragment
     @Override
     protected void onLazyLoadData() {
         super.onLazyLoadData();
+        mPresenter = new AppPresenter(this);
         mPresenter.start(mLoadType, Constants.LOAD_DATA);
     }
 
@@ -56,10 +57,7 @@ public class AllFragment
 
     @Override
     public void refresh(List<ResultsBeanX> list) {
-        mAdapter.clear();
         mAdapter.addHeader(list);
-        mAdapter.notifyDataSetChanged();
-
     }
 
     @Override

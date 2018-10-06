@@ -28,6 +28,7 @@ import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.UnSplashDialogFragment;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
+import com.yibao.biggirl.mvp.favorite.FavoritePagerActivity;
 import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.mvp.gank.meizitu.MeizituRecyclerActivity;
@@ -67,6 +68,8 @@ public class MainActivity
     private static final long KEY_EVENT_BACK_TIME = 2000;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
+    @BindView(R.id.nav_view_right)
+    NavigationView mNavViewRight;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.tablayout)
@@ -106,6 +109,7 @@ public class MainActivity
 
         // 加载HeaderView布局
         View headerView = mNavView.inflateHeaderView(R.layout.nav_header_main);
+        mNavViewRight.inflateHeaderView(R.layout.nav_header_main);
 
         mIvHeader = headerView.findViewById(R.id.iv_nav_header);
 
@@ -117,6 +121,7 @@ public class MainActivity
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         mNavView.setNavigationItemSelectedListener(this);
+        mNavViewRight.setNavigationItemSelectedListener(this);
     }
 
     private void initData() {
@@ -167,7 +172,7 @@ public class MainActivity
                         .show(getSupportFragmentManager(), "about");
                 break;
             case R.id.action_my_favorite:
-                startActivity(new Intent(this, FavoriteActivity.class));
+                startActivity(new Intent(this, FavoritePagerActivity.class));
                 break;
             case R.id.action_map:
                 boolean checkPlayServices = CheckGoogleService.checkGoogleService(this);

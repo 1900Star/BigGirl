@@ -23,6 +23,13 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:background="@color/colorAccent"
+        app:menu="@menu/activity_main_drawer"/>  <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="true"
+        android:background="@color/colorAccent"
         app:menu="@menu/activity_main_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -124,5 +124,6 @@ public class MeizituRecyclerActivity
         super.onDestroy();
         MeizituService.stop(MeizituRecyclerActivity.this);
         unbinder.unbind();
+        mPresenter.unsubscribe();
     }
 }

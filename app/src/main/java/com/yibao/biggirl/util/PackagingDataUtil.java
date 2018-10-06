@@ -1,5 +1,6 @@
 package com.yibao.biggirl.util;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import com.yibao.biggirl.model.app.ResultsBeanX;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import io.reactivex.Flowable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -25,6 +27,7 @@ public class PackagingDataUtil {
 
     private static String imageUrl;
 
+    @SuppressLint("CheckResult")
     public static List<String> objectToList(List<Girl> list) {
         ArrayList<String> data = new ArrayList<>();
         Flowable.fromIterable(list)
@@ -52,7 +55,8 @@ public class PackagingDataUtil {
                 ? "Smartisan"
                 : who;
         String time = FileUtil.getCreatTime(data.getCreatedAt());
-        FavoriteWebBean bean = new FavoriteWebBean((long) 0,
+
+        return new FavoriteWebBean((long) 0,
                 data.getUrl(),
                 data.get_id(),
                 imageUrl,
@@ -61,15 +65,14 @@ public class PackagingDataUtil {
                 data.getType(),
                 time);
 
-        return bean;
-
 
     }
 
     public static String getImageUrl(List<String> list) {
         Random random = new Random();
         int urlPosition = random.nextInt(Api.picUrlArr.length) + 1;
-        String girlUrl = Api.picUrlArr[urlPosition];
+        String[] picUrlArr = Api.picUrlArr;
+        String girlUrl = picUrlArr[urlPosition > picUrlArr.length ? picUrlArr.length - 1 : urlPosition];
         boolean b = list != null && list.size() > 0;
         return b ? list.get(0) : girlUrl;
 

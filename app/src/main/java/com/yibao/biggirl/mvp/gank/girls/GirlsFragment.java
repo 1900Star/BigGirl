@@ -102,7 +102,6 @@ public class GirlsFragment
     //    刷新回调
     @Override
     public void refresh(List<String> list) {
-        mAdapter.clear();
         mList.addAll(list);
         mAdapter.addHeader(list);
     }
@@ -165,5 +164,9 @@ public class GirlsFragment
 
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mGirlsPresenter.unsubscribe();
+    }
 }

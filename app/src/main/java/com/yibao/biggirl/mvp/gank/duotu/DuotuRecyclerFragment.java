@@ -82,7 +82,6 @@ public class DuotuRecyclerFragment extends BaseRecyclerFragment implements
 
     @Override
     public void refresh(List<Girl> list) {
-        mAdapter.clear();
         mAdapter.addHeader(list);
     }
 
@@ -100,5 +99,6 @@ public class DuotuRecyclerFragment extends BaseRecyclerFragment implements
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mPresenter.unsubscribe();
     }
 }

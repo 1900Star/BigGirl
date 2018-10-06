@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.mvp.music.musiclist.MusicListAdapter;
 
@@ -66,6 +67,28 @@ public class MusicView
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        Glide.with(context).resumeRequests();
+                        break;
+                    // 加载图片
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        Glide.with(context).pauseRequests();
+                        break;
+
+                    default:
+                        break;
+                }
+
+
+            }
+
+
+        });
         //        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
         //            @Override
         //            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

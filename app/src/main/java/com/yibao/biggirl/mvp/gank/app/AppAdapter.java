@@ -68,14 +68,17 @@ public class AppAdapter
                 }
                 return true;
             });
-            holder.itemView.setOnClickListener(view -> {
-                if (mContext instanceof OnRvItemClickListener) {
-                    FavoriteWebBean data = PackagingDataUtil.objectToFavorite(bean);
-                    ((OnRvItemClickListener) mContext).showWebDetail(data, data.getId());
-                }
-            });
+            viewHolder.mIvIcon.setOnClickListener(v -> itemClick(bean));
+            viewHolder.itemView.setOnClickListener(view -> itemClick(bean));
 
 
+        }
+    }
+
+    private void itemClick(ResultsBeanX bean) {
+        if (mContext instanceof OnRvItemClickListener) {
+            FavoriteWebBean data = PackagingDataUtil.objectToFavorite(bean);
+            ((OnRvItemClickListener) mContext).showWebDetail(data, data.getId());
         }
     }
 

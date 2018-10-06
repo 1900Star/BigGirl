@@ -143,12 +143,13 @@ public class FavoriteActivity
 
     @Override
     protected void refreshData() {
-        Observable.timer(2, TimeUnit.SECONDS)
+        mDisposable.add(Observable.timer(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     mWebPresenter.queryAllFavorite();
                     mAdapter.notifyDataSetChanged();
-                });
+                }));
+
     }
 
     @Override
@@ -162,7 +163,7 @@ public class FavoriteActivity
     protected void onDestroy() {
         super.onDestroy();
         mBind.unbind();
-
+        mWebPresenter.destroyView();
     }
 
 

@@ -1,5 +1,7 @@
 package com.yibao.biggirl.model.duotu;
 
+import android.annotation.SuppressLint;
+
 import com.yibao.biggirl.model.girl.Girl;
 
 import org.jsoup.Jsoup;
@@ -24,6 +26,7 @@ public class RemoteDuotuGirls
         implements DuotuDataSource {
 
 
+    @SuppressLint("CheckResult")
     @Override
     public void getDuotu(String url, int page, LoadDuotuCallback callback) {
         String baseUrl = url + page + ".html";
@@ -50,6 +53,7 @@ public class RemoteDuotuGirls
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(callback::onLoadDatas);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void getDuotuList(String url, int page, DuotuDataSource.LoadDuotuCallback callback) {
 //                截取字符串第三个小数点之前的字符串

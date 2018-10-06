@@ -1,6 +1,7 @@
 package com.yibao.biggirl.mvp.favorite;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +16,8 @@ import com.yibao.biggirl.base.BaseRvAdapter;
 import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
+import com.yibao.biggirl.mvp.webview.WebActivity;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -72,15 +75,20 @@ public class FavoriteAdapter
             });
             //Item点击的监听
             viewHolder.mFavoriteItem.setOnClickListener(view -> {
-                    if (mContext instanceof OnRvItemClickListener) {
-                        ((OnRvItemClickListener) mContext).showWebDetail(bean, bean.getId());
-                    }
+                Intent intent = new Intent(mContext, WebActivity.class);
+                intent.putExtra("id", bean.getId());
+                LogUtil.d("跳转 ID :" + bean.getId());
+                intent.putExtra("favoriteBean", bean);
+                mContext.startActivity(intent);
+
+//                if (mContext instanceof OnRvItemClickListener) {
+//                    ((OnRvItemClickListener) mContext).showWebDetail(bean, bean.getId());
+//                }
             });
 
 
         }
     }
-
 
 
     @Override

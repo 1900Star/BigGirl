@@ -83,6 +83,9 @@
         <activity
             android:name=".mvp.gank.sisan.SisanActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".mvp.favorite.FavoritePagerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

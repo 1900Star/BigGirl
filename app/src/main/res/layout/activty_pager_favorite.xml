@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:background="@color/cardview_dark_background"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/favorite_bar_pager"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:id="@+id/tv_favorite_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/favorite"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/big_tv" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <com.yibao.biggirl.view.FavoriteViewPager
+        android:id="@+id/vp_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/listItemBg"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorWhite"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+</LinearLayout>

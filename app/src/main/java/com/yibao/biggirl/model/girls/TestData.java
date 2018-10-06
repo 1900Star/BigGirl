@@ -1,6 +1,7 @@
 package com.yibao.biggirl.model.girls;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.yibao.biggirl.MyApplication;
 import com.yibao.biggirl.model.app.ResultsBeanX;
@@ -23,6 +24,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -33,79 +35,66 @@ import io.reactivex.schedulers.Schedulers;
  * @author Stran
  */
 @SuppressLint("CheckResult")
-public class RemoteGirlsData
-        implements GrilsDataSource {
+public class TestData {
 
 
     private int totalPages = 1;
 
-    @Override
-    public void getGirls(String dataType, int size, int page, LoadDataCallback callback) {
-        List<String> urlList = new ArrayList<>();
-        RetrofitHelper.getGankApi(Constants.GANK_API)
-                .getConmmentApi(dataType, size, page)
-                .subscribeOn(Schedulers.io())
-                .map(girlsBean -> {
-            for (ResultsBeanX data : girlsBean.getResults()) {
-                urlList.add(data.getUrl());
-            }
-            return urlList;
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<String>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
-
-            @Override
-            public void onNext(List<String> list) {
-                callback.onLoadDatas(list);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                callback.onDataNotAvailable();
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
-
     @SuppressLint("CheckResult")
-    @Override
-    public void getMeizitu(String type, int page, LoadMeizituCallback callback) {
-
-        String url = Constants.FRAGMENT_BAORU.equals(type)
-                ? Constants.MEIZITU_TAG_API + type + "/page/" + page
-                : Constants.MEIZITU_API + type + "/page/" + page;
-        LogUtil.d("======== BaoruUrl ====     ", url);
-        final String fakeRefer = "i.meizitu.net" + "/";
-        final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
-        Observable.just(Constants.MEIZITU_API).subscribeOn(Schedulers.io()).map(s -> {
-
-            List<Girl> girls = new ArrayList<>();
+    public String getMeizitu() {
+        String url = "https://inbangbang.com/page/10/";
+            Document document;
             try {
-                Document doc = Jsoup.connect(url).timeout(10000).get();
-                Element total = doc.select("div.postlist").first();
-                Elements items = total.select("li");
-                for (Element element : items) {
-                    Girl girl = new Girl(String.format(realUrl, element.select("img").first().attr("data-original"), fakeRefer));
-                    girl.setLink(element.select("a[href]").attr("href"));
-                    girls.add(girl);
+//                document= Jsoup.connect(url).timeout(10000).get();
+                document = Jsoup.connect(url).get();
+                Elements items = document.select("cardlist");
+//                Elements items = total.select("cardlist");
+                Elements card_list = items.select("card_list");
+                LogUtil.d(card_list.toString());
+                for (Element element : card_list) {
+//                    String img = element.select("img").first().attr("data-original");
+                    Girl girl = new Girl("");
+//                    girl.setLink(element.select("a[href]").attr("href"));
+                    String href = element.select("a[href]").attr("href");
+                    LogUtil.d(href);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return girls;
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(callback::onLoadDatas);
+
+//        String url = Constants.FRAGMENT_BAORU.equals(type)
+//                ? Constants.MEIZITU_TAG_API + type + "/page/" + page
+//                : Constants.MEIZITU_API + type + "/page/" + page;
+//        String url = "https://inbangbang.com/page/10/";
+
+//        LogUtil.d("======== BaoruUrl ====     ", url);
+//        final String fakeRefer = "i.meizitu.net" + "/";
+//        final String realUrl = "http://api.caoliyu.cn/meizitu.php?url=%s&refer=%s";
+//        Observable.just("https://inbangbang.com").subscribeOn(Schedulers.io()).map(s -> {
+//
+//            List<Girl> girls = new ArrayList<>();
+//            try {
+////                Document doc = Jsoup.connect(url).timeout(10000).get();
+//                Document document = Jsoup.connect(url).get();
+//                Element total = document.select("div.cardlist").first();
+//                Elements items = total.select("card-item");
+//                for (Element element : items) {
+//                    String img = element.select("img").first().attr("data-original");
+//                    Girl girl = new Girl(img);
+//                    girl.setLink(element.select("a[href]").attr("href"));
+//                    girls.add(girl);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return girls;
+//        }).observeOn(AndroidSchedulers.mainThread()).subscribe();
+        return "";
     }
 
 
-
-
-    @Override
     public void getMeiziList(String url) {
         Observable.just(url).subscribeOn(Schedulers.io()).map(s -> {
             try {
@@ -132,7 +121,7 @@ public class RemoteGirlsData
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(integer -> {
 
             for (int i = 0; i < integer; i++) {
-                RemoteGirlsData.this.getMeizis(url, i);
+                TestData.this.getMeizis(url, i);
             }
         });
     }

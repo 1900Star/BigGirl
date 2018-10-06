@@ -86,7 +86,8 @@ public class SisanPresenter
 
     @Override
     public void unsubscribe() {
-
+        mView = null;
+        mSisanActiviy = null;
     }
 
 }

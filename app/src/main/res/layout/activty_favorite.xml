@@ -14,7 +14,6 @@
             android:id="@+id/toolbar_favorite"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:minHeight="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp">
 
             <TextView

@@ -96,7 +96,8 @@ public class RemoteSisanjiujiu implements SisanDataSource {
     private String getUrl(String link) {
         String sub = link.substring(link.lastIndexOf("/"));
         String replace = link.replace(sub, ".htm");
-        return Constants.SISAN_BASE_URL + replace;
+//        return Constants.SISAN_BASE_URL + replace;
+        return "";
     }
 
 }

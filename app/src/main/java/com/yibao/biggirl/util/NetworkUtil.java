@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 public class NetworkUtil {
     /**
      * 判断是否有网络连接
+     *
      * @param context
      * @return
      */
@@ -20,8 +21,9 @@ public class NetworkUtil {
         if (context != null) {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(
                     Context.CONNECTIVITY_SERVICE);
-            NetworkInfo info = manager.getActiveNetworkInfo();
-            if (info != null) {
+            NetworkInfo info;
+            if (manager != null) {
+                info = manager.getActiveNetworkInfo();
                 return info.isAvailable();
             }
         }

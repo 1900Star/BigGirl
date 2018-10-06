@@ -85,7 +85,6 @@ public class SisanFragment extends BaseRecyclerFragment implements SisanContract
 
     @Override
     public void refresh(List<Girl> list) {
-        mAdapter.clear();
         mAdapter.addHeader(list);
     }
 
@@ -101,7 +100,8 @@ public class SisanFragment extends BaseRecyclerFragment implements SisanContract
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.unsubscribe();
     }
 }

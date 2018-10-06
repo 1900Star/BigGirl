@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.GeolocationPermissions;
@@ -61,6 +62,7 @@ public class WebActivity
     private FavoriteWebBean mBean;
     private boolean isFavorite;
     private long mId;
+    private MenuItem mFavoriteItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +86,9 @@ public class WebActivity
         mToolbar.inflateMenu(R.menu.activity_web);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         mToolbar.setNavigationOnClickListener(view -> finish());
+        mFavoriteItem = mToolbar.getMenu()
+                .getItem(0);
+
         mToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.web_favorite:
@@ -159,14 +164,12 @@ public class WebActivity
 
     //设置收藏图标
     public void refreshFavoriteBtn() {
+
         if (isFavorite) {
-            mToolbar.getMenu()
-                    .getItem(0)
-                    .setIcon(R.drawable.ic_star_green_24dp);
+
+            mFavoriteItem.setIcon(R.drawable.ic_star_green_24dp);
         } else {
-            mToolbar.getMenu()
-                    .getItem(0)
-                    .setIcon(R.drawable.ic_star_white_24dp);
+            mFavoriteItem.setIcon(R.drawable.ic_star_white_24dp);
         }
     }
 
@@ -312,6 +315,7 @@ public class WebActivity
         super.onDestroy();
         mBind.unbind();
         clearWebViewResource();
+        mPresenter.destroyView();
     }
 
     @Override

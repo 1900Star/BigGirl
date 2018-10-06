@@ -13,44 +13,6 @@ public class Constants {
 
 
     /**
-     * 43   XINGGAN
-     */
-    public static String SISAN_BASE_URL = "https://www.4493.com";
-
-    /**
-     * 43   XINGGAN
-     */
-
-    private static String SISAN_XINGGAN_API = "https://www.4493.com/xingganmote/index-";
-    /**
-     * 43   WEIMEI
-     */
-
-    private static String SISAN_WEIMEI_API = "https://www.4493.com/weimeixiezhen/index-";
-    /**
-     * 43   WANGLUO
-     */
-
-    private static String SISAN_WANGLUO_API = "https://www.4493.com/wangluomeinv/index-";
-    /**
-     * 43   DONGMAN
-     */
-
-    private static String SISAN_DONGMAN_API = "https://www.4493.com/dongmanmeinv/index-";
-    /**
-     * 43   mTag
-     */
-
-    private static String SISAN_TAG_API = "https://www.4493.com/tag/10/";
-
-    /**
-     * 43   GAOQING模范学院
-     */
-
-    private static String SISAN_GAOQING_API = "https://www.4493.com/gaoqingmeinv/index-";
-
-
-    /**
      * 多图   MFStar模范学院
      */
     private static String DUOTU_MOFAN_API = "http://www.duotu555.com/mm/51/list_51_";
@@ -160,7 +122,7 @@ public class Constants {
     public static final int NOT_MORE_DATA_RV = 2;
     public static final int LOADING_MORE_RV = 1;
 
-    public static String[] arrTitle = {"Girl",
+    public final static String[] arrTitle = {"Girl",
             "Android",
             "App",
             "iOS",
@@ -170,10 +132,9 @@ public class Constants {
             "MFStar", "Pans",
             "Ugirls", "Rosi", "Meiyan", "TuiGirl",
             "Boboshe", "Disiyxiang", "Yunvlang", "Xiuren",
-            "SXinggan", "SGaoqing", "SWeimei", "SWangluo",
-            "Dongman", "Sabar", "Topqueen", "Imagetv", "Wpb", "YS", "TOUTIAO", "DGC"};
+            "Sabar", "Topqueen", "Imagetv", "Wpb", "YS", "TOUTIAO", "DGC"};
 
-
+    public final static String[] favoriteTitle = {"网页", "单图", "组图"};
     public static final int TYPE_GIRLS = 0;
     private static final int TYPE_ANDROID = 1;
     private static final int TYPE_APP = 2;
@@ -200,19 +161,14 @@ public class Constants {
     private static final int TYPE_DISIYINGXIANG = 14;
     private static final int TYPE_YUNVLANG = 15;
     private static final int TYPE_XIUREN = 16;
-    private static final int TYPE_SXINGGAN = 17;
-    private static final int TYPE_SGAOQING = 18;
-    private static final int TYPE_SWEIMEI = 19;
-    private static final int TYPE_WANGLUO = 20;
-    private static final int TYPE_DONGMAN = 21;
-    private static final int TYPE_SABAR = 22;
-    private static final int TYPE_TOPQUEEN = 23;
-    private static final int TYPE_IMAGETV = 24;
-    private static final int TYPE_WPB = 25;
-    private static final int TYPE_YS = 26;
-    private static final int TYPE_TOUTIAO = 27;
-    //    private static final int TYPE_BAORU = 32;
-    private static final int TYPE_DGC = 28;
+    private static final int TYPE_SABAR = 17;
+    private static final int TYPE_TOPQUEEN = 18;
+    private static final int TYPE_IMAGETV = 19;
+    private static final int TYPE_WPB = 20;
+    private static final int TYPE_YS = 21;
+    private static final int TYPE_TOUTIAO = 22;
+    //    private static final int TYPE_BAORU = 23;
+    private static final int TYPE_DGC = 23;
 
     public static final String FRAGMENT_GIRLS = "福利";
     private static final String FRAGMENT_ANDROID = "Android";
@@ -227,6 +183,10 @@ public class Constants {
     public static final String SHARE_ME = "这是一个漂亮的妹子查看器，里面有各种前端后端的开发干货。https://github.com/1900Star/BigGirl";
 
     private static String mLoadType;
+    //收藏Girl
+    public static final String SING_GIRL = "single_girl";
+    public static final String MULTIPLE_GIRL = "multiple_girl";
+    public static final String WEB_URL = "web_url";
 
     public static String getLoadType(int fragLoadType) {
         switch (fragLoadType) {
@@ -277,21 +237,6 @@ public class Constants {
                 break;
             case TYPE_XIUREN:
                 mLoadType = Constants.DUOTU_XIUREN_API;
-                break;
-            case TYPE_SXINGGAN:
-                mLoadType = Constants.SISAN_XINGGAN_API;
-                break;
-            case TYPE_SGAOQING:
-                mLoadType = Constants.SISAN_GAOQING_API;
-                break;
-            case TYPE_SWEIMEI:
-                mLoadType = Constants.SISAN_WEIMEI_API;
-                break;
-            case TYPE_WANGLUO:
-                mLoadType = Constants.SISAN_WANGLUO_API;
-                break;
-            case TYPE_DONGMAN:
-                mLoadType = Constants.SISAN_DONGMAN_API;
                 break;
             case TYPE_SABAR:
                 mLoadType = Constants.DUOTU_SABRA_API;

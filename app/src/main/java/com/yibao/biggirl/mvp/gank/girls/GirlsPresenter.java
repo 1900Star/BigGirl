@@ -97,6 +97,8 @@ public class GirlsPresenter
 
     @Override
     public void unsubscribe() {
+        mView = null;
+        mTuView = null;
     }
 
 }

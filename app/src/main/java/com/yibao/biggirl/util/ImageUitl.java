@@ -29,12 +29,14 @@ import java.util.List;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * 作者：Stran on 2017/3/23 03:23
@@ -53,8 +55,8 @@ public class ImageUitl {
     /**
      * 创建一个可放大缩小的ImageView
      *
-     * @param context
-     * @return
+     * @param context d
+     * @return d
      */
     public static ZoomImageView creatZoomView(Context context) {
         ZoomImageView view = new ZoomImageView(context);
@@ -149,41 +151,42 @@ public class ImageUitl {
             file = new File(path + "/", name);
 
             if (!file.exists()) {
-                try {
-                    file.createNewFile();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    observable.onNext(Constants.DWON_PIC_EROOR);
-                    observable.onComplete();
-                }
+                file.createNewFile();
+                downPic(url, downPicType, observable);
             } else {
                 observable.onNext(Constants.EXISTS);
                 observable.onComplete();
             }
-            Request request = new Request.Builder().url(url).addHeader("Accept-Encoding", "identity")
-                    .build();
-            MyApplication.defaultOkHttpClient()
-                    .newCall(request)
-                    .enqueue(new Callback() {
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                            e.printStackTrace();
-                            observable.onNext(Constants.DWON_PIC_EROOR);
-                            observable.onComplete();
-                            LogUtil.d("下载出错 " + e.toString());
-                        }
 
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) {
-                            InputStream is;
-                            byte[] buf = new byte[1024 * 4];
-                            int len;
-                            int off = 0;
-                            long sum = 0;
-                            FileOutputStream fos = null;
-                            is = response.body().byteStream();
-                            long total = response.body().contentLength();
+        }).subscribeOn(Schedulers.io());
+    }
+
+    private static void downPic(String url, int downPicType, ObservableEmitter<Integer> observable) {
+        Request request = new Request.Builder().url(url).addHeader("Accept-Encoding", "identity")
+                .build();
+        MyApplication.defaultOkHttpClient()
+                .newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        e.printStackTrace();
+                        observable.onNext(Constants.DWON_PIC_EROOR);
+                        observable.onComplete();
+                        LogUtil.d("下载出错 " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) {
+                        InputStream is;
+                        byte[] buf = new byte[1024 * 4];
+                        int len;
+                        int off = 0;
+                        long sum = 0;
+                        FileOutputStream fos = null;
+                        ResponseBody body = response.body();
+                        if (body != null) {
+                            is = body.byteStream();
+                            long total = body.contentLength();
                             try {
                                 fos = new FileOutputStream(file);
                                 while ((len = is.read(buf)) != -1) {
@@ -202,20 +205,12 @@ public class ImageUitl {
                                 e.printStackTrace();
                                 observable.onNext(Constants.DWON_PIC_EROOR);
                                 observable.onComplete();
-                            } finally {
-                                try {
-                                    fos.close();
-                                    is.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-
-                                }
                             }
-                            observable.onNext(Constants.FIRST_DWON);
-                            observable.onComplete();
                         }
-                    });
-        }).subscribeOn(Schedulers.io());
+                        observable.onNext(Constants.FIRST_DWON);
+                        observable.onComplete();
+                    }
+                });
     }
 
 

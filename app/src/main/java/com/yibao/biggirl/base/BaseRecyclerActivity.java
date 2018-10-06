@@ -23,7 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 
-
 /**
  * @项目名： BigGirl
  * @包名： com.yibao.biggirl.base
@@ -31,35 +30,33 @@ import io.reactivex.disposables.CompositeDisposable;
  * @author: Stran
  * @email: strangermy@outlook.com
  * @创建时间: 2017/3/29 15:25
- * @描述： 凡是页面包含RecyclerView的,都要继承这个BaseRecyclerActivity
+ * @描述： 凡是页面包含RecyclerView的, 都要继承这个BaseRecyclerActivity
  */
 
 public abstract class BaseRecyclerActivity
         extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener
 
 {
-    public CompositeDisposable mDisposable;
-    public MyApplication mApplication;
-    public String mTag = getClass().getSimpleName() + "    ";
+
+
     public int size = 20;
     public int page = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDisposable = new CompositeDisposable();
-        mApplication = MyApplication.getIntstance();
+
     }
 
 
     @Override
     public void onRefresh() {
-        Observable.timer(1, TimeUnit.SECONDS)
+        mDisposable.add(Observable.timer(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     refreshData();
                     page = 1;
-                });
+                }));
     }
 
     protected abstract void refreshData();
@@ -100,6 +97,7 @@ public abstract class BaseRecyclerActivity
 
     /**
      * 得到一个RecyclerView   实现了加载更多
+     *
      * @param fab
      * @param rvType
      * @param adapter
@@ -193,12 +191,5 @@ public abstract class BaseRecyclerActivity
         return max;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mDisposable != null) {
-            mDisposable.clear();
-        }
 
-    }
 }

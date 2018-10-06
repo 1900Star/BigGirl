@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.util.Constants;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -128,6 +131,9 @@ public abstract class BaseRvAdapter<T>
 
 
     public void addHeader(List<T> list) {
+        if (mList.size() > 0) {
+            mList.clear();
+        }
         mList.addAll(list);
         notifyDataSetChanged();
     }
@@ -137,8 +143,16 @@ public abstract class BaseRvAdapter<T>
             changeLoadMoreStatus(Constants.NOT_MORE_DATA_RV);
         } else {
             changeLoadMoreStatus(Constants.LOADING_MORE_RV);
+            HashMap<String, String> map = new HashMap<>();
+            for (T t : mList) {
+                map.put(t.toString(), "girl");
+            }
             for (T t : list) {
-                if (!mList.contains(t)) {
+//                if (!mList.contains(t)) {
+//                    mList.add(t);
+//                }
+                String key = map.get(t.toString());
+                if (key == null) {
                     mList.add(t);
                 }
             }

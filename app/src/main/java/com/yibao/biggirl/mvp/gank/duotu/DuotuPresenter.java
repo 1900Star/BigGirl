@@ -37,14 +37,16 @@ public class DuotuPresenter
         mRemoteDuotuData.getDuotu(url, page, new DuotuDataSource.LoadDuotuCallback() {
             @Override
             public void onLoadDatas(List<Girl> urlList) {
-                if (loadType == Constants.REFRESH_DATA) {
-                    mView.refresh(urlList);
-                } else if (loadType == Constants.LOAD_DATA) {
-                    mView.loadData(urlList);
-                } else if (loadType == Constants.LOAD_MORE_DATA) {
-                    mView.loadMore(urlList);
-                }
+                if (urlList != null) {
 
+                    if (loadType == Constants.REFRESH_DATA) {
+                        mView.refresh(urlList);
+                    } else if (loadType == Constants.LOAD_DATA) {
+                        mView.loadData(urlList);
+                    } else if (loadType == Constants.LOAD_MORE_DATA) {
+                        mView.loadMore(urlList);
+                    }
+                }
             }
 
             @Override
@@ -55,7 +57,7 @@ public class DuotuPresenter
     }
 
     @Override
-    public void loadDataList(String url, int page,int loadType) {
+    public void loadDataList(String url, int page, int loadType) {
         mRemoteDuotuData.getDuotuList(url, page, new DuotuDataSource.LoadDuotuCallback() {
             @Override
             public void onLoadDatas(List<Girl> urlList) {
@@ -66,7 +68,6 @@ public class DuotuPresenter
                 } else if (loadType == Constants.LOAD_MORE_DATA) {
                     mTuActiviy.loadMore(urlList);
                 }
-
 
 
             }
@@ -86,7 +87,8 @@ public class DuotuPresenter
 
     @Override
     public void unsubscribe() {
-
+        mView = null;
+        mTuActiviy = null;
     }
 
 }

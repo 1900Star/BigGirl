@@ -76,7 +76,6 @@ public class SisanActivity extends BaseRecyclerActivity implements SisanContract
 
     @Override
     public void refresh(List<Girl> list) {
-        mAdapter.clear();
         mAdapter.addHeader(list);
     }
 
@@ -97,6 +96,7 @@ public class SisanActivity extends BaseRecyclerActivity implements SisanContract
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mPresenter.unsubscribe();
     }
 
 

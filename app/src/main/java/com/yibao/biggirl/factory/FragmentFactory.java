@@ -1,6 +1,8 @@
 package com.yibao.biggirl.factory;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 
 import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.mvp.gank.app.AppFragment;
@@ -38,19 +40,15 @@ public class FragmentFactory {
     private static final int FRAGMENT_DISIYINGXIANG = 14;
     private static final int FRAGMENT_YUNVLANG = 15;
     private static final int FRAGMENT_XIUREN = 16;
-    private static final int FRAGMENT_SXINGGAN = 17;
-    private static final int FRAGMENT_SGAOQING = 18;
-    private static final int FRAGMENT_SWEIMEI = 19;
-    private static final int FRAGMENT_WANGLUO = 20;
-    private static final int FRAGMENT_DONGMAN = 21;
-    private static final int TYPE_SABAR = 22;
-    private static final int TYPE_TOPQUEEN = 23;
-    private static final int TYPE_IMAGETV = 24;
-    private static final int TYPE_WPB = 25;
-    private static final int TYPE_YS = 26;
-    private static final int TYPE_TOUTIAO = 27;
-    private static final int TYPE_DGC = 28;
-    private static Map<Integer, BaseRecyclerFragment> mCacheFragmentMap = new HashMap<>();
+    private static final int TYPE_SABAR = 17;
+    private static final int TYPE_TOPQUEEN = 18;
+    private static final int TYPE_IMAGETV = 19;
+    private static final int TYPE_WPB = 20;
+    private static final int TYPE_YS = 21;
+    private static final int TYPE_TOUTIAO = 22;
+    private static final int TYPE_DGC = 23;
+    @SuppressLint("UseSparseArrays")
+    private static Map<Integer, BaseRecyclerFragment> mCacheFragmentMap = new HashMap<>(25);
 
     public static Fragment createFragment(int position) {
 
@@ -115,24 +113,6 @@ public class FragmentFactory {
             case FRAGMENT_XIUREN:
                 fragment = DuotuRecyclerFragment.newInstance(FRAGMENT_XIUREN);
                 break;
-//                4493
-            case FRAGMENT_SXINGGAN:
-                fragment = SisanFragment.newInstance(FRAGMENT_SXINGGAN);
-                break;
-            case FRAGMENT_SGAOQING:
-                fragment = SisanFragment.newInstance(FRAGMENT_SGAOQING);
-                break;
-            case FRAGMENT_SWEIMEI:
-                fragment = SisanFragment.newInstance(FRAGMENT_SWEIMEI);
-                break;
-            case FRAGMENT_WANGLUO:
-                fragment = SisanFragment.newInstance(FRAGMENT_WANGLUO);
-                break;
-            case FRAGMENT_DONGMAN:
-                fragment = SisanFragment.newInstance(FRAGMENT_DONGMAN);
-                break;
-
-
             case TYPE_SABAR:
                 fragment = DuotuRecyclerFragment.newInstance(TYPE_SABAR);
                 break;

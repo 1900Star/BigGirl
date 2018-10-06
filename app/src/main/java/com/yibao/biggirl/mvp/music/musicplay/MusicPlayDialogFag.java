@@ -144,14 +144,15 @@ public class MusicPlayDialogFag
     }
 
     private void initSongInfo() {
+        Bundle arguments = getArguments();
         MusicDialogInfo info = getArguments().getParcelable("info");
         mCurrenMusicInfo = info.getInfo();
         mSongName.setText(StringUtil.getSongName(mCurrenMusicInfo.getTitle()));
         mArtistName.setText(mCurrenMusicInfo.getArtist());
         mLyricsView.setLrcFile(mCurrenMusicInfo.getTitle(), mCurrenMusicInfo.getArtist());
-        String url = StringUtil.getAlbulm(mCurrenMusicInfo.getAlbumId())
+       mAlbumUrl = StringUtil.getAlbulm(mCurrenMusicInfo.getAlbumId())
                 .toString();
-        setAlbulm(url);
+        setAlbulm(mAlbumUrl);
     }
 
 

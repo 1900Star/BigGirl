@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_auto_play"
         android:icon="@drawable/btn_playing_play_selector"
         android:orderInCategory="100"
         android:title="@string/action_auto_play"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_favorite_mz"
+        android:icon="@drawable/ic_star_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/favorite"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_share_mz"
         android:icon="@mipmap/nav_menu_share"
         android:orderInCategory="100"
         android:title="@string/action_share"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_setwallpaer"
         android:orderInCategory="100"
         android:title="@string/action_setwallpaer"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 
 </menu>

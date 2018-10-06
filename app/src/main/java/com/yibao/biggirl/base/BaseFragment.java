@@ -10,7 +10,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
- /**
+
+import io.reactivex.disposables.CompositeDisposable;
+
+/**
  *  @author Stran
   * @项目名：  BigGirl
  *  @包名：    com.yibao.biggirl.base
@@ -24,6 +27,7 @@ public abstract class BaseFragment extends Fragment {
     protected Activity mActivity;
 
     protected boolean mIsLoadedData = false;
+    protected CompositeDisposable mDisposable;
 
     @Override
     public void onAttach(Context context) {
@@ -36,6 +40,7 @@ public abstract class BaseFragment extends Fragment {
      public void onCreate(@Nullable Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
          setRetainInstance(true);
+         mDisposable = new CompositeDisposable();
      }
 
      @Override

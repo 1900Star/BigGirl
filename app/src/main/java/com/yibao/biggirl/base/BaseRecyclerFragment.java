@@ -53,12 +53,6 @@ public abstract class BaseRecyclerFragment
     protected abstract void loadMoreData();
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.girls_frag);
         mSwipeRefresh = getViewById(R.id.swipe_refresh);

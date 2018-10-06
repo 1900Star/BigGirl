@@ -62,7 +62,6 @@ public class AppFragment extends BaseRecyclerFragment implements AppContract.Vie
 
     @Override
     public void refresh(List<ResultsBeanX> list) {
-        mAdapter.clear();
         mAdapter.addHeader(list);
     }
 

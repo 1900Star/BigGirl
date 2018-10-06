@@ -76,7 +76,6 @@ public class DuotuRecyclerActivity
 
     @Override
     public void refresh(List<Girl> list) {
-        mAdapter.clear();
         mAdapter.addHeader(list);
     }
 
@@ -97,6 +96,7 @@ public class DuotuRecyclerActivity
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mPresenter.unsubscribe();
     }
 
 

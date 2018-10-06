@@ -90,7 +90,6 @@ public class MeizituFragment extends BaseRecyclerFragment implements
 
     @Override
     public void refresh(List<Girl> list) {
-        mAdapter.clear();
         mAdapter.addHeader(list);
     }
 
@@ -109,5 +108,9 @@ public class MeizituFragment extends BaseRecyclerFragment implements
 
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.unsubscribe();
+    }
 }
