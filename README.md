@@ -18,8 +18,7 @@
 
 项目代码完全开源，由[丨900](https://weibo.com/stranger98)完成，写这个项目主要是学习Material Design , RxJava2, Retrofit2，Dagger2等 <br>
 开源框架, 整个项目参照了[谷歌官方RxMVP](https://github.com/googlesamples/android-architecture) Samples。整个过程中有收获很多，<br>
-熟悉了RxJava2的一些操作符，用Rxbus替代了曾经常用的Eventbus，网页和音乐的收藏功能用GreenDao实现的，整个开 <br>
-发过程使我对MVP+RxJava+Retrofit这个黄金组合有了更近一步的认识。
+熟悉了RxJava2的一些操作符，用Rxbus替代了曾经常用的Eventbus，网页和音乐的收藏功能用GreenDao实现。
 
 ## 数据来源
    * [干货集中营](http://gank.io/)
