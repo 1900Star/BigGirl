@@ -11,6 +11,7 @@ import java.util.List;
  * Author：Sid
  * Des：${TODO}
  * Time:2017/4/22 10:03
+ *
  * @author Stran
  */
 public class GirlsPresenter
@@ -47,15 +48,16 @@ public class GirlsPresenter
             mRemoteGirlsData.getGirls(dataType, size, page, new GrilsDataSource.LoadDataCallback() {
                 @Override
                 public void onLoadDatas(List<String> girlBean) {
-
-                    if (loadType == Constants.REFRESH_DATA) {
-                        mView.refresh(girlBean);
-                    } else if (loadType == Constants.LOAD_DATA) {
-                        mView.loadData(girlBean);
-                    } else if (loadType == Constants.LOAD_MORE_DATA) {
-                        mView.loadMore(girlBean);
+                    if (mView != null) {
+                        if (loadType == Constants.REFRESH_DATA) {
+                            mView.refresh(girlBean);
+                        } else if (loadType == Constants.LOAD_DATA) {
+                            mView.loadData(girlBean);
+                        } else if (loadType == Constants.LOAD_MORE_DATA) {
+                            mView.loadMore(girlBean);
+                        }
+                        mView.showNormal();
                     }
-                    mView.showNormal();
                 }
 
                 @Override

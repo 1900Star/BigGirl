@@ -106,8 +106,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected void setContentView(@LayoutRes int layoutResID) {
         mContentView = LayoutInflater.from(mActivity).inflate(layoutResID, null);
-
-
     }
 
     /**
@@ -133,6 +131,13 @@ public abstract class BaseFragment extends Fragment {
         return (VT) mContentView.findViewById(id);
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+            mDisposable.clear();
+            mDisposable = null;
+        }
+    }
 }

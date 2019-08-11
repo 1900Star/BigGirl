@@ -21,6 +21,7 @@ import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.view.SwipeItemLayout;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -75,7 +76,7 @@ public class FavoriteActivity
     protected void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar_favorite);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
 

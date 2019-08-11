@@ -5,9 +5,10 @@ import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebDao;
 import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.favorite.FavoriteFragment;
-import com.yibao.biggirl.mvp.favorite.FavoritePagerActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
 import com.yibao.biggirl.util.Constants;
+
+import java.util.List;
 
 /**
  * Author：Sid
@@ -51,17 +52,21 @@ public class WebPresenter {
             public void insertStatus(Long insertStatus) {
                 if (beanType.equals(Constants.SING_GIRL) || (beanType.equals(Constants.MULTIPLE_GIRL) || (beanType.equals(Constants.WEB_URL)))) {
                     mGirlActivity.insertStatus(insertStatus);
+                } else {
+                    mWebActivity.insertStatus(insertStatus);
                 }
-                mWebActivity.insertStatus(insertStatus);
             }
         });
     }
 
-    //根据type(目前只有0和1)判断删除操作是来自于FavoriteFag<0>还是WebActivity<1>
+    //根据type(目前只有0和1)判断删除操作是来自于FavoriteFag<0>还是WebActivity<1> GirlActivivy <2>
     public void cancelFavorite(Long id, int type) {
         mDao.cancelFavorite(id, cancelId -> {
             if (type == 0) {
-                //                    mFavoriteActivity.cancelStatus(cancelId);
+//                mGirlActivity.cancelStatus(cancelId);
+            } else if (type == 2) {
+                mGirlActivity.cancelStatus(cancelId);
+
             } else {
 
                 mWebActivity.cancelStatus(cancelId);
@@ -81,8 +86,19 @@ public class WebPresenter {
 
     }
 
-    public void queryFavoriteIsCollect(String gankId) {
-        mDao.quetyConditional(gankId, list -> mWebActivity.queryFavoriteIsCollect(list));
+    public void queryFavoriteIsCollect(int pageType, String gankId) {
+        mDao.quetyConditional(gankId, new FavoriteDaoInterface.QueryConditionalCallBack() {
+            @Override
+            public void conditionalQuery(List<FavoriteWebBean> list) {
+                if (pageType == 1) {
+                mWebActivity.queryFavoriteIsCollect(list);
+
+                } else if (pageType == 2) {
+                    mGirlActivity.queryFavoriteIsCollect(list);
+
+                }
+            }
+        });
 
     }
 

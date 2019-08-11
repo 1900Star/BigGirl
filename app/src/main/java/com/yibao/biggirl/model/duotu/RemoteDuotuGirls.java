@@ -63,9 +63,11 @@ public class RemoteDuotuGirls
             List<Girl> girls = new ArrayList<>();
             try {
                 Document doc = Jsoup.connect(baseUrl).timeout(10000).get();
-                Element total = doc.select("div.page-list").first();
+                Element total = doc.select("div.content").first();
+                Elements allElements = total.getAllElements();
+
                 Elements items = total.select("p");
-                for (Element element : items) {
+                for (Element element : allElements) {
                     Girl girl = new Girl(element.select("img").first().attr("src"));
                     girls.add(girl);
                 }

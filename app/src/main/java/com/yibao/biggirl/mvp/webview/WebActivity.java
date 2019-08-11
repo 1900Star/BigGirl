@@ -77,7 +77,7 @@ public class WebActivity
         component.in(this);
         mId = getIntent().getLongExtra("id", 0);
         mBean = getIntent().getParcelableExtra("favoriteBean");
-        mPresenter.queryFavoriteIsCollect(mBean.getGankId());
+        mPresenter.queryFavoriteIsCollect(1,mBean.getGankId());
         mUrl = mBean.getUrl();
         initData();
     }

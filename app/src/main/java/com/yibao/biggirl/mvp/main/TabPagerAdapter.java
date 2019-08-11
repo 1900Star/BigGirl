@@ -1,5 +1,6 @@
 package com.yibao.biggirl.mvp.main;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -31,10 +32,11 @@ public class TabPagerAdapter
     @Override
     public int getCount() {
         return Constants.arrTitle.length;
+//        return 7;
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return ((Fragment) object).getView() == view;
     }
 
@@ -46,7 +48,7 @@ public class TabPagerAdapter
 
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.destroyItem(container, position, object);
     }
 }

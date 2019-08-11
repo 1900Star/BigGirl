@@ -52,7 +52,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author Stran
  */
 public class GirlActivity
-        extends AppCompatActivity implements ViewPager.OnPageChangeListener, HideToolbarListener {
+        extends AppCompatActivity implements ViewPager.OnPageChangeListener, HideToolbarListener, GirlContract.View {
 
 
     @BindView(R.id.vp)
@@ -89,8 +89,9 @@ public class GirlActivity
     private boolean mIsConnected;
     private boolean isPlay = false;
     private MenuItem mMenuFavorite;
-    private boolean isFavorite = true;
+    private boolean isFavorite = false;
     private WebPresenter mWebPresenter;
+    private Long mId;
 
 
     @Override
@@ -120,6 +121,7 @@ public class GirlActivity
         mAppBarLayout.setAlpha(0.7f);
         mScroller = new PagerScroller(this);
         mIsConnected = NetworkUtil.isNetworkConnected(this);
+        mWebPresenter.queryFavoriteIsCollect(2, "3");
 
         if (mList.size() != 0) {
             mAdapter = new GirlAdapter(this, mList);
@@ -305,13 +307,25 @@ public class GirlActivity
 
     private void favoriteGirl() {
         if (isFavorite) {
-//            mWebPresenter.cancelFavorite((long) mPosition, 0);
+            mWebPresenter.cancelFavorite((long) mPosition, 2);
         } else {
+//            private String url;
+//            private String gankId;
+//            private String imagUrl;
+//            private String des;
+//            private String name;
+//            private String type;
+//            private String time;
             FavoriteWebBean favoriteBean = new FavoriteWebBean();
             favoriteBean.setImagUrl(mUrl);
             favoriteBean.setType(Constants.SING_GIRL);
+            favoriteBean.setDes("AA");
+            favoriteBean.setName("AA");
+            favoriteBean.setGankId("01");
+            favoriteBean.setTime("10");
+            favoriteBean.setUrl(mUrl);
             favoriteBean.setId((long) mPosition);
-//            mWebPresenter.insertFavorite(favoriteBean);
+            mWebPresenter.insertFavorite(favoriteBean);
 
         }
         refreshFavoriteBtn();
@@ -333,7 +347,9 @@ public class GirlActivity
         super.onDestroy();
         mBind.unbind();
         if (disposables != null) {
+            disposables.dispose();
             disposables.clear();
+            disposables = null;
         }
     }
 
@@ -343,6 +359,7 @@ public class GirlActivity
 
     @Override
     public void onPageSelected(int position) {
+        mPosition = position;
         mUrl = mList.get(position);
     }
 
@@ -353,9 +370,48 @@ public class GirlActivity
         }
     }
 
+    @Override
+    public void insertStatus(Long status) {
+        if (status > 0) {
+            mId = status;
+            LogUtil.d("刚存入的  ID :" + mId);
+            isFavorite = true;
+            refreshFavoriteBtn();
+            SnakbarUtil.favoriteSuccessView(mToolbar, "收藏成功  -_-");
 
-    public void insertStatus(Long insertStatus) {
 
-        LogUtil.d("" + insertStatus);
+        } else {
+
+            SnakbarUtil.favoriteFailView(mToolbar, "收藏失败");
+        }
     }
+
+    @Override
+    public void cancelStatus(Long id) {
+        if (id < 0) {
+            SnakbarUtil.favoriteFailView(mToolbar, "取消收藏失败");
+        } else {
+
+            mId = id;
+            isFavorite = false;
+            refreshFavoriteBtn();
+            LogUtil.d("lsp" + "已取消收藏  ID :" + id);
+        }
+    }
+
+    @Override
+    public void queryAllFavorite(List<FavoriteWebBean> list) {
+
+    }
+
+    @Override
+    public void queryFavoriteIsCollect(List<FavoriteWebBean> list) {
+        if (list.size() != 0) {
+            LogUtil.d("已经存在了     ");
+            isFavorite = true;
+            refreshFavoriteBtn();
+        }
+    }
+
+
 }
