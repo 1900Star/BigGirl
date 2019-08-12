@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'AndResGuard'
 
-def keystoreFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystoreFile))
+//def keystoreFile = rootProject.file("keystore.properties")
+//def keystoreProperties = new Properties()
+//keystoreProperties.load(new FileInputStream(keystoreFile))
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -18,28 +18,28 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 
-        signingConfigs {
-            config {
-                storeFile file(keystoreProperties['KEY_PATH'])
-                storePassword(keystoreProperties['KEY_PASS'])
-                keyAlias(keystoreProperties['ALIAS_NAME'])
-                keyPassword(keystoreProperties['ALIAS_PASS'])
-            }
-            debug {
-                v1SigningEnabled true
-                v2SigningEnabled true
-            }
-            release {
-                v1SigningEnabled true
-                v2SigningEnabled true
-            }
-
-        }
+//        signingConfigs {
+//            config {
+//                storeFile file(keystoreProperties['KEY_PATH'])
+//                storePassword(keystoreProperties['KEY_PASS'])
+//                keyAlias(keystoreProperties['ALIAS_NAME'])
+//                keyPassword(keystoreProperties['ALIAS_PASS'])
+//            }
+//            debug {
+//                v1SigningEnabled true
+//                v2SigningEnabled true
+//            }
+//            release {
+//                v1SigningEnabled true
+//                v2SigningEnabled true
+//            }
+//
+//        }
     }
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+//            signingConfig signingConfigs.config
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
