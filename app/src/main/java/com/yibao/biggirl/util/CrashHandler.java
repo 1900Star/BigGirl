@@ -27,7 +27,7 @@ public class CrashHandler
 
     // 崩溃日志本地保存地址
     private static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory()
-            .getPath() + "/CrashLog/log/";
+            .getPath() + "/CrashLog/BigGirlLog/";
     private static final String TAG = "CrashHandler";
     private static final String FILE_NAME = "crash";
     private static final String FILE_NAME_SUFFIX = ".txt";

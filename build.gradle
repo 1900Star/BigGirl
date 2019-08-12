@@ -32,8 +32,9 @@ ext {
     compileSdkVersion = 28
     buildToolsVersion = '28.0.3'
 
-    //Dependencies
     supportLibraryVersion = '28.0.0'
+
+    //Dependencies
     okHttp = '3.10.0'
     glide = '3.7.0'
     okHttpInterceptor = '3.9.0'
