@@ -2,8 +2,8 @@ package com.yibao.biggirl.mvp.gank.all;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.util.ActivityUtils;

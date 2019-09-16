@@ -6,12 +6,12 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:background="@color/cardview_dark_background"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/favorite_bar_pager"
             android:background="@android:color/transparent"
             android:layout_width="match_parent"
@@ -27,8 +27,8 @@
                 android:text="@string/favorite"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/big_tv" />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
 
     <com.yibao.biggirl.view.FavoriteViewPager
@@ -39,7 +39,7 @@
         android:background="@color/listItemBg"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout_favorite"
         android:layout_width="match_parent"
         android:layout_height="42dp"

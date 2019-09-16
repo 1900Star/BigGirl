@@ -1,12 +1,13 @@
 package com.yibao.biggirl.mvp.gank.app;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.factory.RecyclerFactory;
 import com.yibao.biggirl.model.app.ResultsBeanX;
 import com.yibao.biggirl.util.Constants;
+import com.yibao.biggirl.util.LogUtil;
 
 import java.util.List;
 
@@ -68,6 +69,7 @@ public class AppFragment extends BaseRecyclerFragment implements AppContract.Vie
     @Override
     public void loadData(List<ResultsBeanX> list) {
         mAdapter = new AppAdapter(mActivity, list);
+        LogUtil.d("lsp", " list size a   "+list.size());
         RecyclerView recyclerView = getRecyclerView(mFab, 1, mAdapter);
         mFagContent.addView(recyclerView);
         mFab.setOnClickListener(view -> RecyclerFactory.backTop(recyclerView, 1));

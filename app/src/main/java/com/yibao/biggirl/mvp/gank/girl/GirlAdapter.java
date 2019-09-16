@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.yibao.biggirl.base.listener.HideToolbarListener;
 import com.yibao.biggirl.util.ImageUitl;
 import com.yibao.biggirl.view.ZoomImageView;
@@ -16,7 +18,7 @@ import java.util.List;
  * 邮箱：strangermy@outlook.com
  */
 public class GirlAdapter
-        extends android.support.v4.view.PagerAdapter {
+        extends PagerAdapter {
     private Context mContext;
     private View mCurrentView;
     private List<String> mList;

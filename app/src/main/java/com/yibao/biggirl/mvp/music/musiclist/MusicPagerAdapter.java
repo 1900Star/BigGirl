@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.yibao.biggirl.R;
@@ -24,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * 邮箱：strangermy@outlook.com
  */
 public class MusicPagerAdapter
-        extends android.support.v4.view.PagerAdapter {
+        extends PagerAdapter {
     private Context mContext;
     private ArrayList<MusicBean> mList;
     private int mcurrentPostition;

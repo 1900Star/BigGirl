@@ -15,7 +15,8 @@ public class LogUtil {
     }
 
     // 是否需要打印log，可以在application的onCreate函数里面初始化
-    private static       boolean isDebug = MyApplication.isShowLog;
+//    private static       boolean isDebug = MyApplication.isShowLog;
+    private static       boolean isDebug =true                                          ;
     private static final String  TAG     = "LogUtil";
 
     // 下面四个是默认tag的函数 

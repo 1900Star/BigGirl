@@ -1,6 +1,6 @@
 package com.yibao.biggirl.model.music;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Author：Sid

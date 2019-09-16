@@ -1,10 +1,10 @@
 package com.yibao.biggirl.util;
 
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 
-import static android.support.design.widget.Snackbar.LENGTH_LONG;
-import static android.support.design.widget.Snackbar.make;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
+import static com.google.android.material.snackbar.Snackbar.make;
 import static com.yibao.biggirl.util.ColorUtil.picAlreadyExists;
 
 

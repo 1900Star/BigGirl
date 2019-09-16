@@ -1,15 +1,12 @@
 package com.yibao.biggirl.factory;
 
 import android.annotation.SuppressLint;
-import android.support.v4.app.Fragment;
-import android.util.SparseArray;
+import androidx.fragment.app.Fragment;
 
 import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.mvp.gank.app.AppFragment;
 import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerFragment;
 import com.yibao.biggirl.mvp.gank.girls.GirlsFragment;
-import com.yibao.biggirl.mvp.gank.meizitu.MeizituFragment;
-import com.yibao.biggirl.mvp.gank.sisan.SisanFragment;
 
 import java.util.HashMap;
 import java.util.Map;

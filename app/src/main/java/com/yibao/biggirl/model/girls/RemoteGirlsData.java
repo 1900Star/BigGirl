@@ -57,6 +57,7 @@ public class RemoteGirlsData
 
             @Override
             public void onNext(List<String> list) {
+                LogUtil.d("lsp", " list size    "+list.size());
                 callback.onLoadDatas(list);
             }
 

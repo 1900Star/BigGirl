@@ -2,15 +2,19 @@ package com.yibao.biggirl.mvp.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,12 +26,13 @@ import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseActivity;
 import com.yibao.biggirl.base.listener.MyPageChangeListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
+import com.yibao.biggirl.model.girls.GrilsDataSource;
+import com.yibao.biggirl.model.girls.RemoteGirlsData;
 import com.yibao.biggirl.mvp.dialogfragment.AboutMeDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.BeautifulDialogFag;
 import com.yibao.biggirl.mvp.dialogfragment.MeDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.TopBigPicDialogFragment;
 import com.yibao.biggirl.mvp.dialogfragment.UnSplashDialogFragment;
-import com.yibao.biggirl.mvp.favorite.FavoriteActivity;
 import com.yibao.biggirl.mvp.favorite.FavoritePagerActivity;
 import com.yibao.biggirl.mvp.gank.duotu.DuotuRecyclerActivity;
 import com.yibao.biggirl.mvp.gank.girl.GirlActivity;
@@ -41,6 +46,7 @@ import com.yibao.biggirl.network.Api;
 import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.FileUtil;
 import com.yibao.biggirl.util.ImageUitl;
+import com.yibao.biggirl.util.LogUtil;
 import com.yibao.biggirl.util.SharePrefrencesUtil;
 import com.yibao.biggirl.util.SnakbarUtil;
 

@@ -10,7 +10,7 @@ package com.yibao.biggirl.mvp.gank.meizitu;
  */
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.factory.RecyclerFactory;

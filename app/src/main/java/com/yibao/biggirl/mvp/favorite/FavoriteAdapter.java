@@ -2,7 +2,7 @@ package com.yibao.biggirl.mvp.favorite;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yibao.biggirl.R;
 import com.yibao.biggirl.base.BaseRvAdapter;
-import com.yibao.biggirl.base.listener.OnRvItemClickListener;
 import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
 import com.yibao.biggirl.model.favoriteweb.FavoriteWebBean;
 import com.yibao.biggirl.mvp.webview.WebActivity;

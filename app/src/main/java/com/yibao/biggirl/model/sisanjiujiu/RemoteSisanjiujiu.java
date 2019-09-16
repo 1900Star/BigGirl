@@ -1,10 +1,9 @@
 package com.yibao.biggirl.model.sisanjiujiu;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.yibao.biggirl.model.girl.Girl;
-import com.yibao.biggirl.util.Constants;
 import com.yibao.biggirl.util.LogUtil;
 
 import org.jsoup.Jsoup;

@@ -8,11 +8,11 @@
     android:orientation="vertical"
     tools:context="com.yibao.biggirl.mvp.music.musiclist.MusicListActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_music"
             android:layout_width="match_parent"
             android:layout_height="52dp"
@@ -28,8 +28,8 @@
                 android:text="@string/music"
                 android:textColor="@color/textDes"
                 android:textSize="@dimen/big_tv" />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/music_category" />
 
@@ -61,7 +61,7 @@
             android:orientation="horizontal"
             android:visibility="invisible">
 
-            <android.support.v4.view.ViewPager
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/music_floating_vp"
                 android:layout_width="0dp"
                 android:layout_height="60dp"

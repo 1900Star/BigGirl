@@ -1,8 +1,8 @@
 package com.yibao.biggirl.mvp.favorite;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yibao.biggirl.base.BaseRecyclerFragment;
 import com.yibao.biggirl.base.listener.OnRvItemSlideListener;
