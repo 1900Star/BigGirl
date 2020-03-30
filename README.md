@@ -5,7 +5,6 @@
 ![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/music.jpg)
 
 
-![image](https://github.com/1900Star/OkStar/blob/master/Screenshot/biggirls.gif)
 
 ![image](https://github.com/1900Star/BigGril/blob/master/Screenshot_png/b.png)
 
@@ -16,7 +15,6 @@
 #### 项目介绍：
 [BigGirl](https://github.com/1900Star/BigGirl)  一个集图片浏览、开发技术干货和音乐播放的综合资讯客户端。<br>
 
-项目代码完全开源，由[丨900](https://weibo.com/stranger98)完成，整个项目参照了[谷歌官方RxMVP](https://github.com/googlesamples/android-architecture) Samples。<br>
 
 ## 数据来源
    * [干货集中营](http://gank.io/)
