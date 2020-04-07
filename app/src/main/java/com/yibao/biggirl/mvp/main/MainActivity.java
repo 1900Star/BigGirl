@@ -218,12 +218,8 @@ public class MainActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.main_action_star:
-                TestRxjava.getMeiziLis();
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.main_action_star) {
+            TestRxjava.getMeiziLis();
         }
         return super.onOptionsItemSelected(item);
     }

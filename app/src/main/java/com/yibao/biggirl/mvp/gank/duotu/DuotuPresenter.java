@@ -38,7 +38,6 @@ public class DuotuPresenter
             @Override
             public void onLoadDatas(List<Girl> urlList) {
                 if (urlList != null) {
-
                     if (loadType == Constants.REFRESH_DATA) {
                         mView.refresh(urlList);
                     } else if (loadType == Constants.LOAD_DATA) {
