@@ -30,11 +30,6 @@
   * [RxBinding](https://github.com/JakeWharton/RxBinding)
   * [BGASwipeBackLayout-Android](https://github.com/bingoogolapple/BGASwipeBackLayout-Android)
 
-  
-# 提示
-   #### 本项目还没写完，只要有空闲时间就会更新代码。
-    
-   #### 由于本人水平有限，项目中难免有所纰漏，如果有问题请与我联系 www.strangermy98@gmail.com
 
 
 
