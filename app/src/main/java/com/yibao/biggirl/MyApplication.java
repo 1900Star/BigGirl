@@ -4,20 +4,15 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.TextView;
 
-import com.squareup.leakcanary.LeakCanary;
 import com.yibao.biggirl.model.greendao.DaoMaster;
 import com.yibao.biggirl.model.greendao.DaoSession;
 import com.yibao.biggirl.util.CrashHandler;
 import com.yibao.biggirl.util.RxBus;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
-import okhttp3.Callback;
+import leakcanary.LeakCanary;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * 作者：Stran on 2017/3/23 15:12
@@ -45,12 +40,7 @@ public class MyApplication
     @Override
     public void onCreate() {
         super.onCreate();
-        TextView textView = new TextView(this);
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
         appContext = this;
         CrashHandler.getInstance()
                 .init(this);
